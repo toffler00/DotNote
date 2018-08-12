@@ -1,0 +1,6 @@
+framework module Pods_OrbitTests {
+  umbrella header "Pods-OrbitTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
