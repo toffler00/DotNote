@@ -12,7 +12,7 @@ struct Mock {
     var title: String
     var body: String
 }
-
+//test from me
 class DiaryViewController: UIViewController {
     
     fileprivate var mock: Mock?
