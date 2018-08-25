@@ -14,6 +14,7 @@
 		620F53BA211EF16900A94A01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 620F53B8211EF16900A94A01 /* LaunchScreen.storyboard */; };
 		620F53C5211EF16A00A94A01 /* OrbitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53C4211EF16A00A94A01 /* OrbitTests.swift */; };
 		620F53D0211EF16A00A94A01 /* OrbitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53CF211EF16A00A94A01 /* OrbitUITests.swift */; };
+		6A4A04C721313980003A51B5 /* AppTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A04C621313980003A51B5 /* AppTarget.swift */; };
 		A30363786577CE147CA4028E /* Pods_Orbit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */; };
 		CADA18B3F13C9E1896B6E0BE /* Pods_OrbitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33AFCA43DE115D59459EAB8B /* Pods_OrbitUITests.framework */; };
 		E9B9EBF10E148D0D4ED1EE5E /* Pods_OrbitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44D744F7CDE1FACBB621B745 /* Pods_OrbitTests.framework */; };
@@ -55,6 +56,7 @@
 		620F53CF211EF16A00A94A01 /* OrbitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbitUITests.swift; sourceTree = "<group>"; };
 		620F53D1211EF16A00A94A01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		688EAB7E305E75A5D496F632 /* Pods-OrbitTests.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitTests.prod.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitTests/Pods-OrbitTests.prod.xcconfig"; sourceTree = "<group>"; };
+		6A4A04C621313980003A51B5 /* AppTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTarget.swift; sourceTree = "<group>"; };
 		CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Orbit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD9A080CFCF0F16A7A10ED7D /* Pods-Orbit.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Orbit.prod.xcconfig"; path = "Pods/Target Support Files/Pods-Orbit/Pods-Orbit.prod.xcconfig"; sourceTree = "<group>"; };
 		E8FD022B325BCF794A6C54DC /* Pods-OrbitUITests.dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitUITests.dev.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitUITests/Pods-OrbitUITests.dev.xcconfig"; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			children = (
 				620F53AF211EF16900A94A01 /* AppDelegate.swift */,
 				620F53B1211EF16900A94A01 /* ViewController.swift */,
+				6A4A04C621313980003A51B5 /* AppTarget.swift */,
 				620F53B3211EF16900A94A01 /* Main.storyboard */,
 				620F53B6211EF16900A94A01 /* Assets.xcassets */,
 				620F53B8211EF16900A94A01 /* LaunchScreen.storyboard */,
@@ -377,6 +380,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A4A04C721313980003A51B5 /* AppTarget.swift in Sources */,
 				620F53B2211EF16900A94A01 /* ViewController.swift in Sources */,
 				620F53B0211EF16900A94A01 /* AppDelegate.swift in Sources */,
 			);
@@ -500,7 +504,8 @@
 				APP_ICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X46PH8MSE8;
+				DEVELOPMENT_TEAM = 2U6LJQM273;
+				Deployment = dev;
 				INFOPLIST_FILE = Orbit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -618,7 +623,8 @@
 				APP_ICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X46PH8MSE8;
+				DEVELOPMENT_TEAM = 2U6LJQM273;
+				Deployment = prod;
 				INFOPLIST_FILE = Orbit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
