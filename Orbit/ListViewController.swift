@@ -9,14 +9,23 @@
 import UIKit
 
 class ListViewController: UIViewController {
-    
+    // MARK: Properties
     private var listTableView: UITableView!
     
+    // MARK: IBOutlet
+//    @IBOutlet weak var writeButton: UIButton!
+    
+//    // MARK: Method
+//    @objc fileprivate func pushWriteViewController(){
+//        let writeViewController = WriteViewController(delegate: self)
+//        self.navigationController?.pushViewController(writeViewController, animated: false)
+//    }
+//
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
+//        self.writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
     }
     
     override func didReceiveMemoryWarning() {
@@ -24,7 +33,8 @@ class ListViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: viewWillLayoutSubviews
+    // MARK: viewWillLayoutSubviews:
+    // 뷰가 먼저 보여야하므로
     override func viewWillLayoutSubviews() {
         if self.listTableView == nil {
             self.setUpLayout()
@@ -54,5 +64,30 @@ extension ListViewController {
         self.view.addConstraints(listTableViewConstraints)
         
         // ToRegister CustomCell
+        self.listTableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
+//        self.listTableView.delegate = self
+        self.listTableView.dataSource = self
     }
 }
+// MARK: - UITableViewDelegate
+//extension ListViewController: UITableViewDelegate {
+//
+//}
+// MARK: - UITableViewDataSource
+extension ListViewController: UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
+        // Test
+        cell.dateLabel.text = "8월31일"
+        cell.titleLabel.text = "title"
+        cell.weekLabel.text = "금요일"
+        return cell
+    }
+    
+    
+}
+
