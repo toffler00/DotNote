@@ -8,14 +8,11 @@
 
 import UIKit
 
-struct Mock {
-    var title: String
-    var body: String
-}
+
 
 class DiaryViewController: UIViewController {
     
-    fileprivate var mock: Mock?
+    var datasource: [Model.userInfo] = []
     fileprivate var diaryTableView: UITableView!
     
     @IBOutlet weak var writeButton: UIButton!
@@ -39,7 +36,15 @@ class DiaryViewController: UIViewController {
         }
     }
 }
-
+extension DiaryViewController {
+    func mockData(){
+        let dataMock1 = Model.userInfo.init(userid: "exam", createDate: "2018/08/30", dayOfWeek: "ThursDay", contentTitle: "first", weather: "cloud")
+        datasource.append(dataMock1)
+        
+        let dataMock2 = Model.userInfo.init(userid: "exam", createDate: "2018/08/29", dayOfWeek: "WednesDay", contentTitle: "second", weather: "rainny")
+        datasource.append(dataMock2)
+    }
+}
 extension DiaryViewController {
     fileprivate func setupLayout() {
         

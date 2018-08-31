@@ -38,6 +38,16 @@ class WriteViewController: UIViewController {
     }
 }
 
+//MARK: writeDone Post
+extension WriteViewController : DiaryWriteDelegate {
+    func writeDone() {
+        
+    }
+}
+
+
+
+//MARK: Setup Layout
 extension WriteViewController {
     fileprivate func setupLayout() {
         // MARK: containerV UIView
