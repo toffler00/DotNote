@@ -20,7 +20,7 @@ class DiaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+
         writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
     }
 
