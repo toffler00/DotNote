@@ -41,7 +41,7 @@ extension ListTableViewCell {
         self.weekLabel.textAlignment = .center
         
         // test
-        self.titleLabel.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+//        self.titleLabel.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
         
         // translatesAutoresizingMaskIntoConstraints
         self.dateLabel.translatesAutoresizingMaskIntoConstraints = false

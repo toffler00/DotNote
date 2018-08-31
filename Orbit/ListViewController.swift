@@ -65,14 +65,18 @@ extension ListViewController {
         
         // ToRegister CustomCell
         self.listTableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
-//        self.listTableView.delegate = self
+        self.listTableView.delegate = self
         self.listTableView.dataSource = self
     }
 }
 // MARK: - UITableViewDelegate
-//extension ListViewController: UITableViewDelegate {
-//
-//}
+extension ListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let writeViewcontroller = WriteViewController(delegate: self)
+        self.navigationController?.pushViewController(writeViewcontroller, animated: false)
+        tableView.deselectRow(at: indexPath, animated: false)
+    }
+}
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
