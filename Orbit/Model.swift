@@ -13,7 +13,6 @@ struct Model {}
 extension Model {
     struct userInfo {
         var userid : String
-        var createDate : Date
         var createDate : String
         var dayOfWeek : String
         var contentTitle : String
