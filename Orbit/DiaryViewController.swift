@@ -18,13 +18,13 @@ class DiaryViewController: UIViewController {
     fileprivate var mock: Mock?
     fileprivate var diaryTableView: UITableView!
     
-//    @IBOutlet weak var writeButton: UIButton!
+    @IBOutlet weak var writeButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-//
-//        writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
+
+        writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
     }
 
     override func didReceiveMemoryWarning() {

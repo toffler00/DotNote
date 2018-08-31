@@ -14,7 +14,7 @@
         <!--Orbit-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="DiaryViewController" customModule="Orbit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="WriteViewController" customModule="Orbit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -258,6 +258,9 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Option" id="0pY-QS-cs3"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="writeButton" destination="kGF-RK-2p2" id="ZJQ-2p-5Uy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecy-gw-z9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

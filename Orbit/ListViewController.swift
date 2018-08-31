@@ -13,19 +13,19 @@ class ListViewController: UIViewController {
     private var listTableView: UITableView!
     
     // MARK: IBOutlet
-//    @IBOutlet weak var writeButton: UIButton!
+    @IBOutlet weak var writeButton: UIButton!
     
-//    // MARK: Method
-//    @objc fileprivate func pushWriteViewController(){
-//        let writeViewController = WriteViewController(delegate: self)
-//        self.navigationController?.pushViewController(writeViewController, animated: false)
-//    }
-//
+    // MARK: Method
+    @objc fileprivate func pushWriteViewController(){
+        let writeViewController = WriteViewController(delegate: self)
+        self.navigationController?.pushViewController(writeViewController, animated: false)
+    }
+
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-//        self.writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
+        self.writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
     }
     
     override func didReceiveMemoryWarning() {
@@ -87,7 +87,14 @@ extension ListViewController: UITableViewDataSource{
         cell.weekLabel.text = "금요일"
         return cell
     }
-    
+
+}
+// MARK: - DiaryWriteDelegate
+extension ListViewController: DiaryWriteDelegate {
+    func writeDone() {
+        // ToDo
+    }
     
 }
+
 
