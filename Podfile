@@ -7,6 +7,8 @@ target 'Orbit' do
 
   # Pods for Orbit
 	pod 'Firebase/Core'
+	pod 'SwiftyBeaver'
+	pod 'RealmSwift'
 
   target 'OrbitTests' do
     inherit! :search_paths

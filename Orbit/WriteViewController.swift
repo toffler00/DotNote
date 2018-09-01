@@ -51,7 +51,7 @@ extension WriteViewController : DiaryWriteDelegate {
 extension WriteViewController {
     fileprivate func setupLayout() {
         // MARK: containerV UIView
-        print("setUpLayout")
+        log.debug("setup Layout")
         containerV = UIView()
         containerV.translatesAutoresizingMaskIntoConstraints = false
         
@@ -185,6 +185,9 @@ extension WriteViewController {
         contentImgV.backgroundColor = .clear
         contentImgV.image = UIImage(named: "photo")
         
+        contentImgV.isUserInteractionEnabled = true
+        let addImageGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addImageGesture))
+        contentImgV.addGestureRecognizer(addImageGestureRecognizer)
         
         //MARK: contents UITextView
         contents = UITextView()
@@ -222,5 +225,12 @@ extension WriteViewController {
         
 //        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
+    }
+}
+
+extension WriteViewController {
+    @objc fileprivate func addImageGesture() {
+        let photoViewController = PhotosViewController(nibName: nil, bundle: nil)
+        navigationController?.pushViewController(photoViewController, animated: true)
     }
 }

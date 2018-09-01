@@ -7,8 +7,7 @@
 //
 
 import UIKit
-
-
+import RealmSwift
 
 class DiaryViewController: UIViewController {
     
@@ -46,9 +45,9 @@ extension DiaryViewController {
         diaryTableView.translatesAutoresizingMaskIntoConstraints = false
         
         let diaryTableViewConsts: [NSLayoutConstraint] = [NSLayoutConstraint(item: diaryTableView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),
-                                                         NSLayoutConstraint(item: diaryTableView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
-                                                         NSLayoutConstraint(item: diaryTableView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
-                                                         NSLayoutConstraint(item: diaryTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)]
+                                                          NSLayoutConstraint(item: diaryTableView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
+                                                          NSLayoutConstraint(item: diaryTableView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
+                                                          NSLayoutConstraint(item: diaryTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)]
         
         view.addSubview(diaryTableView)
         view.addConstraints(diaryTableViewConsts)
