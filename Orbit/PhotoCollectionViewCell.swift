@@ -39,7 +39,6 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         addSubview(imageView)
         addConstraints(imageViewConsts)
     }
-    
     override func prepareForReuse() {
         imageView.image = nil
     }

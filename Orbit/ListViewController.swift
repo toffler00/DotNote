@@ -14,21 +14,22 @@ class ListViewController: UIViewController {
     
     // MARK: Properties
     private var listTableView: UITableView!
-    
-    // MARK: IBOutlet
-    @IBOutlet weak var writeButton: UIButton!
-    
+    private var writeButton: UIButton!
+    //    private var writeButton: UIButton = {
+    //        let button = UIButton()
+    //
+    //        return button
+    //    }()
     // MARK: Method
     @objc fileprivate func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
         self.navigationController?.pushViewController(writeViewController, animated: false)
     }
-
+    
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,17 +60,33 @@ class ListViewController: UIViewController {
 extension ListViewController {
     // MARK: setUpLayout
     private func setUpLayout(){
+        // tableview
         self.listTableView = UITableView()
         self.listTableView.translatesAutoresizingMaskIntoConstraints = false
         
-        let listTableViewConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: listTableView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),
-                                                              NSLayoutConstraint(item: listTableView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
-                                                              NSLayoutConstraint(item: listTableView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
-                                                              NSLayoutConstraint(item: listTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)]
+        let listTableViewConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: listTableView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),NSLayoutConstraint(item: listTableView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),NSLayoutConstraint(item: listTableView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),NSLayoutConstraint(item: listTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)]
         self.view.addSubview(listTableView)
         self.view.addConstraints(listTableViewConstraints)
         
-        // ToRegister CustomCell
+        // button
+        self.writeButton = UIButton()
+        self.writeButton.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
+        self.writeButton.clipsToBounds = true
+        //        self.writeButton.layer.cornerRadius = 0.5 * self.writeButton.bounds.size.height
+        self.writeButton.layer.cornerRadius = 30
+        self.writeButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let writeButtonConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: self.writeButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 60),NSLayoutConstraint(item: self.writeButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 60),NSLayoutConstraint(item: self.writeButton, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.9, constant: 0),NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.7, constant: 0)]
+        
+        // To add writebutton in listTableview
+        self.view.addSubview(writeButton)
+        self.view.addConstraints(writeButtonConstraints)
+        
+        
+        // ??
+        self.writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
+        
+        // MARK: ToRegister CustomCell
         self.listTableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
@@ -78,28 +95,28 @@ extension ListViewController {
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let writeViewcontroller = WriteViewController(delegate: self)
-        self.navigationController?.pushViewController(writeViewcontroller, animated: true)
-        tableView.deselectRow(at: indexPath, animated: false)
+        //        let writeViewcontroller = WriteViewController(delegate: self)
+        //        self.navigationController?.pushViewController(writeViewcontroller, animated: true)
+        //        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return 15
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
         
-//        cell.model = models[indexPath.row]
+        //        cell.model = models[indexPath.row]
         // Test
-//        cell.dateLabel.text = "8월31일"
-//        cell.titleLabel.text = "title"
-//        cell.weekLabel.text = "금요일"
+        //        cell.dateLabel.text = "8월31일"
+        //        cell.titleLabel.text = "title"
+        //        cell.weekLabel.text = "금요일"
         return cell
     }
-
+    
 }
 // MARK: - DiaryWriteDelegate
 extension ListViewController: DiaryWriteDelegate {
