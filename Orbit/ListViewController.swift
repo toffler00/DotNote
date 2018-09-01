@@ -59,7 +59,10 @@ extension ListViewController {
         self.listTableView = UITableView()
         self.listTableView.translatesAutoresizingMaskIntoConstraints = false
         
-        let listTableViewConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: self.listTableView, attribute: .top, relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),NSLayoutConstraint(item: self.listTableView, attribute: .leading, relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),NSLayoutConstraint(item: self.listTableView, attribute: .trailing, relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),NSLayoutConstraint(item: self.listTableView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0)]
+        let listTableViewConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: listTableView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),
+                                                              NSLayoutConstraint(item: listTableView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
+                                                              NSLayoutConstraint(item: listTableView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
+                                                              NSLayoutConstraint(item: listTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)]
         self.view.addSubview(listTableView)
         self.view.addConstraints(listTableViewConstraints)
         
@@ -72,11 +75,9 @@ extension ListViewController {
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let diaryViewController = DiaryViewController()
-        self.navigationController?.pushViewController(diaryViewController, animated: true)
-//        let writeViewcontroller = WriteViewController(delegate: self)
-//        self.navigationController?.pushViewController(writeViewcontroller, animated: false)
-//        tableView.deselectRow(at: indexPath, animated: false)
+        let writeViewcontroller = WriteViewController(delegate: self)
+        self.navigationController?.pushViewController(writeViewcontroller, animated: true)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 // MARK: - UITableViewDataSource
@@ -98,9 +99,6 @@ extension ListViewController: UITableViewDataSource{
 // MARK: - DiaryWriteDelegate
 extension ListViewController: DiaryWriteDelegate {
     func writeDone() {
-        // ToDo
-    }
-    
+        // MARK: - ToDo
+    }   
 }
-
-

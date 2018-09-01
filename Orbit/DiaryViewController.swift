@@ -7,8 +7,7 @@
 //
 
 import UIKit
-
-
+import RealmSwift
 
 class DiaryViewController: UIViewController {
     
@@ -132,8 +131,7 @@ extension DiaryViewController {
     
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        
+
         let consTitleLabel : [NSLayoutConstraint] = [NSLayoutConstraint(item: titleLabel, attribute: .top,
                                                                         relatedBy: .equal, toItem: contentImgView, attribute: .bottom, multiplier: 1, constant: 8),
                                                      NSLayoutConstraint(item: titleLabel, attribute: .leading,
