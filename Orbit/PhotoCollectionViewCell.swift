@@ -12,14 +12,14 @@ import Photos
 class PhotoCollectionViewCell: UICollectionViewCell {
     
     fileprivate var imageView: UIImageView!
-    var imageManager: PHCachingImageManager = PHCachingImageManager()
+    var imageManager: PHCachingImageManager!
     var phAsset: PHAsset! {
         didSet {
             let synchronous = PHImageRequestOptions()
             synchronous.isSynchronous = false
             synchronous.isNetworkAccessAllowed = true
             
-            imageManager.requestImage(for: phAsset, targetSize: frame.size, contentMode: .aspectFill, options: synchronous, resultHandler: {[weak self] image, info in
+            imageManager.requestImage(for: phAsset, targetSize: frame.size, contentMode: .aspectFill, options: synchronous, resultHandler: {[weak self] image, _ in
                 self?.imageView.image = image
             })
         }
@@ -38,6 +38,10 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         
         addSubview(imageView)
         addConstraints(imageViewConsts)
+    }
+    
+    override func prepareForReuse() {
+        imageView.image = nil
     }
     
     required init?(coder aDecoder: NSCoder) {

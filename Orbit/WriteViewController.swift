@@ -10,6 +10,8 @@ import UIKit
 
 class WriteViewController: UIViewController {
     
+    var isImageLoadingFromiCloud: Bool = false
+    
     fileprivate weak var diaryWriteDelegate: DiaryWriteDelegate!
     fileprivate var contentTitle: UITextField!
     fileprivate var dayOfWeek: UILabel!
@@ -18,8 +20,10 @@ class WriteViewController: UIViewController {
     fileprivate var containerV : UIView!
     fileprivate var contStackV : UIStackView!
     fileprivate var stackBox : UIStackView!
-    fileprivate var contentImgV : UIImageView!
+    var contentImgV : UIImageView!
     fileprivate var contents : UITextView!
+    
+    var selectedImageData: Data?
     
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: DiaryWriteDelegate) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -51,7 +55,9 @@ extension WriteViewController : DiaryWriteDelegate {
 extension WriteViewController {
     fileprivate func setupLayout() {
         // MARK: containerV UIView
+        
         log.debug("setup Layout")
+        
         containerV = UIView()
         containerV.translatesAutoresizingMaskIntoConstraints = false
         
@@ -192,10 +198,12 @@ extension WriteViewController {
         stackBox.addSubview(contentImgV)
         stackBox.addConstraints(constImgV)
         contentImgV.contentMode = .scaleAspectFill
+        contentImgV.clipsToBounds = true
         contentImgV.backgroundColor = .clear
         contentImgV.image = UIImage(named: "photo")
         
         contentImgV.isUserInteractionEnabled = true
+
         let addImageGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addImageGesture))
         contentImgV.addGestureRecognizer(addImageGestureRecognizer)
         
@@ -220,8 +228,7 @@ extension WriteViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameDidChange), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
-        
-        
+    
     }
 }
 
@@ -244,7 +251,9 @@ extension WriteViewController {
 
 extension WriteViewController {
     @objc fileprivate func addImageGesture() {
-        let photoViewController = PhotosViewController(nibName: nil, bundle: nil)
-        navigationController?.pushViewController(photoViewController, animated: true)
+        if !isImageLoadingFromiCloud {
+            let photoViewController = PhotosViewController(nibName: nil, bundle: nil, photosViewControllerDelegate: self)
+            navigationController?.pushViewController(photoViewController, animated: true)
+        }
     }
 }

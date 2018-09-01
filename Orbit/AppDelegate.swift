@@ -19,13 +19,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        let console = ConsoleDestination()
-        
-        console.format = "$DHH:mm:ss.SSS$d $C$L$c $N.$F:$l - $M"
-//        console.minLevel = .debug
-        console.asynchronously = false
-        
-        log.addDestination(console)
+        switch AppTarget.config {
+        case .dev:
+            let console = ConsoleDestination()
+            
+            console.format = "$DHH:mm:ss.SSS$d $C$L$c $N.$F:$l - $M"
+            //        console.minLevel = .debug
+            console.asynchronously = false
+            
+            log.addDestination(console)
+            
+        case .prod:
+            break
+        }
         
         return true
     }

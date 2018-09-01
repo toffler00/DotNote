@@ -9,6 +9,13 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
+    
+    var model: Model.contentsModel! {
+        didSet {
+            
+        }
+    }
+    
     internal var dateLabel: UILabel = UILabel()
     internal var titleLabel: UILabel = UILabel()
     internal var weekLabel: UILabel = UILabel()
@@ -27,6 +34,10 @@ class ListTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
+    }
+    
+    override func prepareForReuse() {
+        
     }
     
 }

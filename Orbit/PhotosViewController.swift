@@ -9,7 +9,13 @@
 import UIKit
 import Photos
 
+protocol PhotosViewControllerDelegate: class {
+    func imageSelected(phAsset: PHAsset)
+}
+
 class PhotosViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+    
+    var photosViewControllerDelegate: PhotosViewControllerDelegate!
     
     fileprivate let photoCollectionViewCellIdentifier: String = "PhotoCollectionViewCell"
     
@@ -18,14 +24,22 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     var photoCollectionView: UICollectionView!
     
-    override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
+    init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, photosViewControllerDelegate: PhotosViewControllerDelegate) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
+        self.photosViewControllerDelegate = photosViewControllerDelegate
+//        switch PHPhotoLibrary.authorizationStatus() {
+//        case .notDetermined:
+//        case .denied:
+//        case .authorized:
+//        case .restricted:
+//        }
         
         view.backgroundColor = .white
         
         let options = PHFetchOptions()
         options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
-        options.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: true) ]
+        options.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: false) ]
         options.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
         
         fetchResult = PHAsset.fetchAssets(with: options)
@@ -54,7 +68,7 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
             photoCollectionView.dataSource = self
             photoCollectionView.delegate = self
             
-//            PHPhotoLibrary.shared().register(self)
+            PHPhotoLibrary.shared().register(self)
         }
     }
     
