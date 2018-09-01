@@ -9,6 +9,9 @@
 import UIKit
 
 class ListViewController: UIViewController {
+    
+    var models = [Model.contentsModel]()
+    
     // MARK: Properties
     private var listTableView: UITableView!
     
@@ -50,8 +53,8 @@ class ListViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    
 }
+
 // MARK: - extension ListViewController
 extension ListViewController {
     // MARK: setUpLayout
@@ -88,10 +91,12 @@ extension ListViewController: UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
+        
+//        cell.model = models[indexPath.row]
         // Test
-        cell.dateLabel.text = "8월31일"
-        cell.titleLabel.text = "title"
-        cell.weekLabel.text = "금요일"
+//        cell.dateLabel.text = "8월31일"
+//        cell.titleLabel.text = "title"
+//        cell.weekLabel.text = "금요일"
         return cell
     }
 

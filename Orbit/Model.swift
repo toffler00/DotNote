@@ -11,9 +11,9 @@ import UIKit
 struct Model {}
 
 extension Model {
-    struct userInfo {
-        var userid : String
-        var createDate : String
+    struct User {
+        var id : String
+        var createdAt : String
         var dayOfWeek : String
         var contentTitle : String
         var weather : String
@@ -33,4 +33,3 @@ extension Model {
 extension Model.contentsModel {
     
 }
-
