@@ -144,10 +144,14 @@ extension WriteViewController {
         stackBox.translatesAutoresizingMaskIntoConstraints = false
         
         let constStackBox : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: stackBox, attribute: .top, relatedBy: .equal, toItem: contStackV, attribute: .top, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: stackBox, attribute: .leading, relatedBy: .equal, toItem: contStackV, attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: stackBox, attribute: .trailing, relatedBy: .equal, toItem: contStackV, attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: stackBox, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 72)]
+            NSLayoutConstraint(item: stackBox, attribute: .top, relatedBy: .equal, toItem: contStackV, attribute: .top,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: stackBox, attribute: .leading, relatedBy: .equal, toItem: contStackV, attribute: .leading,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: stackBox, attribute: .trailing, relatedBy: .equal, toItem: contStackV, attribute: .trailing,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: stackBox, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+                               multiplier: 1, constant: 72)]
         
         contStackV.addSubview(stackBox)
         contStackV.addConstraints(constStackBox)
@@ -159,10 +163,13 @@ extension WriteViewController {
         contentTitle.translatesAutoresizingMaskIntoConstraints = false
         
         let constTitle : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: contentTitle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 30),
+            NSLayoutConstraint(item: contentTitle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+                               multiplier: 1, constant: 30),
             NSLayoutConstraint(item: contentTitle, attribute: .centerY, relatedBy: .equal, toItem: stackBox, attribute: .centerY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contentTitle, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contentTitle, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing, multiplier: 1, constant: -72)]
+            NSLayoutConstraint(item: contentTitle, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contentTitle, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing,
+                               multiplier: 1, constant: -72)]
         
         stackBox.addSubview(contentTitle)
         stackBox.addConstraints(constTitle)
@@ -175,9 +182,12 @@ extension WriteViewController {
         contentImgV.translatesAutoresizingMaskIntoConstraints = false
         
         let constImgV : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: contentImgV, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant:72),
-            NSLayoutConstraint(item: contentImgV, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 72),
-            NSLayoutConstraint(item: contentImgV, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing, multiplier: 1, constant: 0)]
+            NSLayoutConstraint(item: contentImgV, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
+                               multiplier: 1, constant:72),
+            NSLayoutConstraint(item: contentImgV, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+                               multiplier: 1, constant: 72),
+            NSLayoutConstraint(item: contentImgV, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing,
+                               multiplier: 1, constant: 0)]
         
         stackBox.addSubview(contentImgV)
         stackBox.addConstraints(constImgV)
@@ -191,10 +201,14 @@ extension WriteViewController {
         contents.translatesAutoresizingMaskIntoConstraints = false
         
         let constContens : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: contents, attribute: .top, relatedBy: .equal, toItem: stackBox, attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contents, attribute: .leading, relatedBy: .equal, toItem: contStackV, attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contents, attribute: .trailing, relatedBy: .equal, toItem: contStackV, attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contents, attribute: .bottom, relatedBy: .equal, toItem: contStackV, attribute: .bottom, multiplier: 1, constant: 0)]
+            NSLayoutConstraint(item: contents, attribute: .top, relatedBy: .equal, toItem: stackBox, attribute: .bottom,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contents, attribute: .leading, relatedBy: .equal, toItem: contStackV, attribute: .leading,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contents, attribute: .trailing, relatedBy: .equal, toItem: contStackV, attribute: .trailing,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contents, attribute: .bottom, relatedBy: .equal, toItem: contStackV, attribute: .bottom,
+                               multiplier: 1, constant: 0)]
         
         contStackV.addSubview(contents)
         contStackV.addConstraints(constContens)

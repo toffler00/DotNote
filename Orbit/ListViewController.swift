@@ -72,9 +72,11 @@ extension ListViewController {
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let writeViewcontroller = WriteViewController(delegate: self)
-        self.navigationController?.pushViewController(writeViewcontroller, animated: false)
-        tableView.deselectRow(at: indexPath, animated: false)
+        let diaryViewController = DiaryViewController()
+        self.navigationController?.pushViewController(diaryViewController, animated: true)
+//        let writeViewcontroller = WriteViewController(delegate: self)
+//        self.navigationController?.pushViewController(writeViewcontroller, animated: false)
+//        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 // MARK: - UITableViewDataSource
