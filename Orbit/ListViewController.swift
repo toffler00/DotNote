@@ -20,6 +20,7 @@ class ListViewController: UIViewController {
     //
     //        return button
     //    }()
+
     // MARK: Method
     @objc fileprivate func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
@@ -67,7 +68,6 @@ extension ListViewController {
         let listTableViewConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: listTableView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),NSLayoutConstraint(item: listTableView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),NSLayoutConstraint(item: listTableView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),NSLayoutConstraint(item: listTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)]
         self.view.addSubview(listTableView)
         self.view.addConstraints(listTableViewConstraints)
-        
         // button
         self.writeButton = UIButton()
         self.writeButton.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
@@ -82,10 +82,9 @@ extension ListViewController {
         self.view.addSubview(writeButton)
         self.view.addConstraints(writeButtonConstraints)
         
-        
         // ??
         self.writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
-        
+
         // MARK: ToRegister CustomCell
         self.listTableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
         self.listTableView.delegate = self
@@ -95,9 +94,9 @@ extension ListViewController {
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        let writeViewcontroller = WriteViewController(delegate: self)
-        //        self.navigationController?.pushViewController(writeViewcontroller, animated: true)
-        //        tableView.deselectRow(at: indexPath, animated: false)
+//        let writeViewcontroller = WriteViewController(delegate: self)
+//        self.navigationController?.pushViewController(writeViewcontroller, animated: true)
+//        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 // MARK: - UITableViewDataSource
