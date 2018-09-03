@@ -151,7 +151,7 @@
 				620F53B1211EF16900A94A01 /* DiaryViewController.swift */,
 				6A331FFF2131541100FFE74F /* DiaryTableViewCell.swift */,
 				6A331FFB2131485600FFE74F /* WriteViewController.swift */,
-				6A331FFD21314B9100FFE74F /* WriteDoneDelegate.swift */,
+				6296D190213D030500B610C8 /* Delegate */,
 				CE84E7482137D3350097357F /* ListViewController.swift */,
 				CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */,
 				6AFAA89A213A716100D241E2 /* PhotosViewController.swift */,
@@ -191,6 +191,14 @@
 				6296D18B21394CD400B610C8 /* Model.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		6296D190213D030500B610C8 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				6A331FFD21314B9100FFE74F /* WriteDoneDelegate.swift */,
+			);
+			path = Delegate;
 			sourceTree = "<group>";
 		};
 		6A332001213159DE00FFE74F /* Util */ = {
@@ -566,7 +574,7 @@
 				APP_ICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = X46PH8MSE8;
 				Deployment = dev;
 				INFOPLIST_FILE = Orbit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -685,7 +693,7 @@
 				APP_ICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = X46PH8MSE8;
 				Deployment = prod;
 				INFOPLIST_FILE = Orbit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

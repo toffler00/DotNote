@@ -24,7 +24,7 @@ class ListViewController: UIViewController {
     // MARK: Method
     @objc fileprivate func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
-        self.navigationController?.pushViewController(writeViewController, animated: false)
+        self.navigationController?.pushViewController(writeViewController, animated: true)
     }
     
     // MARK: Life Cycle
@@ -70,17 +70,26 @@ extension ListViewController {
         self.view.addConstraints(listTableViewConstraints)
         // button
         self.writeButton = UIButton()
-        self.writeButton.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
         self.writeButton.clipsToBounds = true
+        self.writeButton.backgroundColor = .clear
+        self.writeButton.setImage(UIImage(named: "pluswrite"), for: .normal)
         //        self.writeButton.layer.cornerRadius = 0.5 * self.writeButton.bounds.size.height
         self.writeButton.layer.cornerRadius = 30
         self.writeButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let writeButtonConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: self.writeButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 60),NSLayoutConstraint(item: self.writeButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 60),NSLayoutConstraint(item: self.writeButton, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.9, constant: 0),NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.7, constant: 0)]
+        let writeButtonConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: self.writeButton, attribute: .height,
+                                                                               relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 60),
+                                                            NSLayoutConstraint(item: self.writeButton, attribute: .width,
+                                                                               relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 60),
+                                                            NSLayoutConstraint(item: self.writeButton, attribute: .trailing,
+                                                                               relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.9, constant: 0),
+                                                            NSLayoutConstraint(item: self.writeButton, attribute: .top,
+                                                                               relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.7, constant: 0)]
         
         // To add writebutton in listTableview
         self.view.addSubview(writeButton)
         self.view.addConstraints(writeButtonConstraints)
+        
         
         // ??
         self.writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
@@ -94,6 +103,8 @@ extension ListViewController {
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let diaryViewController = DiaryViewController()
+        self.navigationController?.pushViewController(diaryViewController, animated: true)
 //        let writeViewcontroller = WriteViewController(delegate: self)
 //        self.navigationController?.pushViewController(writeViewcontroller, animated: true)
 //        tableView.deselectRow(at: indexPath, animated: false)
