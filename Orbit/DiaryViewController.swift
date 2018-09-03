@@ -21,8 +21,6 @@ class DiaryViewController: UIViewController {
     fileprivate var containerView : UIView!
     fileprivate var dateCollectionView : UICollectionView!
     
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

@@ -11,25 +11,15 @@ import UIKit
 struct Model {}
 
 extension Model {
+    struct Contents {
+        var createdAt : Date?
+        var title : String?
+        var weather : String?
+        var content : String?
+        var image : Data?
+    }
     struct User {
-        var id : String
-        var createdAt : String
-        var dayOfWeek : String
-        var contentTitle : String
-        var weather : String
+        var id : UUID?
+        var contents : Model.Contents?
     }
-    
-    struct contentsModel {
-        var id : String
-        var createAt : Date
-        var contentTielt : String
-        var weather : String
-        var contents : String
-        var contentImg : UIImage
-        var dayOfWeek : String
-    }
-}
-
-extension Model.contentsModel {
-    
 }
