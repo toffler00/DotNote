@@ -61,15 +61,14 @@ extension WriteViewController {
         containerV = UIView()
         containerV.translatesAutoresizingMaskIntoConstraints = false
         
-        let const : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: containerV, attribute: .top, relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide,
-                               attribute: .top, multiplier: 1, constant: 8),
-            NSLayoutConstraint(item: containerV, attribute: .bottom, relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide,
-                               attribute: .bottom, multiplier: 1, constant: -8),
-            NSLayoutConstraint(item: containerV, attribute: .leading, relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide,
-                               attribute: .leading, multiplier: 1, constant: 8),
-            NSLayoutConstraint(item: containerV, attribute: .trailing, relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide,
-                                attribute: .trailing, multiplier: 1, constant: -8)]
+        let const : [NSLayoutConstraint] = [NSLayoutConstraint(item: containerV, attribute: .top, relatedBy: .equal,
+                                                               toItem:self.view.safeAreaLayoutGuide,attribute: .top, multiplier: 1, constant: 8),
+                                            NSLayoutConstraint(item: containerV, attribute: .bottom, relatedBy: .equal,
+                                                               toItem: self.view.safeAreaLayoutGuide,attribute: .bottom, multiplier: 1, constant: -8),
+                                            NSLayoutConstraint(item: containerV, attribute: .leading, relatedBy: .equal,
+                                                               toItem: self.view.safeAreaLayoutGuide,attribute: .leading, multiplier: 1, constant: 8),
+                                            NSLayoutConstraint(item: containerV, attribute: .trailing, relatedBy: .equal,
+                                                               toItem: self.view.safeAreaLayoutGuide,attribute: .trailing, multiplier: 1, constant: -8)]
         self.view.addSubview(containerV)
         self.view.addConstraints(const)
         containerV.backgroundColor = .green
