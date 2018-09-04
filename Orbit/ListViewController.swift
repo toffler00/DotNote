@@ -10,8 +10,6 @@ import UIKit
 
 class ListViewController: UIViewController {
     
-    // test
-    
     // MARK: Properties
     private var listTableView: UITableView!
     private var writeButton: UIButton!
@@ -112,7 +110,6 @@ extension ListViewController: UITableViewDataSource{
         //        cell.model = models[indexPath.row]
         return cell
     }
-    
 }
 // MARK: - DiaryWriteDelegate
 extension ListViewController: DiaryWriteDelegate {
