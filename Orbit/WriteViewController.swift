@@ -97,10 +97,14 @@ extension WriteViewController {
         date = UILabel()
         date.translatesAutoresizingMaskIntoConstraints = false
         let constDate : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: date, attribute: .top, relatedBy: .equal, toItem: containerV, attribute: .top, multiplier: 1, constant: 14),
-            NSLayoutConstraint(item: date, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing, multiplier: 1, constant: -14),
-            NSLayoutConstraint(item: date, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: date, attribute: .width, relatedBy: .equal, toItem: containerV, attribute: .width, multiplier: 0.4, constant: 0)
+            NSLayoutConstraint(item: date, attribute: .top, relatedBy: .equal, toItem: containerV, attribute: .top,
+                               multiplier: 1, constant: 14),
+            NSLayoutConstraint(item: date, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing,
+                               multiplier: 1, constant: -14),
+            NSLayoutConstraint(item: date, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1,
+                               constant: 20),
+            NSLayoutConstraint(item: date, attribute: .width, relatedBy: .equal, toItem: containerV, attribute: .width,
+                               multiplier: 0.4, constant: 0)
         ]
         
         containerV.addSubview(date)
