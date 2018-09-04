@@ -10,11 +10,11 @@ import UIKit
 
 class ListViewController: UIViewController {
     
-    var models = [Model.Contents]()
     
     // MARK: Properties
     private var listTableView: UITableView!
     private var writeButton: UIButton!
+    var models = [Model.Contents]()
     
     // MARK: IBAction
     @IBAction func pushOptionViewController(_ sender: UIBarButtonItem) {
