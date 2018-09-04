@@ -10,18 +10,20 @@ import UIKit
 
 class ListViewController: UIViewController {
     
-    var models = [Model.contentsModel]()
+    var models = [Model.Contents]()
     
     // MARK: Properties
     private var listTableView: UITableView!
     private var writeButton: UIButton!
-    //    private var writeButton: UIButton = {
-    //        let button = UIButton()
-    //
-    //        return button
-    //    }()
-
-    // MARK: Method
+    
+    // MARK: IBAction
+    @IBAction func pushOptionViewController(_ sender: UIBarButtonItem) {
+        let optionsVC = OptionsViewController()
+        self.navigationController?.pushViewController(optionsVC, animated: true)
+    }
+    
+    
+    // MARK: @objc Method
     @objc fileprivate func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
         self.navigationController?.pushViewController(writeViewController, animated: true)
@@ -31,11 +33,7 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
     }
     
     // MARK: viewWillLayoutSubviews:
@@ -68,6 +66,7 @@ extension ListViewController {
         let listTableViewConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: listTableView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),NSLayoutConstraint(item: listTableView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),NSLayoutConstraint(item: listTableView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),NSLayoutConstraint(item: listTableView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)]
         self.view.addSubview(listTableView)
         self.view.addConstraints(listTableViewConstraints)
+        
         // button
         self.writeButton = UIButton()
         self.writeButton.clipsToBounds = true
@@ -77,21 +76,14 @@ extension ListViewController {
         self.writeButton.layer.cornerRadius = 30
         self.writeButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let writeButtonConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: self.writeButton, attribute: .height,
-                                                                               relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 60),
-                                                            NSLayoutConstraint(item: self.writeButton, attribute: .width,
-                                                                               relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 60),
-                                                            NSLayoutConstraint(item: self.writeButton, attribute: .trailing,
-                                                                               relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.9, constant: 0),
-                                                            NSLayoutConstraint(item: self.writeButton, attribute: .top,
-                                                                               relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.7, constant: 0)]
+        let writeButtonConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: self.writeButton, attribute: .height,relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 60),NSLayoutConstraint(item: self.writeButton, attribute: .width,relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 60),NSLayoutConstraint(item: self.writeButton, attribute: .trailing,relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.9, constant: 0),NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.7, constant: 0)]
         
         // To add writebutton in listTableview
         self.view.addSubview(writeButton)
         self.view.addConstraints(writeButtonConstraints)
         
         
-        // ??
+        // writeButton.addTarget
         self.writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
 
         // MARK: ToRegister CustomCell
@@ -105,9 +97,7 @@ extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let diaryViewController = DiaryViewController()
         self.navigationController?.pushViewController(diaryViewController, animated: true)
-//        let writeViewcontroller = WriteViewController(delegate: self)
-//        self.navigationController?.pushViewController(writeViewcontroller, animated: true)
-//        tableView.deselectRow(at: indexPath, animated: false)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 // MARK: - UITableViewDataSource
@@ -118,12 +108,7 @@ extension ListViewController: UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
-        
         //        cell.model = models[indexPath.row]
-        // Test
-        //        cell.dateLabel.text = "8월31일"
-        //        cell.titleLabel.text = "title"
-        //        cell.weekLabel.text = "금요일"
         return cell
     }
     

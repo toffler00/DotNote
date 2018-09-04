@@ -154,7 +154,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ds7-8W-2FD">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ds7-8W-2FD">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -244,6 +244,7 @@
                         <viewLayoutGuide key="safeArea" id="VKP-sY-pX6"/>
                     </view>
                     <navigationItem key="navigationItem" title="Orbit" id="Tg8-rb-emf">
+                        <barButtonItem key="backBarButtonItem" title="List" id="pQE-kP-q2x"/>
                         <barButtonItem key="leftBarButtonItem" style="plain" id="2kw-7g-kg9">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="kGF-RK-2p2">
                                 <rect key="frame" x="16" y="7" width="83" height="30"/>
@@ -251,7 +252,11 @@
                                 <state key="normal" title="Write"/>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Option" id="0pY-QS-cs3"/>
+                        <barButtonItem key="rightBarButtonItem" title="Option" id="0pY-QS-cs3">
+                            <connections>
+                                <action selector="pushOptionViewController:" destination="Hbo-28-oQS" id="Scf-a0-ovF"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecy-gw-z9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -373,10 +378,10 @@
             </objects>
             <point key="canvasLocation" x="332" y="-231.63418290854574"/>
         </scene>
-        <!--View Controller-->
+        <!--Options View Controller-->
         <scene sceneID="aaa-Vp-88F">
             <objects>
-                <viewController id="lEw-au-s0i" sceneMemberID="viewController">
+                <viewController id="lEw-au-s0i" customClass="OptionsViewController" customModule="Orbit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="91k-hh-Fvl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -493,7 +498,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0z3-eR-PlG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3126" y="-106"/>
+            <point key="canvasLocation" x="3215" y="139"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ByY-1O-qJI">
@@ -508,7 +513,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAL-F2-FJZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3046" y="-636"/>
+            <point key="canvasLocation" x="2612" y="-868"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="peg-MZ-cYR">
@@ -523,7 +528,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzP-TV-0jh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2294" y="444"/>
+            <point key="canvasLocation" x="2921" y="887"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aXt-r3-zgw">
