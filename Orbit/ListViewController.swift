@@ -33,9 +33,8 @@ class ListViewController: UIViewController {
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.largeTitleDisplayMode = .automatic
-        self.navigationItem.title = "Orbit"
+        // Do any additional setup after loading the view.
+
     }
     
     // MARK: viewWillLayoutSubviews:
