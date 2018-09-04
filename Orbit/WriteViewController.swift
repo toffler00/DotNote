@@ -139,10 +139,14 @@ extension WriteViewController {
         contStackV.translatesAutoresizingMaskIntoConstraints = false
         
         let constStackV : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: contStackV, attribute: .top, relatedBy: .equal, toItem: weather, attribute: .bottom, multiplier: 1, constant: 8),
-            NSLayoutConstraint(item: contStackV, attribute: .bottom, relatedBy: .equal, toItem: containerV, attribute: .bottom, multiplier: 1, constant: -8),
-            NSLayoutConstraint(item: contStackV, attribute: .leading, relatedBy: .equal, toItem: containerV, attribute: .leading, multiplier: 1, constant: 8),
-            NSLayoutConstraint(item: contStackV, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing, multiplier: 1, constant: -8)]
+            NSLayoutConstraint(item: contStackV, attribute: .top, relatedBy: .equal, toItem: weather, attribute: .bottom,
+                               multiplier: 1, constant: 8),
+            NSLayoutConstraint(item: contStackV, attribute: .bottom, relatedBy: .equal, toItem: containerV, attribute: .bottom,
+                               multiplier: 1, constant: -8),
+            NSLayoutConstraint(item: contStackV, attribute: .leading, relatedBy: .equal, toItem: containerV, attribute: .leading,
+                               multiplier: 1, constant: 8),
+            NSLayoutConstraint(item: contStackV, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing,
+                               multiplier: 1, constant: -8)]
         
         containerV.addSubview(contStackV)
         containerV.addConstraints(constStackV)
