@@ -10,8 +10,6 @@ import UIKit
 
 class ListViewController: UIViewController {
     
-    ////
-    
     // MARK: Properties
     private var listTableView: UITableView!
     private var writeButton: UIButton!
