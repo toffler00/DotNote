@@ -178,7 +178,8 @@ extension WriteViewController {
         let constTitle : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: contentTitle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
                                multiplier: 1, constant: 30),
-            NSLayoutConstraint(item: contentTitle, attribute: .centerY, relatedBy: .equal, toItem: stackBox, attribute: .centerY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contentTitle, attribute: .centerY, relatedBy: .equal, toItem: stackBox, attribute: .centerY,
+                               multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contentTitle, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading,
                                multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contentTitle, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing,
