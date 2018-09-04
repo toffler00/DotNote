@@ -410,9 +410,6 @@
                                 <state key="normal" title="Calendar">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
-                                <connections>
-                                    <segue destination="0gJ-dz-3Ih" kind="show" id="bb0-qq-VNt"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C0u-v0-1ja">
                                 <rect key="frame" x="24" y="165.5" width="187.5" height="14.5"/>
@@ -420,9 +417,6 @@
                                 <state key="normal" title="Location Setting">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
-                                <connections>
-                                    <segue destination="H9e-xU-Ugo" kind="show" id="YmR-3j-hUr"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vKi-Ye-bCt">
                                 <rect key="frame" x="24" y="204" width="187.5" height="14.5"/>
@@ -444,9 +438,6 @@
                                 <state key="normal" title="opensource License">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
-                                <connections>
-                                    <segue destination="78n-qY-VT2" kind="show" id="89d-iV-UnT"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

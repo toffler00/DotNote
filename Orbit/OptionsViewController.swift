@@ -80,5 +80,14 @@ extension OptionsViewController: UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        switch indexPath.row {
+        case 1:
+            break
+        default:
+            break
+        }
+    }
     
 }
