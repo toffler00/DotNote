@@ -83,7 +83,14 @@ extension ListViewController {
         self.writeButton.layer.cornerRadius = 30
         self.writeButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let writeButtonConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: self.writeButton, attribute: .height,relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 60),NSLayoutConstraint(item: self.writeButton, attribute: .width,relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 60),NSLayoutConstraint(item: self.writeButton, attribute: .trailing,relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.9, constant: 0),NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.7, constant: 0)]
+        let writeButtonConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: self.writeButton, attribute: .height,
+                                                                               relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 60),
+                                                            NSLayoutConstraint(item: self.writeButton, attribute: .width,
+                                                                               relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 60),
+                                                            NSLayoutConstraint(item: self.writeButton, attribute: .trailing,
+                                                                               relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.9, constant: 0),
+                                                            NSLayoutConstraint(item: self.writeButton, attribute: .top,
+                                                                               relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.7, constant: 0)]
         
         // To add writebutton in listTableview
         self.view.addSubview(writeButton)
