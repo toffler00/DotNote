@@ -21,6 +21,7 @@ class ListViewController: UIViewController {
         self.navigationController?.pushViewController(optionsVC, animated: true)
     }
     
+    ///////
     
     // MARK: @objc Method
     @objc fileprivate func pushWriteViewController(){
