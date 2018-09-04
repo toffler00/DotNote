@@ -30,7 +30,11 @@ class WriteViewController: UIViewController {
         self.diaryWriteDelegate = delegate
         view.backgroundColor = .white
     }
-    
+    override func viewDidLoad() {
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.largeTitleDisplayMode = .automatic
+        self.navigationItem.title = "Write your Orbit"
+    }
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()
