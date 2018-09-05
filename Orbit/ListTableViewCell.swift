@@ -12,7 +12,7 @@ class ListTableViewCell: UITableViewCell {
     
     var model: Model.Contents! {
         didSet {
-            //ToDo
+            //ToDo //////
             self.titleLabel.text = model.title
         }
     }
