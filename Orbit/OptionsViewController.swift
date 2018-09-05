@@ -51,7 +51,15 @@ extension OptionsViewController {
         optionsTableview.separatorStyle = .none
         optionsTableview.translatesAutoresizingMaskIntoConstraints = false
         
-        let optionsTableviewConstraints:[NSLayoutConstraint] = [NSLayoutConstraint(item: optionsTableview, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),NSLayoutConstraint(item: optionsTableview, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0),NSLayoutConstraint(item: optionsTableview, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),NSLayoutConstraint(item: optionsTableview, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0)]
+        let optionsTableviewConstraints:[NSLayoutConstraint] = [
+            NSLayoutConstraint(item: optionsTableview, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: optionsTableview, attribute: .bottom, relatedBy: .equal, toItem: view,
+                               attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: optionsTableview, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+                               attribute: .leading, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: optionsTableview, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+                               attribute: .trailing, multiplier: 1, constant: 0)]
         
         view.addSubview(optionsTableview)
         view.addConstraints(optionsTableviewConstraints)

@@ -12,6 +12,7 @@ class WriteViewController: UIViewController {
     
     var isImageLoadingFromiCloud: Bool = false
     
+    
     fileprivate weak var diaryWriteDelegate: DiaryWriteDelegate!
     fileprivate var contentTitle: UITextField!
     fileprivate var dayOfWeek: UILabel!
@@ -22,7 +23,7 @@ class WriteViewController: UIViewController {
     fileprivate var stackBox : UIStackView!
     var contentImgV : UIImageView!
     fileprivate var contents : UITextView!
-    
+    fileprivate var models : [Model.Contents] = [Model.Contents]()
     var selectedImageData: Data?
     
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: DiaryWriteDelegate) {
@@ -31,6 +32,12 @@ class WriteViewController: UIViewController {
         view.backgroundColor = .white
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.largeTitleDisplayMode = .automatic
+        self.navigationItem.title = "Write"
+    }
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()

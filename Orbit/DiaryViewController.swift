@@ -89,13 +89,14 @@ extension DiaryViewController {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         let consContainerV : [NSLayoutConstraint] = [NSLayoutConstraint(item: containerView, attribute: .top,
-                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0),
+                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),
+
                                                      NSLayoutConstraint(item: containerView, attribute: .leading,
-                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 8),
+                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
                                                      NSLayoutConstraint(item: containerView, attribute: .trailing,
-                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: -8),
+                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
                                                      NSLayoutConstraint(item: containerView, attribute: .bottom,
-                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: -8)]
+                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)]
         view.addSubview(containerView)
         view.addConstraints(consContainerV)
         containerView.backgroundColor = #colorLiteral(red: 0.5563425422, green: 0.9793455005, blue: 0, alpha: 1)
