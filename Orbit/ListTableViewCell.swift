@@ -13,6 +13,7 @@ class ListTableViewCell: UITableViewCell {
     var model: Model.Contents! {
         didSet {
             //ToDo
+            self.titleLabel.text = model.title
         }
     }
     
@@ -28,12 +29,6 @@ class ListTableViewCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
     }
     
     override func prepareForReuse() {
