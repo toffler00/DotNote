@@ -40,21 +40,36 @@ class DiaryViewController: UIViewController {
     
     }
     
-    //MARK: collectionView datasource
+}
+
+////MARK: collectionView datasource
+//extension DiaryViewController : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
 //    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 1
+//        return 10
 //    }
 //
 //    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = UICollectionViewCell()
+//        let cell =  collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+//        cell.backgroundColor = .yellow
 //        return cell
 //    }
-}
-
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        return 1
+//    }
+//}
 extension DiaryViewController {
     fileprivate func setupLayout() {
         self.view.backgroundColor = .white
-//        dateCollectionView = UICollectionView()
+//        let layout = UICollectionViewFlowLayout()
+//        layout.scrollDirection = .horizontal
+//        layout.itemSize = CGSize(width: (self.view.frame.width / 7) - 1, height: 60)
+//
+//        dateCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+//        dateCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+//        dateCollectionView.dataSource = self
+//        dateCollectionView.delegate = self
+//
 //        dateCollectionView.translatesAutoresizingMaskIntoConstraints = false
 //
 //        let constDateCV : [NSLayoutConstraint] = [NSLayoutConstraint(item: dateCollectionView, attribute: .top,
@@ -68,13 +83,13 @@ extension DiaryViewController {
 //        view.addSubview(dateCollectionView)
 //        view.addConstraints(constDateCV)
 //        dateCollectionView.backgroundColor = .green
-        
+//
         
         containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let consContainerV : [NSLayoutConstraint] = [NSLayoutConstraint(item: containerView, attribute: .top,
-                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 8),
+                                                                        relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0),
                                                      NSLayoutConstraint(item: containerView, attribute: .leading,
                                                                         relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 8),
                                                      NSLayoutConstraint(item: containerView, attribute: .trailing,
@@ -143,10 +158,10 @@ extension DiaryViewController {
         containerView.addSubview(contentImgView)
         containerView.addConstraints(consContentImgV)
         contentImgView.backgroundColor = .white
-    
+        
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let consTitleLabel : [NSLayoutConstraint] = [NSLayoutConstraint(item: titleLabel, attribute: .top,
                                                                         relatedBy: .equal, toItem: contentImgView, attribute: .bottom, multiplier: 1, constant: 8),
                                                      NSLayoutConstraint(item: titleLabel, attribute: .leading,
@@ -173,7 +188,7 @@ extension DiaryViewController {
         containerView.addSubview(contents)
         containerView.addConstraints(consContents)
         contents.backgroundColor = .yellow
-//        diaryTableView.register(DiaryTableViewCell.self, forCellReuseIdentifier: "DiaryTableViewCell")
+        
     }
 }
 
