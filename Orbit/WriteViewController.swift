@@ -11,7 +11,7 @@ import UIKit
 class WriteViewController: UIViewController {
     
     var isImageLoadingFromiCloud: Bool = false
-    
+    var model : Model.Contents!
     fileprivate weak var diaryWriteDelegate: DiaryWriteDelegate!
     fileprivate var contentTitle: UITextField!
     fileprivate var dayOfWeek: UILabel!
@@ -45,7 +45,13 @@ class WriteViewController: UIViewController {
 //MARK: writeDone Post
 extension WriteViewController : DiaryWriteDelegate {
     func writeDone() {
+        guard let title = contentTitle.text else { return }
+        guard let body = contents.text else { return }
+        guard let weath = weather.text, let createAt = date.text else {return}
         
+        guard let img = contentImgV.image else {return}
+        let image = UIImagePNGRepresentation(img)
+        model.saveData(createdAt: createAt, title: title, weather: weath, content: body, image: image)
     }
 }
 
