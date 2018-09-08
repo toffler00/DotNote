@@ -68,6 +68,7 @@ extension WriteViewController : DiaryWriteDelegate {
         let dateFromString = dateFormatter.date(from: date)
         
         return dateFromString!
+        //write
     }
     
     func dateToString(date : Date)  {
