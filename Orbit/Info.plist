@@ -22,6 +22,8 @@
 	<string>$(Deployment)</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Orbit will access to Photos</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Orbit will access to your location when in use</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
