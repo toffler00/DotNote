@@ -55,11 +55,32 @@ extension WriteViewController : DiaryWriteDelegate {
         guard let title = contentTitle.text else { return }
         guard let body = contents.text else { return }
         guard let weath = weather.text, let createAt = date.text else {return}
-        
+        let createdDate = stringToDate(date: createAt)
         guard let img = contentImgV.image else {return}
         let image = UIImagePNGRepresentation(img)
-        model.saveData(createdAt: createAt, title: title, weather: weath, content: body, image: image)
+        model.saveData(createdAt: createdDate, title: title, weather: weath, content: body, image: image!)
     }
+    
+    func stringToDate(date : String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
+
+        let dateFromString = dateFormatter.date(from: date)
+        
+        return dateFromString!
+    }
+    
+    func dateToString(date : Date)  {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd ee hh:mm"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 1972)
+    
+    }
+    
+    func bringDayOfWeekFromDate() {
+        
+    }
+    
 }
 
 
