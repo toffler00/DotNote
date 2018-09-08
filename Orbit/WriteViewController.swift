@@ -79,7 +79,7 @@ extension WriteViewController : DiaryWriteDelegate {
     }
     
     func bringDayOfWeekFromDate() {
-        
+        //write
     }
     
 }
