@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class WriteViewController: UIViewController {
     
@@ -26,10 +27,14 @@ class WriteViewController: UIViewController {
     fileprivate var models : [Model.Contents] = [Model.Contents]()
     var selectedImageData: Data?
     
+    fileprivate var locationManager: CLLocationManager!
+    
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: DiaryWriteDelegate) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.diaryWriteDelegate = delegate
         view.backgroundColor = .white
+        
+        setupLocationManager()
     }
     
     override func viewDidLoad() {
@@ -298,5 +303,34 @@ extension WriteViewController {
             let photoViewController = PhotosViewController(nibName: nil, bundle: nil, photosViewControllerDelegate: self)
             navigationController?.pushViewController(photoViewController, animated: true)
         }
+    }
+}
+
+extension WriteViewController: CLLocationManagerDelegate {
+    fileprivate func setupLocationManager() {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        locationManager.startUpdatingLocation()
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let geoCoder = CLGeocoder()
+        
+        geoCoder.reverseGeocodeLocation(locations.first!) { (placeMark, error) in
+            if let error = error {
+                log.error(error)
+            } else {
+                log.debug(placeMark?.first?.country)
+                log.debug(placeMark?.first?.locality)
+                log.debug(placeMark?.first!.subLocality)
+                
+            }
+        }
+        
+        locationManager.stopUpdatingLocation()
     }
 }
