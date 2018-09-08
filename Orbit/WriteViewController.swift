@@ -45,7 +45,7 @@ class WriteViewController: UIViewController {
 //MARK: writeDone Post
 extension WriteViewController : DiaryWriteDelegate {
     func writeDone() {
-        
+        //write
     }
 }
 
