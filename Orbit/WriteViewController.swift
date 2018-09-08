@@ -58,7 +58,7 @@ extension WriteViewController : DiaryWriteDelegate {
         
         guard let img = contentImgV.image else {return}
         let image = UIImagePNGRepresentation(img)
-        model.saveData(createdAt: createAt, title: title, weather: weath, content: body, image: image)
+//        model.saveData(createdAt: createAt, title: title, weather: weath, content: body, image: image)
     }
 }
 

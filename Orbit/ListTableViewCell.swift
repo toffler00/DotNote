@@ -9,27 +9,21 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
-    // enum
-    //    enum WeekDay: String {
-    //        case 1: return "월요일"
-    //        case 2: return "화요일"
-    //    }
-    
+
     // MARK: propeties
     internal var dateLabel: UILabel = UILabel()
     internal var titleLabel: UILabel = UILabel()
     internal var weekLabel: UILabel = UILabel()
     var model: Model.Contents? {
         didSet {
-            //ToDo
+            // ToDo
             // 아니면 여기서 옵셔널 바인딩 하는 게 나은 걸까?
             self.dateLabel.text = self.didChangeString(forDate: model?.createdAt)
             self.titleLabel.text = model?.title
             self.weekLabel.text = self.getWeekday(of: model?.createdAt)
         }
     }
-    
-    
+    // MARK: - Life Cycle
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         // UI
@@ -48,21 +42,23 @@ class ListTableViewCell: UITableViewCell {
     private func didChangeString(forDate date: Date?) -> String {
         // 여기서 Date?옵셔널로 설정해서 하느게 낫나?
         guard let date = date else { return "바꾸기 실패"}
-        let dateFomatter = DateFormatter()
-        dateFomatter.locale = Locale(identifier: "ko_KR")
-        dateFomatter.dateFormat = "MM월dd일" // "yyyy년MM월dd일EEEE"??
-        return dateFomatter.string(from: date)
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.calendar = Calendar(identifier: .gregorian)
+        let calendarComponent = dateFormatter.calendar.component(.weekday, from: date) - 1
+        dateFormatter.dateFormat = "MM월dd일"
+        dateFormatter.dateFormat = dateFormatter.weekdaySymbols[calendarComponent]
+        return dateFormatter.string(from: date)
     }
     
     private func getWeekday(of date: Date?) -> String {
         guard let date = date else { return "바꾸기 실패"}
-        let dateFomatter = DateFormatter()
-        dateFomatter.locale = Locale(identifier: "ko_KR")
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         let calendar = Calendar(identifier: .gregorian)
         let calendarComponent = calendar.component(.weekday, from: date) - 1
-        // weekcomponent: 1부터 시작하므로
-        dateFomatter.dateFormat = dateFomatter.weekdaySymbols[calendarComponent]
-        return dateFomatter.string(from: date)
+        dateFormatter.dateFormat = dateFormatter.weekdaySymbols[calendarComponent]
+        return dateFormatter.string(from: date)
     }
 }
 // MARK: - extension ListTableViewCell
