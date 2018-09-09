@@ -123,9 +123,6 @@ extension ListViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
         //        cell.model = models[indexPath.row]
-        cell.weekLabel.text = "수요일"
-        cell.dateLabel.text = "09월05일"
-        cell.titleLabel.text = "adddgdageipteriwuyrwer"
         return cell
     }
 }
