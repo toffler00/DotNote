@@ -29,6 +29,40 @@ class WriteViewController: UIViewController {
     
     fileprivate var locationManager: CLLocationManager!
     
+    fileprivate var currentPlace: String? {
+        didSet(oldValue) {
+            if oldValue == nil {
+                
+                DispatchQueue(label: "io.orbit.callWeatherAPI").async {
+                    let regId = KoreaWeatherLocationCode.weatherLocaleCode
+                    
+                    regId.forEach {[weak self] (key, value) in
+                        if let isContained = self?.currentPlace?.contains(key) {
+                            if isContained {
+                                let weatherApi = WeatherAPI()
+                                weatherApi.call(regId: value, complete: { (error, weather) in
+                                    if let error = error {
+                                        log.error(error)
+                                        return
+                                    }
+                                    
+                                    if let weather = weather {
+                                        //up update
+                                        DispatchQueue.main.async {
+                                            log.debug(weather.response.body.items.item)
+                                        }
+                                    }
+                                })
+                            }
+                        } else {
+                            log.error("지역을 찾지 못했습니다.")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: DiaryWriteDelegate) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.diaryWriteDelegate = delegate
@@ -309,30 +343,32 @@ extension WriteViewController {
 }
 
 extension WriteViewController: CLLocationManagerDelegate {
+    
     fileprivate func setupLocationManager() {
+        
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         locationManager.startUpdatingLocation()
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let geoCoder = CLGeocoder()
         
-        geoCoder.reverseGeocodeLocation(locations.first!) { (placeMark, error) in
+        let geoCoder = CLGeocoder()
+
+        geoCoder.reverseGeocodeLocation(locations.first!) {[weak self] (placeMark, error) in
             if let error = error {
                 log.error(error)
             } else {
-                log.debug(placeMark?.first?.country)
-                log.debug(placeMark?.first?.locality)
-                log.debug(placeMark?.first!.subLocality)
+                self?.currentPlace = placeMark?.first?.administrativeArea
+//                log.debug(placeMark?.first?.name)
+//                log.debug(placeMark?.first?.locality)
+//                log.debug(placeMark?.first!.subLocality)
                 
             }
         }
-        
         locationManager.stopUpdatingLocation()
     }
 }
