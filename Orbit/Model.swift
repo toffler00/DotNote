@@ -12,15 +12,15 @@ struct Model {}
 
 extension Model {
     struct Contents {
-        var createdAt : Date?
+        var createdAt : Date
         var title : String?
         var weather : String?
         var content : String?
         var image : Data?
     }
     struct User {
-        var id : UUID?
-        var contents : Model.Contents?
+        var id : UUID
+        var contents : [Model.Contents]
     }
 }
 
@@ -29,5 +29,43 @@ extension Model.Contents {
         
        let data =  Model.Contents(createdAt: createdAt, title: title, weather: weather, content: content, image: image)
         datasource.append(data)
+    }
+}
+
+extension Model {
+    struct Weather: Codable {
+        
+        var response: Response
+        
+        struct Response: Codable {
+            
+            var body: Body
+            
+            struct Body: Codable {
+                
+                var items: Items
+                
+                struct Items: Codable {
+                    
+                    var item: [Item]
+                    
+                    struct Item: Codable {
+                        var announceTime: Int
+                        var announceNum: Int
+                        var temp: Int?
+                        var descript: String
+                        var rain: String?
+                        
+                        enum CodingKeys: String, CodingKey {
+                            case announceTime
+                            case announceNum = "numEf"
+                            case temp = "ta"
+                            case descript = "wfCd"
+                            case rain = "mYn"
+                        }
+                    }
+                }
+            }
+        }
     }
 }
