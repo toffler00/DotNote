@@ -18,6 +18,7 @@ class WriteViewController: UIViewController {
     fileprivate var contentTitle: UITextField!
     fileprivate var dayOfWeek: UILabel!
     fileprivate var weather: UILabel!
+    fileprivate var weatherImg : UIImageView!
     fileprivate var date : UILabel!
     fileprivate var containerV : UIView!
     fileprivate var contStackV : UIStackView!
@@ -133,7 +134,7 @@ extension WriteViewController {
         // MARK: containerV UIView
         
         log.debug("setup Layout")
-        
+        self.view.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
         containerV = UIView()
         containerV.translatesAutoresizingMaskIntoConstraints = false
         
@@ -147,7 +148,7 @@ extension WriteViewController {
                                                                toItem: self.view.safeAreaLayoutGuide,attribute: .trailing, multiplier: 1, constant: -8)]
         self.view.addSubview(containerV)
         self.view.addConstraints(const)
-        containerV.backgroundColor = .green
+        containerV.backgroundColor = .clear
         
         // MARK: dayofWeek Label
         dayOfWeek = UILabel()
@@ -160,8 +161,7 @@ extension WriteViewController {
             NSLayoutConstraint(item: dayOfWeek, attribute: .height, relatedBy: .equal, toItem: nil,
                                attribute: .height, multiplier: 1, constant: 20),
             NSLayoutConstraint(item: dayOfWeek, attribute: .width, relatedBy: .equal, toItem: containerV,
-                               attribute: .width, multiplier: 0.4, constant: 0)
-            ]
+                               attribute: .width, multiplier: 0.4, constant: 0)]
         
         containerV.addSubview(dayOfWeek)
         containerV.addConstraints(constWeek)
@@ -180,8 +180,7 @@ extension WriteViewController {
             NSLayoutConstraint(item: date, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1,
                                constant: 20),
             NSLayoutConstraint(item: date, attribute: .width, relatedBy: .equal, toItem: containerV, attribute: .width,
-                               multiplier: 0.4, constant: 0)
-        ]
+                               multiplier: 0.4, constant: 0)]
         
         containerV.addSubview(date)
         containerV.addConstraints(constDate)
@@ -201,8 +200,7 @@ extension WriteViewController {
             NSLayoutConstraint(item: weather, attribute: .height, relatedBy: .equal, toItem: nil,
                                attribute: .height, multiplier: 1, constant: 20),
             NSLayoutConstraint(item: weather, attribute: .width, relatedBy: .equal, toItem: containerV,
-                               attribute: .width, multiplier: 0.4, constant: 0)
-        ]
+                               attribute: .width, multiplier: 0.4, constant: 0)]
         
         containerV.addSubview(weather)
         containerV.addConstraints(constWeather)
@@ -226,7 +224,7 @@ extension WriteViewController {
         
         containerV.addSubview(contStackV)
         containerV.addConstraints(constStackV)
-        contStackV.backgroundColor = .white
+        contStackV.backgroundColor = .clear
         
         //MARK: stackBox UIStackView
         stackBox = UIStackView()
@@ -285,7 +283,7 @@ extension WriteViewController {
         contentImgV.clipsToBounds = true
         contentImgV.backgroundColor = .clear
         contentImgV.image = UIImage(named: "photo")
-        
+
         contentImgV.isUserInteractionEnabled = true
 
         let addImageGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addImageGesture))
@@ -308,6 +306,7 @@ extension WriteViewController {
         contStackV.addSubview(contents)
         contStackV.addConstraints(constContens)
         contents.font?.withSize(12)
+        contents.backgroundColor = .clear
         contents.isScrollEnabled = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
