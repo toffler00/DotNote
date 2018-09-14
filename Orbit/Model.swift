@@ -28,7 +28,7 @@ extension Model.Contents {
     func saveData(createdAt : Date, title : String, weather : String, content : String, image : Data) {
         
        let data =  Model.Contents(createdAt: createdAt, title: title, weather: weather, content: content, image: image)
-        datasource.append(data)
+      AppDelegate.datasource.append(data)
     }
 }
 
