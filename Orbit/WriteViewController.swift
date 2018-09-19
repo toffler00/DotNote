@@ -68,7 +68,6 @@ class WriteViewController: UIViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.diaryWriteDelegate = delegate
         view.backgroundColor = .white
-        
         setupLocationManager()
     }
     
@@ -77,9 +76,8 @@ class WriteViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Write"
-        
-        
     }
+    
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()
@@ -124,7 +122,8 @@ extension WriteViewController : DiaryWriteDelegate {
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "kr_KR")
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+
         var calendar = Calendar(identifier: .gregorian)
         calendar.locale = Locale(identifier: "kr_KR")
         
