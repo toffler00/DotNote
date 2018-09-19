@@ -77,10 +77,14 @@ class WriteViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Write"
+        
+        
     }
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()
+            getDate(dateFormat: "yyyy년 M월 d일")
+            getWeekDay()
         }
     }
     
@@ -92,14 +96,7 @@ class WriteViewController: UIViewController {
 //MARK: writeDone Post
 extension WriteViewController : DiaryWriteDelegate {
     func writeDone() {
-        guard let title = contentTitle.text else { return }
-        guard let body = contents.text else { return }
-        guard let weath = weather.text, let createAt = date.text else {return}
-        let createdDate = stringToDate(date: createAt)
-        guard let img = contentImgV.image else {return}
-        let image = UIImagePNGRepresentation(img)
         
-//        model.saveData(createdAt: createAt, title: title, weather: weath, content: body, image: image)
 
     }
     
@@ -113,17 +110,29 @@ extension WriteViewController : DiaryWriteDelegate {
         //write
     }
     
-    func dateToString(date : Date)  {
+    func getDate(dateFormat : String)  {
+        let date = Date()
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd ee hh:mm"
+        dateFormatter.dateFormat = dateFormat
+        dateFormatter.locale = Locale(identifier: "kr_KR")
+        let dateToString = dateFormatter.string(from: date)
         
-        
+        self.date.text = dateToString
     }
     
-    func bringDayOfWeekFromDate() {
-        //write
+    func getWeekDay() {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "kr_KR")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = Locale(identifier: "kr_KR")
+        
+        let comp = calendar.component(.weekday, from: date)
+        let week = calendar.weekdaySymbols
+        print(week)
+        print(comp)
     }
-    
 }
 
 
@@ -185,6 +194,9 @@ extension WriteViewController {
         containerV.addSubview(date)
         containerV.addConstraints(constDate)
         date.numberOfLines = 1
+        date.adjustsFontForContentSizeCategory = true
+        date.adjustsFontSizeToFitWidth = true
+        
         date.textAlignment = NSTextAlignment.left
         date.backgroundColor = .yellow
         
@@ -356,7 +368,7 @@ extension WriteViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let geoCoder = CLGeocoder()
-
+        
         geoCoder.reverseGeocodeLocation(locations.first!) {[weak self] (placeMark, error) in
             if let error = error {
                 log.error(error)

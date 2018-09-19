@@ -69,3 +69,15 @@ extension Model {
         }
     }
 }
+
+
+extension Model {
+    struct WeatherModel : Codable {
+        var item : [WeatherLocale]
+        struct WeatherLocale : Codable {
+            let id : Int
+            let main : String
+            let icon : String
+        }
+    }
+}

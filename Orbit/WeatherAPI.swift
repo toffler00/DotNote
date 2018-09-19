@@ -9,12 +9,12 @@
 import Foundation
 
 class WeatherAPI {
-    func call(regId: String, complete: @escaping (Error?, Model.Weather?) -> Void) {
+    func call(lati : Float = 129, longi : Float = 38, complete: @escaping (Error?, Model.Weather?) -> Void) {
+
+        let endPointURL = "https://api.openweathermap.org/data/2.5/weather?lang=\(lati)&lon=\(longi)"
+        let apiKey = "367e5e831ef3e343cb9c0e2547a9df3e"
         
-        let endPointURL = "http://newsky2.kma.go.kr/service/VilageFrcstDspthDocInfoService/WidOverlandForecast?"
-        let serviceKey = "HxyBqycj%2FNHeeszYLHzbmuGnI3bhtYPFZ9NfMET%2BmGoREddJEvzguh74X4ZS6vL%2BnX8kFHrbbQlzQ4BCVMJcCg%3D%3D"
-        
-        let stringURL = "\(endPointURL)ServiceKey=\(serviceKey)&regId=\(regId)&_type=json"
+        let stringURL = "\(endPointURL)&appid=\(apiKey)&_type=json"
         
         let url = URL(string: stringURL)!
         
@@ -37,7 +37,6 @@ class WeatherAPI {
                 log.error(error)
                 complete(error, nil)
             } else {
-        
                 if let httpStatus = res as? HTTPURLResponse, httpStatus.statusCode != 200, httpStatus.statusCode != 201 {
                     complete(error, nil)
                 } else {
