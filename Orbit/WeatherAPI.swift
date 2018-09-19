@@ -9,8 +9,10 @@
 import Foundation
 
 class WeatherAPI {
-    func call(lati : Float = 129, longi : Float = 38, complete: @escaping (Error?, Model.Weather?) -> Void) {
-
+    func call(lati : Double, longi : Double , complete: @escaping (Error?, Model.WeatherModel?) -> Void) {
+        guard let latitude = lati as? Float else {return}
+        guard let longitude = longi as? Float else {return}
+        
         let endPointURL = "https://api.openweathermap.org/data/2.5/weather?lang=\(lati)&lon=\(longi)"
         let apiKey = "367e5e831ef3e343cb9c0e2547a9df3e"
         
@@ -42,7 +44,7 @@ class WeatherAPI {
                 } else {
                     if let data = data {
                         do {
-                            let weather = try JSONDecoder().decode(Model.Weather.self, from: data)
+                            let weather = try JSONDecoder().decode(Model.WeatherModel.self, from: data)
                             
                             complete(nil, weather)
                             

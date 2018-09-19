@@ -29,6 +29,7 @@ class WriteViewController: UIViewController {
     var selectedImageData: Data?
     
     fileprivate var locationManager: CLLocationManager!
+    fileprivate var coordinate : CLLocationCoordinate2D!
     
     fileprivate var currentPlace: String? {
         didSet(oldValue) {
@@ -41,16 +42,15 @@ class WriteViewController: UIViewController {
                         if let isContained = self?.currentPlace?.contains(key) {
                             if isContained {
                                 let weatherApi = WeatherAPI()
-                                weatherApi.call(regId: value, complete: { (error, weather) in
+                                weatherApi.call(lati: self?.coordinate.latitude, longi: 38, complete: { (error, weather) in
                                     if let error = error {
                                         log.error(error)
                                         return
                                     }
-                                    
                                     if let weather = weather {
                                         //up update
                                         DispatchQueue.main.async {
-                                            log.debug(weather.response.body.items.item)
+                                            log.debug(weather.item)
                                         }
                                     }
                                 })
@@ -353,6 +353,7 @@ extension WriteViewController {
     }
 }
 
+// MARK: setupLocationManager
 extension WriteViewController: CLLocationManagerDelegate {
     
     fileprivate func setupLocationManager() {
@@ -374,10 +375,10 @@ extension WriteViewController: CLLocationManagerDelegate {
                 log.error(error)
             } else {
                 self?.currentPlace = placeMark?.first?.administrativeArea
+                self?.coordinate = placeMark?.first?.location?.coordinate
 //                log.debug(placeMark?.first?.name)
 //                log.debug(placeMark?.first?.locality)
 //                log.debug(placeMark?.first!.subLocality)
-                
             }
         }
         locationManager.stopUpdatingLocation()
