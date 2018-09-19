@@ -10,10 +10,10 @@ import Foundation
 
 class WeatherAPI {
     func call(lati : Double, longi : Double , complete: @escaping (Error?, Model.WeatherModel?) -> Void) {
-        guard let latitude = lati as? Float else {return}
-        guard let longitude = longi as? Float else {return}
-        
-        let endPointURL = "https://api.openweathermap.org/data/2.5/weather?lang=\(lati)&lon=\(longi)"
+        guard let latitude = Float(exactly: lati), let longitude = Float(exactly: longi) else {
+            fatalError("coordinate is nil")
+        }
+        let endPointURL = "https://api.openweathermap.org/data/2.5/weather?lang=\(latitude)&lon=\(longitude)"
         let apiKey = "367e5e831ef3e343cb9c0e2547a9df3e"
         
         let stringURL = "\(endPointURL)&appid=\(apiKey)&_type=json"

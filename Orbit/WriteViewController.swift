@@ -42,7 +42,7 @@ class WriteViewController: UIViewController {
                         if let isContained = self?.currentPlace?.contains(key) {
                             if isContained {
                                 let weatherApi = WeatherAPI()
-                                weatherApi.call(lati: self?.coordinate.latitude, longi: 38, complete: { (error, weather) in
+                                weatherApi.call(lati: (self?.coordinate.latitude)!, longi: (self?.coordinate.longitude)!, complete: { (error, weather) in
                                     if let error = error {
                                         log.error(error)
                                         return
