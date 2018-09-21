@@ -158,7 +158,7 @@ extension WriteViewController {
         containerV.addSubview(dayOfWeek)
         containerV.addConstraints(constWeek)
         dayOfWeek.numberOfLines = 1
-        dayOfWeek.textAlignment = NSTextAlignment.right
+        dayOfWeek.textAlignment = NSTextAlignment.left
         dayOfWeek.backgroundColor = .yellow
 
         //MARK: date Label
@@ -301,7 +301,7 @@ extension WriteViewController {
         contStackV.addSubview(contents)
         contStackV.addConstraints(constContens)
         contents.font?.withSize(12)
-        contents.backgroundColor = .clear
+        contents.backgroundColor = .white
         contents.isScrollEnabled = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -312,7 +312,7 @@ extension WriteViewController {
 
 extension WriteViewController {
     @objc fileprivate func keyboardDidShow(notification: NSNotification) {
-        adjustingHeight(notification: notification)
+//        adjustingHeight(notification: notification)
     }
     
     @objc fileprivate func keyboardFrameDidChange(notification: NSNotification) {
@@ -322,8 +322,10 @@ extension WriteViewController {
     fileprivate func adjustingHeight(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         
-//        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        
+        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        print(keyboardFrame.height)
+        let height = self.contents.frame.height
+        self.contents.frame.size.height = (height - keyboardFrame.height)
     }
 }
 
