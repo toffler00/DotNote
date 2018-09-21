@@ -98,40 +98,24 @@ extension WriteViewController : DiaryWriteDelegate {
 
     }
     
-    func stringToDate(date : String) -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
-
-        let dateFromString = dateFormatter.date(from: date)
-        
-        return dateFromString!
-        //write
-    }
-    
     func getDate(dateFormat : String)  {
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
         dateFormatter.locale = Locale(identifier: "kr_KR")
         let dateToString = dateFormatter.string(from: date)
-        
         self.date.text = dateToString
     }
     
     func getWeekDay() {
-        let date = Date()
+        let today = Date()
         let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
         dateFormatter.locale = Locale(identifier: "kr_KR")
-        let dateString = dateFormatter.string(from: date)
-
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = Locale(identifier: "kr_KR")
-        
-        let comp = calendar.component(.weekday, from: date)
-        let week = calendar.weekdaySymbols
-        print(week)
-        print(comp)
+        let weekDay = dateFormatter.string(from: today).capitalized
+        self.dayOfWeek.text = weekDay
     }
+
 }
 
 
