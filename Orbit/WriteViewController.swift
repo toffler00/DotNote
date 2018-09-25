@@ -10,8 +10,9 @@ import UIKit
 import CoreLocation
 
 class WriteViewController: UIViewController {
-    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var isImageLoadingFromiCloud: Bool = false
+    var keyboardShown = false
 
     var model : Model.Contents!
     fileprivate weak var diaryWriteDelegate: DiaryWriteDelegate!
@@ -29,46 +30,68 @@ class WriteViewController: UIViewController {
     var selectedImageData: Data?
     
     fileprivate var locationManager: CLLocationManager!
-    fileprivate var coordinate : CLLocationCoordinate2D!
-    
-    fileprivate var currentPlace: String? {
+    fileprivate var coordinate : CLLocationCoordinate2D? {
         didSet(oldValue) {
             if oldValue == nil {
-                
                 DispatchQueue(label: "io.orbit.callWeatherAPI").async {
-                    let regId = KoreaWeatherLocationCode.weatherLocaleCode
-                    
-                    regId.forEach {[weak self] (key, value) in
-                        if let isContained = self?.currentPlace?.contains(key) {
-                            if isContained {
-                                let weatherApi = WeatherAPI()
-                                weatherApi.call(lati: (self?.coordinate.latitude)!, longi: (self?.coordinate.longitude)!, complete: { (error, weather) in
-                                    if let error = error {
-                                        log.error(error)
-                                        return
-                                    }
-                                    if let weather = weather {
-                                        //up update
-                                        DispatchQueue.main.async {
-                                            log.debug(weather.item)
-                                        }
-                                    }
-                                })
-                            }
-                        } else {
-                            log.error("지역을 찾지 못했습니다.")
+                    let weatherApi = WeatherAPI()
+                    let lati = Float((self.coordinate?.latitude)!)
+                    let longi = Float((self.coordinate?.longitude)!)
+                    weatherApi.call(lati: lati, longi: longi, complete: { (error, weather) in
+                        if let error = error {
+                            log.error(error)
+                            return
                         }
-                    }
+                        if let weather = weather {
+                            //up update
+                            DispatchQueue.main.async {
+                                log.debug(weather.item)
+                            }
+                        }
+                    })
                 }
             }
         }
     }
+    
+    fileprivate var currentPlace: String?
+//    {
+//        didSet(oldValue) {
+//            if oldValue == nil {
+//
+//                DispatchQueue(label: "io.orbit.callWeatherAPI").async {
+//                    let weatherApi = WeatherAPI()
+//                    weatherApi.call(lati: (self.coordinate!.latitude), longi: (self.coordinate!.longitude), complete: { (error, weather) in
+//                        if let error = error {
+//                            log.error(error)
+//                            return
+//                        }
+//                        if let weather = weather {
+//                            //up update
+//                            DispatchQueue.main.async {
+//                                log.debug(weather.item)
+//                            }
+//                        }
+//                    })
+//                }
+//            }
+//        }
+//    }
     
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: DiaryWriteDelegate) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.diaryWriteDelegate = delegate
         view.backgroundColor = .white
         setupLocationManager()
+    }
+    
+    //MARK: LifeCycle
+    override func viewWillAppear(_ animated: Bool) {
+        registerForKeyboardNotification()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        unregisterForKeyboardNotification()
     }
     
     override func viewDidLoad() {
@@ -85,7 +108,6 @@ class WriteViewController: UIViewController {
             getWeekDay()
         }
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -304,13 +326,28 @@ extension WriteViewController {
         contents.backgroundColor = .white
         contents.isScrollEnabled = true
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameDidChange), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
+        
     
     }
 }
 
 extension WriteViewController {
+    fileprivate func registerForKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keboardFrameWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameDidChange), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    }
+    
+    fileprivate func unregisterForKeyboardNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if keyboardShown == true {
+            view.endEditing(true)
+        }
+    }
+    
     @objc fileprivate func keyboardDidShow(notification: NSNotification) {
 //        adjustingHeight(notification: notification)
     }
@@ -319,13 +356,29 @@ extension WriteViewController {
         adjustingHeight(notification: notification)
     }
     
+    @objc fileprivate func keboardFrameWillHide(notification : NSNotification) {
+        adjustingHide(notification: notification)
+    }
+    
     fileprivate func adjustingHeight(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
-        
         let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         print(keyboardFrame.height)
+        if keyboardFrame.height == 0 || keyboardShown == true {
+            return
+        } else {
+            contents.frame.size.height = contents.frame.size.height - keyboardFrame.height
+            keyboardShown = true
+        }
+    }
+    
+    fileprivate func adjustingHide(notification : NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        print(keyboardFrame.height)
         let height = self.contents.frame.height
-        self.contents.frame.size.height = (height - keyboardFrame.height)
+        self.contents.frame.size.height = height + keyboardFrame.height
+        keyboardShown = false
     }
 }
 

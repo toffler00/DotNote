@@ -9,15 +9,13 @@
 import Foundation
 
 class WeatherAPI {
-    func call(lati : Double, longi : Double , complete: @escaping (Error?, Model.WeatherModel?) -> Void) {
-        guard let latitude = Float(exactly: lati), let longitude = Float(exactly: longi) else {
-            fatalError("coordinate is nil")
-        }
-        let endPointURL = "https://api.openweathermap.org/data/2.5/weather?lang=\(latitude)&lon=\(longitude)"
+    func call(lati : Float, longi : Float , complete: @escaping (Error?, Model.WeatherModel?) -> Void) {
+        
+        let endPointURL = "https://api.openweathermap.org/data/2.5/weather?lang=\(lati)&lon=\(longi)"
         let apiKey = "367e5e831ef3e343cb9c0e2547a9df3e"
         
         let stringURL = "\(endPointURL)&appid=\(apiKey)&_type=json"
-        
+        print(stringURL)
         let url = URL(string: stringURL)!
         
         var request = URLRequest(url: url)
@@ -33,7 +31,6 @@ class WeatherAPI {
 //        let params = try! JSONSerialization.data(withJSONObject: param, options: JSONSerialization.WritingOptions.prettyPrinted)
 //
 //        request.httpBody = params
-        
         URLSession.shared.dataTask(with: request) { (data, res, error) in
             if let error = error {
                 log.error(error)
