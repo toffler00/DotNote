@@ -46,6 +46,8 @@ class WriteViewController: UIViewController {
                             //up update
                             DispatchQueue.main.async {
                                 log.debug(weather.weather)
+                                let items = weather.weather[0]
+                                
                             }
                         }
                     })
