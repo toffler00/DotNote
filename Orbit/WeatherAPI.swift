@@ -11,7 +11,7 @@ import Foundation
 class WeatherAPI {
     func call(lati : Float, longi : Float , complete: @escaping (Error?, Model.WeatherModel?) -> Void) {
         
-        let endPointURL = "https://api.openweathermap.org/data/2.5/weather?lang=\(lati)&lon=\(longi)"
+        let endPointURL = "https://api.openweathermap.org/data/2.5/weather?lat=\(lati)&lon=\(longi)"
         let apiKey = "367e5e831ef3e343cb9c0e2547a9df3e"
         
         let stringURL = "\(endPointURL)&appid=\(apiKey)&_type=json"

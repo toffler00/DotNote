@@ -30,13 +30,13 @@ class WriteViewController: UIViewController {
     var selectedImageData: Data?
     
     fileprivate var locationManager: CLLocationManager!
-    fileprivate var coordinate : CLLocationCoordinate2D? {
+    fileprivate var coordinate : CLLocationCoordinate2D?  {
         didSet(oldValue) {
             if oldValue == nil {
                 DispatchQueue(label: "io.orbit.callWeatherAPI").async {
                     let weatherApi = WeatherAPI()
-                    let lati = Float((self.coordinate?.latitude)!)
-                    let longi = Float((self.coordinate?.longitude)!)
+                    let lati = Float(CGFloat((self.coordinate?.latitude)!))
+                    let longi = Float(CGFloat((self.coordinate?.longitude)!))
                     weatherApi.call(lati: lati, longi: longi, complete: { (error, weather) in
                         if let error = error {
                             log.error(error)
@@ -45,7 +45,7 @@ class WriteViewController: UIViewController {
                         if let weather = weather {
                             //up update
                             DispatchQueue.main.async {
-                                log.debug(weather.item)
+                                log.debug(weather.weather)
                             }
                         }
                     })
@@ -414,7 +414,7 @@ extension WriteViewController: CLLocationManagerDelegate {
             } else {
                 self?.currentPlace = placeMark?.first?.administrativeArea
                 self?.coordinate = placeMark?.first?.location?.coordinate
-//                log.debug(placeMark?.first?.name)
+                log.debug(placeMark?.first?.name)
 //                log.debug(placeMark?.first?.locality)
 //                log.debug(placeMark?.first!.subLocality)
             }
