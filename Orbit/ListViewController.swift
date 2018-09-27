@@ -12,6 +12,7 @@ import RealmSwift
 class ListViewController: UIViewController {
     
     // MARK: Properties
+    let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private var listTableView: UITableView!
     private var writeButton: UIButton!
     var models = [Model.Contents]()
@@ -29,6 +30,13 @@ class ListViewController: UIViewController {
     }
     
     // MARK: Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        if appdelegate.datasource.count == 0 {
+           return
+        }else {
+            self.listTableView.reloadData()
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -119,12 +127,21 @@ extension ListViewController: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 15
+        if appdelegate.datasource.count == 0 {
+            return 15
+        }
+        return appdelegate.datasource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
         //        cell.model = models[indexPath.row]
+        if appdelegate.datasource.count == 0 {
+            return cell
+        }
+        print(indexPath.row)
+        let datasource = appdelegate.datasource[indexPath.row]
+        cell.titleLabel.text = datasource.title
         return cell
     }
 }

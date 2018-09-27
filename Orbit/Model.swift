@@ -7,9 +7,9 @@
 //
 
 import UIKit
-let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
 struct Model {
-    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
 }
 
 extension Model {
