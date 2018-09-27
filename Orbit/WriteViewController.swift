@@ -14,20 +14,25 @@ class WriteViewController: UIViewController {
     var isImageLoadingFromiCloud: Bool = false
     var keyboardShown = false
 
-    var model : Model.Contents!
+//    var model : Model.Contents?
     fileprivate weak var diaryWriteDelegate: DiaryWriteDelegate!
+    fileprivate var titleLabel : UILabel!
     fileprivate var contentTitle: UITextField!
     fileprivate var dayOfWeek: UILabel!
     fileprivate var weather: UILabel!
-    fileprivate var weatherImg : UIImageView!
+//    fileprivate var weatherImg : UIImageView!
     fileprivate var date : UILabel!
+    fileprivate var today : Date!
     fileprivate var containerV : UIView!
     fileprivate var contStackV : UIStackView!
     fileprivate var stackBox : UIStackView!
+    fileprivate var writeDoneBtn : UIButton!
     var contentImgV : UIImageView!
     fileprivate var contents : UITextView!
     fileprivate var models : [Model.Contents] = [Model.Contents]()
     var selectedImageData: Data?
+    var weatherItems : Model.WeatherModel.Weather?
+    
     
     fileprivate var locationManager: CLLocationManager!
     fileprivate var coordinate : CLLocationCoordinate2D?  {
@@ -47,7 +52,8 @@ class WriteViewController: UIViewController {
                             DispatchQueue.main.async {
                                 log.debug(weather.weather)
                                 let items = weather.weather[0]
-                                
+                                self.weatherItems = items
+                                self.weather.text = items.main
                             }
                         }
                     })
@@ -56,29 +62,6 @@ class WriteViewController: UIViewController {
         }
     }
     
-    fileprivate var currentPlace: String?
-//    {
-//        didSet(oldValue) {
-//            if oldValue == nil {
-//
-//                DispatchQueue(label: "io.orbit.callWeatherAPI").async {
-//                    let weatherApi = WeatherAPI()
-//                    weatherApi.call(lati: (self.coordinate!.latitude), longi: (self.coordinate!.longitude), complete: { (error, weather) in
-//                        if let error = error {
-//                            log.error(error)
-//                            return
-//                        }
-//                        if let weather = weather {
-//                            //up update
-//                            DispatchQueue.main.async {
-//                                log.debug(weather.item)
-//                            }
-//                        }
-//                    })
-//                }
-//            }
-//        }
-//    }
     
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: DiaryWriteDelegate) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -106,7 +89,7 @@ class WriteViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()
-            getDate(dateFormat: "yyyy년 M월 d일")
+            stringToDate(date: getDate(dateFormat: "yyyy년 M월 d일") , dateFormat: "yyyy년 M월 d일")
             getWeekDay()
         }
     }
@@ -117,18 +100,31 @@ class WriteViewController: UIViewController {
 
 //MARK: writeDone Post
 extension WriteViewController : DiaryWriteDelegate {
-    func writeDone() {
-        
-
+   @objc func writeDone() {
+    let data = Model.Contents.init(createdAt: today, title: contentTitle.text!, weather: weather.text!, content: contents.text!, image: selectedImageData!)
+    appDelegate.datasource.append(data)
+    print("writeDone")
+    print(appDelegate.datasource)
+    navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    func getDate(dateFormat : String)  {
+    func getDate(dateFormat : String) -> String {
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
         dateFormatter.locale = Locale(identifier: "kr_KR")
         let dateToString = dateFormatter.string(from: date)
         self.date.text = dateToString
+        return dateToString
+    }
+    
+    func stringToDate(date : String, dateFormat : String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        dateFormatter.locale = Locale(identifier: "kr_KR")
+        let stringToDate = dateFormatter.date(from: date)
+        self.today = stringToDate
+        print(today)
     }
     
     func getWeekDay() {
@@ -139,7 +135,6 @@ extension WriteViewController : DiaryWriteDelegate {
         let weekDay = dateFormatter.string(from: today).capitalized
         self.dayOfWeek.text = weekDay
     }
-
 }
 
 
@@ -171,17 +166,19 @@ extension WriteViewController {
         dayOfWeek.translatesAutoresizingMaskIntoConstraints = false
         let constWeek : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: dayOfWeek, attribute: .top, relatedBy: .equal, toItem: containerV,
-                               attribute: .top, multiplier: 1, constant: 14),
+                               attribute: .top, multiplier: 1, constant: 8),
             NSLayoutConstraint(item: dayOfWeek, attribute: .leading, relatedBy: .equal, toItem: containerV,
-                               attribute: .leading, multiplier: 1, constant: 14),
+                               attribute: .leading, multiplier: 1, constant: 8),
             NSLayoutConstraint(item: dayOfWeek, attribute: .height, relatedBy: .equal, toItem: nil,
-                               attribute: .height, multiplier: 1, constant: 20),
+                               attribute: .height, multiplier: 1, constant: 30),
             NSLayoutConstraint(item: dayOfWeek, attribute: .width, relatedBy: .equal, toItem: containerV,
                                attribute: .width, multiplier: 0.4, constant: 0)]
         
         containerV.addSubview(dayOfWeek)
         containerV.addConstraints(constWeek)
         dayOfWeek.numberOfLines = 1
+        dayOfWeek.font.withSize(24)
+        dayOfWeek.font = UIFont.boldSystemFont(ofSize: 24)
         dayOfWeek.textAlignment = NSTextAlignment.left
         dayOfWeek.backgroundColor = .yellow
 
@@ -189,12 +186,14 @@ extension WriteViewController {
         date = UILabel()
         date.translatesAutoresizingMaskIntoConstraints = false
         let constDate : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: date, attribute: .top, relatedBy: .equal, toItem: containerV, attribute: .top,
-                               multiplier: 1, constant: 14),
-            NSLayoutConstraint(item: date, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing,
-                               multiplier: 1, constant: -14),
-            NSLayoutConstraint(item: date, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1,
-                               constant: 20),
+            NSLayoutConstraint(item: date, attribute: .top, relatedBy: .equal, toItem: dayOfWeek, attribute: .bottom,
+                               multiplier: 1, constant: 1),
+            NSLayoutConstraint(item: date, attribute: .leading, relatedBy: .equal, toItem: dayOfWeek, attribute: .leading,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: date, attribute: .trailing, relatedBy: .equal, toItem: dayOfWeek, attribute: .trailing,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: date, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+                               multiplier: 1,constant: 20),
             NSLayoutConstraint(item: date, attribute: .width, relatedBy: .equal, toItem: containerV, attribute: .width,
                                multiplier: 0.4, constant: 0)]
         
@@ -212,20 +211,38 @@ extension WriteViewController {
         weather.translatesAutoresizingMaskIntoConstraints = false
         
         let constWeather : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: weather, attribute: .top, relatedBy: .equal, toItem: containerV,
-                               attribute: .top, multiplier: 1, constant: 43),
-            NSLayoutConstraint(item: weather, attribute: .centerX, relatedBy: .equal, toItem: containerV,
-                               attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: weather, attribute: .top, relatedBy: .equal, toItem: date,
+                               attribute: .bottom, multiplier: 1, constant: 1),
+            NSLayoutConstraint(item: weather, attribute: .leading, relatedBy: .equal, toItem: date,
+                               attribute: .leading, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: weather, attribute: .height, relatedBy: .equal, toItem: nil,
                                attribute: .height, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: weather, attribute: .width, relatedBy: .equal, toItem: containerV,
-                               attribute: .width, multiplier: 0.4, constant: 0)]
+            NSLayoutConstraint(item: weather, attribute: .width, relatedBy: .equal, toItem: date,
+                               attribute: .width, multiplier: 1, constant: 0)]
         
         containerV.addSubview(weather)
         containerV.addConstraints(constWeather)
         weather.numberOfLines = 1
-        weather.textAlignment = NSTextAlignment.center
+        weather.textAlignment = NSTextAlignment.left
         weather.backgroundColor = .yellow
+        
+        writeDoneBtn = UIButton()
+        writeDoneBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constwrt : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: writeDoneBtn, attribute: .top, relatedBy: .equal, toItem: containerV, attribute: .top,
+                               multiplier: 1, constant: 8),
+            NSLayoutConstraint(item: writeDoneBtn, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing,
+                               multiplier: 1, constant: -8),
+            NSLayoutConstraint(item: writeDoneBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+                               multiplier: 1, constant: 48),
+            NSLayoutConstraint(item: writeDoneBtn, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
+                               multiplier: 1, constant: 48)]
+        
+        containerV.addSubview(writeDoneBtn)
+        containerV.addConstraints(constwrt)
+        writeDoneBtn.backgroundColor = .yellow
+        writeDoneBtn.addTarget(self, action: #selector(writeDone) , for: .touchUpInside)
         
         //MARK: contStackV UIStackView
         contStackV = UIStackView()
@@ -233,7 +250,7 @@ extension WriteViewController {
         
         let constStackV : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: contStackV, attribute: .top, relatedBy: .equal, toItem: weather, attribute: .bottom,
-                               multiplier: 1, constant: 8),
+                               multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contStackV, attribute: .bottom, relatedBy: .equal, toItem: containerV, attribute: .bottom,
                                multiplier: 1, constant: -8),
             NSLayoutConstraint(item: contStackV, attribute: .leading, relatedBy: .equal, toItem: containerV, attribute: .leading,
@@ -264,26 +281,6 @@ extension WriteViewController {
         stackBox.distribution = .fill
         stackBox.backgroundColor = .blue
         
-        //MARK: contentTitle Label
-        contentTitle = UITextField()
-        contentTitle.translatesAutoresizingMaskIntoConstraints = false
-        
-        let constTitle : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: contentTitle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
-                               multiplier: 1, constant: 30),
-            NSLayoutConstraint(item: contentTitle, attribute: .centerY, relatedBy: .equal, toItem: stackBox, attribute: .centerY,
-                               multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contentTitle, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading,
-                               multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contentTitle, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing,
-                               multiplier: 1, constant: -72)]
-        
-        stackBox.addSubview(contentTitle)
-        stackBox.addConstraints(constTitle)
-        contentTitle.placeholder = "이 글의 제목을 써주세요."
-        contentTitle.backgroundColor = .blue
-        contentTitle.font?.withSize(15)
-        
         //MARK: contentImgV UIIMageView
         contentImgV = UIImageView()
         contentImgV.translatesAutoresizingMaskIntoConstraints = false
@@ -302,11 +299,52 @@ extension WriteViewController {
         contentImgV.clipsToBounds = true
         contentImgV.backgroundColor = .clear
         contentImgV.image = UIImage(named: "photo")
-
+        
         contentImgV.isUserInteractionEnabled = true
-
+        
         let addImageGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addImageGesture))
         contentImgV.addGestureRecognizer(addImageGestureRecognizer)
+        
+        //MARK: titleLabel
+        titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        let constTitleLB : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: stackBox, attribute: .top,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: contentImgV, attribute: .height,
+                               multiplier: 0.5, constant: 0),
+            NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: contentImgV, attribute: .leading,
+                               multiplier: 1, constant: 0)]
+        
+        stackBox.addSubview(titleLabel)
+        stackBox.addConstraints(constTitleLB)
+        titleLabel.text = "Today Title"
+        titleLabel.font.withSize(20)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        
+        //MARK: contentTitle Label
+        contentTitle = UITextField()
+        contentTitle.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constTitle : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: contentTitle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+                               multiplier: 1, constant: 30),
+            NSLayoutConstraint(item: contentTitle, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contentTitle, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contentTitle, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing,
+                               multiplier: 1, constant: -72)]
+
+        stackBox.addSubview(contentTitle)
+        stackBox.addConstraints(constTitle)
+        contentTitle.placeholder = "이 글의 제목을 써주세요."
+        contentTitle.backgroundColor = .blue
+        contentTitle.font?.withSize(15)
+        
+
         
         //MARK: contents UITextView
         contents = UITextView()
@@ -414,9 +452,9 @@ extension WriteViewController: CLLocationManagerDelegate {
             if let error = error {
                 log.error(error)
             } else {
-                self?.currentPlace = placeMark?.first?.administrativeArea
+//                self?.currentPlace = placeMark?.first?.administrativeArea
                 self?.coordinate = placeMark?.first?.location?.coordinate
-                log.debug(placeMark?.first?.name)
+//                log.debug(placeMark?.first?.name)
 //                log.debug(placeMark?.first?.locality)
 //                log.debug(placeMark?.first!.subLocality)
             }

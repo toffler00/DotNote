@@ -7,15 +7,15 @@
 //
 
 import UIKit
-
+let appDelegate = UIApplication.shared.delegate as! AppDelegate
 struct Model {
     
 }
 
 extension Model {
+    
     struct Contents {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        var createdAt : Date
+        var createdAt : Date?
         var title : String?
         var weather : String?
         var content : String?
@@ -27,8 +27,8 @@ extension Model {
     }
 }
 
-extension Model.Contents {
-    func saveData(createdAt : Date, title : String, weather : String, content : String, image : Data) {
+extension Model {
+    mutating func saveData(createdAt : Date, title : String, weather : String, content : String, image : Data) {
         
        let data =  Model.Contents(createdAt: createdAt, title: title, weather: weather, content: content, image: image)
        appDelegate.datasource.append(data)
