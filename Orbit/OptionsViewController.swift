@@ -19,16 +19,20 @@ class OptionsViewController: UIViewController {
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
         // Do any additional setup after loading the view.
-       
-        // 이곳에서만 크게 타이틀을 보이게 하고 싶은데...
+        self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Options"
+        self.navigationController?.navigationBar.barTintColor = .white
+        // 이곳에서만 크게 타이틀을 보이게 하고 싶은데...
+        
     }
     
     // MARK: viewWillLayoutSubviews
     override func viewWillLayoutSubviews() {
+      
         if optionsTableview == nil {
             self.setUpLayout()
         }
@@ -54,7 +58,7 @@ extension OptionsViewController {
         let optionsTableviewConstraints:[NSLayoutConstraint] = [
             NSLayoutConstraint(item: optionsTableview, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .top, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: optionsTableview, attribute: .bottom, relatedBy: .equal, toItem: view,
+            NSLayoutConstraint(item: optionsTableview, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: optionsTableview, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .leading, multiplier: 1, constant: 0),

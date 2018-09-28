@@ -105,7 +105,7 @@ extension WriteViewController : DiaryWriteDelegate {
     appDelegate.datasource.append(data)
     print("writeDone")
     print(appDelegate.datasource)
-    navigationController?.dismiss(animated: true, completion: nil)
+    navigationController?.popViewController(animated: true)
     }
     
     func getDate(dateFormat : String) -> String {

@@ -189,7 +189,7 @@ extension DiaryViewController {
         containerView.addSubview(contents)
         containerView.addConstraints(consContents)
         contents.backgroundColor = .yellow
-        
+        contents.isEditable = false
     }
 }
 
