@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 
+
 class ListViewController: UIViewController {
     
     // MARK: Properties
@@ -120,11 +121,13 @@ extension ListViewController {
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let diaryViewController = DiaryViewController()
-        self.navigationController?.pushViewController(diaryViewController, animated: true)
-        tableView.deselectRow(at: indexPath, animated: false)
-        let datasource = appdelegate.datasource[indexPath.row]
-        diaryViewController.datasource = datasource
+        if appdelegate.datasource.count != 0 {
+            let diaryViewController = DiaryViewController()
+            self.navigationController?.pushViewController(diaryViewController, animated: true)
+            tableView.deselectRow(at: indexPath, animated: false)
+            let datasource = appdelegate.datasource[indexPath.row]
+            diaryViewController.datasource = datasource
+        }
     }
 }
 // MARK: - UITableViewDataSource
