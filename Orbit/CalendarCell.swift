@@ -86,6 +86,5 @@ class CalendarCell: JTAppleCell {
         contentView.addSubview(isContentsImg)
         contentView.addConstraints(constIsContent)
         isContentsImg.backgroundColor = .yellow
-        
     }
 }

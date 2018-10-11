@@ -48,13 +48,10 @@ extension ListViewController {
         makeWeekLabel()
         weeksStackView.alignment = .fill
         weeksStackView.distribution = .fillEqually
-    
-        
-        
+
     }
     
     func makeWeekLabel() {
-        
         for i in self.weeks {
             let weekLabel = UILabel()
             weekLabel.text = i
