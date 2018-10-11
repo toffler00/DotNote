@@ -12,8 +12,7 @@ class OptionsViewController: UIViewController {
 
     // MARK: properties
     private var optionsTableview: UITableView!
-    private let items: [String] = ["Font Size","Calendar",
-                                   "Location Setting","OpenSource License",
+    private let items: [String] = ["Font Size","Location Setting","OpenSource License",
                                    "BackUp / Restore"]
     
     // MARK: Life Cycle

@@ -20,6 +20,7 @@ class WriteViewController: UIViewController {
     fileprivate var contentTitle: UITextField!
     fileprivate var dayOfWeek: UILabel!
     fileprivate var weather: UILabel!
+    
 //    fileprivate var weatherImg : UIImageView!
     fileprivate var date : UILabel!
     fileprivate var today : Date!

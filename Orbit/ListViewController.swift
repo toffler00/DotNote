@@ -8,15 +8,22 @@
 
 import UIKit
 import RealmSwift
+import JTAppleCalendar
 
 
 class ListViewController: UIViewController {
     
     // MARK: Properties
+    
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private var listTableView: UITableView!
     private var writeButton: UIButton!
     var models = [Model.Contents]()
+    var thisMonthLabel : UILabel!
+    var weeks : [String] = ["Sun", "Mon","Tue","Wed","Thu","Fri","Sat"]
+    var weeksStackView : UIStackView!
+    var calendarView : JTAppleCalendarView!
+    let dateFormatter : DateFormatter = DateFormatter()
     
     // MARK: IBAction
     @IBAction func pushOptionViewController(_ sender: UIBarButtonItem) {
@@ -40,7 +47,6 @@ class ListViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Orbit"
@@ -51,7 +57,10 @@ class ListViewController: UIViewController {
     // 뷰가 먼저 보여야하므로
     override func viewWillLayoutSubviews() {
         if self.listTableView == nil {
-            self.setUpLayout()
+            setUpUI()
+            setUpCalendarView()
+            setCalendar()
+            setUpLayout()
         }
     }
     
@@ -75,8 +84,8 @@ extension ListViewController {
         self.listTableView.translatesAutoresizingMaskIntoConstraints = false
         
         let listTableViewConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: listTableView, attribute: .top,relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
-                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: listTableView, attribute: .top,relatedBy: .equal, toItem: calendarView,
+                               attribute: .bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: listTableView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .leading, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: listTableView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
@@ -95,14 +104,15 @@ extension ListViewController {
         //        self.writeButton.layer.cornerRadius = 0.5 * self.writeButton.bounds.size.height
         self.writeButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let writeButtonConstraints: [NSLayoutConstraint] = [NSLayoutConstraint(item: self.writeButton, attribute: .height,
-                                                                               relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 55),
-                                                            NSLayoutConstraint(item: self.writeButton, attribute: .width,
-                                                                               relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 55),
-                                                            NSLayoutConstraint(item: self.writeButton, attribute: .trailing,
-                                                                               relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.9, constant: 0),
-                                                            NSLayoutConstraint(item: self.writeButton, attribute: .top,
-                                                                               relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.7, constant: 0)]
+        let writeButtonConstraints: [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: self.writeButton, attribute: .height, relatedBy: .equal, toItem: nil,
+                               attribute: .height, multiplier: 1, constant: 55),
+            NSLayoutConstraint(item: self.writeButton, attribute: .width, relatedBy: .equal, toItem: nil,
+                               attribute: .width, multiplier: 1, constant: 55),
+            NSLayoutConstraint(item: self.writeButton, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+                               attribute: .centerX, multiplier: 1.9, constant: 0),
+            NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal, toItem: view,
+                               attribute: .centerY, multiplier: 1.7, constant: 0)]
         
         // To add writebutton in listTableview
         self.view.addSubview(writeButton)
