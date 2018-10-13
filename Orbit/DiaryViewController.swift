@@ -21,6 +21,8 @@ class DiaryViewController: UIViewController {
     fileprivate var containerView : UIView!
     fileprivate var dateCollectionView : UICollectionView!
     var datasource : Model.Contents!
+    let user = User()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

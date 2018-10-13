@@ -14,8 +14,8 @@ import JTAppleCalendar
 class ListViewController: UIViewController {
     
     // MARK: Properties
-    var user = User()
-    var realm = try! Realm()
+    private var user = User()
+    private var realm = try! Realm()
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private var listTableView: UITableView!
     private var writeButton: UIButton!
@@ -132,12 +132,12 @@ extension ListViewController {
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if appdelegate.datasource.count != 0 {
+        if user.contents.count != 0 {
             let diaryViewController = DiaryViewController()
             self.navigationController?.pushViewController(diaryViewController, animated: true)
             tableView.deselectRow(at: indexPath, animated: false)
-            let datasource = appdelegate.datasource[indexPath.row]
-            diaryViewController.datasource = datasource
+            let datasource = user.contents[indexPath.row]
+            
         }
     }
 }
