@@ -8,11 +8,16 @@
 
 import UIKit
 import CoreLocation
+import RealmSwift
 
 class WriteViewController: UIViewController {
+    
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var isImageLoadingFromiCloud: Bool = false
     var keyboardShown = false
+    var content = Content()
+    var user = User()
+    var realm = try! Realm()
 
 //    var model : Model.Contents?
     fileprivate weak var diaryWriteDelegate: DiaryWriteDelegate!
@@ -90,7 +95,7 @@ class WriteViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()
-            stringToDate(date: getDate(dateFormat: "yyyy년 M월 d일") , dateFormat: "yyyy년 M월 d일")
+            stringToDate(date: getDate(dateFormat: "dd MMM yyyy") , dateFormat: "dd MMM yyyy")
             getWeekDay()
         }
     }
@@ -104,6 +109,17 @@ extension WriteViewController : DiaryWriteDelegate {
    @objc func writeDone() {
     let data = Model.Contents.init(createdAt: today, title: contentTitle.text!, weather: weather.text!, content: contents.text!, image: selectedImageData!)
     appDelegate.datasource.append(data)
+    
+    content.image = selectedImageData
+    content.createdAt = today
+    content.title = contentTitle.text!
+    content.weather = weather.text!
+    content.body = contents.text!
+    try! realm.write {
+        realm.add(content)
+    }
+    
+    print(content)
     print("writeDone")
     print(appDelegate.datasource)
     navigationController?.popViewController(animated: true)
