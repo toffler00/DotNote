@@ -14,7 +14,8 @@ import JTAppleCalendar
 class ListViewController: UIViewController {
     
     // MARK: Properties
-    
+    var user = User()
+    var realm = try! Realm()
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private var listTableView: UITableView!
     private var writeButton: UIButton!
@@ -155,7 +156,6 @@ extension ListViewController: UITableViewDataSource{
         if appdelegate.datasource.count == 0 {
             return cell
         }
-        print(indexPath.row)
         let datasource = appdelegate.datasource[indexPath.row]
         cell.titleLabel.text = datasource.title
         return cell

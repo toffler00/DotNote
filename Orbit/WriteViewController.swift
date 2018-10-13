@@ -119,8 +119,8 @@ extension WriteViewController : DiaryWriteDelegate {
         realm.add(content)
     }
     
-    print(content)
-    print("writeDone")
+    
+    print(user.contents.count)
     print(appDelegate.datasource)
     navigationController?.popViewController(animated: true)
     }
@@ -141,7 +141,6 @@ extension WriteViewController : DiaryWriteDelegate {
         dateFormatter.locale = Locale(identifier: "kr_KR")
         let stringToDate = dateFormatter.date(from: date)
         self.today = stringToDate
-        print(today)
     }
     
     func getWeekDay() {
