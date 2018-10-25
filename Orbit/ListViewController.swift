@@ -13,9 +13,12 @@ import JTAppleCalendar
 
 class ListViewController: UIViewController {
     
+
     // MARK: Properties
     private var user = User()
     private var realm = try! Realm()
+    var datasourece : Results<Content>!
+    
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private var listTableView: UITableView!
     private var writeButton: UIButton!
@@ -40,7 +43,7 @@ class ListViewController: UIViewController {
     
     // MARK: Life Cycle
     override func viewWillAppear(_ animated: Bool) {
-        if appdelegate.datasource.count == 0 {
+        if listTableView == nil {
            return
         }else {
             self.listTableView.reloadData()
@@ -51,7 +54,8 @@ class ListViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Orbit"
-        
+        let realmManager = RealmManager.shared.realm
+        datasourece = realmManager.objects(Content.self)
     }
     
     // MARK: viewWillLayoutSubviews:
@@ -65,15 +69,6 @@ class ListViewController: UIViewController {
         }
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
 }
 
 // MARK: - extension ListViewController
@@ -132,32 +127,37 @@ extension ListViewController {
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if user.contents.count != 0 {
+        print(datasourece.count)
+        if datasourece.count != 0 {
             let diaryViewController = DiaryViewController()
+            diaryViewController.indexPath = indexPath.row
             self.navigationController?.pushViewController(diaryViewController, animated: true)
             tableView.deselectRow(at: indexPath, animated: false)
-            let datasource = user.contents[indexPath.row]
-            
         }
     }
+
+    
+    
 }
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if appdelegate.datasource.count == 0 {
-            return 15
+        if datasourece.count == 0 {
+            return 10
         }
-        return appdelegate.datasource.count
+        return datasourece.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
-        //        cell.model = models[indexPath.row]
-        if appdelegate.datasource.count == 0 {
-            return cell
+        print("contents count \(datasourece.count)")
+        if datasourece.count == 0 {
+             print("user.contents.count")
+            return cell 
         }
-        let datasource = appdelegate.datasource[indexPath.row]
-        cell.titleLabel.text = datasource.title
+        let data = datasourece[indexPath.row]
+        cell.titleLabel.text = "  \(data.title)"
+        cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "dd"))일"
         return cell
     }
 }

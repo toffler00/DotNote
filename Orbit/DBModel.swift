@@ -24,4 +24,13 @@ class Content: Object {
     @objc dynamic var weather: String = ""
     @objc dynamic var body: String = ""
     @objc dynamic var image: Data? = nil
+    
+    convenience init(createdAt : Date, title : String, weather : String, body : String, image : Data) {
+        self.init()
+        self.createdAt = createdAt
+        self.title = title
+        self.weather = weather
+        self.body = body
+        self.image = image
+    }
 }

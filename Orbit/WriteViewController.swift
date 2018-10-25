@@ -18,7 +18,7 @@ class WriteViewController: UIViewController {
     var content = Content()
     var user = User()
     var realm = try! Realm()
-
+    let realmManager = RealmManager.shared.realm
 //    var model : Model.Contents?
     fileprivate weak var diaryWriteDelegate: DiaryWriteDelegate!
     fileprivate var titleLabel : UILabel!
@@ -107,21 +107,9 @@ class WriteViewController: UIViewController {
 //MARK: writeDone Post
 extension WriteViewController : DiaryWriteDelegate {
    @objc func writeDone() {
-    let data = Model.Contents.init(createdAt: today, title: contentTitle.text!, weather: weather.text!, content: contents.text!, image: selectedImageData!)
-    appDelegate.datasource.append(data)
-    
-    content.image = selectedImageData
-    content.createdAt = today
-    content.title = contentTitle.text!
-    content.weather = weather.text!
-    content.body = contents.text!
-    try! realm.write {
-        realm.add(content)
-    }
-    
-    
-    print(user.contents.count)
-    print(appDelegate.datasource)
+
+    let data = Content(createdAt: today, title: contentTitle.text!, weather: weather.text!, body: contents.text!, image: selectedImageData!)
+    RealmManager.shared.creat(object: data)
     navigationController?.popViewController(animated: true)
     }
     
@@ -138,7 +126,7 @@ extension WriteViewController : DiaryWriteDelegate {
     func stringToDate(date : String, dateFormat : String) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
-        dateFormatter.locale = Locale(identifier: "kr_KR")
+//        dateFormatter.locale = Locale(identifier: "kr_KR")
         let stringToDate = dateFormatter.date(from: date)
         self.today = stringToDate
     }
@@ -152,7 +140,6 @@ extension WriteViewController : DiaryWriteDelegate {
         self.dayOfWeek.text = weekDay
     }
 }
-
 
 
 //MARK: Setup Layout

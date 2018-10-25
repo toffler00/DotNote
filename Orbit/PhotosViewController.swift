@@ -41,7 +41,7 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
         options.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: false) ]
         options.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
-        
+
         fetchResult = PHAsset.fetchAssets(with: options)
     }
     

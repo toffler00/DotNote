@@ -37,6 +37,7 @@ class CalendarCell: JTAppleCell {
                                attribute: .centerY, multiplier: 1, constant: 0)]
         contentView.addSubview(todayView)
         contentView.addConstraints(constToday)
+        
         todayView.layer.cornerRadius = contentView.frame.size.width / 4
         todayView.clipsToBounds = false
         todayView.backgroundColor = .lightGray

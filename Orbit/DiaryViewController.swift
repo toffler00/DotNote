@@ -9,26 +9,29 @@
 import UIKit
 import RealmSwift
 
-class DiaryViewController: UIViewController {
-   
 
-    fileprivate var dateLabel : UILabel!
-    fileprivate var dayOfWeek : UILabel!
-    fileprivate var weatherImgV : UIImageView!
-    fileprivate var titleLabel : UILabel!
-    fileprivate var contents : UITextView!
-    fileprivate var contentImgView : UIImageView!
-    fileprivate var containerView : UIView!
-    fileprivate var dateCollectionView : UICollectionView!
-    var datasource : Model.Contents!
+class DiaryViewController: UIViewController {
+
+   
+    private var realm = try! Realm()
+    var datasourece : Results<Content>!
+
+    var dateLabel : UILabel!
+    var dayOfWeek : UILabel!
+    var weatherImgV : UIImageView!
+    var titleLabel : UILabel!
+    var contents : UITextView!
+    var contentImgView : UIImageView!
+    var containerView : UIView!
+    var dateCollectionView : UICollectionView!
     let user = User()
-    
+    var indexPath : Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-
-//        writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
+        let realmManager = RealmManager.shared.realm
+        datasourece = realmManager.objects(Content.self)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,13 +39,13 @@ class DiaryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
     override func viewWillLayoutSubviews() {
-       
-             setupLayout()
-             dataUpdate()
+        setupLayout()
+        
     }
-    
+    override func viewDidLayoutSubviews() {
+        dataUpdate()
+    }
 }
 
 ////MARK: collectionView datasource
@@ -142,14 +145,16 @@ extension DiaryViewController {
         dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let consDateLabel : [NSLayoutConstraint] = [NSLayoutConstraint(item: dateLabel, attribute: .leading,
-                                                                       relatedBy: .equal, toItem: weatherImgV, attribute: .trailing, multiplier: 1, constant: 8),
-                                                    NSLayoutConstraint(item: dateLabel, attribute: .trailing,
-                                                                       relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: -8),
-                                                    NSLayoutConstraint(item: dateLabel, attribute: .height,
-                                                                       relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 20),
-                                                    NSLayoutConstraint(item: dateLabel, attribute: .bottom,
-                                                                       relatedBy: .equal, toItem: weatherImgV, attribute: .bottom, multiplier: 1, constant: 0)]
+        let consDateLabel : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: dateLabel, attribute: .leading, relatedBy: .equal, toItem: weatherImgV,
+                               attribute: .trailing, multiplier: 1, constant: 8),
+            NSLayoutConstraint(item: dateLabel, attribute: .trailing, relatedBy: .equal, toItem: containerView,
+                               attribute: .trailing, multiplier: 1, constant: -8),
+            NSLayoutConstraint(item: dateLabel, attribute: .height, relatedBy: .equal, toItem: nil,
+                               attribute: .height, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: dateLabel, attribute: .bottom, relatedBy: .equal, toItem: weatherImgV,
+                               attribute: .bottom, multiplier: 1, constant: 0)]
+        
         containerView.addSubview(dateLabel)
         containerView.addConstraints(consDateLabel)
         dateLabel.backgroundColor = .white
@@ -157,14 +162,16 @@ extension DiaryViewController {
         contentImgView = UIImageView()
         contentImgView.translatesAutoresizingMaskIntoConstraints = false
         
-        let consContentImgV : [NSLayoutConstraint] = [NSLayoutConstraint(item: contentImgView, attribute: .top,
-                                                                         relatedBy: .equal, toItem: weatherImgV, attribute: .bottom, multiplier: 1, constant: 8),
-                                                      NSLayoutConstraint(item: contentImgView, attribute: .width,
-                                                                         relatedBy: .equal, toItem: containerView, attribute: .width, multiplier: 0.5, constant: 0),
-                                                      NSLayoutConstraint(item: contentImgView, attribute: .height,
-                                                                         relatedBy: .equal, toItem: containerView, attribute: .width, multiplier: 0.5, constant: 0),
-                                                      NSLayoutConstraint(item: contentImgView, attribute: .centerX,
-                                                                         relatedBy: .equal, toItem: containerView, attribute: .centerX, multiplier: 1, constant: 0)]
+        let consContentImgV : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: weatherImgV,
+                               attribute: .bottom, multiplier: 1, constant: 8),
+            NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
+                               attribute: .width, multiplier: 0.5, constant: 0),
+            NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
+                               attribute: .width, multiplier: 0.5, constant: 0),
+            NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
+                               attribute: .centerX, multiplier: 1, constant: 0)]
+        
         containerView.addSubview(contentImgView)
         containerView.addConstraints(consContentImgV)
         contentImgView.backgroundColor = .white
@@ -172,14 +179,16 @@ extension DiaryViewController {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let consTitleLabel : [NSLayoutConstraint] = [NSLayoutConstraint(item: titleLabel, attribute: .top,
-                                                                        relatedBy: .equal, toItem: contentImgView, attribute: .bottom, multiplier: 1, constant: 8),
-                                                     NSLayoutConstraint(item: titleLabel, attribute: .leading,
-                                                                        relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 8),
-                                                     NSLayoutConstraint(item: titleLabel, attribute: .trailing,
-                                                                        relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: -8),
-                                                     NSLayoutConstraint(item: titleLabel, attribute: .height,
-                                                                        relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 30)]
+        let consTitleLabel : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: contentImgView,
+                               attribute: .bottom, multiplier: 1, constant: 8),
+            NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .equal, toItem: containerView,
+                               attribute: .leading, multiplier: 1, constant: 8),
+            NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: containerView,
+                               attribute: .trailing, multiplier: 1, constant: -8),
+            NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil,
+                               attribute: .height, multiplier: 1, constant: 30)]
+        
         containerView.addSubview(titleLabel)
         containerView.addConstraints(consTitleLabel)
         titleLabel.backgroundColor = .white
@@ -187,19 +196,24 @@ extension DiaryViewController {
         contents = UITextView()
         contents.translatesAutoresizingMaskIntoConstraints = false
         
-        let consContents : [NSLayoutConstraint] = [NSLayoutConstraint(item: contents, attribute: .top,
-                                                                      relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1, constant: 0),
-                                                   NSLayoutConstraint(item: contents, attribute: .leading,
-                                                                      relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 8),
-                                                   NSLayoutConstraint(item: contents, attribute: .trailing,
-                                                                      relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: -8),
-                                                   NSLayoutConstraint(item: contents, attribute: .bottom,
-                                                                      relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 0)]
+        let consContents : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: contents, attribute: .top, relatedBy: .equal, toItem: titleLabel,
+                               attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contents, attribute: .leading, relatedBy: .equal, toItem: containerView,
+                               attribute: .leading, multiplier: 1, constant: 8),
+            NSLayoutConstraint(item: contents, attribute: .trailing, relatedBy: .equal, toItem: containerView,
+                               attribute: .trailing, multiplier: 1, constant: -8),
+            NSLayoutConstraint(item: contents, attribute: .bottom, relatedBy: .equal, toItem: containerView,
+                               attribute: .bottom, multiplier: 1, constant: 0)]
+        
         containerView.addSubview(contents)
         containerView.addConstraints(consContents)
         contents.backgroundColor = .yellow
         contents.isEditable = false
+        contents.textAlignment = .center
+        contents.font = UIFont.systemFont(ofSize: 24)
     }
+    
 }
 
 extension DiaryViewController {
@@ -209,7 +223,11 @@ extension DiaryViewController {
     }
     
     func dataUpdate() {
-        self.titleLabel.text = datasource.title
-        self.contents.text = datasource.content
+       let data = datasourece[indexPath]
+        titleLabel.text = data.title
+        dateLabel.text = dateToString(in: data.createdAt, dateFormat: "dd MMM yyyy")
+        contents.text = data.body
+        dayOfWeek.text = getWeekDay(in: data.createdAt, dateFormat: "EEEE")
+        contentImgView.image = UIImage(data: data.image!)
     }
 }

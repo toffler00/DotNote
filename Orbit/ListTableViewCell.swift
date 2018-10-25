@@ -27,11 +27,13 @@ class ListTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         // UI
+    
         self.setUpLayout()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+        
     }
     
     override func prepareForReuse() {
@@ -68,7 +70,7 @@ extension ListTableViewCell {
         
         // textAlignment
         self.dateLabel.textAlignment = .center
-        self.titleLabel.textAlignment = .center
+        self.titleLabel.textAlignment = .left
         self.weekLabel.textAlignment = .center
         
         // numberOfLines
@@ -80,55 +82,53 @@ extension ListTableViewCell {
         self.weekLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // NSLayoutConstraint
-        // title label Constraints
-        let titleLabelConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.titleLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX,
-                               multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.titleLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY,
-                               multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.titleLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
-                               multiplier: 1, constant: 50),
-            NSLayoutConstraint(item: self.titleLabel, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width,
-                               multiplier: 0.55, constant: 0)]
-        // 중앙 먼저
-        self.addSubview(titleLabel)
-        self.addConstraints(titleLabelConstraints)
-        
         // date Label Constraints
         let dateLabelConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.dateLabel, attribute: .centerX, relatedBy: .equal, toItem: self.titleLabel,
-                               attribute: .centerX, multiplier: 0.5, constant: 0),
-            NSLayoutConstraint(item: self.dateLabel, attribute: .centerY, relatedBy: .equal, toItem: self,
-                               attribute: .centerY,multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.dateLabel, attribute: .height, relatedBy: .equal, toItem: nil,
-                               attribute: .height,multiplier: 1, constant: 50),
+            NSLayoutConstraint(item: self.dateLabel, attribute: .top, relatedBy: .equal, toItem: self,
+                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.dateLabel, attribute: .bottom, relatedBy: .equal, toItem: self,
+                               attribute: .bottom ,multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.dateLabel, attribute: .leading, relatedBy: .equal, toItem: self,
-                               attribute: .leading,multiplier: 1, constant: 5),
-            NSLayoutConstraint(item: self.dateLabel, attribute: .trailing, relatedBy: .equal, toItem: self.titleLabel,
                                attribute: .leading, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.dateLabel, attribute: .width, relatedBy: .equal, toItem: self,
-                               attribute: .width,multiplier: 0.25, constant: 0)]
+                               attribute: .width, multiplier: 0.15, constant: 0),
+            NSLayoutConstraint(item: dateLabel, attribute: .height, relatedBy: .equal, toItem: nil,
+                               attribute: .height, multiplier: 1, constant: 48)]
         
         self.addSubview(dateLabel)
         self.addConstraints(dateLabelConstraints)
+        dateLabel.backgroundColor = .yellow
+        
+        
+        // title label Constraints
+        let titleLabelConstraints: [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: self.titleLabel, attribute: .top, relatedBy: .equal, toItem: self,
+                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.titleLabel, attribute: .bottom, relatedBy: .equal, toItem: self,
+                               attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.titleLabel, attribute: .leading, relatedBy: .equal, toItem: dateLabel,
+                               attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.titleLabel, attribute: .width, relatedBy: .equal, toItem: self,
+                               attribute: .width,multiplier: 0.70, constant: 0)]
+        // 중앙 먼저
+        self.addSubview(titleLabel)
+        self.addConstraints(titleLabelConstraints)
+
         
         // week label Constraints
         let weekLabelConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.weekLabel, attribute: .centerX, relatedBy: .equal, toItem: self,
-                               attribute: .centerX, multiplier: 1.5, constant: 0),
-            NSLayoutConstraint(item: self.weekLabel, attribute: .centerY, relatedBy: .equal, toItem: self,
-                               attribute: .centerY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.weekLabel, attribute: .height, relatedBy: .equal, toItem: nil,
-                               attribute: .height, multiplier: 1, constant: 50),
-            NSLayoutConstraint(item: self.weekLabel, attribute: .leading, relatedBy: .equal, toItem: self.titleLabel,
+            NSLayoutConstraint(item: self.weekLabel, attribute: .top, relatedBy: .equal, toItem: self,
+                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.weekLabel, attribute: .bottom, relatedBy: .equal, toItem: self,
+                               attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.weekLabel, attribute: .leading, relatedBy: .equal, toItem: titleLabel,
                                attribute: .trailing, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.weekLabel, attribute: .trailing, relatedBy: .equal, toItem: self,
-                               attribute: .trailing, multiplier: 1, constant: 5),
-            NSLayoutConstraint(item: self.weekLabel, attribute: .width, relatedBy: .equal, toItem: self,
-                               attribute: .width, multiplier: 0.25, constant: 0)]
-        
+                               attribute: .trailing, multiplier: 1, constant: 0)]
+
         self.addSubview(weekLabel)
         self.addConstraints(weekLabelConstraints)
+        weekLabel.backgroundColor = .green
         
     }
 }
