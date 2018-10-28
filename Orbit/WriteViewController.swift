@@ -299,6 +299,9 @@ extension WriteViewController {
         stackBox.addSubview(contentImgV)
         stackBox.addConstraints(constImgV)
         contentImgV.contentMode = .scaleAspectFill
+        contentImgV.layer.cornerRadius = 36
+        contentImgV.layer.borderWidth = 2
+        contentImgV.layer.borderColor = UIColor.black.cgColor
         contentImgV.clipsToBounds = true
         contentImgV.backgroundColor = .clear
         contentImgV.image = UIImage(named: "photo")
@@ -343,8 +346,8 @@ extension WriteViewController {
 
         stackBox.addSubview(contentTitle)
         stackBox.addConstraints(constTitle)
-        contentTitle.placeholder = "이 글의 제목을 써주세요."
-        contentTitle.backgroundColor = .blue
+        contentTitle.placeholder = "제목을 쓰윽쓰윽"
+        contentTitle.backgroundColor = .white
         contentTitle.font?.withSize(15)
         
 
@@ -369,8 +372,6 @@ extension WriteViewController {
         contents.backgroundColor = .white
         contents.isScrollEnabled = true
         
-        
-    
     }
 }
 

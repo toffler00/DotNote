@@ -8,6 +8,7 @@
 
 import UIKit
 import JTAppleCalendar
+import RealmSwift
 
 extension ListViewController {
     
@@ -144,6 +145,13 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         }
     }
     
+    func handleCellisContents(cell : JTAppleCell? ,cellState : CellState) {
+        guard let validCell = cell as? CalendarCell else {return}
+        dateFormatter.dateFormat = "dd MMM yyyy"
+        let cellStateDate = dateFormatter.string(from: cellState.date)
+        
+        
+    }
     func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
         handleCellColor(cell: cell, cellState: cellState)
         handleSelectedCellColor(cell: cell, cellState: cellState)

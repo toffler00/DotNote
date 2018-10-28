@@ -14,6 +14,7 @@
 		620F53BA211EF16900A94A01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 620F53B8211EF16900A94A01 /* LaunchScreen.storyboard */; };
 		620F53C5211EF16A00A94A01 /* OrbitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53C4211EF16A00A94A01 /* OrbitTests.swift */; };
 		620F53D0211EF16A00A94A01 /* OrbitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53CF211EF16A00A94A01 /* OrbitUITests.swift */; };
+		62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62254C752182F0E90084AE56 /* CutomKeyboard.swift */; };
 		6296D18C21394CD400B610C8 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6296D18B21394CD400B610C8 /* Model.swift */; };
 		62AE2E13216CFAC9004448F2 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E12216CFAC9004448F2 /* CalendarView.swift */; };
 		62AE2E15216E31F0004448F2 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E14216E31F0004448F2 /* CalendarCell.swift */; };
@@ -71,6 +72,7 @@
 		620F53CB211EF16A00A94A01 /* OrbitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrbitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		620F53CF211EF16A00A94A01 /* OrbitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbitUITests.swift; sourceTree = "<group>"; };
 		620F53D1211EF16A00A94A01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		62254C752182F0E90084AE56 /* CutomKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutomKeyboard.swift; sourceTree = "<group>"; };
 		6296D18B21394CD400B610C8 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		62AE2E12216CFAC9004448F2 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		62AE2E14216E31F0004448F2 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				6A6386EB21452FAA006DE95C /* WeatherAPI.swift */,
 				6A4A04C621313980003A51B5 /* AppTarget.swift */,
 				62AE2E3A217DA7FF004448F2 /* ConversionDate.swift */,
+				62254C752182F0E90084AE56 /* CutomKeyboard.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 				62AE2E13216CFAC9004448F2 /* CalendarView.swift in Sources */,
 				6296D18C21394CD400B610C8 /* Model.swift in Sources */,
 				6A6386EA21452A7A006DE95C /* KoreaWeahterLocationCode.swift in Sources */,
+				62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */,
 				CE388C2A213E42550063DE35 /* OptionsViewController.swift in Sources */,
 				6AFAA89B213A716100D241E2 /* PhotosViewController.swift in Sources */,
 				6A4A04C721313980003A51B5 /* AppTarget.swift in Sources */,

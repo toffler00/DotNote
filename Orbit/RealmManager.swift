@@ -48,6 +48,22 @@ class RealmManager {
         }
     }
     
+    func deletedAll(object : Results<Content>) {
+        do {
+            try realm.write {
+                realm.delete(object)
+            }
+        } catch  {
+            post(error: error)
+        }
+    }
+    
+    func arrayDate() -> [String] {
+        let dates : [String] = []
+        
+        return dates
+    }
+    
     func post(error : Error) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RealmError"), object: error)
     }
@@ -56,6 +72,5 @@ class RealmManager {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "RealmError"), object: nil, queue: nil) { (notification) in
             completion(notification.object as? Error)
         }
-        
     }
 }

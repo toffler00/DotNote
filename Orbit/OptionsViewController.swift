@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import RealmSwift
 
 class OptionsViewController: UIViewController {
 
     // MARK: properties
+    private var realmManager = RealmManager.shared.realm
+    var datasourece : Results<Content>!
     private var optionsTableview: UITableView!
     private let items: [String] = ["Font Size","Location Setting","OpenSource License",
-                                   "BackUp / Restore"]
+                                   "BackUp / Restore", "Delete All Data"]
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -26,6 +29,9 @@ class OptionsViewController: UIViewController {
         self.navigationItem.title = "Options"
         self.navigationController?.navigationBar.barTintColor = .white
         // 이곳에서만 크게 타이틀을 보이게 하고 싶은데...
+        
+        let realmManager = RealmManager.shared.realm
+        datasourece = realmManager.objects(Content.self)
         
     }
     
@@ -95,6 +101,26 @@ extension OptionsViewController: UITableViewDataSource {
         
         switch indexPath.row {
         case 1:
+            break
+        case 2:
+            break
+        case 3:
+            break
+        case 4:
+            let alert = UIAlertController(title: "경고",
+                                          message: "지금까지 작성한 일기가 모두 삭제됩니다.",
+                                          preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "승인", style: .default) { (okAction) in
+                RealmManager.shared.deletedAll(object: self.datasourece)
+                self.navigationController?.popViewController(animated: true)
+            }
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (cancel) in
+                self.dismiss(animated: false, completion: nil)
+            }
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
+        case 5:
             break
         default:
             break

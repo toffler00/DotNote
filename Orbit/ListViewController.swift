@@ -16,8 +16,13 @@ class ListViewController: UIViewController {
 
     // MARK: Properties
     private var user = User()
+    private var content = Content()
     private var realm = try! Realm()
-    var datasourece : Results<Content>!
+    var datasourece : Results<Content>! {
+        willSet(newValue) {
+           
+        }
+    }
     
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private var listTableView: UITableView!
@@ -28,6 +33,7 @@ class ListViewController: UIViewController {
     var weeksStackView : UIStackView!
     var calendarView : JTAppleCalendarView!
     let dateFormatter : DateFormatter = DateFormatter()
+    var dates : [Date] = []
     
     // MARK: IBAction
     @IBAction func pushOptionViewController(_ sender: UIBarButtonItem) {
@@ -158,8 +164,15 @@ extension ListViewController: UITableViewDataSource{
         let data = datasourece[indexPath.row]
         cell.titleLabel.text = "  \(data.title)"
         cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "dd"))일"
+        if dates.count == datasourece.count {
+            dates.append(data.createdAt)
+        } else {
+            dates.removeAll()
+            dates.append(data.createdAt)
+        }
         return cell
     }
+    
 }
 // MARK: - DiaryWriteDelegate
 extension ListViewController: DiaryWriteDelegate {

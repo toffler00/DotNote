@@ -37,7 +37,9 @@ class ListTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-        // ToDo
+        self.dateLabel.text = nil
+        self.titleLabel.text = nil
+        self.weekLabel.text = nil
     }
     
     // MARK: method

@@ -33,4 +33,5 @@ class Content: Object {
         self.body = body
         self.image = image
     }
+    
 }
