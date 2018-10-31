@@ -107,8 +107,8 @@ extension OptionsViewController: UITableViewDataSource {
         case 3:
             break
         case 4:
-            let alert = UIAlertController(title: "경고",
-                                          message: "지금까지 작성한 일기가 모두 삭제됩니다.",
+            let alert = UIAlertController(title: "경 고",
+                                          message: "지금까지 작성한 일기가 모두 삭제됩니다. \n 삭제된 데이터는 복구할 수 없습니다. \n 삭제하시겠습니까?",
                                           preferredStyle: .alert)
             let okAction = UIAlertAction(title: "승인", style: .default) { (okAction) in
                 RealmManager.shared.deletedAll(object: self.datasourece)

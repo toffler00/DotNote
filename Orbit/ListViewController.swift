@@ -18,11 +18,7 @@ class ListViewController: UIViewController {
     private var user = User()
     private var content = Content()
     private var realm = try! Realm()
-    var datasourece : Results<Content>! {
-        willSet(newValue) {
-           
-        }
-    }
+    var datasourece : Results<Content>!
     
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private var listTableView: UITableView!
