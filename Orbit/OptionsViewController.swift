@@ -23,7 +23,7 @@ class OptionsViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         // Do any additional setup after loading the view.
-        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.08543890359, green: 0.9577052559, blue: 0.979156673, alpha: 1)
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
@@ -58,16 +58,21 @@ extension OptionsViewController {
     private func setUpLayout() {
         optionsTableview = UITableView()
         optionsTableview.separatorStyle = .none
+        optionsTableview.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         optionsTableview.translatesAutoresizingMaskIntoConstraints = false
         
         let optionsTableviewConstraints:[NSLayoutConstraint] = [
-            NSLayoutConstraint(item: optionsTableview, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+            NSLayoutConstraint(item: optionsTableview, attribute: .top, relatedBy: .equal,
+                               toItem: view.safeAreaLayoutGuide,
                                attribute: .top, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: optionsTableview, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+            NSLayoutConstraint(item: optionsTableview, attribute: .bottom, relatedBy: .equal,
+                               toItem: view.safeAreaLayoutGuide,
                                attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: optionsTableview, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+            NSLayoutConstraint(item: optionsTableview, attribute: .leading, relatedBy: .equal,
+                               toItem: view.safeAreaLayoutGuide,
                                attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: optionsTableview, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+            NSLayoutConstraint(item: optionsTableview, attribute: .trailing, relatedBy: .equal,
+                               toItem: view.safeAreaLayoutGuide,
                                attribute: .trailing, multiplier: 1, constant: 0)]
         
         view.addSubview(optionsTableview)
@@ -93,7 +98,9 @@ extension OptionsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
+        cell.backgroundColor = .clear
         cell.textLabel?.text = items[indexPath.row]
+        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         return cell
     }
     

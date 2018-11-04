@@ -53,7 +53,7 @@ class ListViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.08543890359, green: 0.9577052559, blue: 0.979156673, alpha: 1)
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Orbit"
@@ -80,8 +80,10 @@ extension ListViewController {
     // MARK: setUpLayout
     private func setUpLayout(){
         // tableview
-        self.listTableView = UITableView()
-        self.listTableView.translatesAutoresizingMaskIntoConstraints = false
+        listTableView = UITableView()
+        listTableView.separatorStyle = .none
+        listTableView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
+        listTableView.translatesAutoresizingMaskIntoConstraints = false
         
         let listTableViewConstraints: [NSLayoutConstraint] = [
             NSLayoutConstraint(item: listTableView, attribute: .top,relatedBy: .equal, toItem: calendarView,
@@ -105,13 +107,17 @@ extension ListViewController {
         self.writeButton.translatesAutoresizingMaskIntoConstraints = false
         
         let writeButtonConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.writeButton, attribute: .height, relatedBy: .equal, toItem: nil,
+            NSLayoutConstraint(item: self.writeButton, attribute: .height, relatedBy: .equal,
+                               toItem: nil,
                                attribute: .height, multiplier: 1, constant: 55),
-            NSLayoutConstraint(item: self.writeButton, attribute: .width, relatedBy: .equal, toItem: nil,
+            NSLayoutConstraint(item: self.writeButton, attribute: .width, relatedBy: .equal,
+                               toItem: nil,
                                attribute: .width, multiplier: 1, constant: 55),
-            NSLayoutConstraint(item: self.writeButton, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+            NSLayoutConstraint(item: self.writeButton, attribute: .trailing, relatedBy: .equal,
+                               toItem: view.safeAreaLayoutGuide,
                                attribute: .centerX, multiplier: 1.9, constant: 0),
-            NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal, toItem: view,
+            NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal,
+                               toItem: view,
                                attribute: .centerY, multiplier: 1.7, constant: 0)]
         
         // To add writebutton in listTableview
@@ -160,7 +166,7 @@ extension ListViewController: UITableViewDataSource{
         }
         let data = datasourece[indexPath.row]
         cell.titleLabel.text = "  \(data.title)"
-        cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))일"
+        cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))"
         if dates.count == datasourece.count {
             dates.append(data.createdAt)
         } else {

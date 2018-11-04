@@ -29,8 +29,10 @@ extension ListViewController {
         view.addSubview(thisMonthLabel)
         view.addConstraints(constDate)
         thisMonthLabel.textAlignment = .center
-        thisMonthLabel.backgroundColor = .lightGray
-        
+        thisMonthLabel.textColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
+        thisMonthLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        thisMonthLabel.backgroundColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
+
         weeksStackView = UIStackView()
         weeksStackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -56,6 +58,9 @@ extension ListViewController {
         for i in self.weeks {
             let weekLabel = UILabel()
             weekLabel.text = i
+            weekLabel.font = UIFont.boldSystemFont(ofSize: 14)
+            weekLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
+            weekLabel.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
             weekLabel.textAlignment = .center
             self.weeksStackView.addArrangedSubview(weekLabel)
         }
@@ -140,8 +145,10 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         guard let validCell = cell as? CalendarCell else {return}
         if cellState.isSelected {
             validCell.isSelectedImg.isHidden = false
+            validCell.dateLabel.textColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         } else {
             validCell.isSelectedImg.isHidden = true
+            validCell.dateLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
         }
     }
     

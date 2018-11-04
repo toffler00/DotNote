@@ -26,8 +26,12 @@ class CalendarCell: JTAppleCell {
     
     func setUpLayout() {
         
-        contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.black.cgColor
+        let border = CALayer()
+        border.frame = CGRect(x: 0, y: contentView.frame.height - 0.5,
+                              width: contentView.frame.width, height: 0.5)
+        border.backgroundColor = UIColor(red: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 1).cgColor
+        contentView.layer.addSublayer(border)
+        contentView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         
         todayView.translatesAutoresizingMaskIntoConstraints = false
         let constToday : [NSLayoutConstraint] = [
@@ -60,7 +64,7 @@ class CalendarCell: JTAppleCell {
         contentView.addSubview(isSelectedImg)
         contentView.addConstraints(constIsSelect)
         isSelectedImg.layer.cornerRadius = contentView.frame.size.width / 4
-        isSelectedImg.backgroundColor = UIColor.yellow
+        isSelectedImg.backgroundColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
         isSelectedImg.isHidden = false
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -76,12 +80,14 @@ class CalendarCell: JTAppleCell {
         contentView.addSubview(dateLabel)
         contentView.addConstraints(constDateLB)
         dateLabel.textAlignment = .center
+        dateLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
+        dateLabel.font = UIFont.boldSystemFont(ofSize: 14)
         dateLabel.backgroundColor = .clear
         
         isContentsImg.translatesAutoresizingMaskIntoConstraints = false
         let constIsContent : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: isContentsImg, attribute: .top, relatedBy: .equal, toItem: dateLabel,
-                               attribute: .bottom, multiplier: 1, constant: 8),
+                               attribute: .bottom, multiplier: 1, constant: 4),
             NSLayoutConstraint(item: isContentsImg, attribute: .width, relatedBy: .equal, toItem: dateLabel,
                                attribute: .width, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: isContentsImg, attribute: .height, relatedBy: .equal, toItem: nil,
@@ -90,6 +96,6 @@ class CalendarCell: JTAppleCell {
                                attribute: .centerX, multiplier: 1, constant: 0)]
         contentView.addSubview(isContentsImg)
         contentView.addConstraints(constIsContent)
-        isContentsImg.backgroundColor = .yellow
+        isContentsImg.backgroundColor = UIColor(red: 191/255, green: 1, blue: 0, alpha: 1)
     }
 }

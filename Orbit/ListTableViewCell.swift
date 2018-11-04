@@ -69,7 +69,7 @@ class ListTableViewCell: UITableViewCell {
 extension ListTableViewCell {
     // MARK: setUpLayout
     private func setUpLayout() {
-        
+        contentView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         // textAlignment
         self.dateLabel.textAlignment = .center
         self.titleLabel.textAlignment = .left
@@ -82,6 +82,10 @@ extension ListTableViewCell {
         self.dateLabel.translatesAutoresizingMaskIntoConstraints = false
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.weekLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        dateLabel.backgroundColor = .clear
+        titleLabel.backgroundColor = .clear
+        weekLabel.backgroundColor = .clear
         
         // NSLayoutConstraint
         // date Label Constraints
@@ -99,7 +103,8 @@ extension ListTableViewCell {
         
         self.addSubview(dateLabel)
         self.addConstraints(dateLabelConstraints)
-        dateLabel.backgroundColor = .yellow
+        dateLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        dateLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
         
         
         // title label Constraints
