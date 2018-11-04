@@ -53,11 +53,13 @@ class ListViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.08543890359, green: 0.9577052559, blue: 0.979156673, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Orbit"
         let realmManager = RealmManager.shared.realm
-        datasourece = realmManager.objects(Content.self)
+        datasourece = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
+        
     }
     
     // MARK: viewWillLayoutSubviews:
@@ -154,12 +156,11 @@ extension ListViewController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
         print("contents count \(datasourece.count)")
         if datasourece.count == 0 {
-             print("user.contents.count")
-            return cell 
+            return cell
         }
         let data = datasourece[indexPath.row]
         cell.titleLabel.text = "  \(data.title)"
-        cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "dd"))일"
+        cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))일"
         if dates.count == datasourece.count {
             dates.append(data.createdAt)
         } else {

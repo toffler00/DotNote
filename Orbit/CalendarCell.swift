@@ -25,6 +25,10 @@ class CalendarCell: JTAppleCell {
     }
     
     func setUpLayout() {
+        
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.black.cgColor
+        
         todayView.translatesAutoresizingMaskIntoConstraints = false
         let constToday : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: todayView, attribute: .width, relatedBy: .equal, toItem: contentView,

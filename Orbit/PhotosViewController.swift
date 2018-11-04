@@ -36,7 +36,8 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
 //        }
         
         view.backgroundColor = .white
-        
+        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.08543890359, green: 0.9577052559, blue: 0.979156673, alpha: 1)
+        navigationItem.title = "나의 사진"
         let options = PHFetchOptions()
         options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
         options.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: false) ]

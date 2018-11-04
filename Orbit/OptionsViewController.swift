@@ -23,11 +23,11 @@ class OptionsViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         // Do any additional setup after loading the view.
+        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.08543890359, green: 0.9577052559, blue: 0.979156673, alpha: 1)
         self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Options"
-        self.navigationController?.navigationBar.barTintColor = .white
         // 이곳에서만 크게 타이틀을 보이게 하고 싶은데...
         
         let realmManager = RealmManager.shared.realm

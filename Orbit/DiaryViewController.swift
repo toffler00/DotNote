@@ -30,7 +30,8 @@ class DiaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let realmManager = RealmManager.shared.realm
-        datasourece = realmManager.objects(Content.self)
+        datasourece = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
+
         
     }
 

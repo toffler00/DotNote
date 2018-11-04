@@ -42,9 +42,7 @@ class WeatherAPI {
                     if let data = data {
                         do {
                             let weather = try JSONDecoder().decode(Model.WeatherModel.self, from: data)
-                            
                             complete(nil, weather)
-                            
                         } catch {
                             log.error(error)
                             complete(error, nil)

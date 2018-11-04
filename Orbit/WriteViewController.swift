@@ -15,11 +15,15 @@ class WriteViewController: UIViewController {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var isImageLoadingFromiCloud: Bool = false
     var keyboardShown = false
-    var content = Content()
-    var user = User()
+    
+    //MARK: Ream Property
+//    var content = Content()
+//    var user = User()
     var realm = try! Realm()
     let realmManager = RealmManager.shared.realm
-//    var model : Model.Contents?
+
+    //    var model : Model.Contents?
+    
     fileprivate weak var diaryWriteDelegate: DiaryWriteDelegate!
     fileprivate var titleLabel : UILabel!
     fileprivate var contentTitle: UITextField!
@@ -34,6 +38,8 @@ class WriteViewController: UIViewController {
     fileprivate var stackBox : UIStackView!
     fileprivate var writeDoneBtn : UIButton!
     var contentImgV : UIImageView!
+    fileprivate var cameraIconImgView : UIImageView!
+    fileprivate var iconBgView : UIView!
     fileprivate var contents : UITextView!
     fileprivate var models : [Model.Contents] = [Model.Contents]()
     var selectedImageData: Data?
@@ -79,17 +85,21 @@ class WriteViewController: UIViewController {
     //MARK: LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         registerForKeyboardNotification()
+        regitsterForTextViewNotification()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         unregisterForKeyboardNotification()
+        unregisterForTextViewTextNotification()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.08543890359, green: 0.9577052559, blue: 0.979156673, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Write"
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -282,30 +292,65 @@ extension WriteViewController {
         contStackV.addSubview(stackBox)
         contStackV.addConstraints(constStackBox)
         stackBox.distribution = .fill
-        stackBox.backgroundColor = .blue
+        stackBox.spacing = 1
         
-        //MARK: contentImgV UIIMageView
+        //MARK: iconBgView
+        iconBgView = UIView()
+        iconBgView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constIconBgView : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: iconBgView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
+                               multiplier: 1, constant:72),
+            NSLayoutConstraint(item: iconBgView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+                               multiplier: 1, constant: 72),
+            NSLayoutConstraint(item: iconBgView, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing,
+                               multiplier: 1, constant: 0)]
+        stackBox.addSubview(iconBgView)
+        stackBox.addConstraints(constIconBgView)
+        
+        //MARK: cameraIconImgView UIImageView
+        cameraIconImgView = UIImageView()
+        cameraIconImgView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constCameraIconImg : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .width, relatedBy: .equal, toItem: iconBgView,
+                               attribute: .width, multiplier: 0.7, constant: 0),
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .height, relatedBy: .equal, toItem: iconBgView,
+                               attribute: .height, multiplier: 0.7, constant: 0),
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .centerX, relatedBy: .equal, toItem: iconBgView,
+                               attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .centerY, relatedBy: .equal, toItem: iconBgView,
+                               attribute: .centerY, multiplier: 1, constant: 0)]
+        iconBgView.addSubview(cameraIconImgView)
+        iconBgView.addConstraints(constCameraIconImg)
+        cameraIconImgView.contentMode = .scaleAspectFill
+        cameraIconImgView.layer.cornerRadius = 18
+        cameraIconImgView.clipsToBounds = true
+        cameraIconImgView.backgroundColor = .clear
+        cameraIconImgView.image = UIImage(named: "photo")
+        
+        //MARK: contentImgV UIImageView
         contentImgV = UIImageView()
         contentImgV.translatesAutoresizingMaskIntoConstraints = false
         
         let constImgV : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: contentImgV, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
-                               multiplier: 1, constant:72),
-            NSLayoutConstraint(item: contentImgV, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
-                               multiplier: 1, constant: 72),
-            NSLayoutConstraint(item: contentImgV, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing,
+            NSLayoutConstraint(item: contentImgV, attribute: .top, relatedBy: .equal, toItem: iconBgView, attribute: .top,
+                               multiplier: 1, constant:0),
+            NSLayoutConstraint(item: contentImgV, attribute: .bottom, relatedBy: .equal, toItem: iconBgView, attribute: .bottom,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contentImgV, attribute: .leading, relatedBy: .equal, toItem: iconBgView, attribute: .leading,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contentImgV, attribute: .trailing, relatedBy: .equal, toItem: iconBgView, attribute: .trailing,
                                multiplier: 1, constant: 0)]
         
-        stackBox.addSubview(contentImgV)
-        stackBox.addConstraints(constImgV)
+        iconBgView.addSubview(contentImgV)
+        iconBgView.addConstraints(constImgV)
         contentImgV.contentMode = .scaleAspectFill
         contentImgV.layer.cornerRadius = 36
         contentImgV.layer.borderWidth = 2
         contentImgV.layer.borderColor = UIColor.black.cgColor
         contentImgV.clipsToBounds = true
         contentImgV.backgroundColor = .clear
-        contentImgV.image = UIImage(named: "photo")
-        
         contentImgV.isUserInteractionEnabled = true
         
         let addImageGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addImageGesture))
@@ -371,11 +416,36 @@ extension WriteViewController {
         contents.font?.withSize(12)
         contents.backgroundColor = .white
         contents.isScrollEnabled = true
+        contents.text = "글을 입력하세요"
+        contents.textColor = .lightGray
         
     }
 }
 
 extension WriteViewController {
+    @objc fileprivate func cleanTextView() {
+        contents.text = ""
+        contents.textColor = .black
+    }
+    
+    @objc fileprivate func textViewState() {
+        if contents.text == "" {
+            contents.text = "글을 입력하세요"
+            contents.textColor = .lightGray
+        }
+    }
+    fileprivate func regitsterForTextViewNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(cleanTextView),
+                                               name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(textViewState),
+                                               name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
+    }
+    
+    fileprivate func unregisterForTextViewTextNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
+    }
+    
     fileprivate func registerForKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keboardFrameWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameDidChange), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -384,6 +454,7 @@ extension WriteViewController {
     fileprivate func unregisterForKeyboardNotification() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

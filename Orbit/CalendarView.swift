@@ -83,7 +83,7 @@ extension ListViewController {
             NSLayoutConstraint(item: calendarView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .trailing, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: calendarView, attribute: .height, relatedBy: .equal, toItem: view,
-                               attribute: .width, multiplier: 1, constant: 0)]
+                               attribute: .width, multiplier: 0.9, constant: 0)]
         
         view.addSubview(calendarView)
         calendarView.minimumLineSpacing = 0.5
@@ -189,7 +189,6 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         let parameters = ConfigurationParameters.init(startDate: startDate, endDate: endDate)
         return parameters
     }
-    
-    
+
 }
 
