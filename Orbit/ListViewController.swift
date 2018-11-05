@@ -118,7 +118,7 @@ extension ListViewController {
                                attribute: .centerX, multiplier: 1.9, constant: 0),
             NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal,
                                toItem: view,
-                               attribute: .centerY, multiplier: 1.7, constant: 0)]
+                               attribute: .centerY, multiplier: 1.8, constant: 0)]
         
         // To add writebutton in listTableview
         self.view.addSubview(writeButton)
@@ -145,7 +145,10 @@ extension ListViewController: UITableViewDelegate {
             tableView.deselectRow(at: indexPath, animated: false)
         }
     }
-
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
     
     
 }

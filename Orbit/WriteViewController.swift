@@ -158,7 +158,7 @@ extension WriteViewController {
         // MARK: containerV UIView
         
         log.debug("setup Layout")
-        self.view.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
+        self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         containerV = UIView()
         containerV.translatesAutoresizingMaskIntoConstraints = false
         
@@ -193,7 +193,7 @@ extension WriteViewController {
         dayOfWeek.font.withSize(24)
         dayOfWeek.font = UIFont.boldSystemFont(ofSize: 24)
         dayOfWeek.textAlignment = NSTextAlignment.left
-        dayOfWeek.backgroundColor = .yellow
+        dayOfWeek.backgroundColor = .clear
 
         //MARK: date Label
         date = UILabel()
@@ -217,7 +217,7 @@ extension WriteViewController {
         date.adjustsFontSizeToFitWidth = true
         
         date.textAlignment = NSTextAlignment.left
-        date.backgroundColor = .yellow
+        date.backgroundColor = .clear
         
         //MARK: weather Label
         weather = UILabel()
@@ -237,7 +237,7 @@ extension WriteViewController {
         containerV.addConstraints(constWeather)
         weather.numberOfLines = 1
         weather.textAlignment = NSTextAlignment.left
-        weather.backgroundColor = .yellow
+        weather.backgroundColor = .clear
         
         writeDoneBtn = UIButton()
         writeDoneBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -374,6 +374,7 @@ extension WriteViewController {
         titleLabel.text = "Today Title"
         titleLabel.font.withSize(20)
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        titleLabel.backgroundColor = .clear
         
         //MARK: contentTitle Label
         contentTitle = UITextField()
@@ -391,8 +392,8 @@ extension WriteViewController {
 
         stackBox.addSubview(contentTitle)
         stackBox.addConstraints(constTitle)
-        contentTitle.placeholder = "제목을 쓰윽쓰윽"
-        contentTitle.backgroundColor = .white
+        contentTitle.placeholder = " 제목을 쓰윽쓰윽"
+        contentTitle.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contentTitle.font?.withSize(15)
         
 
@@ -414,7 +415,7 @@ extension WriteViewController {
         contStackV.addSubview(contents)
         contStackV.addConstraints(constContens)
         contents.font?.withSize(12)
-        contents.backgroundColor = .white
+        contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isScrollEnabled = true
         contents.text = "글을 입력하세요"
         contents.textColor = .lightGray

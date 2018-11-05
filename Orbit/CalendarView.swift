@@ -160,15 +160,17 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         
     }
     func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
-        handleCellColor(cell: cell, cellState: cellState)
         handleSelectedCellColor(cell: cell, cellState: cellState)
+        handleCellColor(cell: cell, cellState: cellState)
+        
     }
     
     func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
         let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "cell", for: indexPath) as! CalendarCell
         cell.dateLabel.text = cellState.text
-        handleCellColor(cell: cell, cellState: cellState)
         handleSelectedCellColor(cell: cell, cellState: cellState)
+        handleCellColor(cell: cell, cellState: cellState)
+        
         return cell
     }
     
