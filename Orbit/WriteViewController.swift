@@ -502,7 +502,7 @@ extension WriteViewController {
     @objc fileprivate func addImageGesture() {
         if !isImageLoadingFromiCloud {
             let photoViewController = PhotosViewController(nibName: nil, bundle: nil, photosViewControllerDelegate: self)
-            navigationController?.pushViewController(photoViewController, animated: true)
+            self.navigationController?.pushViewController(photoViewController, animated: true)
         }
     }
 }

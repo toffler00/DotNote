@@ -19,8 +19,9 @@ class PhotoCollectionViewCell: UICollectionViewCell {
             synchronous.isSynchronous = false
             synchronous.isNetworkAccessAllowed = true
             
-            imageManager.requestImage(for: phAsset, targetSize: frame.size, contentMode: .aspectFit, options: synchronous, resultHandler: {[weak self] image, _ in
+            imageManager.requestImage(for: phAsset, targetSize: frame.size, contentMode: .aspectFill, options: synchronous, resultHandler: {[weak self] image, _ in
                 self?.imageView.image = image
+                self?.imageView.clipsToBounds = true
             })
         }
     }

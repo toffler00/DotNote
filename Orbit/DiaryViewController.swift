@@ -31,8 +31,12 @@ class DiaryViewController: UIViewController {
         super.viewDidLoad()
         let realmManager = RealmManager.shared.realm
         datasourece = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
-
         
+        navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.title = "\(dateToString(in: datasourece[indexPath].createdAt, dateFormat: "dd MMM yyyy"))"
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,7 +71,7 @@ class DiaryViewController: UIViewController {
 //}
 extension DiaryViewController {
     fileprivate func setupLayout() {
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
 //        let layout = UICollectionViewFlowLayout()
 //        layout.scrollDirection = .horizontal
 //        layout.itemSize = CGSize(width: (self.view.frame.width / 7) - 1, height: 60)
@@ -107,7 +111,7 @@ extension DiaryViewController {
         
         view.addSubview(containerView)
         view.addConstraints(consContainerV)
-        containerView.backgroundColor = #colorLiteral(red: 0.5563425422, green: 0.9793455005, blue: 0, alpha: 1)
+        containerView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         
         weatherImgV = UIImageView()
         weatherImgV.translatesAutoresizingMaskIntoConstraints = false
@@ -141,7 +145,7 @@ extension DiaryViewController {
         
         containerView.addSubview(dayOfWeek)
         containerView.addConstraints(consDayofWeek)
-        dayOfWeek.backgroundColor = .white
+        dayOfWeek.backgroundColor = .clear
         
         dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -158,7 +162,7 @@ extension DiaryViewController {
         
         containerView.addSubview(dateLabel)
         containerView.addConstraints(consDateLabel)
-        dateLabel.backgroundColor = .white
+        dateLabel.backgroundColor = .clear
         
         contentImgView = UIImageView()
         contentImgView.translatesAutoresizingMaskIntoConstraints = false
@@ -167,15 +171,17 @@ extension DiaryViewController {
             NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: weatherImgV,
                                attribute: .bottom, multiplier: 1, constant: 8),
             NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
-                               attribute: .width, multiplier: 0.5, constant: 0),
+                               attribute: .width, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
-                               attribute: .width, multiplier: 0.5, constant: 0),
+                               attribute: .width, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
                                attribute: .centerX, multiplier: 1, constant: 0)]
         
         containerView.addSubview(contentImgView)
         containerView.addConstraints(consContentImgV)
-        contentImgView.backgroundColor = .white
+        contentImgView.backgroundColor = .clear
+        contentImgView.contentMode = .scaleAspectFill
+        contentImgView.clipsToBounds = true
         
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -192,7 +198,7 @@ extension DiaryViewController {
         
         containerView.addSubview(titleLabel)
         containerView.addConstraints(consTitleLabel)
-        titleLabel.backgroundColor = .white
+        titleLabel.backgroundColor = .clear
         
         contents = UITextView()
         contents.translatesAutoresizingMaskIntoConstraints = false
@@ -209,10 +215,10 @@ extension DiaryViewController {
         
         containerView.addSubview(contents)
         containerView.addConstraints(consContents)
-        contents.backgroundColor = .yellow
+        contents.backgroundColor = .clear
         contents.isEditable = false
         contents.textAlignment = .center
-        contents.font = UIFont.systemFont(ofSize: 24)
+        contents.font = UIFont.systemFont(ofSize: 18)
     }
     
 }

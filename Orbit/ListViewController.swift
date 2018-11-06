@@ -40,7 +40,7 @@ class ListViewController: UIViewController {
     // MARK: @objc Method
     @objc fileprivate func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
-        self.navigationController?.pushViewController(writeViewController, animated: true)
+        navigationController?.pushViewController(writeViewController, animated: true)
     }
     
     // MARK: Life Cycle
@@ -170,6 +170,7 @@ extension ListViewController: UITableViewDataSource{
         let data = datasourece[indexPath.row]
         cell.titleLabel.text = "  \(data.title)"
         cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))"
+        cell.weekLabel.text = "\(getWeekDay(in: data.createdAt, dateFormat: "EEE"))"
         if dates.count == datasourece.count {
             dates.append(data.createdAt)
         } else {

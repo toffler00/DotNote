@@ -26,11 +26,10 @@ extension UIViewController {
     }
     
     func getWeekDay(in date : Date, dateFormat : String) -> String{
-        let today = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        let weekDay = dateFormatter.string(from: today).capitalized
+//        dateFormatter.locale = Locale(identifier: "ko_KR")
+        let weekDay = dateFormatter.string(from: date).capitalized
         return weekDay
     }
     

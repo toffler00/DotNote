@@ -29,6 +29,7 @@ class ListTableViewCell: UITableViewCell {
         // UI
         
         self.setUpLayout()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -122,6 +123,7 @@ extension ListTableViewCell {
         self.addConstraints(dateLabelConstraints)
         dateLabel.font = UIFont.boldSystemFont(ofSize: 28)
         dateLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
+        addBottomBorderLine(to: dateLabel, height: 0.5)
         
         
         // title label Constraints
@@ -137,6 +139,18 @@ extension ListTableViewCell {
         // 중앙 먼저
         self.addSubview(titleLabel)
         self.addConstraints(titleLabelConstraints)
+        let border = CALayer()
+        border.frame = CGRect(x: 0, y: titleLabel.frame.height - 1, width: titleLabel.frame.width, height: 1)
+        border.backgroundColor = UIColor(red: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 1).cgColor
+        titleLabel.layer.addSublayer(border)
         
+    }
+    
+    func addBottomBorderLine(to view : UIView ,height : CGFloat) {
+        let border = CALayer()
+        border.frame = CGRect(x: 0, y: view.frame.height - height,
+                              width: view.frame.width, height: height)
+        border.backgroundColor = UIColor(red: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 1).cgColor
+        view.layer.addSublayer(border)
     }
 }
