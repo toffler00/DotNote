@@ -34,7 +34,7 @@ class ListViewController: UIViewController {
     // MARK: IBAction
     @IBAction func pushOptionViewController(_ sender: UIBarButtonItem) {
         let optionsVC = OptionsViewController()
-        self.navigationController?.pushViewController(optionsVC, animated: true)
+        navigationController?.pushViewController(optionsVC, animated: true)
     }
     
     // MARK: @objc Method
@@ -149,14 +149,12 @@ extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-    
-    
 }
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if datasourece.count == 0 {
-            return 10
+            return 5
         }
         return datasourece.count
     }
@@ -177,6 +175,7 @@ extension ListViewController: UITableViewDataSource{
             dates.removeAll()
             dates.append(data.createdAt)
         }
+        
         return cell
     }
     
@@ -187,3 +186,4 @@ extension ListViewController: DiaryWriteDelegate {
         // MARK: - ToDo
     }   
 }
+

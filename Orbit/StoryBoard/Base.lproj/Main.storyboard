@@ -42,7 +42,7 @@
                                             <stackView opaque="NO" contentMode="center" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Uzc-aV-ZhC">
                                                 <rect key="frame" x="0.0" y="0.0" width="319" height="70"/>
                                                 <subviews>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fFG-by-LPW">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="제목을 쓰윽쓰윽" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fFG-by-LPW">
                                                         <rect key="frame" x="0.0" y="20" width="248" height="30"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="GMK-fA-pvF"/>

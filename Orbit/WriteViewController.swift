@@ -100,17 +100,23 @@ class WriteViewController: UIViewController {
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Write"
         
+
     }
     
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()
-            stringToDate(date: getDate(dateFormat: "dd MMM yyyy") , dateFormat: "dd MMM yyyy")
-            getWeekDay()
+            setInformation(in: getDate(dateFormat: "dd MMM yyyy hh mm"))
+            
         }
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    func setInformation(in todayDate : String) {
+        today = stringToDate(in: todayDate, dateFormat: "dd MMM yyyy hh mm")
+        dayOfWeek.text = getWeekDay(in: today, dateFormat: "EEEE")
+        date.text = dateToString(in: today, dateFormat: "dd MMM yyyy")
     }
 }
 
@@ -121,24 +127,6 @@ extension WriteViewController : DiaryWriteDelegate {
     let data = Content(createdAt: today, title: contentTitle.text!, weather: weather.text!, body: contents.text!, image: selectedImageData!)
     RealmManager.shared.creat(object: data)
     navigationController?.popViewController(animated: true)
-    }
-    
-    func getDate(dateFormat : String) -> String {
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
-        dateFormatter.locale = Locale(identifier: "kr_KR")
-        let dateToString = dateFormatter.string(from: date)
-        self.date.text = dateToString
-        return dateToString
-    }
-    
-    func stringToDate(date : String, dateFormat : String) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
-//        dateFormatter.locale = Locale(identifier: "kr_KR")
-        let stringToDate = dateFormatter.date(from: date)
-        self.today = stringToDate
     }
     
     func getWeekDay() {
@@ -238,7 +226,7 @@ extension WriteViewController {
         weather.numberOfLines = 1
         weather.textAlignment = NSTextAlignment.left
         weather.backgroundColor = .clear
-        
+
         writeDoneBtn = UIButton()
         writeDoneBtn.translatesAutoresizingMaskIntoConstraints = false
         
@@ -414,11 +402,11 @@ extension WriteViewController {
         
         contStackV.addSubview(contents)
         contStackV.addConstraints(constContens)
-        contents.font?.withSize(12)
+        contents.font?.withSize(18)
         contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isScrollEnabled = true
         contents.text = "글을 입력하세요"
-        contents.textColor = .lightGray
+        contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
         
     }
 }
