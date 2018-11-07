@@ -380,7 +380,9 @@ extension WriteViewController {
 
         stackBox.addSubview(contentTitle)
         stackBox.addConstraints(constTitle)
-        contentTitle.placeholder = " 제목을 쓰윽쓰윽"
+        contentTitle.attributedPlaceholder = NSAttributedString(string: " 제목을 쓰윽쓰윽",
+                                                                attributes: [NSAttributedStringKey.foregroundColor :
+                                                                    UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)])
         contentTitle.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contentTitle.font?.withSize(15)
         
@@ -402,10 +404,10 @@ extension WriteViewController {
         
         contStackV.addSubview(contents)
         contStackV.addConstraints(constContens)
-        contents.font?.withSize(18)
         contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isScrollEnabled = true
         contents.text = "글을 입력하세요"
+        contents.font = UIFont.systemFont(ofSize: 18)
         contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
         
     }
@@ -420,7 +422,7 @@ extension WriteViewController {
     @objc fileprivate func textViewState() {
         if contents.text == "" {
             contents.text = "글을 입력하세요"
-            contents.textColor = .lightGray
+            contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
         }
     }
     fileprivate func regitsterForTextViewNotification() {
