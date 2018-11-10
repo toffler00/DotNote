@@ -107,12 +107,13 @@ class WriteViewController: UIViewController {
         if containerV == nil {
             setupLayout()
             setInformation(in: getDate(dateFormat: "dd MMM yyyy hh mm"))
-            
         }
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     func setInformation(in todayDate : String) {
         today = stringToDate(in: todayDate, dateFormat: "dd MMM yyyy hh mm")
         dayOfWeek.text = getWeekDay(in: today, dateFormat: "EEEE")
