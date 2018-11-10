@@ -100,45 +100,35 @@ class WriteViewController: UIViewController {
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Write"
         
+
     }
     
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()
-            stringToDate(date: getDate(dateFormat: "dd MMM yyyy") , dateFormat: "dd MMM yyyy")
-            getWeekDay()
+            setInformation(in: getDate(dateFormat: "dd MMM yyyy hh mm"))
         }
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setInformation(in todayDate : String) {
+        today = stringToDate(in: todayDate, dateFormat: "dd MMM yyyy hh mm")
+        dayOfWeek.text = getWeekDay(in: today, dateFormat: "EEEE")
+        date.text = dateToString(in: today, dateFormat: "dd MMM yyyy")
     }
 }
 
 //MARK: writeDone Post
 extension WriteViewController : DiaryWriteDelegate {
    @objc func writeDone() {
-
-    let data = Content(createdAt: today, title: contentTitle.text!, weather: weather.text!, body: contents.text!, image: selectedImageData!)
+    let getMonth = dateToString(in: today, dateFormat: "yyyyMM")
+    let data = Content(createdAt: today, title: contentTitle.text!,
+                       weather: weather.text!, body: contents.text!, image: selectedImageData!)
     RealmManager.shared.creat(object: data)
     navigationController?.popViewController(animated: true)
-    }
-    
-    func getDate(dateFormat : String) -> String {
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
-        dateFormatter.locale = Locale(identifier: "kr_KR")
-        let dateToString = dateFormatter.string(from: date)
-        self.date.text = dateToString
-        return dateToString
-    }
-    
-    func stringToDate(date : String, dateFormat : String) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
-//        dateFormatter.locale = Locale(identifier: "kr_KR")
-        let stringToDate = dateFormatter.date(from: date)
-        self.today = stringToDate
     }
     
     func getWeekDay() {
@@ -158,7 +148,7 @@ extension WriteViewController {
         // MARK: containerV UIView
         
         log.debug("setup Layout")
-        self.view.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
+        self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         containerV = UIView()
         containerV.translatesAutoresizingMaskIntoConstraints = false
         
@@ -193,7 +183,7 @@ extension WriteViewController {
         dayOfWeek.font.withSize(24)
         dayOfWeek.font = UIFont.boldSystemFont(ofSize: 24)
         dayOfWeek.textAlignment = NSTextAlignment.left
-        dayOfWeek.backgroundColor = .yellow
+        dayOfWeek.backgroundColor = .clear
 
         //MARK: date Label
         date = UILabel()
@@ -217,7 +207,7 @@ extension WriteViewController {
         date.adjustsFontSizeToFitWidth = true
         
         date.textAlignment = NSTextAlignment.left
-        date.backgroundColor = .yellow
+        date.backgroundColor = .clear
         
         //MARK: weather Label
         weather = UILabel()
@@ -237,8 +227,8 @@ extension WriteViewController {
         containerV.addConstraints(constWeather)
         weather.numberOfLines = 1
         weather.textAlignment = NSTextAlignment.left
-        weather.backgroundColor = .yellow
-        
+        weather.backgroundColor = .clear
+
         writeDoneBtn = UIButton()
         writeDoneBtn.translatesAutoresizingMaskIntoConstraints = false
         
@@ -374,6 +364,7 @@ extension WriteViewController {
         titleLabel.text = "Today Title"
         titleLabel.font.withSize(20)
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        titleLabel.backgroundColor = .clear
         
         //MARK: contentTitle Label
         contentTitle = UITextField()
@@ -391,8 +382,10 @@ extension WriteViewController {
 
         stackBox.addSubview(contentTitle)
         stackBox.addConstraints(constTitle)
-        contentTitle.placeholder = "제목을 쓰윽쓰윽"
-        contentTitle.backgroundColor = .white
+        contentTitle.attributedPlaceholder = NSAttributedString(string: " 제목을 쓰윽쓰윽",
+                                                                attributes: [NSAttributedStringKey.foregroundColor :
+                                                                    UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)])
+        contentTitle.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contentTitle.font?.withSize(15)
         
 
@@ -413,11 +406,11 @@ extension WriteViewController {
         
         contStackV.addSubview(contents)
         contStackV.addConstraints(constContens)
-        contents.font?.withSize(12)
-        contents.backgroundColor = .white
+        contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isScrollEnabled = true
         contents.text = "글을 입력하세요"
-        contents.textColor = .lightGray
+        contents.font = UIFont.systemFont(ofSize: 18)
+        contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
         
     }
 }
@@ -431,7 +424,7 @@ extension WriteViewController {
     @objc fileprivate func textViewState() {
         if contents.text == "" {
             contents.text = "글을 입력하세요"
-            contents.textColor = .lightGray
+            contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
         }
     }
     fileprivate func regitsterForTextViewNotification() {
@@ -501,7 +494,7 @@ extension WriteViewController {
     @objc fileprivate func addImageGesture() {
         if !isImageLoadingFromiCloud {
             let photoViewController = PhotosViewController(nibName: nil, bundle: nil, photosViewControllerDelegate: self)
-            navigationController?.pushViewController(photoViewController, animated: true)
+            self.navigationController?.pushViewController(photoViewController, animated: true)
         }
     }
 }

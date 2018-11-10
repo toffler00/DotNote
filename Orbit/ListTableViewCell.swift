@@ -27,8 +27,9 @@ class ListTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         // UI
-    
+        
         self.setUpLayout()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,6 +71,7 @@ extension ListTableViewCell {
     // MARK: setUpLayout
     private func setUpLayout() {
         contentView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
+        
         // textAlignment
         self.dateLabel.textAlignment = .center
         self.titleLabel.textAlignment = .left
@@ -88,23 +90,42 @@ extension ListTableViewCell {
         weekLabel.backgroundColor = .clear
         
         // NSLayoutConstraint
+        
+        // week label Constraints
+        let weekLabelConstraints: [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: weekLabel, attribute: .top, relatedBy: .equal, toItem: self,
+                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: weekLabel, attribute: .leading, relatedBy: .equal, toItem: self,
+                               attribute: .leading, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: weekLabel, attribute: .width, relatedBy: .equal, toItem: self,
+                               attribute: .width, multiplier: 0.15, constant: 0),
+            NSLayoutConstraint(item: weekLabel, attribute: .height, relatedBy: .equal, toItem: self,
+                               attribute: .height, multiplier: 0.3, constant: 0)]
+        
+        self.addSubview(weekLabel)
+        self.addConstraints(weekLabelConstraints)
+        weekLabel.backgroundColor = .clear
+        print(weekLabel.frame.size.width)
+        addBottomBorderLine(to: weekLabel, height: 1)
+    
         // date Label Constraints
         let dateLabelConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.dateLabel, attribute: .top, relatedBy: .equal, toItem: self,
-                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.dateLabel, attribute: .top, relatedBy: .equal, toItem: weekLabel,
+                               attribute: .bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.dateLabel, attribute: .bottom, relatedBy: .equal, toItem: self,
                                attribute: .bottom ,multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.dateLabel, attribute: .leading, relatedBy: .equal, toItem: self,
                                attribute: .leading, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.dateLabel, attribute: .width, relatedBy: .equal, toItem: self,
                                attribute: .width, multiplier: 0.15, constant: 0),
-            NSLayoutConstraint(item: dateLabel, attribute: .height, relatedBy: .equal, toItem: nil,
-                               attribute: .height, multiplier: 1, constant: 48)]
+            NSLayoutConstraint(item: dateLabel, attribute: .height, relatedBy: .equal, toItem: contentView,
+                               attribute: .height, multiplier: 0.7, constant: 0)]
         
         self.addSubview(dateLabel)
         self.addConstraints(dateLabelConstraints)
-        dateLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        dateLabel.font = UIFont.boldSystemFont(ofSize: 28)
         dateLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
+        addBottomBorderLine(to: dateLabel, height: 0.5)
         
         
         // title label Constraints
@@ -115,27 +136,21 @@ extension ListTableViewCell {
                                attribute: .bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.titleLabel, attribute: .leading, relatedBy: .equal, toItem: dateLabel,
                                attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.titleLabel, attribute: .width, relatedBy: .equal, toItem: self,
-                               attribute: .width,multiplier: 0.70, constant: 0)]
+            NSLayoutConstraint(item: self.titleLabel, attribute: .trailing, relatedBy: .equal, toItem: self,
+                               attribute: .trailing,multiplier: 1, constant: 0)]
         // 중앙 먼저
         self.addSubview(titleLabel)
         self.addConstraints(titleLabelConstraints)
-
         
-        // week label Constraints
-        let weekLabelConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.weekLabel, attribute: .top, relatedBy: .equal, toItem: self,
-                               attribute: .top, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.weekLabel, attribute: .bottom, relatedBy: .equal, toItem: self,
-                               attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.weekLabel, attribute: .leading, relatedBy: .equal, toItem: titleLabel,
-                               attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.weekLabel, attribute: .trailing, relatedBy: .equal, toItem: self,
-                               attribute: .trailing, multiplier: 1, constant: 0)]
-
-        self.addSubview(weekLabel)
-        self.addConstraints(weekLabelConstraints)
-        weekLabel.backgroundColor = .green
         
+    }
+    
+    func addBottomBorderLine(to view : UIView ,height : CGFloat) {
+        let border = CALayer()
+        print(view.frame.width)
+        border.frame = CGRect(x: 0, y: view.bounds.height - height,
+                              width: view.bounds.width, height: height)
+        border.backgroundColor = UIColor(red: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 1).cgColor
+        view.layer.addSublayer(border)
     }
 }

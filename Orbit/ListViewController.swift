@@ -17,7 +17,7 @@ class ListViewController: UIViewController {
     // MARK: Properties
     private var user = User()
     private var content = Content()
-    private var realm = try! Realm()
+    private var realmm = try! Realm()
     var datasourece : Results<Content>!
     
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
@@ -30,17 +30,18 @@ class ListViewController: UIViewController {
     var calendarView : JTAppleCalendarView!
     let dateFormatter : DateFormatter = DateFormatter()
     var dates : [Date] = []
+    var contentDate : [String] = []
     
     // MARK: IBAction
     @IBAction func pushOptionViewController(_ sender: UIBarButtonItem) {
         let optionsVC = OptionsViewController()
-        self.navigationController?.pushViewController(optionsVC, animated: true)
+        navigationController?.pushViewController(optionsVC, animated: true)
     }
     
     // MARK: @objc Method
     @objc fileprivate func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
-        self.navigationController?.pushViewController(writeViewController, animated: true)
+        navigationController?.pushViewController(writeViewController, animated: true)
     }
     
     // MARK: Life Cycle
@@ -59,7 +60,12 @@ class ListViewController: UIViewController {
         self.navigationItem.title = "Orbit"
         let realmManager = RealmManager.shared.realm
         datasourece = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
-        
+        guard let contentDate = realmManager.objects(Content.self).value(forKey: "createdAt") as? [Date] else {return}
+        for i in contentDate {
+            let date = dateToString(in: i, dateFormat: "yyyyMMdd")
+            self.contentDate.append(date)
+        }
+        print(contentDate)
     }
     
     // MARK: viewWillLayoutSubviews:
@@ -118,7 +124,7 @@ extension ListViewController {
                                attribute: .centerX, multiplier: 1.9, constant: 0),
             NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal,
                                toItem: view,
-                               attribute: .centerY, multiplier: 1.7, constant: 0)]
+                               attribute: .centerY, multiplier: 1.8, constant: 0)]
         
         // To add writebutton in listTableview
         self.view.addSubview(writeButton)
@@ -145,15 +151,16 @@ extension ListViewController: UITableViewDelegate {
             tableView.deselectRow(at: indexPath, animated: false)
         }
     }
-
     
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
 }
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if datasourece.count == 0 {
-            return 10
+            return 5
         }
         return datasourece.count
     }
@@ -167,12 +174,8 @@ extension ListViewController: UITableViewDataSource{
         let data = datasourece[indexPath.row]
         cell.titleLabel.text = "  \(data.title)"
         cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))"
-        if dates.count == datasourece.count {
-            dates.append(data.createdAt)
-        } else {
-            dates.removeAll()
-            dates.append(data.createdAt)
-        }
+        cell.weekLabel.text = "\(getWeekDay(in: data.createdAt, dateFormat: "EEE"))"
+        
         return cell
     }
     
@@ -183,3 +186,4 @@ extension ListViewController: DiaryWriteDelegate {
         // MARK: - ToDo
     }   
 }
+

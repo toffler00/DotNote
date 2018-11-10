@@ -154,21 +154,27 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
     
     func handleCellisContents(cell : JTAppleCell? ,cellState : CellState) {
         guard let validCell = cell as? CalendarCell else {return}
-        dateFormatter.dateFormat = "dd MMM yyyy"
-        let cellStateDate = dateFormatter.string(from: cellState.date)
-        
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let contentsDate = dateFormatter.string(from: cellState.date)
+        if self.contentDate.contains(contentsDate) {
+            validCell.isContentsImg.isHidden = false
+        }else {
+            validCell.isContentsImg.isHidden = true
+        }
         
     }
     func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
-        handleCellColor(cell: cell, cellState: cellState)
         handleSelectedCellColor(cell: cell, cellState: cellState)
+        handleCellColor(cell: cell, cellState: cellState)
+        handleCellisContents(cell: cell, cellState: cellState)
     }
     
     func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
         let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "cell", for: indexPath) as! CalendarCell
         cell.dateLabel.text = cellState.text
-        handleCellColor(cell: cell, cellState: cellState)
         handleSelectedCellColor(cell: cell, cellState: cellState)
+        handleCellColor(cell: cell, cellState: cellState)
+        handleCellisContents(cell: cell, cellState: cellState)
         return cell
     }
     

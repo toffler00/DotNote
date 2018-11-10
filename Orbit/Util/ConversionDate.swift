@@ -10,6 +10,16 @@ import Foundation
 import UIKit
 
 extension UIViewController {
+    
+    func getDate(dateFormat : String) -> String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        dateFormatter.locale = Locale(identifier: "kr_KR")
+        let dateToString = dateFormatter.string(from: date)
+        return dateToString
+    }
+    
     func dateToString(in date : Date, dateFormat : String) -> String {
         let dateFormatter = DateFormatter()
 //        dateFormatter.locale = Locale(identifier: "ko_KR")
@@ -20,17 +30,19 @@ extension UIViewController {
         return dateFormatter.string(from: date)
     }
     
-    func stringToDate(in date : String) -> Date {
-        let date = Date()
-        return date
+    func stringToDate(in date : String, dateFormat : String) -> Date{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        //        dateFormatter.locale = Locale(identifier: "kr_KR")
+        let stringToDate = dateFormatter.date(from: date)
+        return stringToDate!
     }
     
     func getWeekDay(in date : Date, dateFormat : String) -> String{
-        let today = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        let weekDay = dateFormatter.string(from: today).capitalized
+//        dateFormatter.locale = Locale(identifier: "ko_KR")
+        let weekDay = dateFormatter.string(from: date).capitalized
         return weekDay
     }
     
