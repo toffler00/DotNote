@@ -17,7 +17,7 @@ class ListViewController: UIViewController {
     // MARK: Properties
     private var user = User()
     private var content = Content()
-    private var realm = try! Realm()
+    private var realmm = try! Realm()
     var datasourece : Results<Content>!
     
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
@@ -30,6 +30,7 @@ class ListViewController: UIViewController {
     var calendarView : JTAppleCalendarView!
     let dateFormatter : DateFormatter = DateFormatter()
     var dates : [Date] = []
+    var contentDate : [String] = []
     
     // MARK: IBAction
     @IBAction func pushOptionViewController(_ sender: UIBarButtonItem) {
@@ -59,7 +60,12 @@ class ListViewController: UIViewController {
         self.navigationItem.title = "Orbit"
         let realmManager = RealmManager.shared.realm
         datasourece = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
-        
+        guard let contentDate = realmManager.objects(Content.self).value(forKey: "createdAt") as? [Date] else {return}
+        for i in contentDate {
+            let date = dateToString(in: i, dateFormat: "yyyyMMdd")
+            self.contentDate.append(date)
+        }
+        print(contentDate)
     }
     
     // MARK: viewWillLayoutSubviews:
@@ -169,12 +175,6 @@ extension ListViewController: UITableViewDataSource{
         cell.titleLabel.text = "  \(data.title)"
         cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))"
         cell.weekLabel.text = "\(getWeekDay(in: data.createdAt, dateFormat: "EEE"))"
-        if dates.count == datasourece.count {
-            dates.append(data.createdAt)
-        } else {
-            dates.removeAll()
-            dates.append(data.createdAt)
-        }
         
         return cell
     }

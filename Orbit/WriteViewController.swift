@@ -123,8 +123,9 @@ class WriteViewController: UIViewController {
 //MARK: writeDone Post
 extension WriteViewController : DiaryWriteDelegate {
    @objc func writeDone() {
-
-    let data = Content(createdAt: today, title: contentTitle.text!, weather: weather.text!, body: contents.text!, image: selectedImageData!)
+    let getMonth = dateToString(in: today, dateFormat: "yyyyMM")
+    let data = Content(createdAt: today, title: contentTitle.text!,
+                       weather: weather.text!, body: contents.text!, image: selectedImageData!)
     RealmManager.shared.creat(object: data)
     navigationController?.popViewController(animated: true)
     }
