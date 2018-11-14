@@ -18,10 +18,11 @@ class ListViewController: UIViewController {
     private var user = User()
     private var content = Content()
     private var realmm = try! Realm()
-    var datasourece : Results<Content>!
+    var datasource : Results<Content>!
+    let realmManager = RealmManager.shared.realm
     
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
-    private var listTableView: UITableView!
+     var listTableView: UITableView!
     private var writeButton: UIButton!
     var models = [Model.Contents]()
     var thisMonthLabel : UILabel!
@@ -50,28 +51,25 @@ class ListViewController: UIViewController {
            return
         }else {
             self.listTableView.reloadData()
+            self.calendarView.reloadData()
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Orbit"
-        let realmManager = RealmManager.shared.realm
-        datasourece = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
-        guard let contentDate = realmManager.objects(Content.self).value(forKey: "createdAt") as? [Date] else {return}
-        for i in contentDate {
-            let date = dateToString(in: i, dateFormat: "yyyyMMdd")
-            self.contentDate.append(date)
-        }
+        setDatasource(in: getDate(dateFormat: "MMM yyyy"))
+        
         print(contentDate)
     }
     
     // MARK: viewWillLayoutSubviews:
     // 뷰가 먼저 보여야하므로
     override func viewWillLayoutSubviews() {
-        if self.listTableView == nil {
+        if self.calendarView == nil {
             setUpUI()
             setUpCalendarView()
             setCalendar()
@@ -139,15 +137,28 @@ extension ListViewController {
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
     }
+    
+    func setDatasource(in date : String) {
+        guard let contentDate = realmManager.objects(Content.self).value(forKey: "createdAt") as? [Date] else {return}
+        self.contentDate.removeAll()
+        for i in contentDate {
+            let date = dateToString(in: i, dateFormat: "yyyyMMdd")
+            self.contentDate.append(date)
+        }
+        print(date)
+            datasource = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false).filter("createdAtMonth == '\(date)'")
+            print(datasource)
+    }
 }
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(datasourece.count)
-        if datasourece.count != 0 {
+        if datasource.count != 0 {
             let diaryViewController = DiaryViewController()
-            diaryViewController.indexPath = indexPath.row
+            diaryViewController.indexPath = datasource.index(of: datasource[indexPath.row])!
             self.navigationController?.pushViewController(diaryViewController, animated: true)
+            tableView.deselectRow(at: indexPath, animated: false)
+        } else {
             tableView.deselectRow(at: indexPath, animated: false)
         }
     }
@@ -159,19 +170,19 @@ extension ListViewController: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if datasourece.count == 0 {
+        if datasource.count == 0 {
             return 5
         }
-        return datasourece.count
+        return datasource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell", for: indexPath) as! ListTableViewCell
-        print("contents count \(datasourece.count)")
-        if datasourece.count == 0 {
+        if datasource.count == 0 {
             return cell
         }
-        let data = datasourece[indexPath.row]
+        
+        let data = datasource[indexPath.row]
         cell.titleLabel.text = "  \(data.title)"
         cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))"
         cell.weekLabel.text = "\(getWeekDay(in: data.createdAt, dateFormat: "EEE"))"
@@ -179,11 +190,6 @@ extension ListViewController: UITableViewDataSource{
         return cell
     }
     
-}
-// MARK: - DiaryWriteDelegate
-extension ListViewController: DiaryWriteDelegate {
-    func writeDone() {
-        // MARK: - ToDo
-    }   
+   
 }
 

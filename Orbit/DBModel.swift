@@ -20,14 +20,16 @@ class User: Object {
 
 class Content: Object {
     @objc dynamic var createdAt: Date = Date()
+    @objc dynamic var createdAtMonth : String = ""
     @objc dynamic var title: String = ""
     @objc dynamic var weather: String = ""
     @objc dynamic var body: String = ""
     @objc dynamic var image: Data? = nil
     
-    convenience init(createdAt : Date, title : String, weather : String, body : String, image : Data) {
+    convenience init(createdAt : Date, createdAtMonth : String, title : String, weather : String, body : String, image : Data) {
         self.init()
         self.createdAt = createdAt
+        self.createdAtMonth = createdAtMonth
         self.title = title
         self.weather = weather
         self.body = body

@@ -10,6 +10,9 @@ import UIKit
 import CoreLocation
 import RealmSwift
 
+protocol WriteDoneDelegate: class {
+    func writeDone()
+}
 class WriteViewController: UIViewController {
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -24,7 +27,7 @@ class WriteViewController: UIViewController {
 
     //    var model : Model.Contents?
     
-    fileprivate weak var diaryWriteDelegate: DiaryWriteDelegate!
+    weak var writeDoneDelegate: WriteDoneDelegate!
     fileprivate var titleLabel : UILabel!
     fileprivate var contentTitle: UITextField!
     fileprivate var dayOfWeek: UILabel!
@@ -32,7 +35,9 @@ class WriteViewController: UIViewController {
     
 //    fileprivate var weatherImg : UIImageView!
     fileprivate var date : UILabel!
+    fileprivate var dateTF : CustomTextFiled!
     fileprivate var today : Date!
+    fileprivate var createAtMonth : String!
     fileprivate var containerV : UIView!
     fileprivate var contStackV : UIStackView!
     fileprivate var stackBox : UIStackView!
@@ -42,7 +47,8 @@ class WriteViewController: UIViewController {
     fileprivate var iconBgView : UIView!
     fileprivate var contents : UITextView!
     fileprivate var models : [Model.Contents] = [Model.Contents]()
-    var selectedImageData: Data?
+     var selectedImageData: Data?
+    fileprivate var datePicker : UIDatePicker!
     var weatherItems : Model.WeatherModel.Weather?
     
     
@@ -75,9 +81,9 @@ class WriteViewController: UIViewController {
     }
     
     
-    init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: DiaryWriteDelegate) {
+    init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: WriteDoneDelegate) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.diaryWriteDelegate = delegate
+        self.writeDoneDelegate = delegate
         view.backgroundColor = .white
         setupLocationManager()
     }
@@ -118,16 +124,17 @@ class WriteViewController: UIViewController {
         today = stringToDate(in: todayDate, dateFormat: "dd MMM yyyy hh mm")
         dayOfWeek.text = getWeekDay(in: today, dateFormat: "EEEE")
         date.text = dateToString(in: today, dateFormat: "dd MMM yyyy")
+        createAtMonth = dateToString(in: today, dateFormat: "MMM yyyy")
     }
 }
 
 //MARK: writeDone Post
-extension WriteViewController : DiaryWriteDelegate {
+extension WriteViewController {
    @objc func writeDone() {
-    let getMonth = dateToString(in: today, dateFormat: "yyyyMM")
-    let data = Content(createdAt: today, title: contentTitle.text!,
+    let data = Content(createdAt: today, createdAtMonth : createAtMonth ,title: contentTitle.text!,
                        weather: weather.text!, body: contents.text!, image: selectedImageData!)
     RealmManager.shared.creat(object: data)
+    writeDoneDelegate.writeDone()
     navigationController?.popViewController(animated: true)
     }
     
@@ -184,7 +191,28 @@ extension WriteViewController {
         dayOfWeek.font = UIFont.boldSystemFont(ofSize: 24)
         dayOfWeek.textAlignment = NSTextAlignment.left
         dayOfWeek.backgroundColor = .clear
-
+        
+        //MARK: dateTF textfield
+        dateTF = CustomTextFiled()
+        dateTF.translatesAutoresizingMaskIntoConstraints = false
+        let constDateTF : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: dateTF, attribute: .top, relatedBy: .equal, toItem: dayOfWeek, attribute: .bottom,
+                               multiplier: 1, constant: 1),
+            NSLayoutConstraint(item: dateTF, attribute: .leading, relatedBy: .equal, toItem: dayOfWeek, attribute: .leading,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: dateTF, attribute: .trailing, relatedBy: .equal, toItem: dayOfWeek, attribute: .trailing,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: dateTF, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+                               multiplier: 1,constant: 24),
+            NSLayoutConstraint(item: dateTF, attribute: .width, relatedBy: .equal, toItem: containerV, attribute: .width,
+                               multiplier: 0.4, constant: 0)]
+        
+        containerV.addSubview(dateTF)
+        containerV.addConstraints(constDateTF)
+        dateTF.backgroundColor = .yellow
+     
+        dateTF.allowsEditingTextAttributes = false
+        
         //MARK: date Label
         date = UILabel()
         date.translatesAutoresizingMaskIntoConstraints = false
@@ -196,7 +224,7 @@ extension WriteViewController {
             NSLayoutConstraint(item: date, attribute: .trailing, relatedBy: .equal, toItem: dayOfWeek, attribute: .trailing,
                                multiplier: 1, constant: 0),
             NSLayoutConstraint(item: date, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
-                               multiplier: 1,constant: 20),
+                               multiplier: 1,constant: 24),
             NSLayoutConstraint(item: date, attribute: .width, relatedBy: .equal, toItem: containerV, attribute: .width,
                                multiplier: 0.4, constant: 0)]
         
@@ -205,10 +233,12 @@ extension WriteViewController {
         date.numberOfLines = 1
         date.adjustsFontForContentSizeCategory = true
         date.adjustsFontSizeToFitWidth = true
-        
         date.textAlignment = NSTextAlignment.left
         date.backgroundColor = .clear
-        
+        let changeDateGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(touchUpInsideDateLabel(sender:)))
+        date.isUserInteractionEnabled = true
+        date.addGestureRecognizer(changeDateGestureRecognizer)
+
         //MARK: weather Label
         weather = UILabel()
         weather.translatesAutoresizingMaskIntoConstraints = false
@@ -416,6 +446,48 @@ extension WriteViewController {
 }
 
 extension WriteViewController {
+    @objc fileprivate func touchUpInsideDateLabel(sender : UILabel) {
+        datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.minimumDate = stringToDate(in: "20170101", dateFormat: "yyyyMMdd")
+        datePicker.maximumDate = stringToDate(in: "20211231", dateFormat: "yyyyMMdd")
+        dateTF.inputView = datePicker
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 36)
+        toolBar.tintColor = .white
+        toolBar.barStyle = .blackTranslucent
+        let doneBtn = UIBarButtonItem(title: "완료", style: .done, target: self,
+                                      action: #selector(changedDate(sender:)))
+        let cancelBtn = UIBarButtonItem(title: "취소", style: .done, target: self,
+                                        action: #selector(dismissDatePciker(sender:)))
+        let flexibleBtn = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width / 3, height: 36))
+        label.textColor = .white
+        label.text = "날짜 변경하기"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        let labelBtn = UIBarButtonItem(customView: label)
+        toolBar.setItems([cancelBtn,flexibleBtn,labelBtn,flexibleBtn,doneBtn], animated: true)
+        toolBar.isTranslucent = true
+        dateTF.inputAccessoryView = toolBar
+        dateTF.becomeFirstResponder()
+        //            datePicker.addTarget(self, action: #selector(dateChanged(datePicker:)), for: .valueChanged)
+    }
+    
+    @objc fileprivate func changedDate(sender : UIBarButtonItem) {
+        setInformation(in: dateToString(in: datePicker.date, dateFormat: "dd MMM yyyy hh mm"))
+        dateTF.resignFirstResponder()
+    }
+    
+    @objc fileprivate func dismissDatePciker(sender : UIBarButtonItem) {
+        dateTF.resignFirstResponder()
+    }
+    @objc fileprivate func dateChanged(datePicker : UIDatePicker) {
+        date.text = dateToString(in: datePicker.date, dateFormat: "dd MMM yyyy")
+        view.endEditing(true)
+    }
+    
     @objc fileprivate func cleanTextView() {
         contents.text = ""
         contents.textColor = .black
@@ -455,7 +527,7 @@ extension WriteViewController {
             view.endEditing(true)
         }
     }
-    
+
     @objc fileprivate func keyboardDidShow(notification: NSNotification) {
 //        adjustingHeight(notification: notification)
     }
@@ -529,4 +601,8 @@ extension WriteViewController: CLLocationManagerDelegate {
         }
         locationManager.stopUpdatingLocation()
     }
+}
+
+extension WriteViewController {
+    
 }

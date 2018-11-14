@@ -114,7 +114,11 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         let date = visibleDate.monthDates.first!.date
         dateFormatter.dateFormat = "MMM yyyy"
         dateFormatter.locale = Locale(identifier: "kr_KR")
-        self.thisMonthLabel.text = dateFormatter.string(from: date)
+        let stringDate = dateFormatter.string(from: date)
+        self.thisMonthLabel.text = stringDate
+        setDatasource(in: stringDate)
+        calendarView.reloadData()
+        listTableView.reloadData()
     }
     
     func handleCellColor(cell : JTAppleCell?, cellState : CellState) {
@@ -161,8 +165,8 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         }else {
             validCell.isContentsImg.isHidden = true
         }
-        
     }
+    
     func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
         handleSelectedCellColor(cell: cell, cellState: cellState)
         handleCellColor(cell: cell, cellState: cellState)

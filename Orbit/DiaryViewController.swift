@@ -195,8 +195,8 @@ extension DiaryViewController {
 
 extension DiaryViewController {
     @objc fileprivate func pushWriteViewController() {
-        let writeViewController = WriteViewController(delegate: self)
-        navigationController?.pushViewController(writeViewController, animated: true)
+//        let writeViewController = WriteViewController(delegate: self)
+//        navigationController?.pushViewController(writeViewController, animated: true)
     }
     
     func dataUpdate() {

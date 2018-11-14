@@ -9,13 +9,17 @@
 import UIKit
 import Photos
 
-protocol DiaryWriteDelegate: class {
-    func writeDone()
-}
-
-extension DiaryViewController: DiaryWriteDelegate {
+extension ListViewController: WriteDoneDelegate {
     func writeDone() {
-        
+        // MARK: - ToDo
+        contentDate.removeAll()
+        guard let contentDate = realmManager.objects(Content.self).value(forKey: "createdAt") as? [Date] else {return}
+        for i in contentDate {
+            let date = dateToString(in: i, dateFormat: "yyyyMMdd")
+            self.contentDate.append(date)
+        }
+        calendarView.reloadData()
+        print("writeDone")
     }
 }
 

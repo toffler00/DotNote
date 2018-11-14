@@ -105,7 +105,6 @@ extension ListTableViewCell {
         self.addSubview(weekLabel)
         self.addConstraints(weekLabelConstraints)
         weekLabel.backgroundColor = .clear
-        print(weekLabel.frame.size.width)
         addBottomBorderLine(to: weekLabel, height: 1)
     
         // date Label Constraints
@@ -147,7 +146,6 @@ extension ListTableViewCell {
     
     func addBottomBorderLine(to view : UIView ,height : CGFloat) {
         let border = CALayer()
-        print(view.frame.width)
         border.frame = CGRect(x: 0, y: view.bounds.height - height,
                               width: view.bounds.width, height: height)
         border.backgroundColor = UIColor(red: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 1).cgColor
