@@ -146,8 +146,8 @@ extension ListViewController {
             self.contentDate.append(date)
         }
         print(date)
-            datasource = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false).filter("createdAtMonth == '\(date)'")
-            print(datasource)
+        datasource = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
+            .filter("createdAtMonth == '\(date)'")
     }
 }
 // MARK: - UITableViewDelegate
@@ -155,7 +155,7 @@ extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if datasource.count != 0 {
             let diaryViewController = DiaryViewController()
-            diaryViewController.indexPath = datasource.index(of: datasource[indexPath.row])!
+            diaryViewController.diaryData = datasource[indexPath.row]
             self.navigationController?.pushViewController(diaryViewController, animated: true)
             tableView.deselectRow(at: indexPath, animated: false)
         } else {

@@ -18,6 +18,7 @@ class WriteViewController: UIViewController {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var isImageLoadingFromiCloud: Bool = false
     var keyboardShown = false
+    var contentsTextViewCGRect : CGRect!
     
     //MARK: Ream Property
 //    var content = Content()
@@ -442,52 +443,45 @@ extension WriteViewController {
         contents.font = UIFont.systemFont(ofSize: 18)
         contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
         
+        let contentsGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(contentsTextViewReconiger(sender:)))
+        contents.isUserInteractionEnabled = true
+        contents.addGestureRecognizer(contentsGestureRecognizer)
     }
 }
 
 extension WriteViewController {
-    @objc fileprivate func touchUpInsideDateLabel(sender : UILabel) {
-        datePicker = UIDatePicker()
-        datePicker.datePickerMode = .date
-        datePicker.minimumDate = stringToDate(in: "20170101", dateFormat: "yyyyMMdd")
-        datePicker.maximumDate = stringToDate(in: "20211231", dateFormat: "yyyyMMdd")
-        dateTF.inputView = datePicker
+    @objc func contentsTextViewReconiger(sender : UITextView) {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 36)
         toolBar.tintColor = .white
         toolBar.barStyle = .blackTranslucent
-        let doneBtn = UIBarButtonItem(title: "완료", style: .done, target: self,
-                                      action: #selector(changedDate(sender:)))
-        let cancelBtn = UIBarButtonItem(title: "취소", style: .done, target: self,
-                                        action: #selector(dismissDatePciker(sender:)))
+        let rightAlignment = UIBarButtonItem(title: "right", style: .done, target: self,
+                                             action: #selector(rightTextAlignment))
+        let leftAlignment = UIBarButtonItem(title: "left", style: .done, target: self,
+                                        action: #selector(leftTextAlignment))
+        let centerAlignment = UIBarButtonItem(title: "center", style: .done, target: self,
+                                              action: #selector(centerTextAlignment))
         let flexibleBtn = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width / 3, height: 36))
-        label.textColor = .white
-        label.text = "날짜 변경하기"
-        label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        let labelBtn = UIBarButtonItem(customView: label)
-        toolBar.setItems([cancelBtn,flexibleBtn,labelBtn,flexibleBtn,doneBtn], animated: true)
+        
+        toolBar.setItems([leftAlignment,flexibleBtn,centerAlignment,flexibleBtn,rightAlignment], animated: true)
         toolBar.isTranslucent = true
-        dateTF.inputAccessoryView = toolBar
-        dateTF.becomeFirstResponder()
-        //            datePicker.addTarget(self, action: #selector(dateChanged(datePicker:)), for: .valueChanged)
+        contents.inputAccessoryView = toolBar
+        contents.becomeFirstResponder()
+        
     }
     
-    @objc fileprivate func changedDate(sender : UIBarButtonItem) {
-        setInformation(in: dateToString(in: datePicker.date, dateFormat: "dd MMM yyyy hh mm"))
-        dateTF.resignFirstResponder()
+    @objc func rightTextAlignment() {
+        contents.textAlignment = .right
+    }
+
+    @objc func leftTextAlignment() {
+        contents.textAlignment = .left
     }
     
-    @objc fileprivate func dismissDatePciker(sender : UIBarButtonItem) {
-        dateTF.resignFirstResponder()
+    @objc func centerTextAlignment() {
+        contents.textAlignment = .center
     }
-    @objc fileprivate func dateChanged(datePicker : UIDatePicker) {
-        date.text = dateToString(in: datePicker.date, dateFormat: "dd MMM yyyy")
-        view.endEditing(true)
-    }
-    
     @objc fileprivate func cleanTextView() {
         contents.text = ""
         contents.textColor = .black
@@ -499,69 +493,10 @@ extension WriteViewController {
             contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
         }
     }
-    fileprivate func regitsterForTextViewNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(cleanTextView),
-                                               name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(textViewState),
-                                               name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
-    }
-    
-    fileprivate func unregisterForTextViewTextNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
-    }
-    
-    fileprivate func registerForKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keboardFrameWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameDidChange), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-    }
-    
-    fileprivate func unregisterForKeyboardNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
 
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if keyboardShown == true {
-            view.endEditing(true)
-        }
-    }
-
-    @objc fileprivate func keyboardDidShow(notification: NSNotification) {
-//        adjustingHeight(notification: notification)
-    }
-    
-    @objc fileprivate func keyboardFrameDidChange(notification: NSNotification) {
-        adjustingHeight(notification: notification)
-    }
-    
-    @objc fileprivate func keboardFrameWillHide(notification : NSNotification) {
-        adjustingHide(notification: notification)
-    }
-    
-    fileprivate func adjustingHeight(notification: NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
-        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        print(keyboardFrame.height)
-        if keyboardFrame.height == 0 || keyboardShown == true {
-            return
-        } else {
-            contents.frame.size.height = contents.frame.size.height - keyboardFrame.height
-            keyboardShown = true
-        }
-    }
-    
-    fileprivate func adjustingHide(notification : NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
-        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
-        print(keyboardFrame.height)
-        let height = self.contents.frame.height
-        self.contents.frame.size.height = height + keyboardFrame.height
-        keyboardShown = false
-    }
 }
 
+//MARK: addImageGessture
 extension WriteViewController {
     @objc fileprivate func addImageGesture() {
         if !isImageLoadingFromiCloud {
@@ -603,6 +538,111 @@ extension WriteViewController: CLLocationManagerDelegate {
     }
 }
 
+
 extension WriteViewController {
+    //MARK: dateTF inputViews
+    @objc fileprivate func touchUpInsideDateLabel(sender : UILabel) {
+        datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.minimumDate = stringToDate(in: "20170101", dateFormat: "yyyyMMdd")
+        datePicker.maximumDate = stringToDate(in: "20211231", dateFormat: "yyyyMMdd")
+        dateTF.inputView = datePicker
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 36)
+        toolBar.tintColor = .white
+        toolBar.barStyle = .blackTranslucent
+        let doneBtn = UIBarButtonItem(title: "완료", style: .done, target: self,
+                                      action: #selector(changedDate(sender:)))
+        let cancelBtn = UIBarButtonItem(title: "취소", style: .done, target: self,
+                                        action: #selector(dismissDatePciker(sender:)))
+        let flexibleBtn = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width / 3, height: 36))
+        label.textColor = .white
+        label.text = "날짜 변경하기"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        let labelBtn = UIBarButtonItem(customView: label)
+        toolBar.setItems([cancelBtn,flexibleBtn,labelBtn,flexibleBtn,doneBtn], animated: true)
+        toolBar.isTranslucent = true
+        dateTF.inputAccessoryView = toolBar
+        dateTF.becomeFirstResponder()
+        //            datePicker.addTarget(self, action: #selector(dateChanged(datePicker:)), for: .valueChanged)
+    }
     
+    @objc fileprivate func changedDate(sender : UIBarButtonItem) {
+        setInformation(in: dateToString(in: datePicker.date, dateFormat: "dd MMM yyyy hh mm"))
+        dateTF.resignFirstResponder()
+    }
+    
+    @objc fileprivate func dismissDatePciker(sender : UIBarButtonItem) {
+        dateTF.resignFirstResponder()
+    }
+
+}
+
+extension WriteViewController {
+    //MARK: UIKeyboard notification
+    fileprivate func regitsterForTextViewNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(cleanTextView),
+                                               name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(textViewState),
+                                               name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
+    }
+    
+    fileprivate func unregisterForTextViewTextNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
+    }
+    
+    fileprivate func registerForKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keboardFrameWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameDidChange), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    }
+    
+    fileprivate func unregisterForKeyboardNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if keyboardShown == true {
+            view.endEditing(true)
+        }
+    }
+    
+    @objc fileprivate func keyboardDidShow(notification: NSNotification) {
+        //        adjustingHeight(notification: notification)
+    }
+    
+    @objc fileprivate func keyboardFrameDidChange(notification: NSNotification) {
+        adjustingHeight(notification: notification)
+    }
+    
+    @objc fileprivate func keboardFrameWillHide(notification : NSNotification) {
+        adjustingHide(notification: notification)
+    }
+    
+    fileprivate func adjustingHeight(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        print(keyboardFrame.height)
+        if keyboardFrame.height == 0 || keyboardShown == true {
+            return
+        } else {
+            self.contentsTextViewCGRect = contents.frame
+            contents.frame.size.height = contents.frame.size.height - keyboardFrame.height
+            keyboardShown = true
+        }
+    }
+    
+    fileprivate func adjustingHide(notification : NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        print(keyboardFrame.height)
+        let height = self.contents.frame.height
+        self.contents.frame.size.height = self.contentsTextViewCGRect.height
+        keyboardShown = false
+    }
 }

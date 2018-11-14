@@ -25,7 +25,7 @@ class DiaryViewController: UIViewController {
     var containerView : UIView!
     var dateCollectionView : UICollectionView!
     let user = User()
-    var indexPath : Int = 0
+    var diaryData : Content!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,7 @@ class DiaryViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .automatic
-        navigationItem.title = "\(dateToString(in: datasourece[indexPath].createdAt, dateFormat: "yyyy.MM.dd eee"))"
+        navigationItem.title = "\(dateToString(in: diaryData.createdAt, dateFormat: "yyyy.MM.dd eee"))"
 //        let attrs = [ NSAttributedString.Key.foregroundColor : UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1),
 //                      NSAttributedString.Key.font : UIFont(name: "system", size: 24)]
 //        navigationController?.navigationBar.titleTextAttributes = attrs as [NSAttributedStringKey : Any]
@@ -200,9 +200,8 @@ extension DiaryViewController {
     }
     
     func dataUpdate() {
-       let data = datasourece[indexPath]
-        titleLabel.text = data.title
-        contents.text = data.body
-        contentImgView.image = UIImage(data: data.image!)
+        titleLabel.text = diaryData.title
+        contents.text = diaryData.body
+        contentImgView.image = UIImage(data: diaryData.image!)
     }
 }
