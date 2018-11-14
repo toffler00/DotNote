@@ -28,12 +28,12 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         self.photosViewControllerDelegate = photosViewControllerDelegate
-//        switch PHPhotoLibrary.authorizationStatus() {
-//        case .notDetermined:
-//        case .denied:
-//        case .authorized:
-//        case .restricted:
-//        }
+        //        switch PHPhotoLibrary.authorizationStatus() {
+        //        case .notDetermined:
+        //        case .denied:
+        //        case .authorized:
+        //        case .restricted:
+        //        }
         
         view.backgroundColor = .white
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
@@ -42,7 +42,7 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
         options.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: false) ]
         options.includeAssetSourceTypes = [.typeUserLibrary, .typeiTunesSynced]
-
+        
         fetchResult = PHAsset.fetchAssets(with: options)
     }
     
@@ -57,10 +57,18 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
             photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
             photoCollectionView.backgroundColor = .clear
             
-            let photoCollectionViewConsts = [NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),
-                                             NSLayoutConstraint(item: photoCollectionView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
-                                             NSLayoutConstraint(item: photoCollectionView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
-                                             NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)]
+            let photoCollectionViewConsts = [NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal,
+                                                                toItem: view.safeAreaLayoutGuide,
+                                                                attribute: .top, multiplier: 1, constant: 0),
+                                             NSLayoutConstraint(item: photoCollectionView, attribute: .leading, relatedBy: .equal,
+                                                                toItem: view.safeAreaLayoutGuide,
+                                                                attribute: .leading, multiplier: 1, constant: 0),
+                                             NSLayoutConstraint(item: photoCollectionView, attribute: .trailing, relatedBy: .equal,
+                                                                toItem: view.safeAreaLayoutGuide,
+                                                                attribute: .trailing, multiplier: 1, constant: 0),
+                                             NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal,
+                                                                toItem: view,
+                                                                attribute: .bottom, multiplier: 1, constant: 0)]
             
             view.addSubview(photoCollectionView)
             view.addConstraints(photoCollectionViewConsts)
@@ -101,6 +109,7 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         let size = collectionView.frame.width / 3 - 1
         return CGSize(width: size, height: size)
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
