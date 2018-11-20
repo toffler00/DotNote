@@ -29,14 +29,16 @@ class WriteViewController: UIViewController {
     //    var model : Model.Contents?
     
     weak var writeDoneDelegate: WriteDoneDelegate!
+    fileprivate var date : UILabel!
     fileprivate var titleLabel : UILabel!
     fileprivate var contentTitle: UITextField!
     fileprivate var dayOfWeek: UILabel!
     fileprivate var weather: UILabel!
     
 //    fileprivate var weatherImg : UIImageView!
-    fileprivate var date : UILabel!
+    fileprivate var writeDoneIcon : UIImageView!
     fileprivate var dateTF : CustomTextFiled!
+    fileprivate var weatherTF : CustomTextFiled!
     fileprivate var today : Date!
     fileprivate var createAtMonth : String!
     fileprivate var containerV : UIView!
@@ -50,6 +52,8 @@ class WriteViewController: UIViewController {
     fileprivate var models : [Model.Contents] = [Model.Contents]()
      var selectedImageData: Data?
     fileprivate var datePicker : UIDatePicker!
+    fileprivate var weatherPicker : UIPickerView!
+    let pickerData : [String] = ["천둥번개", "이슬비", "비", "눈", "안개", "구름", "맑음"]
     var weatherItems : Model.WeatherModel.Weather?
     
     
@@ -93,11 +97,13 @@ class WriteViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         registerForKeyboardNotification()
         regitsterForTextViewNotification()
+        setUpWriteDoneIcon(bool: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         unregisterForKeyboardNotification()
         unregisterForTextViewTextNotification()
+        setUpWriteDoneIcon(bool: false)
     }
     
     override func viewDidLoad() {
@@ -107,7 +113,6 @@ class WriteViewController: UIViewController {
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Write"
         
-
     }
     
     override func viewWillLayoutSubviews() {
@@ -210,7 +215,7 @@ extension WriteViewController {
         
         containerV.addSubview(dateTF)
         containerV.addConstraints(constDateTF)
-        dateTF.backgroundColor = .yellow
+        dateTF.backgroundColor = .clear
      
         dateTF.allowsEditingTextAttributes = false
         
@@ -259,24 +264,47 @@ extension WriteViewController {
         weather.numberOfLines = 1
         weather.textAlignment = NSTextAlignment.left
         weather.backgroundColor = .clear
+        
 
-        writeDoneBtn = UIButton()
-        writeDoneBtn.translatesAutoresizingMaskIntoConstraints = false
+        weatherTF = CustomTextFiled()
+        weatherTF.translatesAutoresizingMaskIntoConstraints = false
         
-        let constwrt : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: writeDoneBtn, attribute: .top, relatedBy: .equal, toItem: containerV, attribute: .top,
-                               multiplier: 1, constant: 8),
-            NSLayoutConstraint(item: writeDoneBtn, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing,
-                               multiplier: 1, constant: -8),
-            NSLayoutConstraint(item: writeDoneBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
-                               multiplier: 1, constant: 48),
-            NSLayoutConstraint(item: writeDoneBtn, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
-                               multiplier: 1, constant: 48)]
+        let constWeatherTF : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: weatherTF, attribute: .top, relatedBy: .equal, toItem: date,
+                               attribute: .bottom, multiplier: 1, constant: 1),
+            NSLayoutConstraint(item: weatherTF, attribute: .leading, relatedBy: .equal, toItem: date,
+                               attribute: .leading, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: weatherTF, attribute: .height, relatedBy: .equal, toItem: nil,
+                               attribute: .height, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: weatherTF, attribute: .width, relatedBy: .equal, toItem: date,
+                               attribute: .width, multiplier: 1, constant: 0)]
+        containerV.addSubview(weatherTF)
+        containerV.addConstraints(constWeatherTF)
+        weatherTF.allowsEditingTextAttributes = false
+        let changeWeatherGesture = UITapGestureRecognizer(target: self, action: #selector(weatherTextFieldReconiger))
+        weatherTF.isUserInteractionEnabled = true
+        weatherTF.addGestureRecognizer(changeWeatherGesture)
         
-        containerV.addSubview(writeDoneBtn)
-        containerV.addConstraints(constwrt)
-        writeDoneBtn.backgroundColor = .yellow
-        writeDoneBtn.addTarget(self, action: #selector(writeDone) , for: .touchUpInside)
+        
+        //MARK: writeDoneBtn
+//        writeDoneBtn = UIButton()
+//        writeDoneBtn.translatesAutoresizingMaskIntoConstraints = false
+//
+//        let constwrt : [NSLayoutConstraint] = [
+//            NSLayoutConstraint(item: writeDoneBtn, attribute: .top, relatedBy: .equal, toItem: containerV, attribute: .top,
+//                               multiplier: 1, constant: 8),
+//            NSLayoutConstraint(item: writeDoneBtn, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing,
+//                               multiplier: 1, constant: -8),
+//            NSLayoutConstraint(item: writeDoneBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+//                               multiplier: 1, constant: 36),
+//            NSLayoutConstraint(item: writeDoneBtn, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
+//                               multiplier: 1, constant: 36)]
+//
+//        containerV.addSubview(writeDoneBtn)
+//        containerV.addConstraints(constwrt)
+//        writeDoneBtn.backgroundColor = .clear
+//        writeDoneBtn.addTarget(self, action: #selector(writeDone) , for: .touchUpInside)
+//        writeDoneBtn.setImage(UIImage(named: "check"), for: .normal)
         
         //MARK: contStackV UIStackView
         contStackV = UIStackView()
@@ -446,10 +474,40 @@ extension WriteViewController {
         let contentsGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(contentsTextViewReconiger(sender:)))
         contents.isUserInteractionEnabled = true
         contents.addGestureRecognizer(contentsGestureRecognizer)
+        
+       
+    }
+    
+    func setUpWriteDoneIcon(bool : Bool) {
+        if bool {
+            //MARK: writeDoneIcon UIImageView
+            writeDoneIcon = UIImageView()
+            writeDoneIcon.translatesAutoresizingMaskIntoConstraints = false
+            
+            let constWrtieDoneIcon : [NSLayoutConstraint] = [
+                NSLayoutConstraint(item: writeDoneIcon, attribute: .width, relatedBy: .equal, toItem: nil,
+                                   attribute: .width, multiplier: 1, constant: 36),
+                NSLayoutConstraint(item: writeDoneIcon, attribute: .height, relatedBy: .equal, toItem: nil,
+                                   attribute: .height, multiplier: 1, constant: 36),
+                NSLayoutConstraint(item: writeDoneIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -8),
+                NSLayoutConstraint(item: writeDoneIcon, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -8)]
+            navigationController?.navigationBar.addSubview(writeDoneIcon)
+            navigationController?.navigationBar.addConstraints(constWrtieDoneIcon)
+            
+            writeDoneIcon.image = UIImage(named: "check")
+            writeDoneIcon.layer.cornerRadius = 18
+            writeDoneIcon.clipsToBounds = true
+            let tapWriteDonIcon = UITapGestureRecognizer(target: self, action: #selector(writeDone))
+            writeDoneIcon.addGestureRecognizer(tapWriteDonIcon)
+            writeDoneIcon.isUserInteractionEnabled = true
+        } else {
+           writeDoneIcon.isHidden = true
+        }
     }
 }
 
-extension WriteViewController {
+extension WriteViewController : UIPickerViewDelegate, UIPickerViewDataSource {
+    
     @objc func contentsTextViewReconiger(sender : UITextView) {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
@@ -494,6 +552,53 @@ extension WriteViewController {
         }
     }
 
+    @objc func weatherTextFieldReconiger() {
+        weatherPicker = UIPickerView()
+        weatherPicker.delegate = self
+        weatherPicker.dataSource = self
+        weatherTF.inputView = weatherPicker
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 36)
+        toolBar.tintColor = .white
+        toolBar.barStyle = .blackTranslucent
+        let doneBtn = UIBarButtonItem(title: "완료", style: .done, target: self,
+                                      action: #selector(changeWeather))
+        let flexibleBtn = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width / 3, height: 36))
+        label.textColor = .white
+        label.text = "날씨 변경하기"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        let labelBtn = UIBarButtonItem(customView: label)
+        toolBar.setItems([flexibleBtn,flexibleBtn,labelBtn,flexibleBtn,doneBtn], animated: true)
+        toolBar.isTranslucent = true
+        weatherTF.inputAccessoryView = toolBar
+        weatherTF.becomeFirstResponder()
+    }
+    
+    @objc func changeWeather() {
+        weatherTF.resignFirstResponder()
+    }
+    
+    @objc func cancelWeaterPickerView() {
+        
+    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerData[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        weather.text = pickerData[row]
+    }
 }
 
 //MARK: addImageGessture

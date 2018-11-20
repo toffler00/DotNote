@@ -32,9 +32,10 @@ class ListViewController: UIViewController {
     let dateFormatter : DateFormatter = DateFormatter()
     var dates : [Date] = []
     var contentDate : [String] = []
+    var optionIcon : UIImageView!
     
     // MARK: IBAction
-    @IBAction func pushOptionViewController(_ sender: UIBarButtonItem) {
+    @objc func pushOptionViewController(_ sender: UIImageView) {
         let optionsVC = OptionsViewController()
         navigationController?.pushViewController(optionsVC, animated: true)
     }
@@ -47,6 +48,7 @@ class ListViewController: UIViewController {
     
     // MARK: Life Cycle
     override func viewWillAppear(_ animated: Bool) {
+        setUpOptionIcon(bool: true)
         if listTableView == nil {
            return
         }else {
@@ -55,6 +57,9 @@ class ListViewController: UIViewController {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        setUpOptionIcon(bool: false)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
@@ -136,6 +141,34 @@ extension ListViewController {
         self.listTableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
+    }
+    
+     //MARK: writeDoneIcon UIImageView
+    func setUpOptionIcon(bool : Bool) {
+        if bool {
+            optionIcon = UIImageView()
+            optionIcon.translatesAutoresizingMaskIntoConstraints = false
+            
+            let constoptionIcon : [NSLayoutConstraint] = [
+                NSLayoutConstraint(item: optionIcon, attribute: .width, relatedBy: .equal, toItem: nil,
+                                   attribute: .width, multiplier: 1, constant: 36),
+                NSLayoutConstraint(item: optionIcon, attribute: .height, relatedBy: .equal, toItem: nil,
+                                   attribute: .height, multiplier: 1, constant: 36),
+                NSLayoutConstraint(item: optionIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -8),
+                NSLayoutConstraint(item: optionIcon, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -8)]
+            navigationController?.navigationBar.addSubview(optionIcon)
+            navigationController?.navigationBar.addConstraints(constoptionIcon)
+            
+            optionIcon.image = UIImage(named: "menu")
+            optionIcon.contentMode = .scaleAspectFit
+            optionIcon.layer.cornerRadius = 4
+            optionIcon.clipsToBounds = true
+            let tapWriteDonIcon = UITapGestureRecognizer(target: self, action: #selector(pushOptionViewController))
+            optionIcon.addGestureRecognizer(tapWriteDonIcon)
+            optionIcon.isUserInteractionEnabled = true
+        } else {
+            optionIcon.isHidden = true
+        }
     }
     
     func setDatasource(in date : String) {

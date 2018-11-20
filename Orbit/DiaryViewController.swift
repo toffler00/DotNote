@@ -47,11 +47,26 @@ class DiaryViewController: UIViewController {
     }
     
     override func viewWillLayoutSubviews() {
-        setupLayout()
+        if titleLabel == nil {
+            setupLayout()
+        } else {
+           return
+        }
         
     }
     override func viewDidLayoutSubviews() {
         dataUpdate()
+        print("viewDidLayoutSubviews()")
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        setUpWeatherIcon(bool: true)
+        changeWeatherIcon(weather: diaryData.weather)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        setUpWeatherIcon(bool: false)
     }
 }
 
@@ -97,7 +112,7 @@ extension DiaryViewController {
 //        view.addConstraints(constDateCV)
 //        dateCollectionView.backgroundColor = .green
 //
-        
+        //MARK: containerView : UIView
         containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -115,47 +130,49 @@ extension DiaryViewController {
         view.addConstraints(consContainerV)
         containerView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         
-        weatherImgV = UIImageView()
-        weatherImgV.translatesAutoresizingMaskIntoConstraints = false
+        //MARK: weatherImgV : UIImageView
+//        weatherImgV = UIImageView()
+//        weatherImgV.translatesAutoresizingMaskIntoConstraints = false
+//
+//        let consWeather : [NSLayoutConstraint] = [
+//            NSLayoutConstraint(item: weatherImgV, attribute: .top, relatedBy: .equal, toItem: containerView
+//                , attribute: .top, multiplier: 1, constant: 4),
+//            NSLayoutConstraint(item: weatherImgV, attribute: .width, relatedBy: .equal, toItem: containerView,
+//                               attribute: .width, multiplier: 0.1, constant: 0),
+//            NSLayoutConstraint(item: weatherImgV, attribute: .height, relatedBy: .equal, toItem: weatherImgV,
+//                               attribute: .width, multiplier: 1, constant: 0),
+//            NSLayoutConstraint(item: weatherImgV, attribute: .trailing, relatedBy: .equal, toItem: containerView,
+//                               attribute: .trailing, multiplier: 1, constant: -4)]
+//
+//        containerView.addSubview(weatherImgV)
+//        containerView.addConstraints(consWeather)
+//        weatherImgV.backgroundColor = .clear
         
-        let consWeather : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: weatherImgV, attribute: .top, relatedBy: .equal, toItem: containerView
-                , attribute: .top, multiplier: 1, constant: 4),
-            NSLayoutConstraint(item: weatherImgV, attribute: .width, relatedBy: .equal, toItem: containerView,
-                               attribute: .width, multiplier: 0.1, constant: 0),
-            NSLayoutConstraint(item: weatherImgV, attribute: .height, relatedBy: .equal, toItem: weatherImgV,
-                               attribute: .width, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: weatherImgV, attribute: .trailing, relatedBy: .equal, toItem: containerView,
-                               attribute: .trailing, multiplier: 1, constant: -4)]
-        
-        containerView.addSubview(weatherImgV)
-        containerView.addConstraints(consWeather)
-        weatherImgV.backgroundColor = .black
-        
+        //MARK: titleLabel : UILabel
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let consTitleLabel : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .equal, toItem: containerView,
                                attribute: .leading, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: weatherImgV,
-                               attribute: .leading, multiplier: 1, constant: -8),
+            NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: containerView,
+                               attribute: .trailing, multiplier: 1, constant: -8),
             NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil,
-                               attribute: .height, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: titleLabel, attribute: .bottom, relatedBy: .equal, toItem: weatherImgV,
-                               attribute: .bottom, multiplier: 1, constant: 0)]
+                               attribute: .height, multiplier: 1, constant: 28),
+            NSLayoutConstraint(item: titleLabel, attribute: .top ,relatedBy: .equal, toItem: containerView,
+                               attribute: .top, multiplier: 1, constant: 4)]
         
         containerView.addSubview(titleLabel)
         containerView.addConstraints(consTitleLabel)
         titleLabel.backgroundColor = .clear
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         
-        
+        //MARK: contentImgView : UIImageView
         contentImgView = UIImageView()
         contentImgView.translatesAutoresizingMaskIntoConstraints = false
         
         let consContentImgV : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: weatherImgV,
+            NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
                                attribute: .bottom, multiplier: 1, constant: 4),
             NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
                                attribute: .width, multiplier: 1, constant: 0),
@@ -170,6 +187,7 @@ extension DiaryViewController {
         contentImgView.contentMode = .scaleAspectFill
         contentImgView.clipsToBounds = true
         
+        //MARK: contents : UITextView
         contents = UITextView()
         contents.translatesAutoresizingMaskIntoConstraints = false
         
@@ -189,8 +207,32 @@ extension DiaryViewController {
         contents.isEditable = false
         contents.textAlignment = .center
         contents.font = UIFont.systemFont(ofSize: 18)
+        
+        //MARK:
     }
-    
+    func setUpWeatherIcon(bool : Bool) {
+        if bool {
+            //MARK: writeDoneIcon UIImageView
+            weatherImgV = UIImageView()
+            weatherImgV.translatesAutoresizingMaskIntoConstraints = false
+            
+            let constWeatherIcon : [NSLayoutConstraint] = [
+                NSLayoutConstraint(item: weatherImgV, attribute: .width, relatedBy: .equal, toItem: nil,
+                                   attribute: .width, multiplier: 1, constant: 36),
+                NSLayoutConstraint(item: weatherImgV, attribute: .height, relatedBy: .equal, toItem: nil,
+                                   attribute: .height, multiplier: 1, constant: 36),
+                NSLayoutConstraint(item: weatherImgV, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -8),
+                NSLayoutConstraint(item: weatherImgV, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -8)]
+            navigationController?.navigationBar.addSubview(weatherImgV)
+            navigationController?.navigationBar.addConstraints(constWeatherIcon)
+            
+            weatherImgV.layer.cornerRadius = 8
+            weatherImgV.clipsToBounds = true
+            weatherImgV.isUserInteractionEnabled = true
+        } else {
+            weatherImgV.isHidden = true
+        }
+    }
 }
 
 extension DiaryViewController {
@@ -203,5 +245,26 @@ extension DiaryViewController {
         titleLabel.text = diaryData.title
         contents.text = diaryData.body
         contentImgView.image = UIImage(data: diaryData.image!)
+    }
+    
+    @objc func changeWeatherIcon(weather : String) {
+        switch weather {
+        case "맑음" :
+            self.weatherImgV.image = UIImage(named: "sun")
+        case "Haze" :
+            self.weatherImgV.image = UIImage(named: "haze")
+        case "구름" :
+            self.weatherImgV.image = UIImage(named: "cloudy")
+        case "이슬비" :
+            self.weatherImgV.image = UIImage(named: "hail")
+        case "비" :
+            self.weatherImgV.image = UIImage(named: "rainy")
+        case "눈" :
+            self.weatherImgV.image = UIImage(named: "snow")
+        case "천둥번개" :
+            self.weatherImgV.image = UIImage(named: "storm")
+        default:
+            self.weatherImgV.image = UIImage(named: "sun")
+        }
     }
 }
