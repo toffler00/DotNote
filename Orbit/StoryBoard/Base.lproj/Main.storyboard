@@ -157,11 +157,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="Orbit" id="Tg8-rb-emf">
                         <barButtonItem key="backBarButtonItem" title="List" id="pQE-kP-q2x"/>
-                        <barButtonItem key="rightBarButtonItem" title="Option" id="0pY-QS-cs3">
-                            <connections>
-                                <action selector="pushOptionViewController:" destination="Hbo-28-oQS" id="Scf-a0-ovF"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecy-gw-z9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
