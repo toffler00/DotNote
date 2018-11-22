@@ -199,6 +199,21 @@ extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            print("deleted")
+            let content = datasource[indexPath.row]
+            print(content)
+            RealmManager.shared.delete(object: content)
+            listTableView.reloadData()
+        }
+        calendarView.reloadData()
+    }
 }
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{

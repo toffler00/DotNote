@@ -44,7 +44,9 @@ class WriteViewController: UIViewController {
     fileprivate var containerV : UIView!
     fileprivate var contStackV : UIStackView!
     fileprivate var stackBox : UIStackView!
-    fileprivate var writeDoneBtn : UIButton!
+//    fileprivate var writeDoneBtn : UIButton!
+    fileprivate var tapWeather : UIImageView!
+    fileprivate var tapDate : UIImageView!
     var contentImgV : UIImageView!
     fileprivate var cameraIconImgView : UIImageView!
     fileprivate var iconBgView : UIView!
@@ -285,26 +287,39 @@ extension WriteViewController {
         weatherTF.isUserInteractionEnabled = true
         weatherTF.addGestureRecognizer(changeWeatherGesture)
         
+        //MARK: tapDate UIImageView
+        tapDate = UIImageView()
+        tapDate.translatesAutoresizingMaskIntoConstraints = false
         
-        //MARK: writeDoneBtn
-//        writeDoneBtn = UIButton()
-//        writeDoneBtn.translatesAutoresizingMaskIntoConstraints = false
-//
-//        let constwrt : [NSLayoutConstraint] = [
-//            NSLayoutConstraint(item: writeDoneBtn, attribute: .top, relatedBy: .equal, toItem: containerV, attribute: .top,
-//                               multiplier: 1, constant: 8),
-//            NSLayoutConstraint(item: writeDoneBtn, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing,
-//                               multiplier: 1, constant: -8),
-//            NSLayoutConstraint(item: writeDoneBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
-//                               multiplier: 1, constant: 36),
-//            NSLayoutConstraint(item: writeDoneBtn, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
-//                               multiplier: 1, constant: 36)]
-//
-//        containerV.addSubview(writeDoneBtn)
-//        containerV.addConstraints(constwrt)
-//        writeDoneBtn.backgroundColor = .clear
-//        writeDoneBtn.addTarget(self, action: #selector(writeDone) , for: .touchUpInside)
-//        writeDoneBtn.setImage(UIImage(named: "check"), for: .normal)
+        let constTapDate : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: tapDate, attribute: .top, relatedBy: .equal, toItem: date,
+                               attribute: .top, multiplier: 1, constant: 4),
+            NSLayoutConstraint(item: tapDate, attribute: .bottom, relatedBy: .equal, toItem: date,
+                               attribute: .bottom, multiplier: 1, constant: -4),
+            NSLayoutConstraint(item: tapDate, attribute: .leading, relatedBy: .equal, toItem: date,
+                               attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: tapDate, attribute: .width, relatedBy: .equal, toItem: nil,
+                               attribute: .width, multiplier: 1, constant: 16)]
+        containerV.addSubview(tapDate)
+        containerV.addConstraints(constTapDate)
+        tapDate.image = UIImage(named: "right")
+        
+        //MARK: tapWeather UIImageView
+        tapWeather = UIImageView()
+        tapWeather.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constTapWeather : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: tapWeather, attribute: .top, relatedBy: .equal, toItem: weather,
+                               attribute: .top, multiplier: 1, constant: 2),
+            NSLayoutConstraint(item: tapWeather, attribute: .bottom, relatedBy: .equal, toItem: weather,
+                               attribute: .bottom, multiplier: 1, constant: -2),
+            NSLayoutConstraint(item: tapWeather, attribute: .leading, relatedBy: .equal, toItem: weather,
+                               attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: tapWeather, attribute: .width, relatedBy: .equal, toItem: nil,
+                               attribute: .width, multiplier: 1, constant: 16)]
+        containerV.addSubview(tapWeather)
+        containerV.addConstraints(constTapWeather)
+        tapWeather.image = UIImage(named: "right")
         
         //MARK: contStackV UIStackView
         contStackV = UIStackView()
@@ -475,7 +490,6 @@ extension WriteViewController {
         contents.isUserInteractionEnabled = true
         contents.addGestureRecognizer(contentsGestureRecognizer)
         
-       
     }
     
     func setUpWriteDoneIcon(bool : Bool) {
@@ -526,7 +540,6 @@ extension WriteViewController : UIPickerViewDelegate, UIPickerViewDataSource {
         toolBar.isTranslucent = true
         contents.inputAccessoryView = toolBar
         contents.becomeFirstResponder()
-        
     }
     
     @objc func rightTextAlignment() {

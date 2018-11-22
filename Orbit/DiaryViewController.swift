@@ -23,6 +23,7 @@ class DiaryViewController: UIViewController {
     var contents : UITextView!
     var contentImgView : UIImageView!
     var containerView : UIView!
+    var deleteIcon : UIImageView!
     var dateCollectionView : UICollectionView!
     let user = User()
     var diaryData : Content!
@@ -36,6 +37,7 @@ class DiaryViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .automatic
         navigationItem.title = "\(dateToString(in: diaryData.createdAt, dateFormat: "yyyy.MM.dd eee"))"
+        setUpDeleteIcon(bool: true)
 //        let attrs = [ NSAttributedString.Key.foregroundColor : UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1),
 //                      NSAttributedString.Key.font : UIFont(name: "system", size: 24)]
 //        navigationController?.navigationBar.titleTextAttributes = attrs as [NSAttributedStringKey : Any]
@@ -67,6 +69,7 @@ class DiaryViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         setUpWeatherIcon(bool: false)
+        setUpDeleteIcon(bool: false)
     }
 }
 
@@ -233,6 +236,32 @@ extension DiaryViewController {
             weatherImgV.isHidden = true
         }
     }
+    
+    func setUpDeleteIcon(bool : Bool) {
+        if bool {
+            deleteIcon = UIImageView()
+            deleteIcon.translatesAutoresizingMaskIntoConstraints = false
+            
+            let constDeleteIcon : [NSLayoutConstraint] = [
+                NSLayoutConstraint(item: deleteIcon, attribute: .width, relatedBy: .equal, toItem: nil,
+                                   attribute: .width, multiplier: 1, constant: 32),
+                NSLayoutConstraint(item: deleteIcon, attribute: .height, relatedBy: .equal, toItem: nil,
+                                   attribute: .height, multiplier: 1, constant: 32),
+                NSLayoutConstraint(item: deleteIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -10),
+                NSLayoutConstraint(item: deleteIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .top, multiplier: 1, constant: 6)]
+            navigationController?.navigationBar.addSubview(deleteIcon)
+            navigationController?.navigationBar.addConstraints(constDeleteIcon)
+            
+            deleteIcon.image = UIImage(named: "garbage")
+            
+            let tapDeleteIcon = UITapGestureRecognizer(target: self, action: #selector(deleteData))
+            deleteIcon.addGestureRecognizer(tapDeleteIcon)
+            deleteIcon.isUserInteractionEnabled = true
+            
+        } else {
+            deleteIcon.isHidden = true
+        }
+    }
 }
 
 extension DiaryViewController {
@@ -246,6 +275,13 @@ extension DiaryViewController {
         contents.text = diaryData.body
         contentImgView.image = UIImage(data: diaryData.image!)
     }
+    
+    @objc func deleteData() {
+        print("deleteData()")
+        RealmManager.shared.delete(object: diaryData)
+        navigationController?.popViewController(animated: true)
+    }
+    
     
     @objc func changeWeatherIcon(weather : String) {
         switch weather {
