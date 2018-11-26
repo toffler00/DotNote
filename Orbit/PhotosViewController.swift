@@ -15,6 +15,7 @@ protocol PhotosViewControllerDelegate: class {
 
 class PhotosViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     
+    var backButton = UIImageView()
     var photosViewControllerDelegate: PhotosViewControllerDelegate!
     
     fileprivate let photoCollectionViewCellIdentifier: String = "PhotoCollectionViewCell"
@@ -38,6 +39,7 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         view.backgroundColor = .white
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         navigationItem.title = "나의 사진"
+        navigationItem.hidesBackButton = true
         let options = PHFetchOptions()
         options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
         options.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: false) ]
@@ -45,7 +47,12 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         fetchResult = PHAsset.fetchAssets(with: options)
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: true)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: false)
+    }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         

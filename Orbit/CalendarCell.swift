@@ -96,7 +96,8 @@ class CalendarCell: JTAppleCell {
                                attribute: .centerX, multiplier: 1, constant: 0)]
         contentView.addSubview(isContentsImg)
         contentView.addConstraints(constIsContent)
-        isContentsImg.backgroundColor = UIColor(red: 191/255, green: 1, blue: 0, alpha: 1)
+        isContentsImg.backgroundColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
+//        UIColor(red: 191/255, green: 1, blue: 0, alpha: 1)
         isContentsImg.isHidden = true
     }
 }

@@ -15,19 +15,21 @@ class OptionsViewController: UIViewController {
     private var realmManager = RealmManager.shared.realm
     var datasourece : Results<Content>!
     private var optionsTableview: UITableView!
-    private let items: [String] = ["Font Size","Location Setting","OpenSource License",
-                                   "BackUp / Restore", "Delete All Data"]
+    private let items: [String] = ["폰트","오픈소 스라이선스",
+                                   "백업 / 복원", "모든 데이터 삭제"]
+    var backButton : UIImageView = UIImageView()
     
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         // Do any additional setup after loading the view.
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-        self.navigationController?.navigationBar.isHidden = false
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.largeTitleDisplayMode = .automatic
-        self.navigationItem.title = "Options"
+        navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.hidesBackButton = true
+        navigationItem.title = "설정"
         // 이곳에서만 크게 타이틀을 보이게 하고 싶은데...
         
         let realmManager = RealmManager.shared.realm
@@ -43,6 +45,13 @@ class OptionsViewController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: false)
+    }
     /*
     // MARK: - Navigation
 
@@ -114,19 +123,12 @@ extension OptionsViewController: UITableViewDataSource {
         case 3:
             break
         case 4:
-            let alert = UIAlertController(title: "경 고",
-                                          message: "지금까지 작성한 일기가 모두 삭제됩니다. \n 삭제된 데이터는 복구할 수 없습니다. \n 삭제하시겠습니까?",
-                                          preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "승인", style: .default) { (okAction) in
-                RealmManager.shared.deletedAll(object: self.datasourece)
-                self.navigationController?.popViewController(animated: true)
+            showAlert(title: "경 고",
+                      message: "지금까지 작성한 일기가 모두 삭제됩니다. \n 삭제된 데이터는 복구할 수 없습니다. \n 삭제하시겠습니까?",
+                      cancelBtn: true, buttonTitle: "승인", onView: self) { (okAction) in
+                        RealmManager.shared.deletedAll(object: self.datasourece)
+                        self.navigationController?.popViewController(animated: true)
             }
-            let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (cancel) in
-                self.dismiss(animated: false, completion: nil)
-            }
-            alert.addAction(okAction)
-            alert.addAction(cancelAction)
-            self.present(alert, animated: true, completion: nil)
         case 5:
             break
         default:

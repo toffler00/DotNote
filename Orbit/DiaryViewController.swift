@@ -23,9 +23,11 @@ class DiaryViewController: UIViewController {
     var contents : UITextView!
     var contentImgView : UIImageView!
     var containerView : UIView!
+    var deleteIcon : UIImageView!
     var dateCollectionView : UICollectionView!
     let user = User()
     var diaryData : Content!
+    var backButton : UIImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +37,9 @@ class DiaryViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.hidesBackButton = true
         navigationItem.title = "\(dateToString(in: diaryData.createdAt, dateFormat: "yyyy.MM.dd eee"))"
+        setUpDeleteIcon(bool: true)
 //        let attrs = [ NSAttributedString.Key.foregroundColor : UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1),
 //                      NSAttributedString.Key.font : UIFont(name: "system", size: 24)]
 //        navigationController?.navigationBar.titleTextAttributes = attrs as [NSAttributedStringKey : Any]
@@ -62,11 +66,14 @@ class DiaryViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         setUpWeatherIcon(bool: true)
+        setNavigationBackButton(onView: self, in: backButton, bool: true)
         changeWeatherIcon(weather: diaryData.weather)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         setUpWeatherIcon(bool: false)
+        setUpDeleteIcon(bool: false)
+        setNavigationBackButton(onView: self, in: backButton, bool: false)
     }
 }
 
@@ -233,6 +240,32 @@ extension DiaryViewController {
             weatherImgV.isHidden = true
         }
     }
+    
+    func setUpDeleteIcon(bool : Bool) {
+        if bool {
+            deleteIcon = UIImageView()
+            deleteIcon.translatesAutoresizingMaskIntoConstraints = false
+            
+            let constDeleteIcon : [NSLayoutConstraint] = [
+                NSLayoutConstraint(item: deleteIcon, attribute: .width, relatedBy: .equal, toItem: nil,
+                                   attribute: .width, multiplier: 1, constant: 32),
+                NSLayoutConstraint(item: deleteIcon, attribute: .height, relatedBy: .equal, toItem: nil,
+                                   attribute: .height, multiplier: 1, constant: 32),
+                NSLayoutConstraint(item: deleteIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -10),
+                NSLayoutConstraint(item: deleteIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .top, multiplier: 1, constant: 6)]
+            navigationController?.navigationBar.addSubview(deleteIcon)
+            navigationController?.navigationBar.addConstraints(constDeleteIcon)
+            
+            deleteIcon.image = UIImage(named: "garbage")
+            
+            let tapDeleteIcon = UITapGestureRecognizer(target: self, action: #selector(deleteData))
+            deleteIcon.addGestureRecognizer(tapDeleteIcon)
+            deleteIcon.isUserInteractionEnabled = true
+            
+        } else {
+            deleteIcon.isHidden = true
+        }
+    }
 }
 
 extension DiaryViewController {
@@ -246,6 +279,15 @@ extension DiaryViewController {
         contents.text = diaryData.body
         contentImgView.image = UIImage(data: diaryData.image!)
     }
+    
+    @objc func deleteData() {
+        showAlert(title: "경 고", message: "\(diaryData.title)를 삭제하시겠습니까?", cancelBtn: true, buttonTitle: "확인", onView: self) { (alertAction) in
+            print("deleteData()")
+            RealmManager.shared.delete(object: self.diaryData)
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
     
     @objc func changeWeatherIcon(weather : String) {
         switch weather {
