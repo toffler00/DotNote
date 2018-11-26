@@ -23,7 +23,7 @@ class ListViewController: UIViewController {
     
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
      var listTableView: UITableView!
-    private var writeButton: UIButton!
+    private var writeButton: UIImageView!
     var models = [Model.Contents]()
     var thisMonthLabel : UILabel!
     var weeks : [String] = ["Sun", "Mon","Tue","Wed","Thu","Fri","Sat"]
@@ -33,7 +33,6 @@ class ListViewController: UIViewController {
     var dates : [Date] = []
     var contentDate : [String] = []
     var optionIcon : UIImageView!
-    
     // MARK: IBAction
     @objc func pushOptionViewController(_ sender: UIImageView) {
         let optionsVC = OptionsViewController()
@@ -49,6 +48,8 @@ class ListViewController: UIViewController {
     // MARK: Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         setUpOptionIcon(bool: true)
+        setWriteBtn(bool: true)
+        setNavigationBackButton(onView: self, bool: false)
         if listTableView == nil {
            return
         }else {
@@ -59,6 +60,7 @@ class ListViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         setUpOptionIcon(bool: false)
+        setWriteBtn(bool: false)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,36 +109,6 @@ extension ListViewController {
         self.view.addSubview(listTableView)
         self.view.addConstraints(listTableViewConstraints)
         
-        // button
-        self.writeButton = UIButton()
-        self.writeButton.clipsToBounds = true
-        self.writeButton.backgroundColor = .clear
-        self.writeButton.setImage(UIImage(named: "pluswrite"), for: .normal)
-        //        self.writeButton.layer.cornerRadius = 0.5 * self.writeButton.bounds.size.height
-        self.writeButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let writeButtonConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.writeButton, attribute: .height, relatedBy: .equal,
-                               toItem: nil,
-                               attribute: .height, multiplier: 1, constant: 55),
-            NSLayoutConstraint(item: self.writeButton, attribute: .width, relatedBy: .equal,
-                               toItem: nil,
-                               attribute: .width, multiplier: 1, constant: 55),
-            NSLayoutConstraint(item: self.writeButton, attribute: .trailing, relatedBy: .equal,
-                               toItem: view.safeAreaLayoutGuide,
-                               attribute: .centerX, multiplier: 1.9, constant: 0),
-            NSLayoutConstraint(item: self.writeButton, attribute: .top, relatedBy: .equal,
-                               toItem: view,
-                               attribute: .centerY, multiplier: 1.8, constant: 0)]
-        
-        // To add writebutton in listTableview
-        self.view.addSubview(writeButton)
-        self.view.addConstraints(writeButtonConstraints)
-        self.writeButton.layer.cornerRadius = writeButton.frame.width / 2
-        
-        // writeButton.addTarget
-        self.writeButton.addTarget(self, action: #selector(pushWriteViewController), for: .touchUpInside)
-
         // MARK: ToRegister CustomCell
         self.listTableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
         self.listTableView.delegate = self
@@ -151,15 +123,15 @@ extension ListViewController {
             
             let constoptionIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: optionIcon, attribute: .width, relatedBy: .equal, toItem: nil,
-                                   attribute: .width, multiplier: 1, constant: 36),
+                                   attribute: .width, multiplier: 1, constant: 28),
                 NSLayoutConstraint(item: optionIcon, attribute: .height, relatedBy: .equal, toItem: nil,
-                                   attribute: .height, multiplier: 1, constant: 36),
-                NSLayoutConstraint(item: optionIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -8),
-                NSLayoutConstraint(item: optionIcon, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -8)]
+                                   attribute: .height, multiplier: 1, constant: 28),
+                NSLayoutConstraint(item: optionIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -14),
+                NSLayoutConstraint(item: optionIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .top, multiplier: 1, constant: 8)]
             navigationController?.navigationBar.addSubview(optionIcon)
             navigationController?.navigationBar.addConstraints(constoptionIcon)
             
-            optionIcon.image = UIImage(named: "menu")
+            optionIcon.image = UIImage(named: "apps")
             optionIcon.contentMode = .scaleAspectFit
             optionIcon.layer.cornerRadius = 4
             optionIcon.clipsToBounds = true
@@ -168,6 +140,42 @@ extension ListViewController {
             optionIcon.isUserInteractionEnabled = true
         } else {
             optionIcon.isHidden = true
+        }
+    }
+    
+    //MARK: writeButton UIImageView
+    func setWriteBtn(bool : Bool) {
+        if bool {
+            writeButton = UIImageView()
+            writeButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            let writeButtonConstraints: [NSLayoutConstraint] = [
+                NSLayoutConstraint(item: writeButton, attribute: .height, relatedBy: .equal,
+                                   toItem: nil,
+                                   attribute: .height, multiplier: 1, constant: 36),
+                NSLayoutConstraint(item: writeButton, attribute: .width, relatedBy: .equal,
+                                   toItem: nil,
+                                   attribute: .width, multiplier: 1, constant: 36),
+                NSLayoutConstraint(item: writeButton, attribute: .centerX, relatedBy: .equal,
+                                   toItem: optionIcon,
+                                   attribute: .centerX, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: writeButton, attribute: .bottom, relatedBy: .equal,
+                                   toItem: self.navigationController?.navigationBar,
+                                   attribute: .bottom, multiplier: 1, constant: -8)]
+            
+            // To add writebutton in listTableview
+            self.navigationController?.navigationBar.addSubview(writeButton)
+            self.navigationController?.navigationBar.addConstraints(writeButtonConstraints)
+            writeButton.layer.cornerRadius = writeButton.frame.width / 2
+            writeButton.clipsToBounds = true
+            writeButton.backgroundColor = .clear
+            writeButton.image = UIImage(named: "edit")
+            writeButton.isUserInteractionEnabled = true
+            // writeButton.addTarget
+            let tapWriteBtn = UITapGestureRecognizer(target: self, action: #selector(pushWriteViewController))
+            writeButton.addGestureRecognizer(tapWriteBtn)
+        } else {
+            writeButton.isHidden = true
         }
     }
     
@@ -204,16 +212,16 @@ extension ListViewController: UITableViewDelegate {
         return true
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.delete {
-            print("deleted")
-            let content = datasource[indexPath.row]
-            print(content)
-            RealmManager.shared.delete(object: content)
-            listTableView.reloadData()
-        }
-        calendarView.reloadData()
-    }
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == UITableViewCellEditingStyle.delete {
+//            print("deleted")
+//            let content = datasource[indexPath.row]
+//            print(content)
+//            RealmManager.shared.delete(object: content)
+//            listTableView.reloadData()
+//        }
+//        calendarView.reloadData()
+//    }
 }
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{

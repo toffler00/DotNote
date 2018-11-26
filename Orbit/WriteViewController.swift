@@ -52,12 +52,12 @@ class WriteViewController: UIViewController {
     fileprivate var iconBgView : UIView!
     fileprivate var contents : UITextView!
     fileprivate var models : [Model.Contents] = [Model.Contents]()
-     var selectedImageData: Data?
+    var selectedImageData: Data?
     fileprivate var datePicker : UIDatePicker!
     fileprivate var weatherPicker : UIPickerView!
     let pickerData : [String] = ["천둥번개", "이슬비", "비", "눈", "안개", "구름", "맑음"]
     var weatherItems : Model.WeatherModel.Weather?
-    
+    var backButton : UIImageView = UIImageView()
     
     fileprivate var locationManager: CLLocationManager!
     fileprivate var coordinate : CLLocationCoordinate2D?  {
@@ -100,12 +100,14 @@ class WriteViewController: UIViewController {
         registerForKeyboardNotification()
         regitsterForTextViewNotification()
         setUpWriteDoneIcon(bool: true)
+        setNavigationBackButton(onView: self, in: backButton, bool: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         unregisterForKeyboardNotification()
         unregisterForTextViewTextNotification()
         setUpWriteDoneIcon(bool: false)
+        setNavigationBackButton(onView: self, in: backButton, bool: false)
     }
     
     override func viewDidLoad() {
@@ -114,6 +116,7 @@ class WriteViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Write"
+        self.navigationItem.hidesBackButton = true
         
     }
     
@@ -139,6 +142,12 @@ class WriteViewController: UIViewController {
 //MARK: writeDone Post
 extension WriteViewController {
    @objc func writeDone() {
+    if titleLabel.text == nil {
+        titleLabel.text = ""
+    }
+    if contents.text == nil {
+        contents.text = ""
+    }
     let data = Content(createdAt: today, createdAtMonth : createAtMonth ,title: contentTitle.text!,
                        weather: weather.text!, body: contents.text!, image: selectedImageData!)
     RealmManager.shared.creat(object: data)
@@ -272,14 +281,15 @@ extension WriteViewController {
         weatherTF.translatesAutoresizingMaskIntoConstraints = false
         
         let constWeatherTF : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: weatherTF, attribute: .top, relatedBy: .equal, toItem: date,
-                               attribute: .bottom, multiplier: 1, constant: 1),
-            NSLayoutConstraint(item: weatherTF, attribute: .leading, relatedBy: .equal, toItem: date,
+            NSLayoutConstraint(item: weatherTF, attribute: .top, relatedBy: .equal, toItem: weather,
+                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: weatherTF, attribute: .leading, relatedBy: .equal, toItem: weather,
                                attribute: .leading, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: weatherTF, attribute: .height, relatedBy: .equal, toItem: nil,
                                attribute: .height, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: weatherTF, attribute: .width, relatedBy: .equal, toItem: date,
-                               attribute: .width, multiplier: 1, constant: 0)]
+            NSLayoutConstraint(item: weatherTF, attribute: .trailing, relatedBy: .equal, toItem: weather,
+                               attribute: .trailing, multiplier: 1, constant: 0)]
+        
         containerV.addSubview(weatherTF)
         containerV.addConstraints(constWeatherTF)
         weatherTF.allowsEditingTextAttributes = false
@@ -378,9 +388,9 @@ extension WriteViewController {
         
         let constCameraIconImg : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: cameraIconImgView, attribute: .width, relatedBy: .equal, toItem: iconBgView,
-                               attribute: .width, multiplier: 0.7, constant: 0),
+                               attribute: .width, multiplier: 0.5, constant: 0),
             NSLayoutConstraint(item: cameraIconImgView, attribute: .height, relatedBy: .equal, toItem: iconBgView,
-                               attribute: .height, multiplier: 0.7, constant: 0),
+                               attribute: .height, multiplier: 0.5, constant: 0),
             NSLayoutConstraint(item: cameraIconImgView, attribute: .centerX, relatedBy: .equal, toItem: iconBgView,
                                attribute: .centerX, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: cameraIconImgView, attribute: .centerY, relatedBy: .equal, toItem: iconBgView,
@@ -388,10 +398,10 @@ extension WriteViewController {
         iconBgView.addSubview(cameraIconImgView)
         iconBgView.addConstraints(constCameraIconImg)
         cameraIconImgView.contentMode = .scaleAspectFill
-        cameraIconImgView.layer.cornerRadius = 18
+        cameraIconImgView.layer.cornerRadius = 9
         cameraIconImgView.clipsToBounds = true
         cameraIconImgView.backgroundColor = .clear
-        cameraIconImgView.image = UIImage(named: "photo")
+        cameraIconImgView.image = UIImage(named: "camera")
         
         //MARK: contentImgV UIImageView
         contentImgV = UIImageView()
@@ -611,6 +621,10 @@ extension WriteViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         weather.text = pickerData[row]
+    }
+    
+    @objc func popViewController() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
