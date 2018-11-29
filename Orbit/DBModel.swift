@@ -26,7 +26,7 @@ class Content: Object {
     @objc dynamic var body: String = ""
     @objc dynamic var image: Data? = nil
     
-    convenience init(createdAt : Date, createdAtMonth : String, title : String, weather : String, body : String, image : Data) {
+    convenience init(createdAt : Date, createdAtMonth : String, title : String, weather : String, body : String, image : Data?) {
         self.init()
         self.createdAt = createdAt
         self.createdAtMonth = createdAtMonth

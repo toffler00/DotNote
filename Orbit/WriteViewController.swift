@@ -773,7 +773,6 @@ extension WriteViewController {
         guard let userInfo = notification.userInfo else { return }
         let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
         print(keyboardFrame.height)
-        let height = self.contents.frame.height
         self.contents.frame.size.height = self.contentsTextViewCGRect.height
         keyboardShown = false
     }

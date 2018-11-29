@@ -293,7 +293,7 @@ extension DiaryViewController {
         switch weather {
         case "맑음" :
             self.weatherImgV.image = UIImage(named: "sun")
-        case "Haze" :
+        case "안개" :
             self.weatherImgV.image = UIImage(named: "haze")
         case "구름" :
             self.weatherImgV.image = UIImage(named: "cloudy")

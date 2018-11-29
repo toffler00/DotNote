@@ -121,14 +121,13 @@ extension OptionsViewController: UITableViewDataSource {
         case 2:
             break
         case 3:
-            break
-        case 4:
             showAlert(title: "경 고",
                       message: "지금까지 작성한 일기가 모두 삭제됩니다. \n 삭제된 데이터는 복구할 수 없습니다. \n 삭제하시겠습니까?",
                       cancelBtn: true, buttonTitle: "승인", onView: self) { (okAction) in
                         RealmManager.shared.deletedAll(object: self.datasourece)
-                        self.navigationController?.popViewController(animated: true)
-            }
+                        self.navigationController?.popViewController(animated: true)}
+        case 4:
+            break
         case 5:
             break
         default:
