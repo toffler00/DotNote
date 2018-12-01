@@ -92,6 +92,7 @@ class ListViewController: UIViewController {
         setUpOptionIcon(bool: false)
         setWriteBtn(bool: false)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
