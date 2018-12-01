@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 import JTAppleCalendar
+import CoreLocation
 
 
 class ListViewController: UIViewController {
@@ -33,6 +34,34 @@ class ListViewController: UIViewController {
     var dates : [Date] = []
     var contentDate : [String] = []
     var optionIcon : UIImageView!
+    var weatherItem : String = ""
+    
+    var locationManager: CLLocationManager!
+    var coordinate : CLLocationCoordinate2D?  {
+        didSet(oldValue) {
+            if oldValue == nil {
+                DispatchQueue(label: "io.orbit.callWeatherAPI").async {
+                    let weatherApi = WeatherAPI()
+                    let lati = Float(CGFloat((self.coordinate?.latitude)!))
+                    let longi = Float(CGFloat((self.coordinate?.longitude)!))
+                    weatherApi.call(lati: lati, longi: longi, complete: { (error, weather) in
+                        if let error = error {
+                            log.error(error)
+                            return
+                        }
+                        if let weather = weather {
+                            //up update
+                            DispatchQueue.main.async {
+                                log.debug(weather.weather)
+                                let items = weather.weather[0]
+                                self.weatherItem = items.main
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
     // MARK: IBAction
     @objc func pushOptionViewController(_ sender: UIImageView) {
         let optionsVC = OptionsViewController()
@@ -42,6 +71,7 @@ class ListViewController: UIViewController {
     // MARK: @objc Method
     @objc fileprivate func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
+        writeViewController.weatherItem = self.weatherItem
         navigationController?.pushViewController(writeViewController, animated: true)
     }
     
@@ -69,7 +99,7 @@ class ListViewController: UIViewController {
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Orbit"
         setDatasource(in: getDate(dateFormat: "MMM yyyy"))
-        
+        setupLocationManager()
         print(contentDate)
     }
     

@@ -56,43 +56,15 @@ class WriteViewController: UIViewController {
     fileprivate var datePicker : UIDatePicker!
     fileprivate var weatherPicker : UIPickerView!
     let pickerData : [String] = ["천둥번개", "이슬비", "비", "눈", "안개", "구름", "맑음"]
-    var weatherItems : Model.WeatherModel.Weather?
     var backButton : UIImageView = UIImageView()
+    var weatherItem : String = ""
     
-    fileprivate var locationManager: CLLocationManager!
-    fileprivate var coordinate : CLLocationCoordinate2D?  {
-        didSet(oldValue) {
-            if oldValue == nil {
-                DispatchQueue(label: "io.orbit.callWeatherAPI").async {
-                    let weatherApi = WeatherAPI()
-                    let lati = Float(CGFloat((self.coordinate?.latitude)!))
-                    let longi = Float(CGFloat((self.coordinate?.longitude)!))
-                    weatherApi.call(lati: lati, longi: longi, complete: { (error, weather) in
-                        if let error = error {
-                            log.error(error)
-                            return
-                        }
-                        if let weather = weather {
-                            //up update
-                            DispatchQueue.main.async {
-                                log.debug(weather.weather)
-                                let items = weather.weather[0]
-                                self.weatherItems = items
-                                self.weather.text = items.main
-                            }
-                        }
-                    })
-                }
-            }
-        }
-    }
     
     
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: WriteDoneDelegate) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.writeDoneDelegate = delegate
         view.backgroundColor = .white
-        setupLocationManager()
     }
     
     //MARK: LifeCycle
@@ -136,6 +108,7 @@ class WriteViewController: UIViewController {
         dayOfWeek.text = getWeekDay(in: today, dateFormat: "EEEE")
         date.text = dateToString(in: today, dateFormat: "dd MMM yyyy")
         createAtMonth = dateToString(in: today, dateFormat: "MMM yyyy")
+        weather.text = weatherItem
     }
 }
 
@@ -641,33 +614,6 @@ extension WriteViewController {
 // MARK: setupLocationManager
 extension WriteViewController: CLLocationManagerDelegate {
     
-    fileprivate func setupLocationManager() {
-        
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
-        locationManager.startUpdatingLocation()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        let geoCoder = CLGeocoder()
-        
-        geoCoder.reverseGeocodeLocation(locations.first!) {[weak self] (placeMark, error) in
-            if let error = error {
-                log.error(error)
-            } else {
-//                self?.currentPlace = placeMark?.first?.administrativeArea
-                self?.coordinate = placeMark?.first?.location?.coordinate
-//                log.debug(placeMark?.first?.name)
-//                log.debug(placeMark?.first?.locality)
-//                log.debug(placeMark?.first!.subLocality)
-            }
-        }
-        locationManager.stopUpdatingLocation()
-    }
 }
 
 
