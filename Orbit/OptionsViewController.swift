@@ -2,7 +2,7 @@
 //  OptionsViewController.swift
 //  Orbit
 //
-//  Created by SSY on 2018. 9. 4..
+//  Created by SSY on 2018. 9. 4.
 //  Copyright © 2018년 orbit. All rights reserved.
 //
 
@@ -15,7 +15,7 @@ class OptionsViewController: UIViewController {
     private var realmManager = RealmManager.shared.realm
     var datasourece : Results<Content>!
     private var optionsTableview: UITableView!
-    private let items: [String] = ["폰트","오픈소 스라이선스",
+    private let items: [String] = ["폰트","오픈소스 라이선스",
                                    "백업 / 복원", "모든 데이터 삭제"]
     var backButton : UIImageView = UIImageView()
     
@@ -27,7 +27,7 @@ class OptionsViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.hidesBackButton = true
         navigationItem.title = "설정"
         // 이곳에서만 크게 타이틀을 보이게 하고 싶은데...

@@ -33,7 +33,10 @@ class Content: Object {
         self.title = title
         self.weather = weather
         self.body = body
-        self.image = image
+        if image == nil {
+            self.image = nil
+        } else {
+            self.image = image
+        }
     }
-    
 }

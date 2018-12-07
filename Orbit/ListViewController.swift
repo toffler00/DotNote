@@ -34,7 +34,7 @@ class ListViewController: UIViewController {
     var dates : [Date] = []
     var contentDate : [String] = []
     var optionIcon : UIImageView!
-    var weatherItem : String = ""
+    var weatherItem : Int!
     
     var locationManager: CLLocationManager!
     var coordinate : CLLocationCoordinate2D?  {
@@ -54,7 +54,7 @@ class ListViewController: UIViewController {
                             DispatchQueue.main.async {
                                 log.debug(weather.weather)
                                 let items = weather.weather[0]
-                                self.weatherItem = items.main
+                                self.weatherItem = items.id
                             }
                         }
                     })
@@ -71,8 +71,14 @@ class ListViewController: UIViewController {
     // MARK: @objc Method
     @objc fileprivate func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
-        writeViewController.weatherItem = self.weatherItem
-        navigationController?.pushViewController(writeViewController, animated: true)
+        if self.weatherItem == nil {
+            self.weatherItem = 0
+            writeViewController.weatherItem = self.weatherItem
+            navigationController?.pushViewController(writeViewController, animated: true)
+        } else {
+            writeViewController.weatherItem = self.weatherItem
+            navigationController?.pushViewController(writeViewController, animated: true)
+        }  
     }
     
     // MARK: Life Cycle
@@ -157,8 +163,10 @@ extension ListViewController {
                                    attribute: .width, multiplier: 1, constant: 28),
                 NSLayoutConstraint(item: optionIcon, attribute: .height, relatedBy: .equal, toItem: nil,
                                    attribute: .height, multiplier: 1, constant: 28),
-                NSLayoutConstraint(item: optionIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -14),
-                NSLayoutConstraint(item: optionIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .top, multiplier: 1, constant: 8)]
+                NSLayoutConstraint(item: optionIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
+                                   attribute: .trailing, multiplier: 1, constant: -14),
+                NSLayoutConstraint(item: optionIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
+                                   attribute: .top, multiplier: 1, constant: 8)]
             navigationController?.navigationBar.addSubview(optionIcon)
             navigationController?.navigationBar.addConstraints(constoptionIcon)
             

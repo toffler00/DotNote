@@ -28,7 +28,6 @@ extension UIViewController {
             item.isUserInteractionEnabled = true
         
         } else {
-            print("ishidden?")
             item.isHidden = true
             item.removeGestureRecognizer(tapBackBtn)
         }

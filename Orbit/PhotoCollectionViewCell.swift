@@ -21,7 +21,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
             
             imageManager.requestImage(for: phAsset, targetSize: frame.size, contentMode: .aspectFill, options: synchronous, resultHandler: {[weak self] image, _ in
                 self?.imageView.image = image
-                self?.imageView.clipsToBounds = true
+//                self?.imageView.clipsToBounds = true
             })
         }
     }
@@ -44,7 +44,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         
         addSubview(imageView)
         addConstraints(imageViewConsts)
-        imageView.contentMode = .redraw
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         
     }
     override func prepareForReuse() {
