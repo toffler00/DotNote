@@ -135,7 +135,7 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         }
         
         if cellState.isSelected {
-            validCell.dateLabel.textColor = .gray
+            validCell.dateLabel.textColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         } else {
           if cellState.dateBelongsTo == .thisMonth {
             validCell.dateLabel.textColor = .black
@@ -150,9 +150,11 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         if cellState.isSelected {
             validCell.isSelectedImg.isHidden = false
             validCell.dateLabel.textColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
+            
         } else {
             validCell.isSelectedImg.isHidden = true
             validCell.dateLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
+            
         }
     }
     
@@ -184,7 +186,7 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
     
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         handleSelectedCellColor(cell: cell, cellState: cellState)
-        handleCellColor(cell: cell, cellState: cellState)
+//        handleCellColor(cell: cell, cellState: cellState)
     }
     
     func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {

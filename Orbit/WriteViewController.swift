@@ -32,8 +32,8 @@ class WriteViewController: UIViewController {
     fileprivate var date : UILabel!
     fileprivate var titleLabel : UILabel!
     fileprivate var contentTitle: UITextField!
-    fileprivate var dayOfWeek: UILabel!
-    fileprivate var weather: UILabel!
+    var dayOfWeek: UILabel!
+    var weather: UILabel!
     
 //    fileprivate var weatherImg : UIImageView!
     fileprivate var writeDoneIcon : UIImageView!
@@ -41,7 +41,7 @@ class WriteViewController: UIViewController {
     fileprivate var weatherTF : CustomTextFiled!
     fileprivate var today : Date!
     fileprivate var createAtMonth : String!
-    fileprivate var containerV : UIView!
+    var containerV : UIView!
     fileprivate var contStackV : UIStackView!
     fileprivate var stackBox : UIStackView!
 //    fileprivate var writeDoneBtn : UIButton!
@@ -395,7 +395,6 @@ extension WriteViewController {
         
         //MARK: contentImgBackgroundView UIImageView
         
-        
         //MARK: contentImgV UIImageView
         contentImgV = UIImageView()
         contentImgV.translatesAutoresizingMaskIntoConstraints = false
@@ -407,18 +406,18 @@ extension WriteViewController {
                                multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contentImgV, attribute: .leading, relatedBy: .equal, toItem: dayOfWeek, attribute: .trailing,
                                multiplier: 1, constant: 108),
-            NSLayoutConstraint(item: contentImgV, attribute: .trailing, relatedBy: .equal, toItem: containerV, attribute: .trailing,
+            NSLayoutConstraint(item: contentImgV, attribute: .trailing, relatedBy: .equal, toItem:  containerV, attribute: .trailing,
                                multiplier: 1, constant: 24)]
         
-        containerV.addSubview(contentImgV)
+        containerV.addSubview(self.contentImgV)
         containerV.addConstraints(constImgV)
-        contentImgV.contentMode = .scaleAspectFill
         contentImgV.layer.cornerRadius = 18
         contentImgV.layer.borderWidth = 2
         contentImgV.layer.borderColor = UIColor.black.cgColor
         contentImgV.clipsToBounds = true
         contentImgV.backgroundColor = .clear
-        
+
+
         //MARK: titleLabel
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
