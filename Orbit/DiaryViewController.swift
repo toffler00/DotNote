@@ -38,8 +38,10 @@ class DiaryViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .automatic
         navigationItem.hidesBackButton = true
+        
         navigationItem.title = "\(dateToString(in: diaryData.createdAt, dateFormat: "yyyy.MM.dd eee"))"
         setUpDeleteIcon(bool: true)
+        
 //        let attrs = [ NSAttributedString.Key.foregroundColor : UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1),
 //                      NSAttributedString.Key.font : UIFont(name: "system", size: 24)]
 //        navigationController?.navigationBar.titleTextAttributes = attrs as [NSAttributedStringKey : Any]
@@ -63,10 +65,12 @@ class DiaryViewController: UIViewController {
         print("viewDidLayoutSubviews()")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: true)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         setUpWeatherIcon(bool: true)
-        setNavigationBackButton(onView: self, in: backButton, bool: true)
         changeWeatherIcon(weather: diaryData.weather)
     }
     
@@ -250,7 +254,7 @@ extension DiaryViewController {
         if bool {
             deleteIcon = UIImageView()
             deleteIcon.translatesAutoresizingMaskIntoConstraints = false
-            
+    
             let constDeleteIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: deleteIcon, attribute: .width, relatedBy: .equal, toItem: nil,
                                    attribute: .width, multiplier: 1, constant: 32),

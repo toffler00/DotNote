@@ -75,6 +75,9 @@ class WriteViewController: UIViewController {
         setNavigationBackButton(onView: self, in: backButton, bool: true)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: true)
+    }
     override func viewWillDisappear(_ animated: Bool) {
         unregisterForKeyboardNotification()
         unregisterForTextViewTextNotification()
@@ -82,6 +85,9 @@ class WriteViewController: UIViewController {
         setNavigationBackButton(onView: self, in: backButton, bool: false)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
@@ -398,26 +404,27 @@ extension WriteViewController {
         //MARK: contentImgV UIImageView
         contentImgV = UIImageView()
         contentImgV.translatesAutoresizingMaskIntoConstraints = false
+    
         
         let constImgV : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: contentImgV, attribute: .top, relatedBy: .equal, toItem: dayOfWeek, attribute: .top,
                                multiplier: 1, constant:0),
             NSLayoutConstraint(item: contentImgV, attribute: .bottom, relatedBy: .equal, toItem: weather, attribute: .bottom,
                                multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contentImgV, attribute: .leading, relatedBy: .equal, toItem: dayOfWeek, attribute: .trailing,
-                               multiplier: 1, constant: 108),
-            NSLayoutConstraint(item: contentImgV, attribute: .trailing, relatedBy: .equal, toItem:  containerV, attribute: .trailing,
-                               multiplier: 1, constant: 24)]
+            NSLayoutConstraint(item: contentImgV, attribute: .leading, relatedBy: .equal, toItem: containerV, attribute: .trailing,
+                               multiplier: 1, constant: containerV.frame.size.width / 3 + 8),
+            NSLayoutConstraint(item: contentImgV, attribute: .width, relatedBy: .equal, toItem:  containerV, attribute: .width,
+                               multiplier: 0.3, constant: 0)]
         
         containerV.addSubview(self.contentImgV)
         containerV.addConstraints(constImgV)
-        contentImgV.layer.cornerRadius = 18
-        contentImgV.layer.borderWidth = 2
+        contentImgV.layer.cornerRadius = 16
+        contentImgV.layer.maskedCorners = [CACornerMask.layerMinXMinYCorner, CACornerMask.layerMinXMaxYCorner]
+        contentImgV.layer.borderWidth = 1
         contentImgV.layer.borderColor = UIColor.black.cgColor
         contentImgV.clipsToBounds = true
         contentImgV.backgroundColor = .clear
-
-
+        
         //MARK: titleLabel
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -753,4 +760,18 @@ extension WriteViewController {
         self.contents.frame.size.height = self.contentsTextViewCGRect.height
         keyboardShown = false
     }
+}
+
+//MARK: animation contentImgV
+extension WriteViewController {
+    func transformContentImgV(view : UIImageView?) {
+        if contentImgV == nil {
+            return
+        } else {
+            let transX = (contentImgV.frame.size.width)
+            UIImageView.animate(withDuration: 0.5) {
+                view?.transform = CGAffineTransform(translationX: -transX, y: 0)
+            }
+        }
+        }
 }

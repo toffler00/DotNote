@@ -15,12 +15,19 @@ extension UIViewController {
         item.addGestureRecognizer(tapBackBtn)
         if bool {
             item.translatesAutoresizingMaskIntoConstraints = false
-            
+            item.isHidden = false
             let constBackBtn : [NSLayoutConstraint] = [NSLayoutConstraint(item: item, attribute: .width, relatedBy: .equal,
-                                                                          toItem: nil, attribute: .width, multiplier: 1, constant: 28),
-                                                       NSLayoutConstraint(item: item, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 28),
-                                                       NSLayoutConstraint(item: item, attribute: .top, relatedBy: .equal, toItem: onView.navigationController?.navigationBar, attribute: .top, multiplier: 1, constant: 8),
-                                                       NSLayoutConstraint(item: item, attribute: .leading, relatedBy: .equal, toItem: onView.navigationController?.navigationBar, attribute: .leading, multiplier: 1, constant: 10)]
+                                                                          toItem: nil,
+                                                                          attribute: .width, multiplier: 1, constant: 28),
+                                                       NSLayoutConstraint(item: item, attribute: .height, relatedBy: .equal,
+                                                                          toItem: nil,
+                                                                          attribute: .height, multiplier: 1, constant: 28),
+                                                       NSLayoutConstraint(item: item, attribute: .top, relatedBy: .equal,
+                                                                          toItem: onView.navigationController?.navigationBar,
+                                                                          attribute: .top, multiplier: 1, constant: 8),
+                                                       NSLayoutConstraint(item: item, attribute: .leading, relatedBy: .equal,
+                                                                          toItem: onView.navigationController?.navigationBar,
+                                                                          attribute: .leading, multiplier: 1, constant: 10)]
             onView.navigationController?.navigationBar.addSubview(item)
             onView.navigationController?.navigationBar.addConstraints(constBackBtn)
             item.image = UIImage(named: "left")
