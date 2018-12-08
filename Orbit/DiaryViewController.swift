@@ -38,8 +38,10 @@ class DiaryViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .automatic
         navigationItem.hidesBackButton = true
+        
         navigationItem.title = "\(dateToString(in: diaryData.createdAt, dateFormat: "yyyy.MM.dd eee"))"
         setUpDeleteIcon(bool: true)
+        
 //        let attrs = [ NSAttributedString.Key.foregroundColor : UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1),
 //                      NSAttributedString.Key.font : UIFont(name: "system", size: 24)]
 //        navigationController?.navigationBar.titleTextAttributes = attrs as [NSAttributedStringKey : Any]
@@ -63,10 +65,12 @@ class DiaryViewController: UIViewController {
         print("viewDidLayoutSubviews()")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: true)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         setUpWeatherIcon(bool: true)
-        setNavigationBackButton(onView: self, in: backButton, bool: true)
         changeWeatherIcon(weather: diaryData.weather)
     }
     
@@ -178,6 +182,11 @@ extension DiaryViewController {
         contentImgView = UIImageView()
         contentImgView.translatesAutoresizingMaskIntoConstraints = false
         
+        if contentImgView == nil {
+            print("contentImgView nil")
+        } else {
+            print(contentImgView!)
+        }
         let consContentImgV : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
                                attribute: .bottom, multiplier: 1, constant: 4),
@@ -245,14 +254,16 @@ extension DiaryViewController {
         if bool {
             deleteIcon = UIImageView()
             deleteIcon.translatesAutoresizingMaskIntoConstraints = false
-            
+    
             let constDeleteIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: deleteIcon, attribute: .width, relatedBy: .equal, toItem: nil,
                                    attribute: .width, multiplier: 1, constant: 32),
                 NSLayoutConstraint(item: deleteIcon, attribute: .height, relatedBy: .equal, toItem: nil,
                                    attribute: .height, multiplier: 1, constant: 32),
-                NSLayoutConstraint(item: deleteIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -10),
-                NSLayoutConstraint(item: deleteIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .top, multiplier: 1, constant: 6)]
+                NSLayoutConstraint(item: deleteIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
+                                   attribute: .trailing, multiplier: 1, constant: -10),
+                NSLayoutConstraint(item: deleteIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
+                                   attribute: .top, multiplier: 1, constant: 6)]
             navigationController?.navigationBar.addSubview(deleteIcon)
             navigationController?.navigationBar.addConstraints(constDeleteIcon)
             
@@ -277,7 +288,12 @@ extension DiaryViewController {
     func dataUpdate() {
         titleLabel.text = diaryData.title
         contents.text = diaryData.body
-        contentImgView.image = UIImage(data: diaryData.image!)
+        if diaryData.image == nil {
+            contentImgView.backgroundColor = .yellow
+        } else {
+            contentImgView.image = UIImage(data: diaryData.image!)
+        }
+    
     }
     
     @objc func deleteData() {
@@ -293,15 +309,15 @@ extension DiaryViewController {
         switch weather {
         case "맑음" :
             self.weatherImgV.image = UIImage(named: "sun")
-        case "Haze" :
+        case "안개" :
             self.weatherImgV.image = UIImage(named: "haze")
-        case "구름" :
+        case "구름", "구름조금" :
             self.weatherImgV.image = UIImage(named: "cloudy")
         case "이슬비" :
             self.weatherImgV.image = UIImage(named: "hail")
         case "비" :
             self.weatherImgV.image = UIImage(named: "rainy")
-        case "눈" :
+        case "눈","진눈깨비", "눈,비" :
             self.weatherImgV.image = UIImage(named: "snow")
         case "천둥번개" :
             self.weatherImgV.image = UIImage(named: "storm")

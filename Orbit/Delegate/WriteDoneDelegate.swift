@@ -45,7 +45,9 @@ extension WriteViewController: PhotosViewControllerDelegate {
             guard let imageData = imageData else { return }
             
             self.selectedImageData = imageData
+            self.contentImgV.contentMode = .scaleAspectFill
             self.contentImgV.image = UIImage(data: imageData)
+            self.transformContentImgV(view: self.contentImgV)
         }
     }
 }

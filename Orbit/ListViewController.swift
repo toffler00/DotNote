@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 import JTAppleCalendar
+import CoreLocation
 
 
 class ListViewController: UIViewController {
@@ -33,6 +34,34 @@ class ListViewController: UIViewController {
     var dates : [Date] = []
     var contentDate : [String] = []
     var optionIcon : UIImageView!
+    var weatherItem : Int!
+    
+    var locationManager: CLLocationManager!
+    var coordinate : CLLocationCoordinate2D?  {
+        didSet(oldValue) {
+            if oldValue == nil {
+                DispatchQueue(label: "io.orbit.callWeatherAPI").async {
+                    let weatherApi = WeatherAPI()
+                    let lati = Float(CGFloat((self.coordinate?.latitude)!))
+                    let longi = Float(CGFloat((self.coordinate?.longitude)!))
+                    weatherApi.call(lati: lati, longi: longi, complete: { (error, weather) in
+                        if let error = error {
+                            log.error(error)
+                            return
+                        }
+                        if let weather = weather {
+                            //up update
+                            DispatchQueue.main.async {
+                                log.debug(weather.weather)
+                                let items = weather.weather[0]
+                                self.weatherItem = items.id
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
     // MARK: IBAction
     @objc func pushOptionViewController(_ sender: UIImageView) {
         let optionsVC = OptionsViewController()
@@ -42,7 +71,14 @@ class ListViewController: UIViewController {
     // MARK: @objc Method
     @objc fileprivate func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
-        navigationController?.pushViewController(writeViewController, animated: true)
+        if self.weatherItem == nil {
+            self.weatherItem = 0
+            writeViewController.weatherItem = self.weatherItem
+            navigationController?.pushViewController(writeViewController, animated: true)
+        } else {
+            writeViewController.weatherItem = self.weatherItem
+            navigationController?.pushViewController(writeViewController, animated: true)
+        }  
     }
     
     // MARK: Life Cycle
@@ -62,6 +98,7 @@ class ListViewController: UIViewController {
         setUpOptionIcon(bool: false)
         setWriteBtn(bool: false)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
@@ -69,7 +106,7 @@ class ListViewController: UIViewController {
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationItem.title = "Orbit"
         setDatasource(in: getDate(dateFormat: "MMM yyyy"))
-        
+        setupLocationManager()
         print(contentDate)
     }
     
@@ -126,8 +163,10 @@ extension ListViewController {
                                    attribute: .width, multiplier: 1, constant: 28),
                 NSLayoutConstraint(item: optionIcon, attribute: .height, relatedBy: .equal, toItem: nil,
                                    attribute: .height, multiplier: 1, constant: 28),
-                NSLayoutConstraint(item: optionIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -14),
-                NSLayoutConstraint(item: optionIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .top, multiplier: 1, constant: 8)]
+                NSLayoutConstraint(item: optionIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
+                                   attribute: .trailing, multiplier: 1, constant: -14),
+                NSLayoutConstraint(item: optionIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
+                                   attribute: .top, multiplier: 1, constant: 8)]
             navigationController?.navigationBar.addSubview(optionIcon)
             navigationController?.navigationBar.addConstraints(constoptionIcon)
             

@@ -32,8 +32,8 @@ class WriteViewController: UIViewController {
     fileprivate var date : UILabel!
     fileprivate var titleLabel : UILabel!
     fileprivate var contentTitle: UITextField!
-    fileprivate var dayOfWeek: UILabel!
-    fileprivate var weather: UILabel!
+    var dayOfWeek: UILabel!
+    var weather: UILabel!
     
 //    fileprivate var weatherImg : UIImageView!
     fileprivate var writeDoneIcon : UIImageView!
@@ -41,7 +41,7 @@ class WriteViewController: UIViewController {
     fileprivate var weatherTF : CustomTextFiled!
     fileprivate var today : Date!
     fileprivate var createAtMonth : String!
-    fileprivate var containerV : UIView!
+    var containerV : UIView!
     fileprivate var contStackV : UIStackView!
     fileprivate var stackBox : UIStackView!
 //    fileprivate var writeDoneBtn : UIButton!
@@ -55,44 +55,16 @@ class WriteViewController: UIViewController {
     var selectedImageData: Data?
     fileprivate var datePicker : UIDatePicker!
     fileprivate var weatherPicker : UIPickerView!
-    let pickerData : [String] = ["천둥번개", "이슬비", "비", "눈", "안개", "구름", "맑음"]
-    var weatherItems : Model.WeatherModel.Weather?
+    let pickerData : [String] = [ "맑음", "천둥번개", "이슬비", "비","눈","눈,비","진눈깨비", "안개", "구름", "구름조금"]
     var backButton : UIImageView = UIImageView()
+    var weatherItem : Int = 0
     
-    fileprivate var locationManager: CLLocationManager!
-    fileprivate var coordinate : CLLocationCoordinate2D?  {
-        didSet(oldValue) {
-            if oldValue == nil {
-                DispatchQueue(label: "io.orbit.callWeatherAPI").async {
-                    let weatherApi = WeatherAPI()
-                    let lati = Float(CGFloat((self.coordinate?.latitude)!))
-                    let longi = Float(CGFloat((self.coordinate?.longitude)!))
-                    weatherApi.call(lati: lati, longi: longi, complete: { (error, weather) in
-                        if let error = error {
-                            log.error(error)
-                            return
-                        }
-                        if let weather = weather {
-                            //up update
-                            DispatchQueue.main.async {
-                                log.debug(weather.weather)
-                                let items = weather.weather[0]
-                                self.weatherItems = items
-                                self.weather.text = items.main
-                            }
-                        }
-                    })
-                }
-            }
-        }
-    }
     
     
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: WriteDoneDelegate) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.writeDoneDelegate = delegate
         view.backgroundColor = .white
-        setupLocationManager()
     }
     
     //MARK: LifeCycle
@@ -103,6 +75,9 @@ class WriteViewController: UIViewController {
         setNavigationBackButton(onView: self, in: backButton, bool: true)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: true)
+    }
     override func viewWillDisappear(_ animated: Bool) {
         unregisterForKeyboardNotification()
         unregisterForTextViewTextNotification()
@@ -110,6 +85,9 @@ class WriteViewController: UIViewController {
         setNavigationBackButton(onView: self, in: backButton, bool: false)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
@@ -136,23 +114,62 @@ class WriteViewController: UIViewController {
         dayOfWeek.text = getWeekDay(in: today, dateFormat: "EEEE")
         date.text = dateToString(in: today, dateFormat: "dd MMM yyyy")
         createAtMonth = dateToString(in: today, dateFormat: "MMM yyyy")
+        setWeather(id: weatherItem)
+    }
+    
+    func setWeather(id : Int) {
+        switch id {
+        case 200...299:
+            weather.text = "천둥번개"
+        case 300...399:
+            weather.text = "이슬비"
+        case 500...599:
+            weather.text = "비"
+        case 600, 601, 602, 620, 621, 622 :
+            weather.text = "눈"
+        case 611, 612:
+            weather.text = "진눈깨비"
+        case 615, 616:
+            weather.text = "눈,비"
+        case 700...799:
+            weather.text = "안개"
+        case 800:
+            weather.text = "맑음"
+        case 801, 802:
+            weather.text = "구름"
+        case 803, 804:
+            weather.text = "구름조금"
+        default:
+            weather.text = "날씨를 선택하세요"
+        }
     }
 }
 
 //MARK: writeDone Post
 extension WriteViewController {
    @objc func writeDone() {
-    if titleLabel.text == nil {
-        titleLabel.text = ""
+    if contentTitle.text == "" {
+        showAlert(title: "경 고", message: "제목이 빈칸이네요 \n 제목을 적어주세요.",
+                  cancelBtn: true, buttonTitle: "확인", onView: self, completion: nil)
+    } else {
+        if contents.text == "" || contents.text == "글을 입력하세요" {
+            showAlert(title: "경 고", message: "아무 내용이 없어요 \n 이대로 저장할까요?",
+                      cancelBtn: true, buttonTitle: "확인", onView: self) { (action) in
+                        self.contents.text = " "
+                        let data = Content(createdAt: self.today, createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
+                                           weather: self.weather.text!, body: self.contents.text!, image: self.selectedImageData)
+                        RealmManager.shared.creat(object: data)
+                        self.writeDoneDelegate.writeDone()
+                        self.navigationController?.popViewController(animated: true)
+            }
+        } else {
+            let data = Content(createdAt: self.today, createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
+                               weather: self.weather.text!, body: self.contents.text!, image: self.selectedImageData)
+            RealmManager.shared.creat(object: data)
+            self.writeDoneDelegate.writeDone()
+            self.navigationController?.popViewController(animated: true)
+        }
     }
-    if contents.text == nil {
-        contents.text = ""
-    }
-    let data = Content(createdAt: today, createdAtMonth : createAtMonth ,title: contentTitle.text!,
-                       weather: weather.text!, body: contents.text!, image: selectedImageData!)
-    RealmManager.shared.creat(object: data)
-    writeDoneDelegate.writeDone()
-    navigationController?.popViewController(animated: true)
     }
     
     func getWeekDay() {
@@ -382,53 +399,31 @@ extension WriteViewController {
         stackBox.addSubview(iconBgView)
         stackBox.addConstraints(constIconBgView)
         
-        //MARK: cameraIconImgView UIImageView
-        cameraIconImgView = UIImageView()
-        cameraIconImgView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let constCameraIconImg : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: cameraIconImgView, attribute: .width, relatedBy: .equal, toItem: iconBgView,
-                               attribute: .width, multiplier: 0.5, constant: 0),
-            NSLayoutConstraint(item: cameraIconImgView, attribute: .height, relatedBy: .equal, toItem: iconBgView,
-                               attribute: .height, multiplier: 0.5, constant: 0),
-            NSLayoutConstraint(item: cameraIconImgView, attribute: .centerX, relatedBy: .equal, toItem: iconBgView,
-                               attribute: .centerX, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: cameraIconImgView, attribute: .centerY, relatedBy: .equal, toItem: iconBgView,
-                               attribute: .centerY, multiplier: 1, constant: 0)]
-        iconBgView.addSubview(cameraIconImgView)
-        iconBgView.addConstraints(constCameraIconImg)
-        cameraIconImgView.contentMode = .scaleAspectFill
-        cameraIconImgView.layer.cornerRadius = 9
-        cameraIconImgView.clipsToBounds = true
-        cameraIconImgView.backgroundColor = .clear
-        cameraIconImgView.image = UIImage(named: "camera")
+        //MARK: contentImgBackgroundView UIImageView
         
         //MARK: contentImgV UIImageView
         contentImgV = UIImageView()
         contentImgV.translatesAutoresizingMaskIntoConstraints = false
+    
         
         let constImgV : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: contentImgV, attribute: .top, relatedBy: .equal, toItem: iconBgView, attribute: .top,
+            NSLayoutConstraint(item: contentImgV, attribute: .top, relatedBy: .equal, toItem: dayOfWeek, attribute: .top,
                                multiplier: 1, constant:0),
-            NSLayoutConstraint(item: contentImgV, attribute: .bottom, relatedBy: .equal, toItem: iconBgView, attribute: .bottom,
+            NSLayoutConstraint(item: contentImgV, attribute: .bottom, relatedBy: .equal, toItem: weather, attribute: .bottom,
                                multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contentImgV, attribute: .leading, relatedBy: .equal, toItem: iconBgView, attribute: .leading,
-                               multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contentImgV, attribute: .trailing, relatedBy: .equal, toItem: iconBgView, attribute: .trailing,
-                               multiplier: 1, constant: 0)]
+            NSLayoutConstraint(item: contentImgV, attribute: .leading, relatedBy: .equal, toItem: containerV, attribute: .trailing,
+                               multiplier: 1, constant: containerV.frame.size.width / 3 + 8),
+            NSLayoutConstraint(item: contentImgV, attribute: .width, relatedBy: .equal, toItem:  containerV, attribute: .width,
+                               multiplier: 0.3, constant: 0)]
         
-        iconBgView.addSubview(contentImgV)
-        iconBgView.addConstraints(constImgV)
-        contentImgV.contentMode = .scaleAspectFill
-        contentImgV.layer.cornerRadius = 36
-        contentImgV.layer.borderWidth = 2
+        containerV.addSubview(self.contentImgV)
+        containerV.addConstraints(constImgV)
+        contentImgV.layer.cornerRadius = 16
+        contentImgV.layer.maskedCorners = [CACornerMask.layerMinXMinYCorner, CACornerMask.layerMinXMaxYCorner]
+        contentImgV.layer.borderWidth = 1
         contentImgV.layer.borderColor = UIColor.black.cgColor
         contentImgV.clipsToBounds = true
         contentImgV.backgroundColor = .clear
-        contentImgV.isUserInteractionEnabled = true
-        
-        let addImageGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addImageGesture))
-        contentImgV.addGestureRecognizer(addImageGestureRecognizer)
         
         //MARK: titleLabel
         titleLabel = UILabel()
@@ -436,11 +431,11 @@ extension WriteViewController {
         let constTitleLB : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: stackBox, attribute: .top,
                                multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: contentImgV, attribute: .height,
+            NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: stackBox, attribute: .height,
                                multiplier: 0.5, constant: 0),
             NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading,
                                multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: contentImgV, attribute: .leading,
+            NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: iconBgView, attribute: .leading,
                                multiplier: 1, constant: 0)]
         
         stackBox.addSubview(titleLabel)
@@ -472,7 +467,29 @@ extension WriteViewController {
         contentTitle.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contentTitle.font?.withSize(15)
         
-
+        //MARK: cameraIconImgView UIImageView
+        cameraIconImgView = UIImageView()
+        cameraIconImgView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constCameraIconImg : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .top, relatedBy: .equal, toItem: contentTitle,
+                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .leading, relatedBy: .equal, toItem: contentTitle,
+                               attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .trailing, relatedBy: .equal, toItem: stackBox,
+                               attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .bottom, relatedBy: .equal, toItem: contentTitle,
+                               attribute: .bottom, multiplier: 1, constant: 0)]
+        stackBox.addSubview(cameraIconImgView)
+        stackBox.addConstraints(constCameraIconImg)
+        cameraIconImgView.contentMode = .scaleAspectFit
+//        cameraIconImgView.layer.cornerRadius = 9
+//        cameraIconImgView.clipsToBounds = true
+        cameraIconImgView.backgroundColor = .clear
+        cameraIconImgView.image = UIImage(named: "camera")
+        cameraIconImgView.isUserInteractionEnabled = true
+        let addImageGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addImageGesture))
+        cameraIconImgView.addGestureRecognizer(addImageGestureRecognizer)
         
         //MARK: contents UITextView
         contents = UITextView()
@@ -638,39 +655,6 @@ extension WriteViewController {
     }
 }
 
-// MARK: setupLocationManager
-extension WriteViewController: CLLocationManagerDelegate {
-    
-    fileprivate func setupLocationManager() {
-        
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
-        locationManager.startUpdatingLocation()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        let geoCoder = CLGeocoder()
-        
-        geoCoder.reverseGeocodeLocation(locations.first!) {[weak self] (placeMark, error) in
-            if let error = error {
-                log.error(error)
-            } else {
-//                self?.currentPlace = placeMark?.first?.administrativeArea
-                self?.coordinate = placeMark?.first?.location?.coordinate
-//                log.debug(placeMark?.first?.name)
-//                log.debug(placeMark?.first?.locality)
-//                log.debug(placeMark?.first!.subLocality)
-            }
-        }
-        locationManager.stopUpdatingLocation()
-    }
-}
-
-
 extension WriteViewController {
     //MARK: dateTF inputViews
     @objc fileprivate func touchUpInsideDateLabel(sender : UILabel) {
@@ -773,8 +757,21 @@ extension WriteViewController {
         guard let userInfo = notification.userInfo else { return }
         let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
         print(keyboardFrame.height)
-        let height = self.contents.frame.height
         self.contents.frame.size.height = self.contentsTextViewCGRect.height
         keyboardShown = false
     }
+}
+
+//MARK: animation contentImgV
+extension WriteViewController {
+    func transformContentImgV(view : UIImageView?) {
+        if contentImgV == nil {
+            return
+        } else {
+            let transX = (contentImgV.frame.size.width)
+            UIImageView.animate(withDuration: 0.5) {
+                view?.transform = CGAffineTransform(translationX: -transX, y: 0)
+            }
+        }
+        }
 }

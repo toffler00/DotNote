@@ -2,7 +2,7 @@
 //  OptionsViewController.swift
 //  Orbit
 //
-//  Created by SSY on 2018. 9. 4..
+//  Created by SSY on 2018. 9. 4.
 //  Copyright © 2018년 orbit. All rights reserved.
 //
 
@@ -15,7 +15,7 @@ class OptionsViewController: UIViewController {
     private var realmManager = RealmManager.shared.realm
     var datasourece : Results<Content>!
     private var optionsTableview: UITableView!
-    private let items: [String] = ["폰트","오픈소 스라이선스",
+    private let items: [String] = ["폰트","오픈소스 라이선스",
                                    "백업 / 복원", "모든 데이터 삭제"]
     var backButton : UIImageView = UIImageView()
     
@@ -27,7 +27,7 @@ class OptionsViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.hidesBackButton = true
         navigationItem.title = "설정"
         // 이곳에서만 크게 타이틀을 보이게 하고 싶은데...
@@ -121,14 +121,13 @@ extension OptionsViewController: UITableViewDataSource {
         case 2:
             break
         case 3:
-            break
-        case 4:
             showAlert(title: "경 고",
                       message: "지금까지 작성한 일기가 모두 삭제됩니다. \n 삭제된 데이터는 복구할 수 없습니다. \n 삭제하시겠습니까?",
                       cancelBtn: true, buttonTitle: "승인", onView: self) { (okAction) in
                         RealmManager.shared.deletedAll(object: self.datasourece)
-                        self.navigationController?.popViewController(animated: true)
-            }
+                        self.navigationController?.popViewController(animated: true)}
+        case 4:
+            break
         case 5:
             break
         default:
