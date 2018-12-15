@@ -10,6 +10,7 @@ target 'Orbit' do
   pod 'SwiftyBeaver'
   pod 'RealmSwift'
   pod 'JTAppleCalendar'
+  pod 'ExpandableButton'
 
   target 'OrbitTests' do
     inherit! :search_paths

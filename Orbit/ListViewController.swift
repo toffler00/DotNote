@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import JTAppleCalendar
 import CoreLocation
-
+import ExpandableButton
 
 class ListViewController: UIViewController {
     
@@ -35,6 +35,11 @@ class ListViewController: UIViewController {
     var contentDate : [String] = []
     var optionIcon : UIImageView!
     var weatherItem : Int!
+    var exButton : ExpandableButtonView = {
+        var item : [ExpandableButtonItem] = []
+        let btn = ExpandableButtonView(items: item)
+        return btn
+    }()
     
     var locationManager: CLLocationManager!
     var coordinate : CLLocationCoordinate2D?  {
@@ -69,7 +74,7 @@ class ListViewController: UIViewController {
     }
     
     // MARK: @objc Method
-    @objc fileprivate func pushWriteViewController(){
+    @objc func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
         if self.weatherItem == nil {
             self.weatherItem = 0
@@ -84,8 +89,10 @@ class ListViewController: UIViewController {
     // MARK: Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         setUpOptionIcon(bool: true)
-        setWriteBtn(bool: true)
+//        setWriteBtn(bool: true)
+        setExpandableButton()
         setNavigationBackButton(onView: self, bool: false)
+        
         if listTableView == nil {
            return
         }else {
@@ -96,7 +103,8 @@ class ListViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         setUpOptionIcon(bool: false)
-        setWriteBtn(bool: false)
+//        setWriteBtn(bool: false)
+        exButton.isHidden = true
     }
     
     override func viewDidLoad() {

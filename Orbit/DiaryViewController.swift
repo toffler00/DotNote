@@ -141,6 +141,7 @@ extension DiaryViewController {
         view.addConstraints(consContainerV)
         containerView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         
+        
         //MARK: weatherImgV : UIImageView
 //        weatherImgV = UIImageView()
 //        weatherImgV.translatesAutoresizingMaskIntoConstraints = false
@@ -182,26 +183,40 @@ extension DiaryViewController {
         contentImgView = UIImageView()
         contentImgView.translatesAutoresizingMaskIntoConstraints = false
         
-        if contentImgView == nil {
+        if diaryData.image == nil {
             print("contentImgView nil")
+            let consContentImgV : [NSLayoutConstraint] = [
+                NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
+                                   attribute: .bottom, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
+                                   attribute: .width, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: nil,
+                                   attribute: .height, multiplier: 1, constant: 1),
+                NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
+                                   attribute: .centerX, multiplier: 1, constant: 0)]
+            
+            containerView.addSubview(contentImgView)
+            containerView.addConstraints(consContentImgV)
+            contentImgView.backgroundColor = .clear
+            contentImgView.contentMode = .scaleAspectFill
+            contentImgView.clipsToBounds = true
         } else {
-            print(contentImgView!)
+            let consContentImgV : [NSLayoutConstraint] = [
+                NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
+                                   attribute: .bottom, multiplier: 1, constant: 4),
+                NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
+                                   attribute: .width, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
+                                   attribute: .width, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
+                                   attribute: .centerX, multiplier: 1, constant: 0)]
+            
+            containerView.addSubview(contentImgView)
+            containerView.addConstraints(consContentImgV)
+            contentImgView.backgroundColor = .clear
+            contentImgView.contentMode = .scaleAspectFill
+            contentImgView.clipsToBounds = true
         }
-        let consContentImgV : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
-                               attribute: .bottom, multiplier: 1, constant: 4),
-            NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
-                               attribute: .width, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
-                               attribute: .width, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
-                               attribute: .centerX, multiplier: 1, constant: 0)]
-        
-        containerView.addSubview(contentImgView)
-        containerView.addConstraints(consContentImgV)
-        contentImgView.backgroundColor = .clear
-        contentImgView.contentMode = .scaleAspectFill
-        contentImgView.clipsToBounds = true
         
         //MARK: contents : UITextView
         contents = UITextView()
@@ -289,11 +304,10 @@ extension DiaryViewController {
         titleLabel.text = diaryData.title
         contents.text = diaryData.body
         if diaryData.image == nil {
-            contentImgView.backgroundColor = .yellow
+            print("nodata")
         } else {
-            contentImgView.image = UIImage(data: diaryData.image!)
+           contentImgView.image = UIImage(data: diaryData.image!)
         }
-    
     }
     
     @objc func deleteData() {

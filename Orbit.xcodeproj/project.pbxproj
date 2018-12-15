@@ -17,6 +17,7 @@
 		62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62254C752182F0E90084AE56 /* CutomKeyboard.swift */; };
 		62849D9B219A75EB00F9761E /* CustomTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62849D9A219A75EB00F9761E /* CustomTextFiled.swift */; };
 		62927F8D21B2A87300B4F167 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62927F8C21B2A87300B4F167 /* LocationManager.swift */; };
+		6292D56C21C51FDE00E5E521 /* ExpandableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */; };
 		6296D18C21394CD400B610C8 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6296D18B21394CD400B610C8 /* Model.swift */; };
 		62AE2E13216CFAC9004448F2 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E12216CFAC9004448F2 /* CalendarView.swift */; };
 		62AE2E15216E31F0004448F2 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E14216E31F0004448F2 /* CalendarCell.swift */; };
@@ -79,6 +80,7 @@
 		62254C752182F0E90084AE56 /* CutomKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutomKeyboard.swift; sourceTree = "<group>"; };
 		62849D9A219A75EB00F9761E /* CustomTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFiled.swift; sourceTree = "<group>"; };
 		62927F8C21B2A87300B4F167 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableButton.swift; sourceTree = "<group>"; };
 		6296D18B21394CD400B610C8 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		62AE2E12216CFAC9004448F2 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		62AE2E14216E31F0004448F2 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				620F53B1211EF16900A94A01 /* DiaryViewController.swift */,
 				6A331FFB2131485600FFE74F /* WriteViewController.swift */,
 				CE84E7482137D3350097357F /* ListViewController.swift */,
+				6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */,
 				62927F8C21B2A87300B4F167 /* LocationManager.swift */,
 				CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */,
 				62AE2E12216CFAC9004448F2 /* CalendarView.swift */,
@@ -437,6 +440,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Orbit/Pods-Orbit-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ExpandableButton/ExpandableButton.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/JTAppleCalendar/JTAppleCalendar.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
@@ -446,6 +450,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JTAppleCalendar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
@@ -492,6 +497,7 @@
 				62AE2E13216CFAC9004448F2 /* CalendarView.swift in Sources */,
 				6296D18C21394CD400B610C8 /* Model.swift in Sources */,
 				6A6386EA21452A7A006DE95C /* KoreaWeahterLocationCode.swift in Sources */,
+				6292D56C21C51FDE00E5E521 /* ExpandableButton.swift in Sources */,
 				62F92F8321AC00CB0083AB9A /* AlertController.swift in Sources */,
 				62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */,
 				CE388C2A213E42550063DE35 /* OptionsViewController.swift in Sources */,
