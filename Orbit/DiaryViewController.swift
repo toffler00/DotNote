@@ -234,16 +234,16 @@ extension DiaryViewController {
         
         containerView.addSubview(contents)
         containerView.addConstraints(consContents)
-        contents.backgroundColor = .clear
+        contents.backgroundColor = UIColor.clear
         contents.isEditable = false
         contents.textAlignment = .center
         contents.font = UIFont.systemFont(ofSize: 18)
-        
-        //MARK:
+    
     }
+    
     func setUpWeatherIcon(bool : Bool) {
         if bool {
-            //MARK: writeDoneIcon UIImageView
+            //MARK: weatherIcon UIImageView
             weatherImgV = UIImageView()
             weatherImgV.translatesAutoresizingMaskIntoConstraints = false
             
@@ -267,6 +267,7 @@ extension DiaryViewController {
     
     func setUpDeleteIcon(bool : Bool) {
         if bool {
+            //MARK: deleteIcon UIImageView
             deleteIcon = UIImageView()
             deleteIcon.translatesAutoresizingMaskIntoConstraints = false
     

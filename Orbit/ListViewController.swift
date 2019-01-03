@@ -23,7 +23,7 @@ class ListViewController: UIViewController {
     let realmManager = RealmManager.shared.realm
     
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
-     var listTableView: UITableView!
+    var listTableView: UITableView!
     private var writeButton: UIImageView!
     var models = [Model.Contents]()
     var thisMonthLabel : UILabel!

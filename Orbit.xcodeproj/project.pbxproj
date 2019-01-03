@@ -23,6 +23,7 @@
 		62AE2E15216E31F0004448F2 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E14216E31F0004448F2 /* CalendarCell.swift */; };
 		62AE2E39217B7774004448F2 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E38217B7774004448F2 /* RealmManager.swift */; };
 		62AE2E3B217DA7FF004448F2 /* ConversionDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E3A217DA7FF004448F2 /* ConversionDate.swift */; };
+		62C55D4A21DE1CC3000F42CB /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C55D4921DE1CC3000F42CB /* MemoViewController.swift */; };
 		62F92F8321AC00CB0083AB9A /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F92F8221AC00CB0083AB9A /* AlertController.swift */; };
 		62F92F8521AC1CF10083AB9A /* CustomNavigationBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */; };
 		6A2AFDF1213A68B900F5B38B /* DBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AFDF0213A68B900F5B38B /* DBModel.swift */; };
@@ -86,6 +87,7 @@
 		62AE2E14216E31F0004448F2 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		62AE2E38217B7774004448F2 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		62AE2E3A217DA7FF004448F2 /* ConversionDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionDate.swift; sourceTree = "<group>"; };
+		62C55D4921DE1CC3000F42CB /* MemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
 		62F92F8221AC00CB0083AB9A /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBackButton.swift; sourceTree = "<group>"; };
 		688EAB7E305E75A5D496F632 /* Pods-OrbitTests.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitTests.prod.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitTests/Pods-OrbitTests.prod.xcconfig"; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				620F53AF211EF16900A94A01 /* AppDelegate.swift */,
 				620F53B1211EF16900A94A01 /* DiaryViewController.swift */,
 				6A331FFB2131485600FFE74F /* WriteViewController.swift */,
+				62C55D4921DE1CC3000F42CB /* MemoViewController.swift */,
 				CE84E7482137D3350097357F /* ListViewController.swift */,
 				6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */,
 				62927F8C21B2A87300B4F167 /* LocationManager.swift */,
@@ -498,6 +501,7 @@
 				6296D18C21394CD400B610C8 /* Model.swift in Sources */,
 				6A6386EA21452A7A006DE95C /* KoreaWeahterLocationCode.swift in Sources */,
 				6292D56C21C51FDE00E5E521 /* ExpandableButton.swift in Sources */,
+				62C55D4A21DE1CC3000F42CB /* MemoViewController.swift in Sources */,
 				62F92F8321AC00CB0083AB9A /* AlertController.swift in Sources */,
 				62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */,
 				CE388C2A213E42550063DE35 /* OptionsViewController.swift in Sources */,

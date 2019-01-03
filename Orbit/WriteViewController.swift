@@ -21,11 +21,11 @@ class WriteViewController: UIViewController {
     var contentsTextViewCGRect : CGRect!
     
     //MARK: Ream Property
-//    var content = Content()
-//    var user = User()
+    //    var content = Content()
+    //    var user = User()
     var realm = try! Realm()
     let realmManager = RealmManager.shared.realm
-
+    
     //    var model : Model.Contents?
     
     weak var writeDoneDelegate: WriteDoneDelegate!
@@ -35,7 +35,7 @@ class WriteViewController: UIViewController {
     var dayOfWeek: UILabel!
     var weather: UILabel!
     
-//    fileprivate var weatherImg : UIImageView!
+    //    fileprivate var weatherImg : UIImageView!
     fileprivate var writeDoneIcon : UIImageView!
     fileprivate var dateTF : CustomTextFiled!
     fileprivate var weatherTF : CustomTextFiled!
@@ -44,7 +44,7 @@ class WriteViewController: UIViewController {
     var containerV : UIView!
     fileprivate var contStackV : UIStackView!
     fileprivate var stackBox : UIStackView!
-//    fileprivate var writeDoneBtn : UIButton!
+    //    fileprivate var writeDoneBtn : UIButton!
     fileprivate var tapWeather : UIImageView!
     fileprivate var tapDate : UIImageView!
     var contentImgV : UIImageView!
@@ -147,29 +147,29 @@ class WriteViewController: UIViewController {
 
 //MARK: writeDone Post
 extension WriteViewController {
-   @objc func writeDone() {
-    if contentTitle.text == "" {
-        showAlert(title: "경 고", message: "제목이 빈칸이네요 \n 제목을 적어주세요.",
-                  cancelBtn: true, buttonTitle: "확인", onView: self, completion: nil)
-    } else {
-        if contents.text == "" || contents.text == "글을 입력하세요" {
-            showAlert(title: "경 고", message: "아무 내용이 없어요 \n 이대로 저장할까요?",
-                      cancelBtn: true, buttonTitle: "확인", onView: self) { (action) in
-                        self.contents.text = " "
-                        let data = Content(createdAt: self.today, createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
-                                           weather: self.weather.text!, body: self.contents.text!, image: self.selectedImageData)
-                        RealmManager.shared.creat(object: data)
-                        self.writeDoneDelegate.writeDone()
-                        self.navigationController?.popViewController(animated: true)
-            }
+    @objc func writeDone() {
+        if contentTitle.text == "" {
+            showAlert(title: "경 고", message: "제목이 빈칸이네요 \n 제목을 적어주세요.",
+                      cancelBtn: true, buttonTitle: "확인", onView: self, completion: nil)
         } else {
-            let data = Content(createdAt: self.today, createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
-                               weather: self.weather.text!, body: self.contents.text!, image: self.selectedImageData)
-            RealmManager.shared.creat(object: data)
-            self.writeDoneDelegate.writeDone()
-            self.navigationController?.popViewController(animated: true)
+            if contents.text == "" || contents.text == "글을 입력하세요" {
+                showAlert(title: "경 고", message: "아무 내용이 없어요 \n 이대로 저장할까요?",
+                          cancelBtn: true, buttonTitle: "확인", onView: self) { (action) in
+                            self.contents.text = " "
+                            let data = Content(createdAt: self.today, createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
+                                               weather: self.weather.text!, body: self.contents.text!, image: self.selectedImageData)
+                            RealmManager.shared.creat(object: data)
+                            self.writeDoneDelegate.writeDone()
+                            self.navigationController?.popViewController(animated: true)
+                }
+            } else {
+                let data = Content(createdAt: self.today, createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
+                                   weather: self.weather.text!, body: self.contents.text!, image: self.selectedImageData)
+                RealmManager.shared.creat(object: data)
+                self.writeDoneDelegate.writeDone()
+                self.navigationController?.popViewController(animated: true)
+            }
         }
-    }
     }
     
     func getWeekDay() {
@@ -244,7 +244,7 @@ extension WriteViewController {
         containerV.addSubview(dateTF)
         containerV.addConstraints(constDateTF)
         dateTF.backgroundColor = .clear
-     
+        
         dateTF.allowsEditingTextAttributes = false
         
         //MARK: date Label
@@ -272,7 +272,7 @@ extension WriteViewController {
         let changeDateGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(touchUpInsideDateLabel(sender:)))
         date.isUserInteractionEnabled = true
         date.addGestureRecognizer(changeDateGestureRecognizer)
-
+        
         //MARK: weather Label
         weather = UILabel()
         weather.translatesAutoresizingMaskIntoConstraints = false
@@ -293,7 +293,7 @@ extension WriteViewController {
         weather.textAlignment = NSTextAlignment.left
         weather.backgroundColor = .clear
         
-
+        
         weatherTF = CustomTextFiled()
         weatherTF.translatesAutoresizingMaskIntoConstraints = false
         
@@ -404,7 +404,7 @@ extension WriteViewController {
         //MARK: contentImgV UIImageView
         contentImgV = UIImageView()
         contentImgV.translatesAutoresizingMaskIntoConstraints = false
-    
+        
         
         let constImgV : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: contentImgV, attribute: .top, relatedBy: .equal, toItem: dayOfWeek, attribute: .top,
@@ -458,7 +458,7 @@ extension WriteViewController {
                                multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contentTitle, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing,
                                multiplier: 1, constant: -72)]
-
+        
         stackBox.addSubview(contentTitle)
         stackBox.addConstraints(constTitle)
         contentTitle.attributedPlaceholder = NSAttributedString(string: " 제목을 쓰윽쓰윽",
@@ -483,8 +483,8 @@ extension WriteViewController {
         stackBox.addSubview(cameraIconImgView)
         stackBox.addConstraints(constCameraIconImg)
         cameraIconImgView.contentMode = .scaleAspectFit
-//        cameraIconImgView.layer.cornerRadius = 9
-//        cameraIconImgView.clipsToBounds = true
+        //        cameraIconImgView.layer.cornerRadius = 9
+        //        cameraIconImgView.clipsToBounds = true
         cameraIconImgView.backgroundColor = .clear
         cameraIconImgView.image = UIImage(named: "camera")
         cameraIconImgView.isUserInteractionEnabled = true
@@ -542,7 +542,7 @@ extension WriteViewController {
             writeDoneIcon.addGestureRecognizer(tapWriteDonIcon)
             writeDoneIcon.isUserInteractionEnabled = true
         } else {
-           writeDoneIcon.isHidden = true
+            writeDoneIcon.isHidden = true
         }
     }
 }
@@ -558,7 +558,7 @@ extension WriteViewController : UIPickerViewDelegate, UIPickerViewDataSource {
         let rightAlignment = UIBarButtonItem(title: "right", style: .done, target: self,
                                              action: #selector(rightTextAlignment))
         let leftAlignment = UIBarButtonItem(title: "left", style: .done, target: self,
-                                        action: #selector(leftTextAlignment))
+                                            action: #selector(leftTextAlignment))
         let centerAlignment = UIBarButtonItem(title: "center", style: .done, target: self,
                                               action: #selector(centerTextAlignment))
         let flexibleBtn = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
@@ -572,7 +572,7 @@ extension WriteViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     @objc func rightTextAlignment() {
         contents.textAlignment = .right
     }
-
+    
     @objc func leftTextAlignment() {
         contents.textAlignment = .left
     }
@@ -591,7 +591,7 @@ extension WriteViewController : UIPickerViewDelegate, UIPickerViewDataSource {
             contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
         }
     }
-
+    
     @objc func weatherTextFieldReconiger() {
         weatherPicker = UIPickerView()
         weatherPicker.delegate = self
@@ -694,7 +694,7 @@ extension WriteViewController {
     @objc fileprivate func dismissDatePciker(sender : UIBarButtonItem) {
         dateTF.resignFirstResponder()
     }
-
+    
 }
 
 extension WriteViewController {
@@ -773,5 +773,5 @@ extension WriteViewController {
                 view?.transform = CGAffineTransform(translationX: -transX, y: 0)
             }
         }
-        }
+    }
 }
