@@ -126,6 +126,7 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         dateFormatter.dateFormat = "yyyy MM dd"
         dateFormatter.locale = Locale(identifier: "kr_KR")
         let currentDate = dateFormatter.string(from: Date.init())
+        self.selectedDate = currentDate
         let cellDate = dateFormatter.string(from: cellState.date)
         
         if currentDate == cellDate {
@@ -186,6 +187,11 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
     
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         handleSelectedCellColor(cell: cell, cellState: cellState)
+        dateFormatter.dateFormat = "yyyy.MM.dd eee"
+        dateFormatter.locale = Locale(identifier: "kr_KR")
+        let selectDate = dateFormatter.string(from: date)
+        self.selectedDate = selectDate
+        print(self.selectedDate)
 //        handleCellColor(cell: cell, cellState: cellState)
     }
     

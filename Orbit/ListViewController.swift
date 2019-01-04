@@ -40,7 +40,7 @@ class ListViewController: UIViewController {
         let btn = ExpandableButtonView(items: item)
         return btn
     }()
-    
+    var selectedDate : String = ""
     var locationManager: CLLocationManager!
     var coordinate : CLLocationCoordinate2D?  {
         didSet(oldValue) {
@@ -84,6 +84,13 @@ class ListViewController: UIViewController {
             writeViewController.weatherItem = self.weatherItem
             navigationController?.pushViewController(writeViewController, animated: true)
         }  
+    }
+    
+    @objc func presentMemoViewController(){
+        let memoViewController = MemoViewController()
+        memoViewController.modalPresentationStyle = .overCurrentContext
+        memoViewController.selectDate = selectedDate
+        present(memoViewController, animated: false, completion: nil)
     }
     
     // MARK: Life Cycle

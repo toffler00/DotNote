@@ -12,9 +12,15 @@ import ExpandableButton
 extension ListViewController {
     func setExpandableButton() {
         let insets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        let attributeString : [NSAttributedString] = [NSAttributedString(string: "memo", attributes: [NSAttributedString.Key.foregroundColor : UIColor.black, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)]),
-                                                      NSAttributedString(string: "draw", attributes: [NSAttributedString.Key.foregroundColor : UIColor.black, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)]),
-                                                      NSAttributedString(string: "write", attributes: [NSAttributedString.Key.foregroundColor : UIColor.black, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)])]
+        let attributeString : [NSAttributedString] = [NSAttributedString(string: "memo",
+                                                                         attributes: [NSAttributedString.Key.foregroundColor : UIColor.black,
+                                                                                                      NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)]),
+                                                      NSAttributedString(string: "draw",
+                                                                         attributes: [NSAttributedString.Key.foregroundColor : UIColor.black,
+                                                                                                      NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)]),
+                                                      NSAttributedString(string: "write",
+                                                                         attributes: [NSAttributedString.Key.foregroundColor : UIColor.black,
+                                                                                                       NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)])]
         
         let items : [ExpandableButtonItem] = [
             ExpandableButtonItem(image: UIImage(named: "memo"), highlightedImage: nil,
@@ -25,7 +31,8 @@ extension ListViewController {
                                  titleAlignment: .center,
                                  imageContentMode: .scaleAspectFit,
                                  action: { (_) in
-                                    print("memo")
+                                    self.presentMemoViewController()
+                            
             }),
             ExpandableButtonItem(image: UIImage(named: "draw"), highlightedImage: nil,
                                  attributedTitle: attributeString[1], highlightedAttributedTitle: attributeString[1],
