@@ -12,8 +12,8 @@ import JTAppleCalendar
 import CoreLocation
 import ExpandableButton
 
-class ListViewController: UIViewController {
-    
+class ListViewController: UIViewController, SaveMemoDelegate {
+
 
     // MARK: Properties
     private var user = User()
@@ -40,7 +40,7 @@ class ListViewController: UIViewController {
         let btn = ExpandableButtonView(items: item)
         return btn
     }()
-    var selectedDate : String = ""
+    var selectedDate : Date!
     var locationManager: CLLocationManager!
     var coordinate : CLLocationCoordinate2D?  {
         didSet(oldValue) {
@@ -116,6 +116,8 @@ class ListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let saveMemoDelegate = MemoViewController()
+        saveMemoDelegate.saveMemoDelegate = self
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
@@ -244,6 +246,12 @@ extension ListViewController {
         datasource = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
             .filter("createdAtMonth == '\(date)'")
     }
+    
+    func saveMemoDelegate() {
+        //do something
+    }
+    
+    
 }
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {

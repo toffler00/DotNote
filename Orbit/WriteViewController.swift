@@ -17,7 +17,7 @@ class WriteViewController: UIViewController {
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var isImageLoadingFromiCloud: Bool = false
-    var keyboardShown = false
+    fileprivate var keyboardShown = false
     var contentsTextViewCGRect : CGRect!
     
     //MARK: Ream Property
