@@ -30,7 +30,7 @@ extension ListViewController {
         view.addConstraints(constDate)
         thisMonthLabel.textAlignment = .center
         thisMonthLabel.textColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-        thisMonthLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        thisMonthLabel.font = setFont(type: .contents, onView: self, font: "NanumBarunGothicBold", size: 14)
         thisMonthLabel.backgroundColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
 
         weeksStackView = UIStackView()
@@ -58,7 +58,7 @@ extension ListViewController {
         for i in self.weeks {
             let weekLabel = UILabel()
             weekLabel.text = i
-            weekLabel.font = UIFont.boldSystemFont(ofSize: 14)
+            weekLabel.font = setFont(type: .contents, onView: self, font: "NanumBarunGothicBold", size: 14)
             weekLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
             weekLabel.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
             weekLabel.textAlignment = .center

@@ -221,8 +221,7 @@ extension WriteViewController {
         containerV.addSubview(dayOfWeek)
         containerV.addConstraints(constWeek)
         dayOfWeek.numberOfLines = 1
-        dayOfWeek.font.withSize(24)
-        dayOfWeek.font = UIFont.boldSystemFont(ofSize: 24)
+        dayOfWeek.font = setFont(type: .contents, onView: self, font: "NanumBarunGothicBold", size: 24)
         dayOfWeek.textAlignment = NSTextAlignment.left
         dayOfWeek.backgroundColor = .clear
         
@@ -267,6 +266,7 @@ extension WriteViewController {
         date.numberOfLines = 1
         date.adjustsFontForContentSizeCategory = true
         date.adjustsFontSizeToFitWidth = true
+        date.font = setFont(type: .date, onView: self, font: "NanumBarunGothic", size: 16)
         date.textAlignment = NSTextAlignment.left
         date.backgroundColor = .clear
         let changeDateGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(touchUpInsideDateLabel(sender:)))
@@ -289,6 +289,7 @@ extension WriteViewController {
         
         containerV.addSubview(weather)
         containerV.addConstraints(constWeather)
+        weather.font = setFont(type: .weather, onView: self, font: "NanumBarunGothic", size: 16)
         weather.numberOfLines = 1
         weather.textAlignment = NSTextAlignment.left
         weather.backgroundColor = .clear
@@ -440,9 +441,8 @@ extension WriteViewController {
         
         stackBox.addSubview(titleLabel)
         stackBox.addConstraints(constTitleLB)
+        titleLabel.font = setFont(type: .contents, onView: self, font: "NanumBarunGothicBold", size: 20)
         titleLabel.text = "Today Title"
-        titleLabel.font.withSize(20)
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.backgroundColor = .clear
         
         //MARK: contentTitle Label
@@ -465,7 +465,8 @@ extension WriteViewController {
                                                                 attributes: [NSAttributedStringKey.foregroundColor :
                                                                     UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)])
         contentTitle.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
-        contentTitle.font?.withSize(15)
+        contentTitle.font = setFont(type: .contents, onView: self, font: "NanumBarunGothic", size: 14)
+        contentTitle.tintColor = .gray
         
         //MARK: cameraIconImgView UIImageView
         cameraIconImgView = UIImageView()
@@ -509,10 +510,10 @@ extension WriteViewController {
         contStackV.addConstraints(constContens)
         contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isScrollEnabled = true
+        contents.font = setFont(type: .contents, onView: self, font: "NanumBarunGothic", size: 18)
         contents.text = "글을 입력하세요"
-        contents.font = UIFont.systemFont(ofSize: 18)
+        contents.tintColor = .gray
         contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
-        
         let contentsGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(contentsTextViewReconiger(sender:)))
         contents.isUserInteractionEnabled = true
         contents.addGestureRecognizer(contentsGestureRecognizer)

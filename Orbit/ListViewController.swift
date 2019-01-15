@@ -12,7 +12,7 @@ import JTAppleCalendar
 import CoreLocation
 import ExpandableButton
 
-class ListViewController: UIViewController, SaveMemoDelegate {
+class ListViewController: UIViewController {
 
 
     // MARK: Properties
@@ -121,7 +121,10 @@ class ListViewController: UIViewController, SaveMemoDelegate {
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
-        self.navigationItem.title = "Orbit"
+        let titleFont = setFont(type: .navigationTitle, onView: self, font: "NanumBarunGothicBold", size: 34)
+        self.navigationController?.navigationBar.largeTitleTextAttributes =
+            [NSAttributedStringKey.font : titleFont!]
+        self.navigationItem.title = "Dot Note"
         setDatasource(in: getDate(dateFormat: "MMM yyyy"))
         setupLocationManager()
         print(contentDate)
@@ -247,10 +250,7 @@ extension ListViewController {
             .filter("createdAtMonth == '\(date)'")
     }
     
-    func saveMemoDelegate() {
-        //do something
-    }
-    
+   
     
 }
 // MARK: - UITableViewDelegate

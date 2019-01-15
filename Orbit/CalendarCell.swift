@@ -81,7 +81,7 @@ class CalendarCell: JTAppleCell {
         contentView.addConstraints(constDateLB)
         dateLabel.textAlignment = .center
         dateLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
-        dateLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        dateLabel.font = UIFont(name: "NanumBarunGothicBold", size: 14)
         dateLabel.backgroundColor = .clear
         
         isContentsImg.translatesAutoresizingMaskIntoConstraints = false

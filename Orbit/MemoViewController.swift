@@ -64,21 +64,31 @@ class MemoViewController: UIViewController {
 }
 extension MemoViewController {
     @objc func dismissMemoView() {
-        dismiss(animated: true, completion: nil)
-        // 메모내용이 있을경우 경고창
+        
+        if memoTextView.text == "" || memoTextView.text == nil {
+            dismiss(animated: true, completion: nil)
+        } else {
+            showAlert(title: "잠 깐!", message: "메모한 내용이 저장되지 않습니다. \n 메모장을 닫을까요?", actionStyle: .cancel, cancelBtn: true, buttonTitle: "확인", onView: self) { (_) in
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     @objc func saveMemo() {
-        
-        dismiss(animated: true) {
-            print("saveMemo")
+        if memoTextView.text == "" || memoTextView.text == nil {
+            showAlert(title: "잠 깐!", message: "메모내용이 없습니다. \n 이대로 저장하지 않고 메모장을 닫을까요?", actionStyle: .cancel, cancelBtn: true, buttonTitle: "확인", onView: self) { (_) in
+                self.dismiss(animated: true, completion: nil)
+            }
+        } else {
+            
         }
+      
     }
 }
 extension  MemoViewController {
     func setUI() {
-        let width = self.view.frame.size.width
-        let height = self.view.frame.size.height
+//        let width = self.view.frame.size.width
+//        let height = self.view.frame.size.height
 //        let keyboardHeight
         
         backGroundView = UIView()
@@ -120,8 +130,8 @@ extension  MemoViewController {
         memoView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75, constant: 0).isActive = true
         memoView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.52, constant: 0).isActive = true
         memoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
-        memoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: (width * 0.15)).isActive = true
-        memoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: (width * 0.15)).isActive = true
+        memoView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        memoView.tintColor = .gray
         memoView.backgroundColor = .white
         
         view.addSubview(dateStackView)
@@ -130,7 +140,7 @@ extension  MemoViewController {
         
         view.addSubview(selectedDate)
         selectedDate.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-        selectedDate.font = UIFont.boldSystemFont(ofSize: 20)
+        selectedDate.font = setFont(type: .date, onView: self, font: "NanumBarunGothicBold", size: 20)
         
         view.addSubview(cancelBtn)
         cancelBtn.widthAnchor.constraint(equalToConstant: 48).isActive = true
@@ -150,8 +160,15 @@ extension  MemoViewController {
         view.addSubview(memoTextView)
         memoTextView.widthAnchor.constraint(equalTo: memoView.widthAnchor, multiplier: 1).isActive = true
         memoTextView.heightAnchor.constraint(equalTo: memoView.heightAnchor, multiplier: 0.8).isActive = true
-        memoTextView.backgroundColor = .lightGray
-        memoTextView.font = UIFont.systemFont(ofSize: 18)
+        memoTextView.centerXAnchor.constraint(equalTo: memoView.centerXAnchor).isActive = true
+        memoTextView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
+        memoTextView.font = UIFont(name: "NanumBarunGothic", size: 18)
+        memoTextView.layer.shadowOffset = CGSize(width: 0, height: 1.0)
+        memoTextView.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        memoTextView.layer.shadowRadius = 2.0
+        memoTextView.layer.shadowOpacity = 1.0
+        memoTextView.layer.masksToBounds = false
+        memoTextView.layer.shadowPath = UIBezierPath(roundedRect: memoTextView.bounds , cornerRadius: 1).cgPath
         
         view.addSubview(saveBtnBackView)
         saveBtnBackView.widthAnchor.constraint(equalTo: memoView.widthAnchor, multiplier: 1).isActive = true
@@ -159,8 +176,8 @@ extension  MemoViewController {
         saveBtnBackView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         
         saveBtnBackView.addSubview(saveBtn)
-        saveBtn.widthAnchor.constraint(equalToConstant: 36).isActive = true
-        saveBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        saveBtn.heightAnchor.constraint(equalTo: saveBtnBackView.heightAnchor, multiplier: 0.8).isActive = true
+        saveBtn.widthAnchor.constraint(equalTo: saveBtnBackView.heightAnchor, multiplier: 0.8).isActive = true
         saveBtn.centerXAnchor.constraint(equalTo: saveBtnBackView.centerXAnchor, constant: 1).isActive = true
         saveBtn.centerYAnchor.constraint(equalTo: saveBtnBackView.centerYAnchor, constant: 1).isActive = true
         saveBtn.backgroundColor = .clear
