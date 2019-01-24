@@ -26,8 +26,6 @@ class WriteViewController: UIViewController {
     var realm = try! Realm()
     let realmManager = RealmManager.shared.realm
     
-    //    var model : Model.Contents?
-    
     weak var writeDoneDelegate: WriteDoneDelegate!
     fileprivate var date : UILabel!
     fileprivate var titleLabel : UILabel!
@@ -44,7 +42,6 @@ class WriteViewController: UIViewController {
     var containerV : UIView!
     fileprivate var contStackV : UIStackView!
     fileprivate var stackBox : UIStackView!
-    //    fileprivate var writeDoneBtn : UIButton!
     fileprivate var tapWeather : UIImageView!
     fileprivate var tapDate : UIImageView!
     var contentImgV : UIImageView!
@@ -156,8 +153,12 @@ extension WriteViewController {
                 showAlert(title: "경 고", message: "아무 내용이 없어요 \n 이대로 저장할까요?",
                           cancelBtn: true, buttonTitle: "확인", onView: self) { (action) in
                             self.contents.text = " "
-                            let data = Content(createdAt: self.today, createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
-                                               weather: self.weather.text!, body: self.contents.text!, image: self.selectedImageData)
+                            let data = Content(createdAt: self.today,
+                                               createdAtMonth : self.createAtMonth ,
+                                               title: self.contentTitle.text!,
+                                               weather: self.weather.text!,
+                                               body: self.contents.text!,
+                                               image: self.selectedImageData)
                             RealmManager.shared.creat(object: data)
                             self.writeDoneDelegate.writeDone()
                             self.navigationController?.popViewController(animated: true)

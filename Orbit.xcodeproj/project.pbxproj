@@ -32,6 +32,7 @@
 		62B33ED021EDEB4B0097C661 /* NanumBarunGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B33ECF21EDEB4B0097C661 /* NanumBarunGothicBold.ttf */; };
 		62B33ED221EE01AD0097C661 /* NanumSquareExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B33ED121EE01AD0097C661 /* NanumSquareExtraBold.ttf */; };
 		62C55D4A21DE1CC3000F42CB /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C55D4921DE1CC3000F42CB /* MemoViewController.swift */; };
+		62E7FA0821F9DAC00012BF19 /* DrawingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E7FA0721F9DAC00012BF19 /* DrawingViewController.swift */; };
 		62F92F8321AC00CB0083AB9A /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F92F8221AC00CB0083AB9A /* AlertController.swift */; };
 		62F92F8521AC1CF10083AB9A /* CustomNavigationBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */; };
 		6A2AFDF1213A68B900F5B38B /* DBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AFDF0213A68B900F5B38B /* DBModel.swift */; };
@@ -104,6 +105,7 @@
 		62B33ECF21EDEB4B0097C661 /* NanumBarunGothicBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumBarunGothicBold.ttf; sourceTree = "<group>"; };
 		62B33ED121EE01AD0097C661 /* NanumSquareExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareExtraBold.ttf; sourceTree = "<group>"; };
 		62C55D4921DE1CC3000F42CB /* MemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
+		62E7FA0721F9DAC00012BF19 /* DrawingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewController.swift; sourceTree = "<group>"; };
 		62F92F8221AC00CB0083AB9A /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBackButton.swift; sourceTree = "<group>"; };
 		688EAB7E305E75A5D496F632 /* Pods-OrbitTests.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitTests.prod.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitTests/Pods-OrbitTests.prod.xcconfig"; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				620F53B1211EF16900A94A01 /* DiaryViewController.swift */,
 				6A331FFB2131485600FFE74F /* WriteViewController.swift */,
 				62C55D4921DE1CC3000F42CB /* MemoViewController.swift */,
+				62E7FA0721F9DAC00012BF19 /* DrawingViewController.swift */,
 				CE84E7482137D3350097357F /* ListViewController.swift */,
 				CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */,
 				6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */,
@@ -475,6 +478,8 @@
 				"${BUILT_PRODUCTS_DIR}/ExpandableButton/ExpandableButton.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/JTAppleCalendar/JTAppleCalendar.framework",
+				"${BUILT_PRODUCTS_DIR}/NXDrawKit/NXDrawKit.framework",
+				"${BUILT_PRODUCTS_DIR}/RSKImageCropper/RSKImageCropper.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
@@ -485,6 +490,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JTAppleCalendar.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NXDrawKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSKImageCropper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
@@ -539,6 +546,7 @@
 				6AFAA89B213A716100D241E2 /* PhotosViewController.swift in Sources */,
 				6A4A04C721313980003A51B5 /* AppTarget.swift in Sources */,
 				62B33ECE21EDE4C30097C661 /* SetFont.swift in Sources */,
+				62E7FA0821F9DAC00012BF19 /* DrawingViewController.swift in Sources */,
 				CE9DDA472138E9B0007F0BEA /* ListTableViewCell.swift in Sources */,
 				620F53B2211EF16900A94A01 /* DiaryViewController.swift in Sources */,
 				62AE2E39217B7774004448F2 /* RealmManager.swift in Sources */,

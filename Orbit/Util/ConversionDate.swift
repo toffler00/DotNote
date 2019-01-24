@@ -17,6 +17,7 @@ extension UIViewController {
         dateFormatter.dateFormat = dateFormat
         dateFormatter.locale = Locale(identifier: "kr_KR")
         let dateToString = dateFormatter.string(from: date)
+        print(dateToString)
         return dateToString
     }
     
@@ -33,7 +34,7 @@ extension UIViewController {
     func stringToDate(in date : String, dateFormat : String) -> Date{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
-        //        dateFormatter.locale = Locale(identifier: "kr_KR")
+        dateFormatter.locale = Locale(identifier: "kr_KR")
         let stringToDate = dateFormatter.date(from: date)
         return stringToDate!
     }

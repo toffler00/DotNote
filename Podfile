@@ -11,7 +11,9 @@ target 'Orbit' do
   pod 'RealmSwift'
   pod 'JTAppleCalendar'
   pod 'ExpandableButton'
-
+  pod 'NXDrawKit'
+  pod 'RSKImageCropper'
+  
   target 'OrbitTests' do
     inherit! :search_paths
     # Pods for testing

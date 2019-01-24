@@ -13,24 +13,32 @@ protocol SaveMemoDelegate : class {
     func saveMemoDelegate()
 }
 class MemoViewController: UIViewController {
+    //MARK: Ream Property
+    var realm = try! Realm()
+    let realmManager = RealmManager.shared.realm
     
     fileprivate var keyboardShown = false
-    var saveMemoDelegate : SaveMemoDelegate?
+    weak var saveMemoDelegate : SaveMemoDelegate!
     
-    var backGroundView : UIView!
-    var memoView : UIStackView!
-    var dateStackView : UIStackView!
+    //UI
+    fileprivate var backGroundView : UIView!
+    fileprivate var memoView : UIStackView!
+    fileprivate var dateStackView : UIStackView!
     var selectedDate : UILabel!
     var memoTextView : UITextView!
     var saveBtnBackView : UIView!
     var saveBtn : UIImageView!
     var cancelBtn : UIImageView!
-    var baseView : UIView!
+    fileprivate var baseView : UIView!
     var selectDate : Date!
+    
+    
     var memoViewRect : CGRect!
     var updateHeight : NSLayoutConstraint!
     fileprivate var transY : CGFloat!
+    var createAt : Date!
     
+    //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
@@ -62,6 +70,7 @@ class MemoViewController: UIViewController {
         }
     }
 }
+
 extension MemoViewController {
     @objc func dismissMemoView() {
         
@@ -80,11 +89,20 @@ extension MemoViewController {
                 self.dismiss(animated: true, completion: nil)
             }
         } else {
-            
+            let stringDate = dateToString(in: selectDate, dateFormat: "dd MMM yyyy hh mm")
+            print(stringDate)
+            createAt = stringToDate(in: stringDate, dateFormat: "dd MMM yyyy hh mm")
+            let createAtMonth = dateToString(in: createAt, dateFormat: "MMM yyyy")
+            let contents = memoTextView.text
+            let data = Content(createdAt: createAt, createdAtMonth: createAtMonth, title: "", weather: "", body: contents!, image: nil)
+            RealmManager.shared.creat(object: data)
+            self.saveMemoDelegate?.saveMemoDelegate()
         }
-      
+        self.dismiss(animated: true, completion: nil)
     }
 }
+
+//MARK: UI
 extension  MemoViewController {
     func setUI() {
 //        let width = self.view.frame.size.width
@@ -127,6 +145,7 @@ extension  MemoViewController {
         baseView.alpha = 0.3
         
         view.addSubview(memoView)
+        
         memoView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75, constant: 0).isActive = true
         memoView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.52, constant: 0).isActive = true
         memoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
@@ -261,8 +280,7 @@ extension MemoViewController {
 //                self.updateHeight.constant = 0.8
                 self.memoView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.52, constant: 0).isActive = true
             }
-           
-            
+  
         }
     }
     

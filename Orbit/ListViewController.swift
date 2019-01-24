@@ -11,6 +11,7 @@ import RealmSwift
 import JTAppleCalendar
 import CoreLocation
 import ExpandableButton
+import NXDrawKit
 
 class ListViewController: UIViewController {
 
@@ -90,6 +91,7 @@ class ListViewController: UIViewController {
         let memoViewController = MemoViewController()
         memoViewController.modalPresentationStyle = .overCurrentContext
         memoViewController.selectDate = selectedDate
+        memoViewController.saveMemoDelegate = self
         present(memoViewController, animated: false, completion: nil)
     }
     
@@ -301,7 +303,12 @@ extension ListViewController: UITableViewDataSource{
         }
         
         let data = datasource[indexPath.row]
-        cell.titleLabel.text = "  \(data.title)"
+        print(data.title.count)
+        if data.title.count == 0 {
+            cell.titleLabel.text = "  \(data.body)"
+        } else {
+            cell.titleLabel.text = "  \(data.title)"
+        }
         cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))"
         cell.weekLabel.text = "\(getWeekDay(in: data.createdAt, dateFormat: "EEE"))"
         

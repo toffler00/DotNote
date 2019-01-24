@@ -50,18 +50,22 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - NXDrawKit (0.7.1)
   - Realm (3.12.0):
     - Realm/Headers (= 3.12.0)
   - Realm/Headers (3.12.0)
   - RealmSwift (3.12.0):
     - Realm (= 3.12.0)
+  - RSKImageCropper (2.2.1)
   - SwiftyBeaver (1.6.1)
 
 DEPENDENCIES:
   - ExpandableButton
   - Firebase/Core
   - JTAppleCalendar
+  - NXDrawKit
   - RealmSwift
+  - RSKImageCropper
   - SwiftyBeaver
 
 SPEC REPOS:
@@ -75,8 +79,10 @@ SPEC REPOS:
     - GoogleUtilities
     - JTAppleCalendar
     - nanopb
+    - NXDrawKit
     - Realm
     - RealmSwift
+    - RSKImageCropper
     - SwiftyBeaver
 
 SPEC CHECKSUMS:
@@ -89,10 +95,12 @@ SPEC CHECKSUMS:
   GoogleUtilities: 95996bea7c7d9b8fb811b7507669a4a8762f80c7
   JTAppleCalendar: abb30678f42a4ef8a340a932b1dcb8c85a33dac2
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  NXDrawKit: 0d5d4df2e518416aa5df9c0724d9f2a366e0dcaf
   Realm: cdaef23c4ddb36ab1ddffed23f5a7f3332fc5585
   RealmSwift: 5576324033f0aa5ef1e0a839a3da2281dff47a7f
+  RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
 
-PODFILE CHECKSUM: fd4e32d7d07f9bc7cbb4e3f6ff1fa07c84a17c6f
+PODFILE CHECKSUM: bf23c2eab0954349821599c4445c5010ea41cf45
 
 COCOAPODS: 1.5.2

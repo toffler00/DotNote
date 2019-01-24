@@ -141,6 +141,9 @@ extension ListTableViewCell {
         // 중앙 먼저
         self.addSubview(titleLabel)
         self.addConstraints(titleLabelConstraints)
+        titleLabel.numberOfLines = 1
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.font = UIFont(name: "NanumBarunGothic", size: 20)
         
         

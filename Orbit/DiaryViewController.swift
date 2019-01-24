@@ -337,7 +337,7 @@ extension DiaryViewController {
         case "천둥번개" :
             self.weatherImgV.image = UIImage(named: "storm")
         default:
-            self.weatherImgV.image = UIImage(named: "sun")
+            self.weatherImgV.backgroundColor = .clear
         }
     }
 }
