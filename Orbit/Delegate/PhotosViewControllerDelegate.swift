@@ -36,4 +36,29 @@ extension WriteViewController: PhotosViewControllerDelegate {
             self.transformContentImgV(view: self.contentImgV)
         }
     }
+    
+    func photoLibraryAuthorizationStatus() {
+        
+           showAlertForImagePickerPermission()
+        
+    }
+    
+    func openSettings() {
+        UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+    }
+    
+    func showAlertForImagePickerPermission() {
+        let message : String = "앨범접근권한이 없습니다. \n 설정에서 권한을 허용해야 합니다."
+        showAlert(title: nil,
+                  message: message,
+                  actionStyle: .default,
+                  cancelBtn: false,
+                  buttonTitle: "승인",
+                  onView: self) { (action) in
+            self.openSettings()
+        }
+    }
+    
 }
+
+

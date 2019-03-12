@@ -9,13 +9,16 @@
 import UIKit
 import RealmSwift
 
-
+protocol DeleteMemoDelgate : class {
+    func deleteDataDelegate()
+}
 class DiaryViewController: UIViewController {
 
    
     private var realm = try! Realm()
     var datasourece : Results<Content>!
-
+    weak var deleteMemoDelegate : DeleteMemoDelgate!
+    
     var dateLabel : UILabel!
     var dayOfWeek : UILabel!
     var weatherImgV : UIImageView!
@@ -303,7 +306,14 @@ extension DiaryViewController {
     
     func dataUpdate() {
         titleLabel.text = diaryData.title
-        contents.text = diaryData.body
+        let contentType = diaryData.type
+        switch contentType {
+        case "memo":
+            contents.text = diaryData.body
+            contents.textAlignment = .left
+        default :
+            contents.text = diaryData.body
+        }
         if diaryData.image == nil {
             print("nodata")
         } else {
@@ -312,10 +322,22 @@ extension DiaryViewController {
     }
     
     @objc func deleteData() {
-        showAlert(title: "경 고", message: "\(diaryData.title)를 삭제하시겠습니까?", cancelBtn: true, buttonTitle: "확인", onView: self) { (alertAction) in
-            print("deleteData()")
-            RealmManager.shared.delete(object: self.diaryData)
-            self.navigationController?.popViewController(animated: true)
+        let contentType = diaryData.type
+        switch contentType {
+        case "memo":
+            showAlert(title: "경 고", message: "현재 메모를 삭제하시겠습니까?", cancelBtn: true, buttonTitle: "확인", onView: self) { (alertAction) in
+                RealmManager.shared.delete(object: self.diaryData)
+                self.deleteMemoDelegate.deleteDataDelegate()
+                self.navigationController?.popViewController(animated: true)
+                
+            }
+        default:
+            showAlert(title: "경 고", message: "\(diaryData.title)를 삭제하시겠습니까?", cancelBtn: true, buttonTitle: "확인", onView: self) { (alertAction) in
+                print("deleteData()")
+                RealmManager.shared.delete(object: self.diaryData)
+                self.deleteMemoDelegate.deleteDataDelegate()
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
     

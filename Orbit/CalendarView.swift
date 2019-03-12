@@ -58,7 +58,7 @@ extension ListViewController {
         for i in self.weeks {
             let weekLabel = UILabel()
             weekLabel.text = i
-            weekLabel.font = setFont(type: .contents, onView: self, font: "NanumBarunGothicBold", size: 14)
+            weekLabel.font = setFont(type: .contents, onView: self, font: "NanumBarunGothic", size: 12)
             weekLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
             weekLabel.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
             weekLabel.textAlignment = .center
@@ -199,6 +199,8 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
     func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
         self.updateDateLabel(visibleDate: visibleDates)
     }
+    
+    
     
     func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
         dateFormatter.dateFormat = "yyyy MM dd"

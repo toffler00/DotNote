@@ -19,6 +19,7 @@ extension ListViewController: WriteDoneDelegate {
             self.contentDate.append(date)
         }
         calendarView.reloadData()
+        listTableView.reloadData()
         print("writeDone")
     }
 }

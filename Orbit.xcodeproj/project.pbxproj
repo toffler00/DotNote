@@ -13,8 +13,14 @@
 		620F53BA211EF16900A94A01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 620F53B8211EF16900A94A01 /* LaunchScreen.storyboard */; };
 		620F53C5211EF16A00A94A01 /* OrbitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53C4211EF16A00A94A01 /* OrbitTests.swift */; };
 		620F53D0211EF16A00A94A01 /* OrbitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53CF211EF16A00A94A01 /* OrbitUITests.swift */; };
+		621AC6D9221EEEF40029B550 /* DeleteMemoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AC6D8221EEEF40029B550 /* DeleteMemoDelegate.swift */; };
+		621AC6DC222FD8C30029B550 /* OpensourceLicenseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */; };
 		62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62254C752182F0E90084AE56 /* CutomKeyboard.swift */; };
+		6237172D2201A53B00549221 /* BackGroundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6237172C2201A53B00549221 /* BackGroundViewController.swift */; };
+		6237172F220C4A6D00549221 /* DrawingDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */; };
 		62849D9B219A75EB00F9761E /* CustomTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62849D9A219A75EB00F9761E /* CustomTextFiled.swift */; };
+		628C12BD22363B34009D99B5 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628C12BC22363B34009D99B5 /* DrawingView.swift */; };
+		628C12E52237E780009D99B5 /* SendDrawingImageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628C12E42237E780009D99B5 /* SendDrawingImageDelegate.swift */; };
 		62927F8D21B2A87300B4F167 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62927F8C21B2A87300B4F167 /* LocationManager.swift */; };
 		6292D56C21C51FDE00E5E521 /* ExpandableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */; };
 		6296D18C21394CD400B610C8 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6296D18B21394CD400B610C8 /* Model.swift */; };
@@ -86,8 +92,14 @@
 		620F53CB211EF16A00A94A01 /* OrbitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrbitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		620F53CF211EF16A00A94A01 /* OrbitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbitUITests.swift; sourceTree = "<group>"; };
 		620F53D1211EF16A00A94A01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		621AC6D8221EEEF40029B550 /* DeleteMemoDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteMemoDelegate.swift; sourceTree = "<group>"; };
+		621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpensourceLicenseVC.swift; sourceTree = "<group>"; };
 		62254C752182F0E90084AE56 /* CutomKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutomKeyboard.swift; sourceTree = "<group>"; };
+		6237172C2201A53B00549221 /* BackGroundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackGroundViewController.swift; sourceTree = "<group>"; };
+		6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingDiaryViewController.swift; sourceTree = "<group>"; };
 		62849D9A219A75EB00F9761E /* CustomTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFiled.swift; sourceTree = "<group>"; };
+		628C12BC22363B34009D99B5 /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
+		628C12E42237E780009D99B5 /* SendDrawingImageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendDrawingImageDelegate.swift; sourceTree = "<group>"; };
 		62927F8C21B2A87300B4F167 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableButton.swift; sourceTree = "<group>"; };
 		6296D18B21394CD400B610C8 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
@@ -195,6 +207,9 @@
 				620F53B1211EF16900A94A01 /* DiaryViewController.swift */,
 				6A331FFB2131485600FFE74F /* WriteViewController.swift */,
 				62C55D4921DE1CC3000F42CB /* MemoViewController.swift */,
+				6237172C2201A53B00549221 /* BackGroundViewController.swift */,
+				6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */,
+				628C12BC22363B34009D99B5 /* DrawingView.swift */,
 				62E7FA0721F9DAC00012BF19 /* DrawingViewController.swift */,
 				CE84E7482137D3350097357F /* ListViewController.swift */,
 				CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */,
@@ -205,7 +220,7 @@
 				6AFAA89A213A716100D241E2 /* PhotosViewController.swift */,
 				6AFAA89C213A728D00D241E2 /* PhotoCollectionView.swift */,
 				6AFAA89E213A72CD00D241E2 /* PhotoCollectionViewCell.swift */,
-				CE388C29213E42550063DE35 /* OptionsViewController.swift */,
+				621AC6DA222FD85B0029B550 /* Option */,
 				6296D190213D030500B610C8 /* Delegate */,
 				6A332001213159DE00FFE74F /* Util */,
 				6292BA6121807D55005AE13E /* StoryBoard */,
@@ -239,6 +254,15 @@
 			path = OrbitUITests;
 			sourceTree = "<group>";
 		};
+		621AC6DA222FD85B0029B550 /* Option */ = {
+			isa = PBXGroup;
+			children = (
+				CE388C29213E42550063DE35 /* OptionsViewController.swift */,
+				621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */,
+			);
+			path = Option;
+			sourceTree = "<group>";
+		};
 		6292BA6121807D55005AE13E /* StoryBoard */ = {
 			isa = PBXGroup;
 			children = (
@@ -264,6 +288,8 @@
 				6A331FFD21314B9100FFE74F /* WriteDoneDelegate.swift */,
 				62B33EC121ECCABE0097C661 /* PhotosViewControllerDelegate.swift */,
 				62B33EC321ECCB1B0097C661 /* SaveMemoDelegate.swift */,
+				621AC6D8221EEEF40029B550 /* DeleteMemoDelegate.swift */,
+				628C12E42237E780009D99B5 /* SendDrawingImageDelegate.swift */,
 			);
 			path = Delegate;
 			sourceTree = "<group>";
@@ -534,13 +560,16 @@
 				62849D9B219A75EB00F9761E /* CustomTextFiled.swift in Sources */,
 				62AE2E3B217DA7FF004448F2 /* ConversionDate.swift in Sources */,
 				62AE2E13216CFAC9004448F2 /* CalendarView.swift in Sources */,
+				628C12BD22363B34009D99B5 /* DrawingView.swift in Sources */,
 				6296D18C21394CD400B610C8 /* Model.swift in Sources */,
 				62B33EC221ECCABE0097C661 /* PhotosViewControllerDelegate.swift in Sources */,
 				6A6386EA21452A7A006DE95C /* KoreaWeahterLocationCode.swift in Sources */,
 				6292D56C21C51FDE00E5E521 /* ExpandableButton.swift in Sources */,
+				621AC6D9221EEEF40029B550 /* DeleteMemoDelegate.swift in Sources */,
 				62C55D4A21DE1CC3000F42CB /* MemoViewController.swift in Sources */,
 				62F92F8321AC00CB0083AB9A /* AlertController.swift in Sources */,
 				62B33EC421ECCB1B0097C661 /* SaveMemoDelegate.swift in Sources */,
+				6237172D2201A53B00549221 /* BackGroundViewController.swift in Sources */,
 				62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */,
 				CE388C2A213E42550063DE35 /* OptionsViewController.swift in Sources */,
 				6AFAA89B213A716100D241E2 /* PhotosViewController.swift in Sources */,
@@ -553,9 +582,12 @@
 				6A331FFC2131485600FFE74F /* WriteViewController.swift in Sources */,
 				6A2AFDF1213A68B900F5B38B /* DBModel.swift in Sources */,
 				620F53B0211EF16900A94A01 /* AppDelegate.swift in Sources */,
+				628C12E52237E780009D99B5 /* SendDrawingImageDelegate.swift in Sources */,
 				62927F8D21B2A87300B4F167 /* LocationManager.swift in Sources */,
 				6A6386EC21452FAA006DE95C /* WeatherAPI.swift in Sources */,
 				6A331FFE21314B9100FFE74F /* WriteDoneDelegate.swift in Sources */,
+				6237172F220C4A6D00549221 /* DrawingDiaryViewController.swift in Sources */,
+				621AC6DC222FD8C30029B550 /* OpensourceLicenseVC.swift in Sources */,
 				CE84E7492137D3350097357F /* ListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,14 +11,8 @@ import UIKit
 extension ListViewController : SaveMemoDelegate {
     
     func saveMemoDelegate() {
-        contentDate.removeAll()
-        guard let contentDate = realmManager.objects(Content.self).value(forKey: "createdAt") as? [Date] else {return}
-        for i in contentDate {
-            let date = dateToString(in: i, dateFormat: "yyyyMMdd")
-            self.contentDate.append(date)
-        }
-        calendarView.reloadData()
-        listTableView.reloadData()
+        setDatasource(in: getDate(dateFormat: "MMM yyyy"))
+        reloadData()
     }
     
 }

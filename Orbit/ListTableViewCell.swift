@@ -104,7 +104,7 @@ extension ListTableViewCell {
         
         self.addSubview(weekLabel)
         self.addConstraints(weekLabelConstraints)
-        weekLabel.font = UIFont(name: "NanumBarunGothic", size: 16)
+        weekLabel.font = UIFont(name: "NanumBarunGothic", size: 14)
         weekLabel.backgroundColor = .clear
         addBottomBorderLine(to: weekLabel, height: 1)
     
@@ -123,7 +123,7 @@ extension ListTableViewCell {
         
         self.addSubview(dateLabel)
         self.addConstraints(dateLabelConstraints)
-        dateLabel.font = UIFont(name: "NanumBarunGothicBold", size: 28)
+        dateLabel.font = UIFont(name: "NanumBarunGothic", size: 16)
         dateLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
         addBottomBorderLine(to: dateLabel, height: 0.5)
         
@@ -143,8 +143,9 @@ extension ListTableViewCell {
         self.addConstraints(titleLabelConstraints)
         titleLabel.numberOfLines = 1
         titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.font = UIFont(name: "NanumBarunGothic", size: 20)
+        titleLabel.adjustsFontSizeToFitWidth = false
+        titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.font = UIFont(name: "NanumBarunGothic", size: 16)
         
         
     }

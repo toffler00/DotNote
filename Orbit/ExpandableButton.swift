@@ -42,6 +42,7 @@ extension ListViewController {
                                  titleAlignment: .center,
                                  imageContentMode: .scaleAspectFit,
                                  action: { (_) in
+                                    self.pushDrawingViewController()
                                     print("draw")
             }),
             ExpandableButtonItem(image: UIImage(named: "edit"), highlightedImage: nil,

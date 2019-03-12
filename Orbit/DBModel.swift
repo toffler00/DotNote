@@ -8,6 +8,7 @@
 
 import RealmSwift
 
+
 class User: Object {
     @objc dynamic var id: String = UUID().uuidString
     @objc dynamic var name: String = ""
@@ -19,6 +20,8 @@ class User: Object {
 }
 
 class Content: Object {
+
+    @objc dynamic var type : String = ""
     @objc dynamic var createdAt: Date = Date()
     @objc dynamic var createdAtMonth : String = ""
     @objc dynamic var title: String = ""
@@ -26,8 +29,9 @@ class Content: Object {
     @objc dynamic var body: String = ""
     @objc dynamic var image: Data? = nil
     
-    convenience init(createdAt : Date, createdAtMonth : String, title : String, weather : String, body : String, image : Data?) {
+    convenience init(type : String, createdAt : Date, createdAtMonth : String, title : String, weather : String, body : String, image : Data?) {
         self.init()
+        self.type = type
         self.createdAt = createdAt
         self.createdAtMonth = createdAtMonth
         self.title = title

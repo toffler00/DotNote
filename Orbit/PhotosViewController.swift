@@ -11,6 +11,7 @@ import Photos
 
 protocol PhotosViewControllerDelegate: class {
     func imageSelected(phAsset: PHAsset)
+    func photoLibraryAuthorizationStatus()
 }
 
 class PhotosViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
@@ -29,17 +30,27 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         self.photosViewControllerDelegate = photosViewControllerDelegate
-        //        switch PHPhotoLibrary.authorizationStatus() {
-        //        case .notDetermined:
-        //        case .denied:
-        //        case .authorized:
-        //        case .restricted:
-        //        }
+            let status = PHPhotoLibrary.authorizationStatus()
+                switch status {
+                case .notDetermined:
+                    photosViewControllerDelegate.photoLibraryAuthorizationStatus()
+                case .denied:
+                    photosViewControllerDelegate.photoLibraryAuthorizationStatus()
+                case .authorized:
+                    break
+                case .restricted:
+                    photosViewControllerDelegate.photoLibraryAuthorizationStatus()
+                }
         
         view.backgroundColor = .white
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         navigationItem.title = "나의 사진"
         navigationItem.hidesBackButton = true
+        getFetchResult()
+        
+    }
+    
+    func getFetchResult() {
         let options = PHFetchOptions()
         options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
         options.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: false) ]
@@ -47,6 +58,7 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         fetchResult = PHAsset.fetchAssets(with: options)
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         setNavigationBackButton(onView: self, in: backButton, bool: true)
     }
@@ -116,7 +128,6 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         let size = collectionView.frame.width / 3 - 1
         return CGSize(width: size, height: size)
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -13,6 +13,7 @@ import CoreLocation
 import ExpandableButton
 import NXDrawKit
 
+
 class ListViewController: UIViewController {
 
 
@@ -87,12 +88,29 @@ class ListViewController: UIViewController {
         }  
     }
     
+    @objc func pushDrawingViewController() {
+        let drawingDiaryViewController = DrawingDiaryViewController()
+        if self.weatherItem == nil {
+            self.weatherItem = 0
+            drawingDiaryViewController.weatherItem = self.weatherItem
+            navigationController?.pushViewController(drawingDiaryViewController, animated: true)
+        } else {
+            drawingDiaryViewController.weatherItem = self.weatherItem
+            navigationController?.pushViewController(drawingDiaryViewController, animated: true)
+        }
+    }
+    
     @objc func presentMemoViewController(){
-        let memoViewController = MemoViewController()
-        memoViewController.modalPresentationStyle = .overCurrentContext
-        memoViewController.selectDate = selectedDate
-        memoViewController.saveMemoDelegate = self
-        present(memoViewController, animated: false, completion: nil)
+        let backgroundViewController = BackGroundViewController()
+        backgroundViewController.selectedDate = self.selectedDate
+        backgroundViewController.modalPresentationStyle = .overFullScreen
+        backgroundViewController.saveMemoDelegate = self
+        present(backgroundViewController, animated: false, completion: nil)
+    }
+    
+    func reloadData(){
+        self.listTableView.reloadData()
+        self.calendarView.reloadData()
     }
     
     // MARK: Life Cycle
@@ -101,7 +119,6 @@ class ListViewController: UIViewController {
 //        setWriteBtn(bool: true)
         setExpandableButton()
         setNavigationBackButton(onView: self, bool: false)
-        
         if listTableView == nil {
            return
         }else {
@@ -118,8 +135,6 @@ class ListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let saveMemoDelegate = MemoViewController()
-        saveMemoDelegate.saveMemoDelegate = self
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
@@ -192,7 +207,7 @@ extension ListViewController {
             navigationController?.navigationBar.addSubview(optionIcon)
             navigationController?.navigationBar.addConstraints(constoptionIcon)
             
-            optionIcon.image = UIImage(named: "apps")
+            optionIcon.image = UIImage(named: "menu")
             optionIcon.contentMode = .scaleAspectFit
             optionIcon.layer.cornerRadius = 4
             optionIcon.clipsToBounds = true
@@ -251,15 +266,14 @@ extension ListViewController {
         datasource = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
             .filter("createdAtMonth == '\(date)'")
     }
-    
-   
-    
 }
+
 // MARK: - UITableViewDelegate
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if datasource.count != 0 {
             let diaryViewController = DiaryViewController()
+            diaryViewController.deleteMemoDelegate = self
             diaryViewController.diaryData = datasource[indexPath.row]
             self.navigationController?.pushViewController(diaryViewController, animated: true)
             tableView.deselectRow(at: indexPath, animated: false)
@@ -269,7 +283,7 @@ extension ListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 56
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -304,17 +318,23 @@ extension ListViewController: UITableViewDataSource{
         
         let data = datasource[indexPath.row]
         print(data.title.count)
-        if data.title.count == 0 {
+        let typeName = data.type
+        switch typeName {
+        case "memo" :
             cell.titleLabel.text = "  \(data.body)"
-        } else {
+        case "diary" :
+            cell.titleLabel.text = "  \(data.title)"
+        case "drawing" :
+            cell.titleLabel.text = "  \(data.title)"
+        default :
             cell.titleLabel.text = "  \(data.title)"
         }
+        
         cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))"
         cell.weekLabel.text = "\(getWeekDay(in: data.createdAt, dateFormat: "EEE"))"
         
         return cell
     }
-    
-   
+
 }
 

@@ -55,7 +55,7 @@ class WriteViewController: UIViewController {
     let pickerData : [String] = [ "맑음", "천둥번개", "이슬비", "비","눈","눈,비","진눈깨비", "안개", "구름", "구름조금"]
     var backButton : UIImageView = UIImageView()
     var weatherItem : Int = 0
-    
+    fileprivate var type : String = "diary"
     
     
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, delegate: WriteDoneDelegate) {
@@ -73,7 +73,7 @@ class WriteViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        setNavigationBackButton(onView: self, in: backButton, bool: true)
+//        setNavigationBackButton(onView: self, in: backButton, bool: true)
     }
     override func viewWillDisappear(_ animated: Bool) {
         unregisterForKeyboardNotification()
@@ -153,7 +153,8 @@ extension WriteViewController {
                 showAlert(title: "경 고", message: "아무 내용이 없어요 \n 이대로 저장할까요?",
                           cancelBtn: true, buttonTitle: "확인", onView: self) { (action) in
                             self.contents.text = " "
-                            let data = Content(createdAt: self.today,
+                            let data = Content(type: self.type,
+                                               createdAt: self.today,
                                                createdAtMonth : self.createAtMonth ,
                                                title: self.contentTitle.text!,
                                                weather: self.weather.text!,
@@ -164,7 +165,8 @@ extension WriteViewController {
                             self.navigationController?.popViewController(animated: true)
                 }
             } else {
-                let data = Content(createdAt: self.today, createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
+                let data = Content(type : self.type, createdAt: self.today,
+                                   createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
                                    weather: self.weather.text!, body: self.contents.text!, image: self.selectedImageData)
                 RealmManager.shared.creat(object: data)
                 self.writeDoneDelegate.writeDone()
@@ -226,26 +228,7 @@ extension WriteViewController {
         dayOfWeek.textAlignment = NSTextAlignment.left
         dayOfWeek.backgroundColor = .clear
         
-        //MARK: dateTF textfield
-        dateTF = CustomTextFiled()
-        dateTF.translatesAutoresizingMaskIntoConstraints = false
-        let constDateTF : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: dateTF, attribute: .top, relatedBy: .equal, toItem: dayOfWeek, attribute: .bottom,
-                               multiplier: 1, constant: 1),
-            NSLayoutConstraint(item: dateTF, attribute: .leading, relatedBy: .equal, toItem: dayOfWeek, attribute: .leading,
-                               multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: dateTF, attribute: .trailing, relatedBy: .equal, toItem: dayOfWeek, attribute: .trailing,
-                               multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: dateTF, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
-                               multiplier: 1,constant: 24),
-            NSLayoutConstraint(item: dateTF, attribute: .width, relatedBy: .equal, toItem: containerV, attribute: .width,
-                               multiplier: 0.4, constant: 0)]
         
-        containerV.addSubview(dateTF)
-        containerV.addConstraints(constDateTF)
-        dateTF.backgroundColor = .clear
-        
-        dateTF.allowsEditingTextAttributes = false
         
         //MARK: date Label
         date = UILabel()
@@ -270,9 +253,29 @@ extension WriteViewController {
         date.font = setFont(type: .date, onView: self, font: "NanumBarunGothic", size: 16)
         date.textAlignment = NSTextAlignment.left
         date.backgroundColor = .clear
-        let changeDateGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(touchUpInsideDateLabel(sender:)))
-        date.isUserInteractionEnabled = true
-        date.addGestureRecognizer(changeDateGestureRecognizer)
+        
+        
+        //MARK: dateTF textfield
+        dateTF = CustomTextFiled()
+        dateTF.translatesAutoresizingMaskIntoConstraints = false
+        let constDateTF : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: dateTF, attribute: .top, relatedBy: .equal, toItem: date, attribute: .top,
+                               multiplier: 1, constant: 1),
+            NSLayoutConstraint(item: dateTF, attribute: .leading, relatedBy: .equal, toItem: date, attribute: .leading,
+                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: dateTF, attribute: .trailing, relatedBy: .equal, toItem: date, attribute: .trailing,
+                               multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: dateTF, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+                               multiplier: 1,constant: 24)]
+        
+        containerV.addSubview(dateTF)
+        containerV.addConstraints(constDateTF)
+        dateTF.backgroundColor = .clear
+        dateTF.isUserInteractionEnabled = true
+        let changeDateGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                 action: #selector(touchUpInsideDateLabel(sender:)))
+        dateTF.addGestureRecognizer(changeDateGestureRecognizer)
+        dateTF.allowsEditingTextAttributes = false
         
         //MARK: weather Label
         weather = UILabel()
@@ -307,7 +310,7 @@ extension WriteViewController {
             NSLayoutConstraint(item: weatherTF, attribute: .height, relatedBy: .equal, toItem: nil,
                                attribute: .height, multiplier: 1, constant: 20),
             NSLayoutConstraint(item: weatherTF, attribute: .trailing, relatedBy: .equal, toItem: weather,
-                               attribute: .trailing, multiplier: 1, constant: 0)]
+                               attribute: .trailing, multiplier: 1, constant: 20)]
         
         containerV.addSubview(weatherTF)
         containerV.addConstraints(constWeatherTF)
@@ -529,16 +532,16 @@ extension WriteViewController {
             
             let constWrtieDoneIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: writeDoneIcon, attribute: .width, relatedBy: .equal, toItem: nil,
-                                   attribute: .width, multiplier: 1, constant: 36),
+                                   attribute: .width, multiplier: 1, constant: 32),
                 NSLayoutConstraint(item: writeDoneIcon, attribute: .height, relatedBy: .equal, toItem: nil,
-                                   attribute: .height, multiplier: 1, constant: 36),
+                                   attribute: .height, multiplier: 1, constant: 32),
                 NSLayoutConstraint(item: writeDoneIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -8),
                 NSLayoutConstraint(item: writeDoneIcon, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -8)]
             navigationController?.navigationBar.addSubview(writeDoneIcon)
             navigationController?.navigationBar.addConstraints(constWrtieDoneIcon)
             
-            writeDoneIcon.image = UIImage(named: "check")
-            writeDoneIcon.layer.cornerRadius = 18
+            writeDoneIcon.image = UIImage(named: "checked")
+            writeDoneIcon.layer.cornerRadius = 16
             writeDoneIcon.clipsToBounds = true
             let tapWriteDonIcon = UITapGestureRecognizer(target: self, action: #selector(writeDone))
             writeDoneIcon.addGestureRecognizer(tapWriteDonIcon)
@@ -582,6 +585,7 @@ extension WriteViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     @objc func centerTextAlignment() {
         contents.textAlignment = .center
     }
+    
     @objc fileprivate func cleanTextView() {
         contents.text = ""
         contents.textColor = .black

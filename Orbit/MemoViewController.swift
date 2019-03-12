@@ -9,16 +9,17 @@
 import UIKit
 import RealmSwift
 
-protocol SaveMemoDelegate : class {
-    func saveMemoDelegate()
+protocol DismissDelegate : class {
+    func dismissBackGroundView()
 }
+
 class MemoViewController: UIViewController {
     //MARK: Ream Property
     var realm = try! Realm()
     let realmManager = RealmManager.shared.realm
     
     fileprivate var keyboardShown = false
-    weak var saveMemoDelegate : SaveMemoDelegate!
+    weak var dismissDelegate : DismissDelegate!
     
     //UI
     fileprivate var backGroundView : UIView!
@@ -37,7 +38,7 @@ class MemoViewController: UIViewController {
     var updateHeight : NSLayoutConstraint!
     fileprivate var transY : CGFloat!
     var createAt : Date!
-    
+    fileprivate var type : String = "memo"
     //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,10 +54,7 @@ class MemoViewController: UIViewController {
     }
   
     override func viewDidAppear(_ animated: Bool) {
-        transY = (view.frame.size.height * 0.18)
-        print("memoView \(memoView.frame.size.height)")
-        print("memoTextView \(memoTextView.frame.size.height)")
-        print("saveBtnBackView \(saveBtnBackView.frame.size.height)")
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -75,18 +73,24 @@ extension MemoViewController {
     @objc func dismissMemoView() {
         
         if memoTextView.text == "" || memoTextView.text == nil {
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true) {
+                self.dismissDelegate.dismissBackGroundView()
+            }
         } else {
             showAlert(title: "잠 깐!", message: "메모한 내용이 저장되지 않습니다. \n 메모장을 닫을까요?", actionStyle: .cancel, cancelBtn: true, buttonTitle: "확인", onView: self) { (_) in
-                self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true, completion: {
+                    self.dismissDelegate.dismissBackGroundView()
+                })
             }
         }
     }
     
     @objc func saveMemo() {
         if memoTextView.text == "" || memoTextView.text == nil {
-            showAlert(title: "잠 깐!", message: "메모내용이 없습니다. \n 이대로 저장하지 않고 메모장을 닫을까요?", actionStyle: .cancel, cancelBtn: true, buttonTitle: "확인", onView: self) { (_) in
-                self.dismiss(animated: true, completion: nil)
+            showAlert(title: "잠 깐!", message: "메모내용이 없습니다. \n 이대로 메모장을 닫을까요?", actionStyle: .cancel, cancelBtn: true, buttonTitle: "확인", onView: self) { (_) in
+                self.dismiss(animated: true, completion: {
+                    self.dismissDelegate.dismissBackGroundView()
+                })
             }
         } else {
             let stringDate = dateToString(in: selectDate, dateFormat: "dd MMM yyyy hh mm")
@@ -94,17 +98,18 @@ extension MemoViewController {
             createAt = stringToDate(in: stringDate, dateFormat: "dd MMM yyyy hh mm")
             let createAtMonth = dateToString(in: createAt, dateFormat: "MMM yyyy")
             let contents = memoTextView.text
-            let data = Content(createdAt: createAt, createdAtMonth: createAtMonth, title: "", weather: "", body: contents!, image: nil)
+            let data = Content(type : type, createdAt: createAt, createdAtMonth: createAtMonth,
+                               title: "", weather: "", body: contents!, image: nil)
             RealmManager.shared.creat(object: data)
-            self.saveMemoDelegate?.saveMemoDelegate()
+            self.dismiss(animated: true, completion: nil)
+            self.dismissDelegate.dismissBackGroundView()
         }
-        self.dismiss(animated: true, completion: nil)
     }
 }
 
 //MARK: UI
 extension  MemoViewController {
-    func setUI() {
+    private func setUI() {
 //        let width = self.view.frame.size.width
 //        let height = self.view.frame.size.height
 //        let keyboardHeight
@@ -141,15 +146,33 @@ extension  MemoViewController {
         baseView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         baseView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         baseView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        baseView.backgroundColor = .black
-        baseView.alpha = 0.3
+        baseView.backgroundColor = .clear
+//        baseView.alpha = 0.3
         
         view.addSubview(memoView)
-        
-        memoView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75, constant: 0).isActive = true
-        memoView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.52, constant: 0).isActive = true
-        memoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
-        memoView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        let screenHeight = UIScreen.main.bounds.height
+        switch screenHeight {
+        case ...568 :
+            memoView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75, constant: 0).isActive = true
+            memoView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.52, constant: 0).isActive = true
+            memoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
+            memoView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+            self.transY = (view.frame.size.height * 0.18)
+        case 569...736 :
+            memoView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75, constant: 0).isActive = true
+            memoView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.58, constant: 0).isActive = true
+            memoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
+            memoView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+            self.transY = (view.frame.size.height * 0.17)
+        case 737... :
+            memoView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75, constant: 0).isActive = true
+            memoView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5, constant: 0).isActive = true
+            memoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
+            memoView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+            self.transY = (view.frame.size.height * 0.17)
+        default:
+            print(screenHeight)
+        }
         memoView.tintColor = .gray
         memoView.backgroundColor = .white
         
@@ -244,7 +267,8 @@ extension MemoViewController {
     }
     
     fileprivate func unregisterForTextViewNotification() {
-        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
     }
     
     fileprivate func registerForKeyboardNotification() {
@@ -276,11 +300,7 @@ extension MemoViewController {
 //            let height = (view.frame.size.height - keyboardFrame.height - 10)
             UIStackView.animate(withDuration: 0.5, animations: {
                 self.memoView.transform = CGAffineTransform(translationX: 0, y: -(self.transY))
-            }) { (_) in
-//                self.updateHeight.constant = 0.8
-                self.memoView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.52, constant: 0).isActive = true
-            }
-  
+            })
         }
     }
     
