@@ -39,12 +39,12 @@ extension WriteViewController: PhotosViewControllerDelegate {
     
     func photoLibraryAuthorizationStatus() {
         
-           showAlertForImagePickerPermission()
+        showAlertForImagePickerPermission()
         
     }
     
     func openSettings() {
-        UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
     
     func showAlertForImagePickerPermission() {
@@ -55,7 +55,7 @@ extension WriteViewController: PhotosViewControllerDelegate {
                   cancelBtn: false,
                   buttonTitle: "승인",
                   onView: self) { (action) in
-            self.openSettings()
+                    self.openSettings()
         }
     }
     

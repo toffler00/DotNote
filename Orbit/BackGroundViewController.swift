@@ -13,41 +13,32 @@ protocol SaveMemoDelegate : class {
 }
 class BackGroundViewController : UIViewController, DismissDelegate {
     
-
+    
     fileprivate var backGroundView : UIView!
     var selectedDate : Date!
-    var memoViewController = MemoViewController()
-    var listViewController = ListViewController()
     weak var saveMemoDelegate : SaveMemoDelegate!
     override func viewDidLoad() {
         self.view.backgroundColor = .clear
         self.view.insetsLayoutMarginsFromSafeArea = false
-        self.view.directionalLayoutMargins = NSDirectionalEdgeInsetsMake(0, 0, 0, 0)
+        self.view.directionalLayoutMargins = NSDirectionalEdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         setUI()
     }
     
-    override func viewWillLayoutSubviews() {
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        saveMemoDelegate.saveMemoDelegate()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         presentMemoViewController()
     }
-
+    
     func presentMemoViewController() {
         print("presentMemoView")
         DispatchQueue.main.async {
-            self.memoViewController.modalPresentationStyle = .overFullScreen
-            self.memoViewController.dismissDelegate = self
-            self.memoViewController.selectDate = self.selectedDate
-            self.present(self.memoViewController, animated: true, completion: nil)
+            let memoViewController = MemoViewController()
+            memoViewController.modalPresentationStyle = .overFullScreen
+            memoViewController.dismissDelegate = self
+            memoViewController.selectDate = self.selectedDate
+            self.present(memoViewController, animated: true, completion: nil)
         }
     }
     
@@ -65,7 +56,12 @@ class BackGroundViewController : UIViewController, DismissDelegate {
     }
     
     
-    func dismissBackGroundView() {
-        self.dismiss(animated: false, completion: nil)
+    func dismissBackGroundView(isSaving: Bool) {
+        if isSaving {
+            saveMemoDelegate.saveMemoDelegate()
+            self.dismiss(animated: false, completion: nil)
+        } else {
+            self.dismiss(animated: false, completion: nil)
+        }
     }
 }

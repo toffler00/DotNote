@@ -9,38 +9,29 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
-
+    
     // MARK: propeties
     internal var dateLabel: UILabel = UILabel()
     internal var titleLabel: UILabel = UILabel()
-    internal var weekLabel: UILabel = UILabel()
-    var model: Model.Contents? {
-        didSet {
-            // ToDo
-            // 아니면 여기서 옵셔널 바인딩 하는 게 나은 걸까?
-            self.dateLabel.text = self.didChangeString(forDate: model?.createdAt)
-            self.titleLabel.text = model?.title
-//            self.weekLabel.text = self.getWeekday(of: model?.createdAt)
-        }
-    }
+    internal var contentType: UIImageView = UIImageView()
+    internal var lineImageView : UIImageView = UIImageView()
+    internal var trailingLineImageView : UIImageView = UIImageView()
+    
     // MARK: - Life Cycle
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         // UI
-        
         self.setUpLayout()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-        
     }
     
     override func prepareForReuse() {
         self.dateLabel.text = nil
         self.titleLabel.text = nil
-        self.weekLabel.text = nil
+        self.contentType.image = nil
     }
     
     // MARK: method
@@ -55,16 +46,6 @@ class ListTableViewCell: UITableViewCell {
         dateFormatter.dateFormat = "MM월dd일"
         return dateFormatter.string(from: date)
     }
-    
-//    private func getWeekday(of date: Date?) -> String {
-//        guard let date = date else { return "바꾸기 실패"}
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.locale = Locale(identifier: "ko_KR")
-//        let calendar = Calendar(identifier: .gregorian)
-//        let calendarComponent = calendar.component(.weekday, from: date) - 1
-//        dateFormatter.dateFormat = dateFormatter.weekdaySymbols[calendarComponent]
-//        return dateFormatter.string(from: date)
-//    }
 }
 // MARK: - extension ListTableViewCell
 extension ListTableViewCell {
@@ -75,7 +56,7 @@ extension ListTableViewCell {
         // textAlignment
         self.dateLabel.textAlignment = .center
         self.titleLabel.textAlignment = .left
-        self.weekLabel.textAlignment = .center
+        self.contentType.contentMode = .scaleAspectFit
         
         // numberOfLines
         self.titleLabel.numberOfLines = 0
@@ -83,59 +64,87 @@ extension ListTableViewCell {
         // translatesAutoresizingMaskIntoConstraints
         self.dateLabel.translatesAutoresizingMaskIntoConstraints = false
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.weekLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.contentType.translatesAutoresizingMaskIntoConstraints = false
+        self.lineImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.trailingLineImageView.translatesAutoresizingMaskIntoConstraints = false
         
         dateLabel.backgroundColor = .clear
         titleLabel.backgroundColor = .clear
-        weekLabel.backgroundColor = .clear
+        contentType.backgroundColor = .clear
+        lineImageView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 0.8)
+        trailingLineImageView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 0.8)
         
-        // NSLayoutConstraint
+        // Constraint value
+        let leadingDistance = self.frame.size.width * 0.08
         
-        // week label Constraints
-        let weekLabelConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: weekLabel, attribute: .top, relatedBy: .equal, toItem: self,
-                               attribute: .top, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: weekLabel, attribute: .leading, relatedBy: .equal, toItem: self,
-                               attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: weekLabel, attribute: .width, relatedBy: .equal, toItem: self,
-                               attribute: .width, multiplier: 0.15, constant: 0),
-            NSLayoutConstraint(item: weekLabel, attribute: .height, relatedBy: .equal, toItem: self,
-                               attribute: .height, multiplier: 0.3, constant: 0)]
-        
-        self.addSubview(weekLabel)
-        self.addConstraints(weekLabelConstraints)
-        weekLabel.font = UIFont(name: "NanumBarunGothic", size: 14)
-        weekLabel.backgroundColor = .clear
-        addBottomBorderLine(to: weekLabel, height: 1)
-    
         // date Label Constraints
         let dateLabelConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.dateLabel, attribute: .top, relatedBy: .equal, toItem: weekLabel,
-                               attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.dateLabel, attribute: .bottom, relatedBy: .equal, toItem: self,
-                               attribute: .bottom ,multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.dateLabel, attribute: .top, relatedBy: .equal, toItem: self,
+                               attribute: .top, multiplier: 1, constant: 2),
             NSLayoutConstraint(item: self.dateLabel, attribute: .leading, relatedBy: .equal, toItem: self,
-                               attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.dateLabel, attribute: .width, relatedBy: .equal, toItem: self,
-                               attribute: .width, multiplier: 0.15, constant: 0),
+                               attribute: .leading, multiplier: 1, constant: leadingDistance * 1.2),
+            //            NSLayoutConstraint(item: self.dateLabel, attribute: .width, relatedBy: .equal, toItem: self,
+            //                               attribute: .width, multiplier: 0.15, constant: 0),
             NSLayoutConstraint(item: dateLabel, attribute: .height, relatedBy: .equal, toItem: contentView,
-                               attribute: .height, multiplier: 0.7, constant: 0)]
+                               attribute: .height, multiplier: 0.3, constant: 0)]
         
         self.addSubview(dateLabel)
         self.addConstraints(dateLabelConstraints)
-        dateLabel.font = UIFont(name: "NanumBarunGothic", size: 16)
-        dateLabel.textColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
-        addBottomBorderLine(to: dateLabel, height: 0.5)
+        dateLabel.font = UIFont(name: "NanumBarunGothic", size: 14)
+        dateLabel.textColor = .lightGray
+        //            UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
+        dateLabel.preferredMaxLayoutWidth = 150
+        
+        // lineImageView Constraints
+        let lineImageviewConst : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: lineImageView, attribute: .leading, relatedBy: .equal, toItem: self,
+                               attribute: .leading, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: lineImageView, attribute: .centerY, relatedBy: .equal, toItem: dateLabel,
+                               attribute: .centerY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: lineImageView, attribute: .width, relatedBy: .equal, toItem: nil,
+                               attribute: .width, multiplier: 1, constant: leadingDistance),
+            NSLayoutConstraint(item: lineImageView, attribute: .height, relatedBy: .equal, toItem: nil,
+                               attribute: .height, multiplier: 1, constant: 1.5)]
+        self.addSubview(lineImageView)
+        self.addConstraints(lineImageviewConst)
+        
+        // week label Constraints
+        let weekLabelConstraints: [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: contentType, attribute: .centerY, relatedBy: .equal, toItem: dateLabel,
+                               attribute: .centerY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contentType, attribute: .leading, relatedBy: .equal, toItem: dateLabel,
+                               attribute: .trailing, multiplier: 1, constant: 8),
+            NSLayoutConstraint(item: contentType, attribute: .width, relatedBy: .equal, toItem: nil,
+                               attribute: .width, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: contentType, attribute: .height, relatedBy: .equal, toItem: nil,
+                               attribute: .height, multiplier: 1, constant: 20)]
+        
+        self.addSubview(contentType)
+        self.addConstraints(weekLabelConstraints)
+        
+        // trailingLineImageView Constraints
+        let spacing = leadingDistance * 0.2
+        let trailngLineImageviewConst : [NSLayoutConstraint] = [
+            NSLayoutConstraint(item: trailingLineImageView, attribute: .leading, relatedBy: .equal, toItem: contentType,
+                               attribute: .trailing, multiplier: 1, constant: spacing),
+            NSLayoutConstraint(item: trailingLineImageView, attribute: .centerY, relatedBy: .equal, toItem: dateLabel,
+                               attribute: .centerY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: trailingLineImageView, attribute: .trailing, relatedBy: .equal, toItem: self,
+                               attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: trailingLineImageView, attribute: .height, relatedBy: .equal, toItem: nil,
+                               attribute: .height, multiplier: 1, constant: 1.5)]
+        self.addSubview(trailingLineImageView)
+        self.addConstraints(trailngLineImageviewConst)
         
         
         // title label Constraints
         let titleLabelConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.titleLabel, attribute: .top, relatedBy: .equal, toItem: self,
-                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.titleLabel, attribute: .top, relatedBy: .equal, toItem: dateLabel,
+                               attribute: .bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.titleLabel, attribute: .bottom, relatedBy: .equal, toItem: self,
                                attribute: .bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.titleLabel, attribute: .leading, relatedBy: .equal, toItem: dateLabel,
-                               attribute: .trailing, multiplier: 1, constant: 0),
+                               attribute: .leading, multiplier: 1, constant: leadingDistance),
             NSLayoutConstraint(item: self.titleLabel, attribute: .trailing, relatedBy: .equal, toItem: self,
                                attribute: .trailing,multiplier: 1, constant: 0)]
         // 중앙 먼저

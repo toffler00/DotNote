@@ -42,7 +42,7 @@ extension PhotosViewController: PHPhotoLibraryChangeObserver {
                         
                         changes.enumerateMoves { fromIndex, toIndex in
                             self.photoCollectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
-                                                               to: IndexPath(item: toIndex, section: 0))
+                                                              to: IndexPath(item: toIndex, section: 0))
                         }
                     })
                 } else {

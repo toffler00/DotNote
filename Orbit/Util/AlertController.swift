@@ -12,7 +12,7 @@ import UIKit
 extension UIViewController {
     func showAlert(title : String?,
                    message : String?,
-                   actionStyle : UIAlertActionStyle = UIAlertActionStyle.default,
+                   actionStyle : UIAlertAction.Style = UIAlertAction.Style.default,
                    cancelBtn : Bool,
                    buttonTitle : String,
                    onView : UIViewController, completion : ((UIAlertAction) -> Void)?) {

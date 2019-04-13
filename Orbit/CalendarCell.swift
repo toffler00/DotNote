@@ -26,11 +26,11 @@ class CalendarCell: JTAppleCell {
     
     func setUpLayout() {
         
-        let border = CALayer()
-        border.frame = CGRect(x: 0, y: contentView.frame.height - 0.5,
-                              width: contentView.frame.width, height: 0.5)
-        border.backgroundColor = UIColor(red: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 1).cgColor
-        contentView.layer.addSublayer(border)
+        //        let border = CALayer()
+        //        border.frame = CGRect(x: 0, y: contentView.frame.height - 0.5,
+        //                              width: contentView.frame.width, height: 0.5)
+        //        border.backgroundColor = UIColor(red: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 1).cgColor
+        //        contentView.layer.addSublayer(border)
         contentView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         
         todayView.translatesAutoresizingMaskIntoConstraints = false
@@ -89,15 +89,15 @@ class CalendarCell: JTAppleCell {
             NSLayoutConstraint(item: isContentsImg, attribute: .top, relatedBy: .equal, toItem: dateLabel,
                                attribute: .bottom, multiplier: 1, constant: 4),
             NSLayoutConstraint(item: isContentsImg, attribute: .width, relatedBy: .equal, toItem: dateLabel,
-                               attribute: .width, multiplier: 1, constant: 0),
+                               attribute: .width, multiplier: 0.5, constant: 0),
             NSLayoutConstraint(item: isContentsImg, attribute: .height, relatedBy: .equal, toItem: nil,
-                               attribute: .height, multiplier: 1, constant: 4),
+                               attribute: .height, multiplier: 1, constant: 2),
             NSLayoutConstraint(item: isContentsImg, attribute: .centerX, relatedBy: .equal, toItem: contentView,
                                attribute: .centerX, multiplier: 1, constant: 0)]
         contentView.addSubview(isContentsImg)
         contentView.addConstraints(constIsContent)
         isContentsImg.backgroundColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
-//        UIColor(red: 191/255, green: 1, blue: 0, alpha: 1)
+        //        UIColor(red: 191/255, green: 1, blue: 0, alpha: 1)
         isContentsImg.isHidden = true
     }
 }

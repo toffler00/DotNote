@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 
 protocol DismissDelegate : class {
-    func dismissBackGroundView()
+    func dismissBackGroundView(isSaving : Bool)
 }
 
 class MemoViewController: UIViewController {
@@ -32,7 +32,7 @@ class MemoViewController: UIViewController {
     var cancelBtn : UIImageView!
     fileprivate var baseView : UIView!
     var selectDate : Date!
-    
+    var contentsAliment : String = "left"
     
     var memoViewRect : CGRect!
     var updateHeight : NSLayoutConstraint!
@@ -44,15 +44,15 @@ class MemoViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
         self.view.insetsLayoutMarginsFromSafeArea = false
-        self.view.directionalLayoutMargins = NSDirectionalEdgeInsetsMake(0, 0, 0, 0)
-//        self.view.layoutMargins = UIEdgeInsets(top: self.view.layoutMargins.top, left: 0, bottom: self.view.layoutMargins.bottom, right: 0)
+        self.view.directionalLayoutMargins = NSDirectionalEdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        //        self.view.layoutMargins = UIEdgeInsets(top: self.view.layoutMargins.top, left: 0, bottom: self.view.layoutMargins.bottom, right: 0)
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         registerForKeyboardNotification()
     }
-  
+    
     override func viewDidAppear(_ animated: Bool) {
         
     }
@@ -74,12 +74,12 @@ extension MemoViewController {
         
         if memoTextView.text == "" || memoTextView.text == nil {
             dismiss(animated: true) {
-                self.dismissDelegate.dismissBackGroundView()
+                self.dismissDelegate.dismissBackGroundView(isSaving: false)
             }
         } else {
             showAlert(title: "잠 깐!", message: "메모한 내용이 저장되지 않습니다. \n 메모장을 닫을까요?", actionStyle: .cancel, cancelBtn: true, buttonTitle: "확인", onView: self) { (_) in
                 self.dismiss(animated: true, completion: {
-                    self.dismissDelegate.dismissBackGroundView()
+                    self.dismissDelegate.dismissBackGroundView(isSaving: false)
                 })
             }
         }
@@ -89,7 +89,7 @@ extension MemoViewController {
         if memoTextView.text == "" || memoTextView.text == nil {
             showAlert(title: "잠 깐!", message: "메모내용이 없습니다. \n 이대로 메모장을 닫을까요?", actionStyle: .cancel, cancelBtn: true, buttonTitle: "확인", onView: self) { (_) in
                 self.dismiss(animated: true, completion: {
-                    self.dismissDelegate.dismissBackGroundView()
+                    self.dismissDelegate.dismissBackGroundView(isSaving: true)
                 })
             }
         } else {
@@ -99,10 +99,10 @@ extension MemoViewController {
             let createAtMonth = dateToString(in: createAt, dateFormat: "MMM yyyy")
             let contents = memoTextView.text
             let data = Content(type : type, createdAt: createAt, createdAtMonth: createAtMonth,
-                               title: "", weather: "", body: contents!, image: nil)
+                               title: "", weather: "", body: contents!, contentsAlignment: self.contentsAliment,image: nil)
             RealmManager.shared.creat(object: data)
             self.dismiss(animated: true, completion: nil)
-            self.dismissDelegate.dismissBackGroundView()
+            self.dismissDelegate.dismissBackGroundView(isSaving: true)
         }
     }
 }
@@ -110,9 +110,9 @@ extension MemoViewController {
 //MARK: UI
 extension  MemoViewController {
     private func setUI() {
-//        let width = self.view.frame.size.width
-//        let height = self.view.frame.size.height
-//        let keyboardHeight
+        //        let width = self.view.frame.size.width
+        //        let height = self.view.frame.size.height
+        //        let keyboardHeight
         
         backGroundView = UIView()
         memoView = UIStackView()
@@ -147,7 +147,7 @@ extension  MemoViewController {
         baseView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         baseView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         baseView.backgroundColor = .clear
-//        baseView.alpha = 0.3
+        //        baseView.alpha = 0.3
         
         view.addSubview(memoView)
         let screenHeight = UIScreen.main.bounds.height
@@ -182,7 +182,7 @@ extension  MemoViewController {
         
         view.addSubview(selectedDate)
         selectedDate.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-        selectedDate.font = setFont(type: .date, onView: self, font: "NanumBarunGothicBold", size: 20)
+        selectedDate.font = setFont(type: .date, onView: self, font: "NanumBarunGothic", size: 20)
         
         view.addSubview(cancelBtn)
         cancelBtn.widthAnchor.constraint(equalToConstant: 48).isActive = true
@@ -204,7 +204,7 @@ extension  MemoViewController {
         memoTextView.heightAnchor.constraint(equalTo: memoView.heightAnchor, multiplier: 0.8).isActive = true
         memoTextView.centerXAnchor.constraint(equalTo: memoView.centerXAnchor).isActive = true
         memoTextView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-        memoTextView.font = UIFont(name: "NanumBarunGothic", size: 18)
+        memoTextView.font = UIFont(name: "NanumBarunGothic", size: 16)
         memoTextView.layer.shadowOffset = CGSize(width: 0, height: 1.0)
         memoTextView.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         memoTextView.layer.shadowRadius = 2.0
@@ -237,7 +237,7 @@ extension  MemoViewController {
         memoView.alignment = .fill
         memoView.autoresizesSubviews = true
     }
-
+    
 }
 
 extension MemoViewController {
@@ -261,25 +261,25 @@ extension MemoViewController {
     
     fileprivate func registerForTextViewNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(cleanTextView),
-                                               name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
+                                               name: UITextView.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(textViewState),
-                                               name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
+                                               name: UITextView.textDidEndEditingNotification, object: nil)
     }
     
     fileprivate func unregisterForTextViewNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UITextView.textDidBeginEditingNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UITextView.textDidEndEditingNotification, object: nil)
     }
     
     fileprivate func registerForKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillshow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillshow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
     
     fileprivate func unregisterForKeyboardNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc fileprivate func keyboardWillshow(notification : Notification) {
@@ -292,12 +292,12 @@ extension MemoViewController {
     
     fileprivate func adjustHeight(notification : Notification) {
         guard let userInfo = notification.userInfo else {return}
-        let keyboardFrame : CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame : CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
         if keyboardFrame.height == 0 || keyboardShown {
             return
         } else {
-        keyboardShown = true
-//            let height = (view.frame.size.height - keyboardFrame.height - 10)
+            keyboardShown = true
+            //            let height = (view.frame.size.height - keyboardFrame.height - 10)
             UIStackView.animate(withDuration: 0.5, animations: {
                 self.memoView.transform = CGAffineTransform(translationX: 0, y: -(self.transY))
             })
@@ -310,134 +310,6 @@ extension MemoViewController {
             self.memoView.transform = CGAffineTransform(translationX: 0, y: 0)
         }
     }
-
+    
 }
 
-extension MemoViewController {
-    func setupUI() {
-        
-//        let constBaseView : [NSLayoutConstraint] = [NSLayoutConstraint(item: baseView, attribute: .top, relatedBy: .equal,
-//                                                                       toItem: view, attribute: .top, multiplier: 1, constant: 0),
-//                                                    NSLayoutConstraint(item: baseView, attribute: .leading, relatedBy: .equal,
-//                                                                       toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
-//                                                    NSLayoutConstraint(item: baseView, attribute: .trailing, relatedBy: .equal,
-//                                                                       toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
-//                                                    NSLayoutConstraint(item: baseView, attribute: .bottom, relatedBy: .equal,
-//                                                                       toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)]
-//        self.view.addSubview(baseView)
-//        self.view.addConstraints(constBaseView)
-//        baseView.backgroundColor = .black
-//        baseView.alpha = 0.3
-//        NSLayoutConstraint.activate(constBaseView)
-//
-//        let constBgView : [NSLayoutConstraint] = [NSLayoutConstraint(item: backGroundView, attribute: .top, relatedBy: .equal,
-//                                                                     toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),
-//                                                  NSLayoutConstraint(item: backGroundView, attribute: .leading, relatedBy: .equal,
-//                                                                     toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
-//                                                  NSLayoutConstraint(item: backGroundView, attribute: .trailing, relatedBy: .equal,
-//                                                                     toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
-//                                                  NSLayoutConstraint(item: backGroundView, attribute: .bottom, relatedBy: .equal,
-//                                                                     toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)]
-//        self.view.addSubview(backGroundView)
-//        self.view.addConstraints(constBgView)
-//        backGroundView.backgroundColor = .clear
-//        NSLayoutConstraint.activate(constBgView)
-//
-//        let constmemoView  : [NSLayoutConstraint] = [NSLayoutConstraint(item: memoView, attribute: .centerX, relatedBy: .equal,
-//                                                                        toItem: backGroundView, attribute: .centerX, multiplier: 1, constant: 0),
-//                                                     NSLayoutConstraint(item: memoView, attribute: .centerY, relatedBy: .equal,
-//                                                                        toItem: backGroundView, attribute: .centerY, multiplier: 1, constant: 0),
-//                                                     NSLayoutConstraint(item: memoView, attribute: .width, relatedBy: .equal,
-//                                                                        toItem: nil, attribute: .width, multiplier: 1, constant: (width * 0.8)),
-//                                                     NSLayoutConstraint(item: memoView, attribute: .height, relatedBy: .equal,
-//                                                                        toItem: nil, attribute: .height, multiplier: 1, constant: (height * 0.65))]
-//        backGroundView.addSubview(memoView)
-//        backGroundView.addConstraints(constmemoView)
-//        memoView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-//        memoView.tintColor = .black
-//        memoView.autoresizesSubviews = true
-//        NSLayoutConstraint.activate(constmemoView)
-//
-//        let constselectedDate  : [NSLayoutConstraint] = [NSLayoutConstraint(item: selectedDate, attribute: .top, relatedBy: .equal,
-//                                                                            toItem: memoView, attribute: .top, multiplier: 1, constant: 4),
-//                                                         NSLayoutConstraint(item: selectedDate, attribute: .leading, relatedBy: .equal,
-//                                                                            toItem: memoView, attribute: .leading, multiplier: 1, constant: 4),
-//                                                         NSLayoutConstraint(item: selectedDate, attribute: .trailing, relatedBy: .equal,
-//                                                                            toItem: memoView, attribute: .trailing, multiplier: 1, constant: -52),
-//                                                         NSLayoutConstraint(item: selectedDate, attribute: .height, relatedBy: .equal,
-//                                                                            toItem: nil, attribute: .height, multiplier: 1, constant: 48)]
-//        memoView.addSubview(selectedDate)
-//        memoView.addConstraints(constselectedDate)
-//        selectedDate.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-//        selectedDate.text = "  \(selectDate)"
-//        selectedDate.font = UIFont.boldSystemFont(ofSize: 20)
-//        NSLayoutConstraint.activate(constselectedDate)
-//
-//        let constmemnoTextV  : [NSLayoutConstraint] = [NSLayoutConstraint(item: memoTextView, attribute: .top, relatedBy: .equal,
-//                                                                          toItem: memoView, attribute: .top, multiplier: 1, constant: 52),
-//                                                       NSLayoutConstraint(item: memoTextView, attribute: .leading, relatedBy: .equal,
-//                                                                          toItem: memoView, attribute: .leading, multiplier: 1, constant: 4),
-//                                                       NSLayoutConstraint(item: memoTextView, attribute: .trailing, relatedBy: .equal,
-//                                                                          toItem: memoView, attribute: .trailing, multiplier: 1, constant: -4),
-//                                                       NSLayoutConstraint(item: memoTextView, attribute: .height, relatedBy: .equal,
-//                                                                          toItem: memoView, attribute: .height, multiplier: 0.8, constant: 0),
-//                                                       NSLayoutConstraint(item: memoTextView, attribute: .bottom, relatedBy: .greaterThanOrEqual,
-//                                                                          toItem: memoView, attribute: .bottom, multiplier: 1, constant: -4)]
-//
-//        memoView.addSubview(memoTextView)
-//        memoView.addConstraints(constmemnoTextV)
-//        //        memoTextView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-//        memoTextView.backgroundColor = .lightGray
-//        NSLayoutConstraint.activate(constmemnoTextV)
-//        //        memoTextView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-//        //
-//        //        let constSaveView : [NSLayoutConstraint] = [NSLayoutConstraint(item: saveBtnBackView, attribute: .top, relatedBy: .equal,
-//        //                                                                       toItem: memoTextView, attribute: .bottom, multiplier: 1, constant: 0),
-//        //                                                    NSLayoutConstraint(item: saveBtnBackView, attribute: .leading, relatedBy: .equal,
-//        //                                                                       toItem: memoView, attribute: .leading, multiplier: 1, constant: 4),
-//        //                                                    NSLayoutConstraint(item: saveBtnBackView, attribute: .trailing, relatedBy: .equal,
-//        //                                                                       toItem: memoView, attribute: .trailing, multiplier: 1, constant: -4),
-//        //                                                    NSLayoutConstraint(item: saveBtnBackView, attribute: .bottom, relatedBy: .equal,
-//        //                                                                       toItem: memoView, attribute: .bottom, multiplier: 1, constant: -4)]
-//        //
-//        //        memoView.addSubview(saveBtnBackView)
-//        //        memoView.addConstraints(constSaveView)
-//        ////        saveBtnBackView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-//        //        saveBtnBackView.backgroundColor = .yellow
-//        //
-//        //        let constSave  : [NSLayoutConstraint] = [NSLayoutConstraint(item: saveBtn, attribute: .width, relatedBy: .equal,
-//        //                                                                    toItem: nil, attribute: .width, multiplier: 1, constant: 36),
-//        //                                                 NSLayoutConstraint(item: saveBtn, attribute: .height, relatedBy: .equal,
-//        //                                                                    toItem: nil, attribute: .height, multiplier: 1, constant: 36),
-//        //                                                 NSLayoutConstraint(item: saveBtn, attribute: .centerX, relatedBy: .equal,
-//        //                                                                    toItem: saveBtnBackView, attribute: .centerX, multiplier: 1, constant: 0),
-//        //                                                 NSLayoutConstraint(item: saveBtn, attribute: .bottom, relatedBy: .equal,
-//        //                                                                    toItem: saveBtnBackView, attribute: .bottom, multiplier: 1, constant: -4)]
-//        //        saveBtnBackView.addSubview(saveBtn)
-//        //        saveBtnBackView.addConstraints(constSave)
-//        //        saveBtn.backgroundColor = .clear
-//        //        saveBtn.image = UIImage(named: "post")
-//        //        saveBtn.contentMode = .scaleAspectFill
-//        //        let saveTapGesture = UITapGestureRecognizer(target: self, action: #selector(saveMemo))
-//        //        saveBtn.addGestureRecognizer(saveTapGesture)
-//        //        NSLayoutConstraint.activate(constSave)
-//
-//        let constCancel  : [NSLayoutConstraint] = [NSLayoutConstraint(item: cancelBtn, attribute: .top, relatedBy: .equal,
-//                                                                      toItem: memoView, attribute: .top, multiplier: 1, constant: 4),
-//                                                   NSLayoutConstraint(item: cancelBtn, attribute: .leading, relatedBy: .equal,
-//                                                                      toItem: selectedDate, attribute: .trailing, multiplier: 1, constant: 0),
-//                                                   NSLayoutConstraint(item: cancelBtn, attribute: .trailing, relatedBy: .equal,
-//                                                                      toItem: memoView, attribute: .trailing, multiplier: 1, constant: -4),
-//                                                   NSLayoutConstraint(item: cancelBtn, attribute: .bottom, relatedBy: .equal,
-//                                                                      toItem: memoTextView, attribute: .top, multiplier: 1, constant: 0)]
-//        memoView.addSubview(cancelBtn)
-//        memoView.addConstraints(constCancel)
-//        cancelBtn.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-//        cancelBtn.image = UIImage(named: "multiply")
-//        cancelBtn.contentMode = .scaleAspectFill
-//        cancelBtn.isUserInteractionEnabled = true
-//        let cancelGesture = UITapGestureRecognizer(target: self, action: #selector(dismissMemoView))
-//        cancelBtn.addGestureRecognizer(cancelGesture)
-//        NSLayoutConstraint.activate(constCancel)
-    }
-}

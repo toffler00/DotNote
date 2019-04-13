@@ -11,7 +11,7 @@ import UIKit
 import CoreLocation
 
 extension ListViewController : CLLocationManagerDelegate {
-   
+    
     func setupLocationManager() {
         
         locationManager = CLLocationManager()

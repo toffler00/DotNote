@@ -15,13 +15,14 @@ import NXDrawKit
 
 
 class ListViewController: UIViewController {
-
-
+    
+    
     // MARK: Properties
     private var user = User()
     private var content = Content()
     private var realmm = try! Realm()
     var datasource : Results<Content>!
+    var settingData : Results<Settings>!
     let realmManager = RealmManager.shared.realm
     
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
@@ -29,7 +30,7 @@ class ListViewController: UIViewController {
     private var writeButton: UIImageView!
     var models = [Model.Contents]()
     var thisMonthLabel : UILabel!
-    var weeks : [String] = ["Sun", "Mon","Tue","Wed","Thu","Fri","Sat"]
+    var weeks : [String] = ["일","월","화","수","목","금","토"]
     var weeksStackView : UIStackView!
     var calendarView : JTAppleCalendarView!
     let dateFormatter : DateFormatter = DateFormatter()
@@ -37,6 +38,7 @@ class ListViewController: UIViewController {
     var contentDate : [String] = []
     var optionIcon : UIImageView!
     var weatherItem : Int!
+    
     var exButton : ExpandableButtonView = {
         var item : [ExpandableButtonItem] = []
         let btn = ExpandableButtonView(items: item)
@@ -85,7 +87,7 @@ class ListViewController: UIViewController {
         } else {
             writeViewController.weatherItem = self.weatherItem
             navigationController?.pushViewController(writeViewController, animated: true)
-        }  
+        }
     }
     
     @objc func pushDrawingViewController() {
@@ -93,9 +95,11 @@ class ListViewController: UIViewController {
         if self.weatherItem == nil {
             self.weatherItem = 0
             drawingDiaryViewController.weatherItem = self.weatherItem
+            drawingDiaryViewController.drawingDiarySaveDeleagate = self
             navigationController?.pushViewController(drawingDiaryViewController, animated: true)
         } else {
             drawingDiaryViewController.weatherItem = self.weatherItem
+            drawingDiaryViewController.drawingDiarySaveDeleagate = self
             navigationController?.pushViewController(drawingDiaryViewController, animated: true)
         }
     }
@@ -116,35 +120,73 @@ class ListViewController: UIViewController {
     // MARK: Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         setUpOptionIcon(bool: true)
-//        setWriteBtn(bool: true)
+        //        setWriteBtn(bool: true)
         setExpandableButton()
         setNavigationBackButton(onView: self, bool: false)
         if listTableView == nil {
-           return
+            return
         }else {
-            self.listTableView.reloadData()
+            
             self.calendarView.reloadData()
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         setUpOptionIcon(bool: false)
-//        setWriteBtn(bool: false)
+        //        setWriteBtn(bool: false)
         exButton.isHidden = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(self.view.frame)
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
-        let titleFont = setFont(type: .navigationTitle, onView: self, font: "NanumBarunGothicBold", size: 34)
-        self.navigationController?.navigationBar.largeTitleTextAttributes =
-            [NSAttributedStringKey.font : titleFont!]
-        self.navigationItem.title = "Dot Note"
+        setSettingsDefaultValue()
+        setNavieTitle()
+        self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         setDatasource(in: getDate(dateFormat: "MMM yyyy"))
         setupLocationManager()
         print(contentDate)
+    }
+    
+    func setNavieTitle() {
+        if settingData.count == 1 {
+            let data = settingData[0]
+            let naviTitleFont = data.naviTitleFont
+            let screensWidth = UIScreen.main.bounds.width
+            switch screensWidth {
+            case ...320:
+                let titleFont = setFont(type: .navigationTitle, onView: self, font: naviTitleFont, size: 26)
+                self.navigationController?.navigationBar.largeTitleTextAttributes =
+                    [NSAttributedString.Key.font : titleFont!]
+                self.navigationItem.title = "Dot Note"
+            case 321...:
+                let titleFont = setFont(type: .navigationTitle, onView: self, font: naviTitleFont, size: 34)
+                self.navigationController?.navigationBar.largeTitleTextAttributes =
+                    [NSAttributedString.Key.font : titleFont!]
+                self.navigationItem.title = "Dot Note"
+            default:
+                let titleFont = setFont(type: .navigationTitle, onView: self, font: naviTitleFont, size: 34)
+                self.navigationController?.navigationBar.largeTitleTextAttributes =
+                    [NSAttributedString.Key.font : titleFont!]
+                self.navigationItem.title = "Dot Note"
+            }
+        } else {
+            self.navigationItem.title = "Dot Note"
+        }
+        
+    }
+    
+    func setSettingsDefaultValue() {
+        self.settingData = realmManager.objects(Settings.self)
+        if settingData.count == 0 {
+            let data = Settings(categoryFont: "NanumMyeongjoEco", titleFont: "NanumBarunGothic",
+                                contentsFont: "NanumBarunGothic", fontSize: 16, collectionFilter: 1)
+            RealmManager.shared.creat(object: data)
+        }
+        print(settingData)
     }
     
     // MARK: viewWillLayoutSubviews:
@@ -157,7 +199,6 @@ class ListViewController: UIViewController {
             setUpLayout()
         }
     }
-    
 }
 
 // MARK: - extension ListViewController
@@ -179,7 +220,7 @@ extension ListViewController {
                                attribute: .trailing, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: listTableView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .bottom, multiplier: 1, constant: 0)]
-
+        
         self.view.addSubview(listTableView)
         self.view.addConstraints(listTableViewConstraints)
         
@@ -189,7 +230,7 @@ extension ListViewController {
         self.listTableView.dataSource = self
     }
     
-     //MARK: writeDoneIcon UIImageView
+    //MARK: writeDoneIcon UIImageView
     func setUpOptionIcon(bool : Bool) {
         if bool {
             optionIcon = UIImageView()
@@ -207,7 +248,7 @@ extension ListViewController {
             navigationController?.navigationBar.addSubview(optionIcon)
             navigationController?.navigationBar.addConstraints(constoptionIcon)
             
-            optionIcon.image = UIImage(named: "menu")
+            optionIcon.image = UIImage(named: "moreMenu")
             optionIcon.contentMode = .scaleAspectFit
             optionIcon.layer.cornerRadius = 4
             optionIcon.clipsToBounds = true
@@ -256,14 +297,13 @@ extension ListViewController {
     }
     
     func setDatasource(in date : String) {
-        guard let contentDate = realmManager.objects(Content.self).value(forKey: "createdAt") as? [Date] else {return}
+        guard let contentDate = self.realmManager.objects(Content.self).value(forKey: "createdAt") as? [Date] else {return}
         self.contentDate.removeAll()
         for i in contentDate {
-            let date = dateToString(in: i, dateFormat: "yyyyMMdd")
+            let date = self.dateToString(in: i, dateFormat: "yyyyMMdd")
             self.contentDate.append(date)
         }
-        print(date)
-        datasource = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
+        self.datasource = self.realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
             .filter("createdAtMonth == '\(date)'")
     }
 }
@@ -283,29 +323,29 @@ extension ListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 56
+        return 64
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == UITableViewCellEditingStyle.delete {
-//            print("deleted")
-//            let content = datasource[indexPath.row]
-//            print(content)
-//            RealmManager.shared.delete(object: content)
-//            listTableView.reloadData()
-//        }
-//        calendarView.reloadData()
-//    }
+    //    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    //        if editingStyle == UITableViewCellEditingStyle.delete {
+    //            print("deleted")
+    //            let content = datasource[indexPath.row]
+    //            print(content)
+    //            RealmManager.shared.delete(object: content)
+    //            listTableView.reloadData()
+    //        }
+    //        calendarView.reloadData()
+    //    }
 }
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if datasource.count == 0 {
-            return 5
+            return 0
         }
         return datasource.count
     }
@@ -315,26 +355,24 @@ extension ListViewController: UITableViewDataSource{
         if datasource.count == 0 {
             return cell
         }
-        
         let data = datasource[indexPath.row]
-        print(data.title.count)
         let typeName = data.type
         switch typeName {
         case "memo" :
             cell.titleLabel.text = "  \(data.body)"
+            cell.contentType.image = UIImage(named: "memo")
         case "diary" :
             cell.titleLabel.text = "  \(data.title)"
+            cell.contentType.image = UIImage(named: "edit")
         case "drawing" :
             cell.titleLabel.text = "  \(data.title)"
+            cell.contentType.image = UIImage(named: "draw")
         default :
             cell.titleLabel.text = "  \(data.title)"
         }
-        
-        cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "d"))"
-        cell.weekLabel.text = "\(getWeekDay(in: data.createdAt, dateFormat: "EEE"))"
-        
+        cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "yyyy.MM.dd EEE"))"
         return cell
     }
-
+    
 }
 

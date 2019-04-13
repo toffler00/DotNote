@@ -15,9 +15,13 @@ class CustomTextFiled: UITextField {
         return CGRect.zero
     }
     
-    override func selectionRects(for range: UITextRange) -> [Any] {
+    override func selectionRects(for range: UITextRange) -> [UITextSelectionRect] {
         return []
     }
+//
+//    override func selectionRects(for range: UITextRange) -> [Any] {
+//        return []
+//    }
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return false

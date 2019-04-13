@@ -21,17 +21,19 @@ class WriteViewController: UIViewController {
     var contentsTextViewCGRect : CGRect!
     
     //MARK: Ream Property
-    //    var content = Content()
-    //    var user = User()
-    var realm = try! Realm()
-    let realmManager = RealmManager.shared.realm
     
+    var realm = try! Realm()
+    var settingData : Results<Settings>!
+    
+    //Delegate
     weak var writeDoneDelegate: WriteDoneDelegate!
+    
     fileprivate var date : UILabel!
     fileprivate var titleLabel : UILabel!
     fileprivate var contentTitle: UITextField!
     var dayOfWeek: UILabel!
     var weather: UILabel!
+    var contentsAlignment : String = "left"
     
     //    fileprivate var weatherImg : UIImageView!
     fileprivate var writeDoneIcon : UIImageView!
@@ -48,7 +50,7 @@ class WriteViewController: UIViewController {
     fileprivate var cameraIconImgView : UIImageView!
     fileprivate var iconBgView : UIView!
     fileprivate var contents : UITextView!
-    fileprivate var models : [Model.Contents] = [Model.Contents]()
+    //    fileprivate var models : [Model.Contents] = [Model.Contents]()
     var selectedImageData: Data?
     fileprivate var datePicker : UIDatePicker!
     fileprivate var weatherPicker : UIPickerView!
@@ -73,7 +75,7 @@ class WriteViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-//        setNavigationBackButton(onView: self, in: backButton, bool: true)
+        //        setNavigationBackButton(onView: self, in: backButton, bool: true)
     }
     override func viewWillDisappear(_ animated: Bool) {
         unregisterForKeyboardNotification()
@@ -87,23 +89,33 @@ class WriteViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        let realmManager = RealmManager.shared.realm
+        settingData = realmManager.objects(Settings.self)
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.largeTitleDisplayMode = .automatic
-        self.navigationItem.title = "Write"
+        self.navigationItem.largeTitleDisplayMode = .always
+        self.navigationItem.title = "일기"
         self.navigationItem.hidesBackButton = true
-        
+        self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
     }
     
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()
             setInformation(in: getDate(dateFormat: "dd MMM yyyy hh mm"))
+            applySetting()
         }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func applySetting() {
+        let settingData = self.settingData[0]
+        let contentsFont = settingData.contentsFont
+        let contentsFontSize = CGFloat(settingData.contentsFontSize)
+        contents.font = UIFont(name: contentsFont, size: contentsFontSize)
     }
     
     func setInformation(in todayDate : String) {
@@ -150,7 +162,7 @@ extension WriteViewController {
                       cancelBtn: true, buttonTitle: "확인", onView: self, completion: nil)
         } else {
             if contents.text == "" || contents.text == "글을 입력하세요" {
-                showAlert(title: "경 고", message: "아무 내용이 없어요 \n 이대로 저장할까요?",
+                showAlert(title: "경 고", message: "작성한 내용이 없습니다. \n 이대로 저장할까요?",
                           cancelBtn: true, buttonTitle: "확인", onView: self) { (action) in
                             self.contents.text = " "
                             let data = Content(type: self.type,
@@ -159,6 +171,7 @@ extension WriteViewController {
                                                title: self.contentTitle.text!,
                                                weather: self.weather.text!,
                                                body: self.contents.text!,
+                                               contentsAlignment: self.contentsAlignment,
                                                image: self.selectedImageData)
                             RealmManager.shared.creat(object: data)
                             self.writeDoneDelegate.writeDone()
@@ -167,7 +180,8 @@ extension WriteViewController {
             } else {
                 let data = Content(type : self.type, createdAt: self.today,
                                    createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
-                                   weather: self.weather.text!, body: self.contents.text!, image: self.selectedImageData)
+                                   weather: self.weather.text!, body: self.contents.text!,
+                                   contentsAlignment: self.contentsAlignment,image: self.selectedImageData)
                 RealmManager.shared.creat(object: data)
                 self.writeDoneDelegate.writeDone()
                 self.navigationController?.popViewController(animated: true)
@@ -189,7 +203,7 @@ extension WriteViewController {
 //MARK: Setup Layout
 extension WriteViewController {
     fileprivate func setupLayout() {
-        // MARK: containerV UIView
+        // containerV UIView
         
         log.debug("setup Layout")
         self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
@@ -204,11 +218,13 @@ extension WriteViewController {
                                                                toItem: self.view.safeAreaLayoutGuide,attribute: .leading, multiplier: 1, constant: 8),
                                             NSLayoutConstraint(item: containerV, attribute: .trailing, relatedBy: .equal,
                                                                toItem: self.view.safeAreaLayoutGuide,attribute: .trailing, multiplier: 1, constant: -8)]
+        
         self.view.addSubview(containerV)
         self.view.addConstraints(const)
         containerV.backgroundColor = .clear
         
-        // MARK: dayofWeek Label
+        
+        // dayofWeek Label
         dayOfWeek = UILabel()
         dayOfWeek.translatesAutoresizingMaskIntoConstraints = false
         let constWeek : [NSLayoutConstraint] = [
@@ -227,7 +243,6 @@ extension WriteViewController {
         dayOfWeek.font = setFont(type: .contents, onView: self, font: "NanumBarunGothicBold", size: 24)
         dayOfWeek.textAlignment = NSTextAlignment.left
         dayOfWeek.backgroundColor = .clear
-        
         
         
         //MARK: date Label
@@ -255,7 +270,7 @@ extension WriteViewController {
         date.backgroundColor = .clear
         
         
-        //MARK: dateTF textfield
+        //dateTF textfield
         dateTF = CustomTextFiled()
         dateTF.translatesAutoresizingMaskIntoConstraints = false
         let constDateTF : [NSLayoutConstraint] = [
@@ -277,7 +292,7 @@ extension WriteViewController {
         dateTF.addGestureRecognizer(changeDateGestureRecognizer)
         dateTF.allowsEditingTextAttributes = false
         
-        //MARK: weather Label
+        // weather Label
         weather = UILabel()
         weather.translatesAutoresizingMaskIntoConstraints = false
         
@@ -319,7 +334,7 @@ extension WriteViewController {
         weatherTF.isUserInteractionEnabled = true
         weatherTF.addGestureRecognizer(changeWeatherGesture)
         
-        //MARK: tapDate UIImageView
+        // tapDate UIImageView
         tapDate = UIImageView()
         tapDate.translatesAutoresizingMaskIntoConstraints = false
         
@@ -336,7 +351,7 @@ extension WriteViewController {
         containerV.addConstraints(constTapDate)
         tapDate.image = UIImage(named: "right")
         
-        //MARK: tapWeather UIImageView
+        //tapWeather UIImageView
         tapWeather = UIImageView()
         tapWeather.translatesAutoresizingMaskIntoConstraints = false
         
@@ -353,7 +368,7 @@ extension WriteViewController {
         containerV.addConstraints(constTapWeather)
         tapWeather.image = UIImage(named: "right")
         
-        //MARK: contStackV UIStackView
+        // contStackV UIStackView
         contStackV = UIStackView()
         contStackV.translatesAutoresizingMaskIntoConstraints = false
         
@@ -369,9 +384,8 @@ extension WriteViewController {
         
         containerV.addSubview(contStackV)
         containerV.addConstraints(constStackV)
-        contStackV.backgroundColor = .clear
         
-        //MARK: stackBox UIStackView
+        //stackBox UIStackView
         stackBox = UIStackView()
         stackBox.translatesAutoresizingMaskIntoConstraints = false
         
@@ -383,14 +397,14 @@ extension WriteViewController {
             NSLayoutConstraint(item: stackBox, attribute: .trailing, relatedBy: .equal, toItem: contStackV, attribute: .trailing,
                                multiplier: 1, constant: 0),
             NSLayoutConstraint(item: stackBox, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
-                               multiplier: 1, constant: 72)]
+                               multiplier: 1, constant: 38)]
         
         contStackV.addSubview(stackBox)
         contStackV.addConstraints(constStackBox)
         stackBox.distribution = .fill
         stackBox.spacing = 1
         
-        //MARK: iconBgView
+        //iconBgView
         iconBgView = UIView()
         iconBgView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -404,9 +418,7 @@ extension WriteViewController {
         stackBox.addSubview(iconBgView)
         stackBox.addConstraints(constIconBgView)
         
-        //MARK: contentImgBackgroundView UIImageView
-        
-        //MARK: contentImgV UIImageView
+        //contentImgV UIImageView
         contentImgV = UIImageView()
         contentImgV.translatesAutoresizingMaskIntoConstraints = false
         
@@ -414,40 +426,40 @@ extension WriteViewController {
         let constImgV : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: contentImgV, attribute: .top, relatedBy: .equal, toItem: dayOfWeek, attribute: .top,
                                multiplier: 1, constant:0),
-            NSLayoutConstraint(item: contentImgV, attribute: .bottom, relatedBy: .equal, toItem: weather, attribute: .bottom,
-                               multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contentImgV, attribute: .leading, relatedBy: .equal, toItem: containerV, attribute: .trailing,
                                multiplier: 1, constant: containerV.frame.size.width / 3 + 8),
             NSLayoutConstraint(item: contentImgV, attribute: .width, relatedBy: .equal, toItem:  containerV, attribute: .width,
-                               multiplier: 0.3, constant: 0)]
+                               multiplier: 0.25, constant: 0),
+            NSLayoutConstraint(item: contentImgV, attribute: .height, relatedBy: .equal, toItem: contentImgV, attribute: .width,
+                               multiplier: 0.75, constant: 0)]
         
         containerV.addSubview(self.contentImgV)
         containerV.addConstraints(constImgV)
         contentImgV.layer.cornerRadius = 16
         contentImgV.layer.maskedCorners = [CACornerMask.layerMinXMinYCorner, CACornerMask.layerMinXMaxYCorner]
-        contentImgV.layer.borderWidth = 1
+        contentImgV.layer.borderWidth = 0.5
         contentImgV.layer.borderColor = UIColor.black.cgColor
         contentImgV.clipsToBounds = true
         contentImgV.backgroundColor = .clear
         
-        //MARK: titleLabel
-        titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        let constTitleLB : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: stackBox, attribute: .top,
-                               multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: stackBox, attribute: .height,
-                               multiplier: 0.5, constant: 0),
-            NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading,
-                               multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: iconBgView, attribute: .leading,
-                               multiplier: 1, constant: 0)]
-        
-        stackBox.addSubview(titleLabel)
-        stackBox.addConstraints(constTitleLB)
-        titleLabel.font = setFont(type: .contents, onView: self, font: "NanumBarunGothicBold", size: 20)
-        titleLabel.text = "Today Title"
-        titleLabel.backgroundColor = .clear
+        //titleLabel
+        //        titleLabel = UILabel()
+        //        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        //        let constTitleLB : [NSLayoutConstraint] = [
+        //            NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: stackBox, attribute: .top,
+        //                               multiplier: 1, constant: 0),
+        //            NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: stackBox, attribute: .height,
+        //                               multiplier: 0.5, constant: 0),
+        //            NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading,
+        //                               multiplier: 1, constant: 0),
+        //            NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: iconBgView, attribute: .leading,
+        //                               multiplier: 1, constant: 0)]
+        //
+        //        stackBox.addSubview(titleLabel)
+        //        stackBox.addConstraints(constTitleLB)
+        //        titleLabel.font = setFont(type: .contents, onView: self, font: "NanumBarunGothicBold", size: 20)
+        //        titleLabel.text = "Today Title"
+        //        titleLabel.backgroundColor = .clear
         
         //MARK: contentTitle Label
         contentTitle = UITextField()
@@ -456,8 +468,8 @@ extension WriteViewController {
         let constTitle : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: contentTitle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
                                multiplier: 1, constant: 30),
-            NSLayoutConstraint(item: contentTitle, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom,
-                               multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: contentTitle, attribute: .top, relatedBy: .equal, toItem: stackBox, attribute: .top,
+                               multiplier: 1, constant: 8),
             NSLayoutConstraint(item: contentTitle, attribute: .leading, relatedBy: .equal, toItem: stackBox, attribute: .leading,
                                multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contentTitle, attribute: .trailing, relatedBy: .equal, toItem: stackBox, attribute: .trailing,
@@ -466,13 +478,16 @@ extension WriteViewController {
         stackBox.addSubview(contentTitle)
         stackBox.addConstraints(constTitle)
         contentTitle.attributedPlaceholder = NSAttributedString(string: " 제목을 쓰윽쓰윽",
-                                                                attributes: [NSAttributedStringKey.foregroundColor :
+                                                                attributes: [NSAttributedString.Key.foregroundColor :
                                                                     UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)])
         contentTitle.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contentTitle.font = setFont(type: .contents, onView: self, font: "NanumBarunGothic", size: 14)
         contentTitle.tintColor = .gray
+        let titleGesture = UITapGestureRecognizer(target: self, action: #selector(addToolBarToTextFieldKeyboard))
+        contentTitle.addGestureRecognizer(titleGesture)
+        contentTitle.isUserInteractionEnabled = true
         
-        //MARK: cameraIconImgView UIImageView
+        //cameraIconImgView UIImageView
         cameraIconImgView = UIImageView()
         cameraIconImgView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -496,13 +511,13 @@ extension WriteViewController {
         let addImageGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addImageGesture))
         cameraIconImgView.addGestureRecognizer(addImageGestureRecognizer)
         
-        //MARK: contents UITextView
+        //contents UITextView
         contents = UITextView()
         contents.translatesAutoresizingMaskIntoConstraints = false
         
         let constContens : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: contents, attribute: .top, relatedBy: .equal, toItem: stackBox, attribute: .bottom,
-                               multiplier: 1, constant: 0),
+                               multiplier: 1, constant: 4),
             NSLayoutConstraint(item: contents, attribute: .leading, relatedBy: .equal, toItem: contStackV, attribute: .leading,
                                multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contents, attribute: .trailing, relatedBy: .equal, toItem: contStackV, attribute: .trailing,
@@ -514,7 +529,10 @@ extension WriteViewController {
         contStackV.addConstraints(constContens)
         contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isScrollEnabled = true
-        contents.font = setFont(type: .contents, onView: self, font: "NanumBarunGothic", size: 18)
+        //        contents.font = setFont(type: .contents, onView: self, font: "NanumBarunGothic", size: 16)
+        let spacing = NSMutableParagraphStyle()
+        spacing.lineSpacing = 6
+        
         contents.text = "글을 입력하세요"
         contents.tintColor = .gray
         contents.textColor = UIColor(red: 208/255, green: 207/255, blue: 208/255, alpha: 1)
@@ -553,41 +571,163 @@ extension WriteViewController {
 }
 
 extension WriteViewController : UIPickerViewDelegate, UIPickerViewDataSource {
+    @objc fileprivate func addToolBarToTextFieldKeyboard(){
+        let width = self.view.frame.size.width
+        let toolBar = UIToolbar()
+        toolBar.frame = CGRect(x: 0, y: 0, width: width, height: 44)
+        toolBar.tintColor = .white
+        toolBar.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
+        toolBar.barStyle = .default
+        
+        let flexibleBtn = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let flexibleLabel = UILabel()
+        flexibleLabel.frame = CGRect(x: 0, y: 0, width: width / 3, height: 36)
+        flexibleLabel.backgroundColor = .clear
+        
+        let downArrow = makeKeyboarkHideBtn()
+        let keyboardHideBtn = UIBarButtonItem(customView: downArrow)
+        let flexibleLabelBtn = UIBarButtonItem(customView: flexibleLabel)
+        
+        toolBar.items = [flexibleLabelBtn,flexibleBtn,flexibleLabelBtn,flexibleBtn,keyboardHideBtn]
+        let items = toolBar.items
+        toolBar.setItems(items, animated: true)
+        toolBar.isTranslucent = true
+        contentTitle.inputAccessoryView = toolBar
+        contentTitle.becomeFirstResponder()
+    }
     
     @objc func contentsTextViewReconiger(sender : UITextView) {
+        let width = self.view.frame.size.width
         let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 36)
+        toolBar.frame = CGRect(x: 0, y: 0, width: width, height: 44)
         toolBar.tintColor = .white
-        toolBar.barStyle = .blackTranslucent
-        let rightAlignment = UIBarButtonItem(title: "right", style: .done, target: self,
-                                             action: #selector(rightTextAlignment))
-        let leftAlignment = UIBarButtonItem(title: "left", style: .done, target: self,
-                                            action: #selector(leftTextAlignment))
-        let centerAlignment = UIBarButtonItem(title: "center", style: .done, target: self,
-                                              action: #selector(centerTextAlignment))
+        toolBar.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
+        toolBar.barStyle = .default
+        
         let flexibleBtn = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         
-        toolBar.setItems([leftAlignment,flexibleBtn,centerAlignment,flexibleBtn,rightAlignment], animated: true)
+        let flexibleLabel = UILabel()
+        flexibleLabel.frame = CGRect(x: 0, y: 0, width: width / 3, height: 36)
+        flexibleLabel.backgroundColor = .clear
+        
+        
+        let downArrow = makeKeyboarkHideBtn()
+        let keboardHideBtn = UIBarButtonItem(customView: downArrow)
+        let flexibleLB = UIBarButtonItem(customView: flexibleLabel)
+        let container = makeAlignView()
+        let alignView = UIBarButtonItem(customView: container)
+        
+        toolBar.items = [alignView,flexibleBtn,flexibleLB,flexibleBtn,keboardHideBtn]
+        let items = toolBar.items
+        toolBar.sizeToFit()
+        toolBar.setItems(items, animated: true)
         toolBar.isTranslucent = true
         contents.inputAccessoryView = toolBar
         contents.becomeFirstResponder()
+        
+    }
+    
+    fileprivate func makeAlignView() -> UIView{
+        let viewBox = UIView()
+        let rightAlignment = UIImageView()
+        let leftAlignment = UIImageView()
+        let centerAlignment = UIImageView()
+        
+        viewBox.addSubview(leftAlignment)
+        viewBox.addSubview(centerAlignment)
+        viewBox.addSubview(rightAlignment)
+        
+        leftAlignment.translatesAutoresizingMaskIntoConstraints = false
+        centerAlignment.translatesAutoresizingMaskIntoConstraints = false
+        rightAlignment.translatesAutoresizingMaskIntoConstraints = false
+        viewBox.translatesAutoresizingMaskIntoConstraints = false
+        
+        viewBox.widthAnchor.constraint(equalToConstant: 112).isActive = true
+        viewBox.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        viewBox.backgroundColor = .clear
+        
+        leftAlignment.leadingAnchor.constraint(equalTo: viewBox.leadingAnchor, constant: 0).isActive = true
+        leftAlignment.topAnchor.constraint(equalTo: viewBox.topAnchor, constant: 0).isActive = true
+        leftAlignment.bottomAnchor.constraint(equalTo: viewBox.bottomAnchor, constant: 0).isActive = true
+        leftAlignment.widthAnchor.constraint(equalToConstant: 26).isActive = true
+        leftAlignment.image = UIImage(named: "left-align")
+        leftAlignment.contentMode = .scaleAspectFit
+        let leftAlignGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(leftTextAlignment))
+        leftAlignment.addGestureRecognizer(leftAlignGestureReconizer)
+        leftAlignment.isUserInteractionEnabled = true
+        
+        centerAlignment.leadingAnchor.constraint(equalTo: leftAlignment.trailingAnchor, constant: 20).isActive = true
+        centerAlignment.topAnchor.constraint(equalTo: viewBox.topAnchor, constant: 0).isActive = true
+        centerAlignment.bottomAnchor.constraint(equalTo: viewBox.bottomAnchor, constant: 0).isActive = true
+        centerAlignment.widthAnchor.constraint(equalToConstant: 26).isActive = true
+        centerAlignment.image = UIImage(named: "center-align")
+        centerAlignment.contentMode = .scaleAspectFit
+        let centerAlignGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(centerTextAlignment))
+        centerAlignment.addGestureRecognizer(centerAlignGestureReconizer)
+        centerAlignment.isUserInteractionEnabled = true
+        
+        rightAlignment.leadingAnchor.constraint(equalTo: centerAlignment.trailingAnchor, constant: 20).isActive = true
+        rightAlignment.topAnchor.constraint(equalTo: viewBox.topAnchor, constant: 0).isActive = true
+        rightAlignment.bottomAnchor.constraint(equalTo: viewBox.bottomAnchor, constant: 0).isActive = true
+        rightAlignment.widthAnchor.constraint(equalToConstant: 26).isActive = true
+        rightAlignment.image = UIImage(named: "right-align")
+        rightAlignment.contentMode = .scaleAspectFit
+        let rightAlignGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(rightTextAlignment))
+        rightAlignment.addGestureRecognizer(rightAlignGestureReconizer)
+        rightAlignment.isUserInteractionEnabled = true
+        
+        return viewBox
+    }
+    
+    fileprivate func makeKeyboarkHideBtn() -> UIView {
+        let containerView = UIView()
+        let downArrow = UIImageView()
+        
+        containerView.addSubview(downArrow)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        downArrow.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        
+        downArrow.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8).isActive = true
+        downArrow.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8).isActive = true
+        downArrow.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8).isActive = true
+        downArrow.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8).isActive = true
+        downArrow.image = UIImage(named: "downarrow")
+        downArrow.contentMode = .scaleAspectFit
+        let downArrowGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(keyboardHide))
+        containerView.addGestureRecognizer(downArrowGestureReconizer)
+        containerView.isUserInteractionEnabled = true
+        return containerView
+    }
+    
+    @objc fileprivate func keyboardHide() {
+        if keyboardShown == true {
+            view.endEditing(true)
+            keyboardShown = false
+        }
     }
     
     @objc func rightTextAlignment() {
         contents.textAlignment = .right
+        contentsAlignment = "right"
     }
     
     @objc func leftTextAlignment() {
         contents.textAlignment = .left
+        contentsAlignment = "left"
     }
     
     @objc func centerTextAlignment() {
         contents.textAlignment = .center
+        contentsAlignment = "center"
     }
     
     @objc fileprivate func cleanTextView() {
-        contents.text = ""
+        if contents.text == "글을 입력하세요" {
+            contents.text = ""
+        }
         contents.textColor = .black
     }
     
@@ -603,21 +743,35 @@ extension WriteViewController : UIPickerViewDelegate, UIPickerViewDataSource {
         weatherPicker.delegate = self
         weatherPicker.dataSource = self
         weatherTF.inputView = weatherPicker
+        let width = self.view.frame.size.width
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 36)
-        toolBar.tintColor = .white
-        toolBar.barStyle = .blackTranslucent
-        let doneBtn = UIBarButtonItem(title: "완료", style: .done, target: self,
-                                      action: #selector(changeWeather))
+        toolBar.frame = CGRect(x: 0, y: 0, width: width, height: 36)
+        toolBar.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
+        toolBar.barStyle = .default
+        
+        let flexibleLabel = UILabel()
+        flexibleLabel.frame = CGRect(x: 0, y: 0, width: width / 6, height: 36)
+        flexibleLabel.backgroundColor = .clear
+        
+        let doneLabel = UILabel()
+        doneLabel.frame = CGRect(x: 0, y: 0, width: width / 6, height: 36)
+        doneLabel.backgroundColor = .clear
+        let doneGesture = UITapGestureRecognizer(target: self, action: #selector(changeWeather))
+        doneLabel.addGestureRecognizer(doneGesture)
+        doneLabel.isUserInteractionEnabled = true
+        doneLabel.text = "확인"
+        doneLabel.textAlignment = .center
+        let doneBtn = UIBarButtonItem(customView: doneLabel)
         let flexibleBtn = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width / 3, height: 36))
-        label.textColor = .white
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: width / 3, height: 36))
         label.text = "날씨 변경하기"
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 14)
+        
+        let flexibleLB = UIBarButtonItem(customView: flexibleLabel)
         let labelBtn = UIBarButtonItem(customView: label)
-        toolBar.setItems([flexibleBtn,flexibleBtn,labelBtn,flexibleBtn,doneBtn], animated: true)
+        toolBar.setItems([flexibleLB,flexibleBtn,labelBtn,flexibleBtn,doneBtn], animated: true)
         toolBar.isTranslucent = true
         weatherTF.inputAccessoryView = toolBar
         weatherTF.becomeFirstResponder()
@@ -664,6 +818,7 @@ extension WriteViewController {
 extension WriteViewController {
     //MARK: dateTF inputViews
     @objc fileprivate func touchUpInsideDateLabel(sender : UILabel) {
+        let width = self.view.frame.size.width
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.minimumDate = stringToDate(in: "20170101", dateFormat: "yyyyMMdd")
@@ -672,24 +827,41 @@ extension WriteViewController {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 36)
-        toolBar.tintColor = .white
-        toolBar.barStyle = .blackTranslucent
-        let doneBtn = UIBarButtonItem(title: "완료", style: .done, target: self,
-                                      action: #selector(changedDate(sender:)))
-        let cancelBtn = UIBarButtonItem(title: "취소", style: .done, target: self,
-                                        action: #selector(dismissDatePciker(sender:)))
+        toolBar.barStyle = .default
+        
+        let doneLabel = UILabel()
+        doneLabel.frame = CGRect(x: 0, y: 0, width: width / 6, height: 36)
+        doneLabel.backgroundColor = .clear
+        let doneGesture = UITapGestureRecognizer(target: self, action: #selector(changedDate(sender:)))
+        doneLabel.addGestureRecognizer(doneGesture)
+        doneLabel.isUserInteractionEnabled = true
+        doneLabel.text = "확인"
+        doneLabel.textAlignment = .center
+        let doneBtn = UIBarButtonItem(customView: doneLabel)
+        
+        let cancelLabel = UILabel()
+        cancelLabel.frame = CGRect(x: 0, y: 0, width: width / 6, height: 36)
+        cancelLabel.backgroundColor = .clear
+        let cancelGesture = UITapGestureRecognizer(target: self, action: #selector(dismissDatePciker(sender:)))
+        cancelLabel.addGestureRecognizer(cancelGesture)
+        cancelLabel.isUserInteractionEnabled = true
+        cancelLabel.text = "취소"
+        cancelLabel.textAlignment = .center
+        let cancelBtn = UIBarButtonItem(customView: cancelLabel)
+        
         let flexibleBtn = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width / 3, height: 36))
-        label.textColor = .white
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: width / 3, height: 36))
         label.text = "날짜 변경하기"
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 14)
         let labelBtn = UIBarButtonItem(customView: label)
+        
         toolBar.setItems([cancelBtn,flexibleBtn,labelBtn,flexibleBtn,doneBtn], animated: true)
         toolBar.isTranslucent = true
         dateTF.inputAccessoryView = toolBar
         dateTF.becomeFirstResponder()
-        //            datePicker.addTarget(self, action: #selector(dateChanged(datePicker:)), for: .valueChanged)
+        
     }
     
     @objc fileprivate func changedDate(sender : UIBarButtonItem) {
@@ -707,24 +879,24 @@ extension WriteViewController {
     //MARK: UIKeyboard notification
     fileprivate func regitsterForTextViewNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(cleanTextView),
-                                               name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
+                                               name: UITextView.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(textViewState),
-                                               name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
+                                               name: UITextView.textDidEndEditingNotification, object: nil)
     }
     
     fileprivate func unregisterForTextViewTextNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UITextView.textDidBeginEditingNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UITextView.textDidEndEditingNotification, object: nil)
     }
     
     fileprivate func registerForKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keboardFrameWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameDidChange), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keboardFrameWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameDidChange), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     fileprivate func unregisterForKeyboardNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         
     }
     
@@ -748,7 +920,7 @@ extension WriteViewController {
     
     fileprivate func adjustingHeight(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
-        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         print(keyboardFrame.height)
         if keyboardFrame.height == 0 || keyboardShown == true {
             return
@@ -761,7 +933,7 @@ extension WriteViewController {
     
     fileprivate func adjustingHide(notification : NSNotification) {
         guard let userInfo = notification.userInfo else { return }
-        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
         print(keyboardFrame.height)
         self.contents.frame.size.height = self.contentsTextViewCGRect.height
         keyboardShown = false
@@ -781,3 +953,5 @@ extension WriteViewController {
         }
     }
 }
+
+

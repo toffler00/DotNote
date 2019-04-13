@@ -17,13 +17,13 @@ extension ListViewController {
         thisMonthLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let constDate : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: thisMonthLabel, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+            NSLayoutConstraint(item: thisMonthLabel!, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .top, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: thisMonthLabel, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+            NSLayoutConstraint(item: thisMonthLabel!, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: thisMonthLabel, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+            NSLayoutConstraint(item: thisMonthLabel!, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: thisMonthLabel, attribute: .height, relatedBy: .equal, toItem: nil,
+            NSLayoutConstraint(item: thisMonthLabel!, attribute: .height, relatedBy: .equal, toItem: nil,
                                attribute: .height, multiplier: 1, constant: 24)]
         
         view.addSubview(thisMonthLabel)
@@ -32,7 +32,7 @@ extension ListViewController {
         thisMonthLabel.textColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         thisMonthLabel.font = setFont(type: .contents, onView: self, font: "NanumBarunGothicBold", size: 14)
         thisMonthLabel.backgroundColor = UIColor(red: 47/255, green: 36/255, blue: 34/255, alpha: 1)
-
+        
         weeksStackView = UIStackView()
         weeksStackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -51,7 +51,7 @@ extension ListViewController {
         makeWeekLabel()
         weeksStackView.alignment = .fill
         weeksStackView.distribution = .fillEqually
-
+        
     }
     
     func makeWeekLabel() {
@@ -88,7 +88,7 @@ extension ListViewController {
             NSLayoutConstraint(item: calendarView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
                                attribute: .trailing, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: calendarView, attribute: .height, relatedBy: .equal, toItem: view,
-                               attribute: .width, multiplier: 0.9, constant: 0)]
+                               attribute: .width, multiplier: 0.8, constant: 0)]
         
         view.addSubview(calendarView)
         calendarView.minimumLineSpacing = 0.5
@@ -138,11 +138,11 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         if cellState.isSelected {
             validCell.dateLabel.textColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         } else {
-          if cellState.dateBelongsTo == .thisMonth {
-            validCell.dateLabel.textColor = .black
-          } else {
-            validCell.dateLabel.textColor = .lightGray
-        }
+            if cellState.dateBelongsTo == .thisMonth {
+                validCell.dateLabel.textColor = .black
+            } else {
+                validCell.dateLabel.textColor = .lightGray
+            }
         }
     }
     
@@ -188,7 +188,7 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         handleSelectedCellColor(cell: cell, cellState: cellState)
         self.selectedDate = cellState.date
-//        handleCellColor(cell: cell, cellState: cellState)
+        //        handleCellColor(cell: cell, cellState: cellState)
     }
     
     func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
@@ -212,6 +212,6 @@ extension ListViewController : JTAppleCalendarViewDelegate,  JTAppleCalendarView
         let parameters = ConfigurationParameters.init(startDate: startDate, endDate: endDate)
         return parameters
     }
-
+    
 }
 

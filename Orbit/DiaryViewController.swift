@@ -13,10 +13,11 @@ protocol DeleteMemoDelgate : class {
     func deleteDataDelegate()
 }
 class DiaryViewController: UIViewController {
-
-   
+    
+    
     private var realm = try! Realm()
     var datasourece : Results<Content>!
+    var settingData : Results<Settings>!
     weak var deleteMemoDelegate : DeleteMemoDelgate!
     
     var dateLabel : UILabel!
@@ -36,20 +37,20 @@ class DiaryViewController: UIViewController {
         super.viewDidLoad()
         let realmManager = RealmManager.shared.realm
         datasourece = realmManager.objects(Content.self).sorted(byKeyPath: "createdAt", ascending: false)
-        
+        settingData = realmManager.objects(Settings.self)
         navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .automatic
         navigationItem.hidesBackButton = true
-        
+        self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         navigationItem.title = "\(dateToString(in: diaryData.createdAt, dateFormat: "yyyy.MM.dd eee"))"
         setUpDeleteIcon(bool: true)
         
-//        let attrs = [ NSAttributedString.Key.foregroundColor : UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1),
-//                      NSAttributedString.Key.font : UIFont(name: "system", size: 24)]
-//        navigationController?.navigationBar.titleTextAttributes = attrs as [NSAttributedStringKey : Any]
+        //        let attrs = [ NSAttributedString.Key.foregroundColor : UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1),
+        //                      NSAttributedString.Key.font : UIFont(name: "system", size: 24)]
+        //        navigationController?.navigationBar.titleTextAttributes = attrs as [NSAttributedStringKey : Any]
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -58,8 +59,9 @@ class DiaryViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         if titleLabel == nil {
             setupLayout()
+            applySetting()
         } else {
-           return
+            return
         }
         
     }
@@ -84,48 +86,8 @@ class DiaryViewController: UIViewController {
     }
 }
 
-////MARK: collectionView datasource
-//extension DiaryViewController : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 10
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell =  collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-//        cell.backgroundColor = .yellow
-//        return cell
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 1
-//    }
-//}
 extension DiaryViewController {
     fileprivate func setupLayout() {
-        self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .horizontal
-//        layout.itemSize = CGSize(width: (self.view.frame.width / 7) - 1, height: 60)
-//
-//        dateCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-//        dateCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-//        dateCollectionView.dataSource = self
-//        dateCollectionView.delegate = self
-//
-//        dateCollectionView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        let constDateCV : [NSLayoutConstraint] = [NSLayoutConstraint(item: dateCollectionView, attribute: .top,
-//                                                                     relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),
-//                                                  NSLayoutConstraint(item: dateCollectionView, attribute: .leading,
-//                                                                     relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
-//                                                  NSLayoutConstraint(item: dateCollectionView, attribute: .trailing,
-//                                                                     relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
-//                                                  NSLayoutConstraint(item: dateCollectionView, attribute: .height,
-//                                                                     relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 63)]
-//        view.addSubview(dateCollectionView)
-//        view.addConstraints(constDateCV)
-//        dateCollectionView.backgroundColor = .green
-//
         //MARK: containerView : UIView
         containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -146,22 +108,22 @@ extension DiaryViewController {
         
         
         //MARK: weatherImgV : UIImageView
-//        weatherImgV = UIImageView()
-//        weatherImgV.translatesAutoresizingMaskIntoConstraints = false
-//
-//        let consWeather : [NSLayoutConstraint] = [
-//            NSLayoutConstraint(item: weatherImgV, attribute: .top, relatedBy: .equal, toItem: containerView
-//                , attribute: .top, multiplier: 1, constant: 4),
-//            NSLayoutConstraint(item: weatherImgV, attribute: .width, relatedBy: .equal, toItem: containerView,
-//                               attribute: .width, multiplier: 0.1, constant: 0),
-//            NSLayoutConstraint(item: weatherImgV, attribute: .height, relatedBy: .equal, toItem: weatherImgV,
-//                               attribute: .width, multiplier: 1, constant: 0),
-//            NSLayoutConstraint(item: weatherImgV, attribute: .trailing, relatedBy: .equal, toItem: containerView,
-//                               attribute: .trailing, multiplier: 1, constant: -4)]
-//
-//        containerView.addSubview(weatherImgV)
-//        containerView.addConstraints(consWeather)
-//        weatherImgV.backgroundColor = .clear
+        //        weatherImgV = UIImageView()
+        //        weatherImgV.translatesAutoresizingMaskIntoConstraints = false
+        //
+        //        let consWeather : [NSLayoutConstraint] = [
+        //            NSLayoutConstraint(item: weatherImgV, attribute: .top, relatedBy: .equal, toItem: containerView
+        //                , attribute: .top, multiplier: 1, constant: 4),
+        //            NSLayoutConstraint(item: weatherImgV, attribute: .width, relatedBy: .equal, toItem: containerView,
+        //                               attribute: .width, multiplier: 0.1, constant: 0),
+        //            NSLayoutConstraint(item: weatherImgV, attribute: .height, relatedBy: .equal, toItem: weatherImgV,
+        //                               attribute: .width, multiplier: 1, constant: 0),
+        //            NSLayoutConstraint(item: weatherImgV, attribute: .trailing, relatedBy: .equal, toItem: containerView,
+        //                               attribute: .trailing, multiplier: 1, constant: -4)]
+        //
+        //        containerView.addSubview(weatherImgV)
+        //        containerView.addConstraints(consWeather)
+        //        weatherImgV.backgroundColor = .clear
         
         //MARK: titleLabel : UILabel
         titleLabel = UILabel()
@@ -187,7 +149,6 @@ extension DiaryViewController {
         contentImgView.translatesAutoresizingMaskIntoConstraints = false
         
         if diaryData.image == nil {
-            print("contentImgView nil")
             let consContentImgV : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
                                    attribute: .bottom, multiplier: 1, constant: 0),
@@ -204,21 +165,56 @@ extension DiaryViewController {
             contentImgView.contentMode = .scaleAspectFill
             contentImgView.clipsToBounds = true
         } else {
-            let consContentImgV : [NSLayoutConstraint] = [
-                NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
-                                   attribute: .bottom, multiplier: 1, constant: 4),
-                NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
-                                   attribute: .width, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
-                                   attribute: .width, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
-                                   attribute: .centerX, multiplier: 1, constant: 0)]
-            
-            containerView.addSubview(contentImgView)
-            containerView.addConstraints(consContentImgV)
-            contentImgView.backgroundColor = .clear
-            contentImgView.contentMode = .scaleAspectFill
-            contentImgView.clipsToBounds = true
+            switch diaryData.type {
+            case "drawing" :
+                let consContentImgV : [NSLayoutConstraint] = [
+                    NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
+                                       attribute: .bottom, multiplier: 1, constant: 4),
+                    NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
+                                       attribute: .width, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
+                                       attribute: .width, multiplier: 0.75, constant: 0),
+                    NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
+                                       attribute: .centerX, multiplier: 1, constant: 0)]
+                
+                containerView.addSubview(contentImgView)
+                containerView.addConstraints(consContentImgV)
+                contentImgView.backgroundColor = .clear
+                contentImgView.contentMode = .scaleAspectFill
+                contentImgView.clipsToBounds = true
+            case "diary" :
+                let consContentImgV : [NSLayoutConstraint] = [
+                    NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
+                                       attribute: .bottom, multiplier: 1, constant: 4),
+                    NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
+                                       attribute: .width, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
+                                       attribute: .width, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
+                                       attribute: .centerX, multiplier: 1, constant: 0)]
+                
+                containerView.addSubview(contentImgView)
+                containerView.addConstraints(consContentImgV)
+                contentImgView.backgroundColor = .clear
+                contentImgView.contentMode = .scaleAspectFill
+                contentImgView.clipsToBounds = true
+            default:
+                let consContentImgV : [NSLayoutConstraint] = [
+                    NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
+                                       attribute: .bottom, multiplier: 1, constant: 4),
+                    NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
+                                       attribute: .width, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
+                                       attribute: .width, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
+                                       attribute: .centerX, multiplier: 1, constant: 0)]
+                
+                containerView.addSubview(contentImgView)
+                containerView.addConstraints(consContentImgV)
+                contentImgView.backgroundColor = .clear
+                contentImgView.contentMode = .scaleAspectFill
+                contentImgView.clipsToBounds = true
+            }
         }
         
         //MARK: contents : UITextView
@@ -239,9 +235,12 @@ extension DiaryViewController {
         containerView.addConstraints(consContents)
         contents.backgroundColor = UIColor.clear
         contents.isEditable = false
-        contents.textAlignment = .center
-        contents.font = UIFont.systemFont(ofSize: 18)
-    
+        contents.sizeToFit()
+        contents.isScrollEnabled = true
+        let spacing = NSMutableParagraphStyle()
+        spacing.lineSpacing = 6
+        let atributes = [NSAttributedString.Key.paragraphStyle: spacing ]
+        contents.attributedText = NSAttributedString(string: contents.text, attributes: atributes)
     }
     
     func setUpWeatherIcon(bool : Bool) {
@@ -255,8 +254,10 @@ extension DiaryViewController {
                                    attribute: .width, multiplier: 1, constant: 36),
                 NSLayoutConstraint(item: weatherImgV, attribute: .height, relatedBy: .equal, toItem: nil,
                                    attribute: .height, multiplier: 1, constant: 36),
-                NSLayoutConstraint(item: weatherImgV, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -8),
-                NSLayoutConstraint(item: weatherImgV, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -8)]
+                NSLayoutConstraint(item: weatherImgV, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
+                                   attribute: .trailing, multiplier: 1, constant: -8),
+                NSLayoutConstraint(item: weatherImgV, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
+                                   attribute: .bottom, multiplier: 1, constant: -8)]
             navigationController?.navigationBar.addSubview(weatherImgV)
             navigationController?.navigationBar.addConstraints(constWeatherIcon)
             
@@ -273,7 +274,7 @@ extension DiaryViewController {
             //MARK: deleteIcon UIImageView
             deleteIcon = UIImageView()
             deleteIcon.translatesAutoresizingMaskIntoConstraints = false
-    
+            
             let constDeleteIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: deleteIcon, attribute: .width, relatedBy: .equal, toItem: nil,
                                    attribute: .width, multiplier: 1, constant: 32),
@@ -286,7 +287,7 @@ extension DiaryViewController {
             navigationController?.navigationBar.addSubview(deleteIcon)
             navigationController?.navigationBar.addConstraints(constDeleteIcon)
             
-            deleteIcon.image = UIImage(named: "garbage")
+            deleteIcon.image = UIImage(named: "recycle-bin")
             
             let tapDeleteIcon = UITapGestureRecognizer(target: self, action: #selector(deleteData))
             deleteIcon.addGestureRecognizer(tapDeleteIcon)
@@ -300,25 +301,44 @@ extension DiaryViewController {
 
 extension DiaryViewController {
     @objc fileprivate func pushWriteViewController() {
-//        let writeViewController = WriteViewController(delegate: self)
-//        navigationController?.pushViewController(writeViewController, animated: true)
+        //        let writeViewController = WriteViewController(delegate: self)
+        //        navigationController?.pushViewController(writeViewController, animated: true)
     }
     
     func dataUpdate() {
         titleLabel.text = diaryData.title
         let contentType = diaryData.type
+        let alignment = diaryData.contentsAlignment
+        applySetting()
         switch contentType {
         case "memo":
             contents.text = diaryData.body
             contents.textAlignment = .left
         default :
             contents.text = diaryData.body
+            switch alignment {
+            case "right" :
+                contents.textAlignment = .right
+            case "left" :
+                contents.textAlignment = .left
+            case "center" :
+                contents.textAlignment = .center
+            default:
+                break
+            }
         }
         if diaryData.image == nil {
             print("nodata")
         } else {
-           contentImgView.image = UIImage(data: diaryData.image!)
+            contentImgView.image = UIImage(data: diaryData.image!)
         }
+    }
+    
+    func applySetting() {
+        let settingData = self.settingData[0]
+        let contentsFont = settingData.contentsFont
+        let contentsFontSize = CGFloat(settingData.contentsFontSize)
+        contents.font = UIFont(name: contentsFont, size: contentsFontSize)
     }
     
     @objc func deleteData() {
@@ -363,3 +383,4 @@ extension DiaryViewController {
         }
     }
 }
+

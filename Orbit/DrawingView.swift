@@ -18,14 +18,16 @@ protocol SendDrawingImageDelegate : class{
 }
 
 class DrawingView : UIViewController, CanvasDelegate, PaletteDelegate{
-   
+    
+    //MARK : Delegate
+    weak var sendDrawingImageDelegate : SendDrawingImageDelegate!
+    
     var canvasView: Canvas!
     var paletteView: Palette!
     var toolBar: ToolBar!
     var bottomView: UIView!
     var isImageLoadingFromiCloud: Bool = false
     var writeDoneIcon : UIImageView!
-    var sendDrawingImageDelegate : SendDrawingImageDelegate!
     var drawingImage : UIImage!
     
     fileprivate var backButton : UIImageView = UIImageView()
@@ -118,6 +120,8 @@ class DrawingView : UIViewController, CanvasDelegate, PaletteDelegate{
         toolBar.saveButton?.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         toolBar.loadButton?.addTarget(self, action: #selector(self.onClickLoadButton), for: .touchUpInside)
         toolBar.loadButton?.isEnabled = true
+        toolBar.loadButton?.setImage(UIImage(named: "camera-white"), for: UIControl.State())
+        toolBar.loadButton?.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         toolBar.clearButton?.addTarget(self, action: #selector(self.onClickClearButton), for: .touchUpInside)
         toolBar.clearButton?.setImage(UIImage(named: "refresh"), for: UIControl.State())
         toolBar.clearButton?.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -161,7 +165,7 @@ class DrawingView : UIViewController, CanvasDelegate, PaletteDelegate{
             self.navigationController?.pushViewController(photoViewController, animated: true)
         }
     }
-
+    
 }
 
 //MARK : CanvasDelegate
@@ -182,20 +186,20 @@ extension DrawingView {
             let activityViewController = UIActivityViewController(activityItems: [pngImage], applicationActivities: nil)
             activityViewController.completionWithItemsHandler =
                 {(activityType: UIActivity.ActivityType?,
-                completed: Bool,
-                returnedItems: [Any]?, error: Error?) in
-                if !completed {
-                    // User canceled
-                    return
-                }
-                
-                if activityType == UIActivity.ActivityType.saveToCameraRoll {
-                    let alert = UIAlertController(title: nil,
-                                                  message: "앨범에 저장완료.",
-                                                  preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "확인", style: .default))
-                    self.present(alert, animated: true)
-                }
+                    completed: Bool,
+                    returnedItems: [Any]?, error: Error?) in
+                    if !completed {
+                        // User canceled
+                        return
+                    }
+                    
+                    if activityType == UIActivity.ActivityType.saveToCameraRoll {
+                        let alert = UIAlertController(title: nil,
+                                                      message: "앨범에 저장완료.",
+                                                      preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "확인", style: .default))
+                        self.present(alert, animated: true)
+                    }
             }
             activityViewController.popoverPresentationController?.sourceView = self.view
             self.present(activityViewController, animated: true, completion: nil)
@@ -212,14 +216,17 @@ extension DrawingView {
             sendDrawingImageDelegate.sendDrawingImageDelegate(drawingImage)
             self.navigationController?.popViewController(animated: true)
         }
-
+        
     }
     
 }
 
 extension DrawingView : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // Local variable inserted by Swift 4.2 migrator.
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        
         
     }
     
@@ -227,7 +234,7 @@ extension DrawingView : UIImagePickerControllerDelegate, UINavigationControllerD
 
 
 extension DrawingView : PhotosViewControllerDelegate , RSKImageCropViewControllerDelegate, RSKImageCropViewControllerDataSource {
-        func imageSelected(phAsset: PHAsset) {
+    func imageSelected(phAsset: PHAsset) {
         let options = PHImageRequestOptions()
         options.isSynchronous = false
         options.isNetworkAccessAllowed = true
@@ -293,7 +300,7 @@ extension DrawingView : PhotosViewControllerDelegate , RSKImageCropViewControlle
         let rect = controller.maskRect
         return rect    }
     
-
+    
 }
 
 extension DrawingView {
@@ -323,4 +330,9 @@ extension DrawingView {
             writeDoneIcon.isHidden = true
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+    return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }

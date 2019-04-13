@@ -14,6 +14,6 @@ extension DrawingDiaryViewController : SendDrawingImageDelegate {
     func sendDrawingImageDelegate(_ image: UIImage) {
         let pngImage = image.asPNGImage()
         self.drawingImage.image = pngImage
-        
+        self.drawingImageData = pngImage?.asPNGData()
     }
 }

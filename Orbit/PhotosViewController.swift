@@ -30,17 +30,17 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         self.photosViewControllerDelegate = photosViewControllerDelegate
-            let status = PHPhotoLibrary.authorizationStatus()
-                switch status {
-                case .notDetermined:
-                    photosViewControllerDelegate.photoLibraryAuthorizationStatus()
-                case .denied:
-                    photosViewControllerDelegate.photoLibraryAuthorizationStatus()
-                case .authorized:
-                    break
-                case .restricted:
-                    photosViewControllerDelegate.photoLibraryAuthorizationStatus()
-                }
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .notDetermined:
+            photosViewControllerDelegate.photoLibraryAuthorizationStatus()
+        case .denied:
+            photosViewControllerDelegate.photoLibraryAuthorizationStatus()
+        case .authorized:
+            break
+        case .restricted:
+            photosViewControllerDelegate.photoLibraryAuthorizationStatus()
+        }
         
         view.backgroundColor = .white
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)

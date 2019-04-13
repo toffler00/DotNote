@@ -38,7 +38,15 @@
 		62B33ED021EDEB4B0097C661 /* NanumBarunGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B33ECF21EDEB4B0097C661 /* NanumBarunGothicBold.ttf */; };
 		62B33ED221EE01AD0097C661 /* NanumSquareExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B33ED121EE01AD0097C661 /* NanumSquareExtraBold.ttf */; };
 		62C55D4A21DE1CC3000F42CB /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C55D4921DE1CC3000F42CB /* MemoViewController.swift */; };
-		62E7FA0821F9DAC00012BF19 /* DrawingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E7FA0721F9DAC00012BF19 /* DrawingViewController.swift */; };
+		62E3E58A226237FA0053C838 /* DrawingDiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E583226237F20053C838 /* DrawingDiaryCollectionViewCell.swift */; };
+		62E3E58B226237FA0053C838 /* DiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E584226237F30053C838 /* DiaryCollectionViewCell.swift */; };
+		62E3E58C226237FA0053C838 /* MemoCollectionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E585226237F50053C838 /* MemoCollectionTableView.swift */; };
+		62E3E58D226237FA0053C838 /* DiaryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E586226237F60053C838 /* DiaryCollectionViewController.swift */; };
+		62E3E58F226237FA0053C838 /* MemoCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E588226237F80053C838 /* MemoCollectionTableViewCell.swift */; };
+		62E3E590226237FA0053C838 /* DiaryWithoutImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E589226237FA0053C838 /* DiaryWithoutImageCell.swift */; };
+		62E3E592226238070053C838 /* ThemeSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E591226238070053C838 /* ThemeSettingViewController.swift */; };
+		62E3E594226238500053C838 /* DrawingDiarySaveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E593226238500053C838 /* DrawingDiarySaveDelegate.swift */; };
+		62E3E59622623A0B0053C838 /* UIButtonSetBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E59522623A0B0053C838 /* UIButtonSetBackgroundColor.swift */; };
 		62F92F8321AC00CB0083AB9A /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F92F8221AC00CB0083AB9A /* AlertController.swift */; };
 		62F92F8521AC1CF10083AB9A /* CustomNavigationBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */; };
 		6A2AFDF1213A68B900F5B38B /* DBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AFDF0213A68B900F5B38B /* DBModel.swift */; };
@@ -117,7 +125,15 @@
 		62B33ECF21EDEB4B0097C661 /* NanumBarunGothicBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumBarunGothicBold.ttf; sourceTree = "<group>"; };
 		62B33ED121EE01AD0097C661 /* NanumSquareExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareExtraBold.ttf; sourceTree = "<group>"; };
 		62C55D4921DE1CC3000F42CB /* MemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
-		62E7FA0721F9DAC00012BF19 /* DrawingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewController.swift; sourceTree = "<group>"; };
+		62E3E583226237F20053C838 /* DrawingDiaryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingDiaryCollectionViewCell.swift; sourceTree = "<group>"; };
+		62E3E584226237F30053C838 /* DiaryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewCell.swift; sourceTree = "<group>"; };
+		62E3E585226237F50053C838 /* MemoCollectionTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoCollectionTableView.swift; sourceTree = "<group>"; };
+		62E3E586226237F60053C838 /* DiaryCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewController.swift; sourceTree = "<group>"; };
+		62E3E588226237F80053C838 /* MemoCollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoCollectionTableViewCell.swift; sourceTree = "<group>"; };
+		62E3E589226237FA0053C838 /* DiaryWithoutImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryWithoutImageCell.swift; sourceTree = "<group>"; };
+		62E3E591226238070053C838 /* ThemeSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSettingViewController.swift; sourceTree = "<group>"; };
+		62E3E593226238500053C838 /* DrawingDiarySaveDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingDiarySaveDelegate.swift; sourceTree = "<group>"; };
+		62E3E59522623A0B0053C838 /* UIButtonSetBackgroundColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonSetBackgroundColor.swift; sourceTree = "<group>"; };
 		62F92F8221AC00CB0083AB9A /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBackButton.swift; sourceTree = "<group>"; };
 		688EAB7E305E75A5D496F632 /* Pods-OrbitTests.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitTests.prod.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitTests/Pods-OrbitTests.prod.xcconfig"; sourceTree = "<group>"; };
@@ -210,7 +226,6 @@
 				6237172C2201A53B00549221 /* BackGroundViewController.swift */,
 				6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */,
 				628C12BC22363B34009D99B5 /* DrawingView.swift */,
-				62E7FA0721F9DAC00012BF19 /* DrawingViewController.swift */,
 				CE84E7482137D3350097357F /* ListViewController.swift */,
 				CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */,
 				6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */,
@@ -258,6 +273,13 @@
 			isa = PBXGroup;
 			children = (
 				CE388C29213E42550063DE35 /* OptionsViewController.swift */,
+				62E3E584226237F30053C838 /* DiaryCollectionViewCell.swift */,
+				62E3E586226237F60053C838 /* DiaryCollectionViewController.swift */,
+				62E3E591226238070053C838 /* ThemeSettingViewController.swift */,
+				62E3E589226237FA0053C838 /* DiaryWithoutImageCell.swift */,
+				62E3E583226237F20053C838 /* DrawingDiaryCollectionViewCell.swift */,
+				62E3E585226237F50053C838 /* MemoCollectionTableView.swift */,
+				62E3E588226237F80053C838 /* MemoCollectionTableViewCell.swift */,
 				621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */,
 			);
 			path = Option;
@@ -287,6 +309,7 @@
 			children = (
 				6A331FFD21314B9100FFE74F /* WriteDoneDelegate.swift */,
 				62B33EC121ECCABE0097C661 /* PhotosViewControllerDelegate.swift */,
+				62E3E593226238500053C838 /* DrawingDiarySaveDelegate.swift */,
 				62B33EC321ECCB1B0097C661 /* SaveMemoDelegate.swift */,
 				621AC6D8221EEEF40029B550 /* DeleteMemoDelegate.swift */,
 				628C12E42237E780009D99B5 /* SendDrawingImageDelegate.swift */,
@@ -303,6 +326,7 @@
 				62254C752182F0E90084AE56 /* CutomKeyboard.swift */,
 				62849D9A219A75EB00F9761E /* CustomTextFiled.swift */,
 				62F92F8221AC00CB0083AB9A /* AlertController.swift */,
+				62E3E59522623A0B0053C838 /* UIButtonSetBackgroundColor.swift */,
 				62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */,
 				62B33ECD21EDE4C30097C661 /* SetFont.swift */,
 			);
@@ -554,11 +578,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				62F92F8521AC1CF10083AB9A /* CustomNavigationBackButton.swift in Sources */,
+				62E3E58C226237FA0053C838 /* MemoCollectionTableView.swift in Sources */,
 				6AFAA89D213A728D00D241E2 /* PhotoCollectionView.swift in Sources */,
 				62AE2E15216E31F0004448F2 /* CalendarCell.swift in Sources */,
+				62E3E58A226237FA0053C838 /* DrawingDiaryCollectionViewCell.swift in Sources */,
 				6AFAA89F213A72CD00D241E2 /* PhotoCollectionViewCell.swift in Sources */,
 				62849D9B219A75EB00F9761E /* CustomTextFiled.swift in Sources */,
 				62AE2E3B217DA7FF004448F2 /* ConversionDate.swift in Sources */,
+				62E3E59622623A0B0053C838 /* UIButtonSetBackgroundColor.swift in Sources */,
 				62AE2E13216CFAC9004448F2 /* CalendarView.swift in Sources */,
 				628C12BD22363B34009D99B5 /* DrawingView.swift in Sources */,
 				6296D18C21394CD400B610C8 /* Model.swift in Sources */,
@@ -567,6 +594,7 @@
 				6292D56C21C51FDE00E5E521 /* ExpandableButton.swift in Sources */,
 				621AC6D9221EEEF40029B550 /* DeleteMemoDelegate.swift in Sources */,
 				62C55D4A21DE1CC3000F42CB /* MemoViewController.swift in Sources */,
+				62E3E592226238070053C838 /* ThemeSettingViewController.swift in Sources */,
 				62F92F8321AC00CB0083AB9A /* AlertController.swift in Sources */,
 				62B33EC421ECCB1B0097C661 /* SaveMemoDelegate.swift in Sources */,
 				6237172D2201A53B00549221 /* BackGroundViewController.swift in Sources */,
@@ -575,16 +603,20 @@
 				6AFAA89B213A716100D241E2 /* PhotosViewController.swift in Sources */,
 				6A4A04C721313980003A51B5 /* AppTarget.swift in Sources */,
 				62B33ECE21EDE4C30097C661 /* SetFont.swift in Sources */,
-				62E7FA0821F9DAC00012BF19 /* DrawingViewController.swift in Sources */,
 				CE9DDA472138E9B0007F0BEA /* ListTableViewCell.swift in Sources */,
 				620F53B2211EF16900A94A01 /* DiaryViewController.swift in Sources */,
 				62AE2E39217B7774004448F2 /* RealmManager.swift in Sources */,
+				62E3E58D226237FA0053C838 /* DiaryCollectionViewController.swift in Sources */,
 				6A331FFC2131485600FFE74F /* WriteViewController.swift in Sources */,
 				6A2AFDF1213A68B900F5B38B /* DBModel.swift in Sources */,
+				62E3E594226238500053C838 /* DrawingDiarySaveDelegate.swift in Sources */,
 				620F53B0211EF16900A94A01 /* AppDelegate.swift in Sources */,
+				62E3E590226237FA0053C838 /* DiaryWithoutImageCell.swift in Sources */,
+				62E3E58F226237FA0053C838 /* MemoCollectionTableViewCell.swift in Sources */,
 				628C12E52237E780009D99B5 /* SendDrawingImageDelegate.swift in Sources */,
 				62927F8D21B2A87300B4F167 /* LocationManager.swift in Sources */,
 				6A6386EC21452FAA006DE95C /* WeatherAPI.swift in Sources */,
+				62E3E58B226237FA0053C838 /* DiaryCollectionViewCell.swift in Sources */,
 				6A331FFE21314B9100FFE74F /* WriteDoneDelegate.swift in Sources */,
 				6237172F220C4A6D00549221 /* DrawingDiaryViewController.swift in Sources */,
 				621AC6DC222FD8C30029B550 /* OpensourceLicenseVC.swift in Sources */,
@@ -720,7 +752,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)DEV";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Dev;
@@ -839,7 +871,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Prod;
