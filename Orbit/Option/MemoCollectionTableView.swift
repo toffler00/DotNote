@@ -10,6 +10,7 @@ final class MemoCollectionTableView : UIViewController {
     
     private var memoTableView : UITableView!
     private var spacingView : UIView!
+    private var spacingInnerView : UIView!
     
     fileprivate var backButton : UIImageView = UIImageView()
     
@@ -73,20 +74,32 @@ extension MemoCollectionTableView {
         let safePadding = window?.safeAreaInsets.top
         let heightPadding = CGFloat(height!) + CGFloat(safePadding!)
         
-        memoTableView = UITableView()
         spacingView = UIView()
+        spacingInnerView = UIView()
+        memoTableView = UITableView()
         
-        memoTableView.translatesAutoresizingMaskIntoConstraints = false
         spacingView.translatesAutoresizingMaskIntoConstraints = false
+        memoTableView.translatesAutoresizingMaskIntoConstraints = false
+        spacingInnerView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(spacingView)
+        spacingView.addSubview(spacingInnerView)
+        view.addSubview(memoTableView)
+        
         spacingView.topAnchor.constraint(equalTo: view.topAnchor, constant: heightPadding).isActive = true
         spacingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         spacingView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        spacingView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        spacingView.heightAnchor.constraint(equalToConstant: 5).isActive = true
         
+        spacingInnerView.topAnchor.constraint(equalTo: spacingView.topAnchor,
+                                              constant: 0).isActive = true
+        spacingInnerView.leadingAnchor.constraint(equalTo: spacingView.leadingAnchor,
+                                                  constant: 0).isActive = true
+        spacingInnerView.trailingAnchor.constraint(equalTo: spacingView.trailingAnchor,
+                                                   constant: 0).isActive = true
+        spacingInnerView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        spacingInnerView.backgroundColor = #colorLiteral(red: 0.1843137255, green: 0.1411764706, blue: 0.1333333333, alpha: 0.199261582)
         
-        view.addSubview(memoTableView)
         memoTableView.topAnchor.constraint(equalTo: spacingView.bottomAnchor, constant: 0).isActive = true
         memoTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         memoTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true

@@ -24,6 +24,7 @@ final class DiaryCollectionViewController : UIViewController {
     private var diaryCollection : UICollectionView!
     private var backButton : UIImageView = UIImageView()
     private var spacingView : UIView!
+    private var spacingInnerView : UIView!
     
     override func viewDidLoad() {
         navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
@@ -65,10 +66,20 @@ final class DiaryCollectionViewController : UIViewController {
         spacingView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(spacingView)
        
+        spacingInnerView = UIView()
+        spacingInnerView.translatesAutoresizingMaskIntoConstraints = false
+        spacingView.addSubview(spacingInnerView)
+        
         spacingView.topAnchor.constraint(equalTo: view.topAnchor, constant: heightPadding).isActive = true
         spacingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         spacingView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        spacingView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        spacingView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        
+        spacingInnerView.topAnchor.constraint(equalTo: spacingView.topAnchor, constant: 0).isActive = true
+        spacingInnerView.leadingAnchor.constraint(equalTo: spacingView.leadingAnchor, constant: 0).isActive = true
+        spacingInnerView.trailingAnchor.constraint(equalTo: spacingView.trailingAnchor, constant: 0).isActive = true
+        spacingInnerView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        spacingInnerView.backgroundColor = #colorLiteral(red: 0.1843137255, green: 0.1411764706, blue: 0.1333333333, alpha: 0.199261582)
         
         diaryCollection = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         diaryCollection.translatesAutoresizingMaskIntoConstraints = false

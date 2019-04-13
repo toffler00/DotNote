@@ -20,6 +20,7 @@ final class ThemeSettingViewController : UIViewController {
     
     private var themeTableView : UITableView!
     private var spacingView : UIView!
+    private var spacingInnerView : UIView!
     private var fontExampleTextView : UITextView!
     private var backButton : UIImageView = UIImageView()
     private var themeList = [ThemeList : [[String : String]]]()
@@ -258,6 +259,10 @@ extension ThemeSettingViewController {
         spacingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(spacingView)
         
+        spacingInnerView = UIView()
+        spacingInnerView.translatesAutoresizingMaskIntoConstraints = false
+        spacingView.addSubview(spacingInnerView)
+        
         fontExampleTextView = UITextView()
         fontExampleTextView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(fontExampleTextView)
@@ -272,6 +277,12 @@ extension ThemeSettingViewController {
         spacingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         spacingView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         spacingView.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        
+        spacingInnerView.topAnchor.constraint(equalTo: spacingView.topAnchor, constant: 0).isActive = true
+        spacingInnerView.leadingAnchor.constraint(equalTo: spacingView.leadingAnchor, constant: 0).isActive = true
+        spacingInnerView.trailingAnchor.constraint(equalTo: spacingView.trailingAnchor, constant: 0).isActive = true
+        spacingInnerView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        spacingInnerView.backgroundColor = #colorLiteral(red: 0.1843137255, green: 0.1411764706, blue: 0.1333333333, alpha: 0.199261582)
         
         fontExampleTextView.topAnchor.constraint(equalTo: spacingView.bottomAnchor, constant: 0).isActive = true
         fontExampleTextView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8).isActive = true

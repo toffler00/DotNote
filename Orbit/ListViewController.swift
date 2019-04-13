@@ -238,9 +238,9 @@ extension ListViewController {
             
             let constoptionIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: optionIcon, attribute: .width, relatedBy: .equal, toItem: nil,
-                                   attribute: .width, multiplier: 1, constant: 28),
+                                   attribute: .width, multiplier: 1, constant: 32),
                 NSLayoutConstraint(item: optionIcon, attribute: .height, relatedBy: .equal, toItem: nil,
-                                   attribute: .height, multiplier: 1, constant: 28),
+                                   attribute: .height, multiplier: 1, constant: 32),
                 NSLayoutConstraint(item: optionIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
                                    attribute: .trailing, multiplier: 1, constant: -14),
                 NSLayoutConstraint(item: optionIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar,

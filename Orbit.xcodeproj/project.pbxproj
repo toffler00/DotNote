@@ -218,6 +218,7 @@
 		620F53AE211EF16900A94A01 /* Orbit */ = {
 			isa = PBXGroup;
 			children = (
+				62E3E59722623E810053C838 /* Resources */,
 				6296D18A21394CCA00B610C8 /* Model */,
 				620F53AF211EF16900A94A01 /* AppDelegate.swift */,
 				620F53B1211EF16900A94A01 /* DiaryViewController.swift */,
@@ -273,11 +274,11 @@
 			isa = PBXGroup;
 			children = (
 				CE388C29213E42550063DE35 /* OptionsViewController.swift */,
-				62E3E584226237F30053C838 /* DiaryCollectionViewCell.swift */,
-				62E3E586226237F60053C838 /* DiaryCollectionViewController.swift */,
 				62E3E591226238070053C838 /* ThemeSettingViewController.swift */,
-				62E3E589226237FA0053C838 /* DiaryWithoutImageCell.swift */,
+				62E3E586226237F60053C838 /* DiaryCollectionViewController.swift */,
+				62E3E584226237F30053C838 /* DiaryCollectionViewCell.swift */,
 				62E3E583226237F20053C838 /* DrawingDiaryCollectionViewCell.swift */,
+				62E3E589226237FA0053C838 /* DiaryWithoutImageCell.swift */,
 				62E3E585226237F50053C838 /* MemoCollectionTableView.swift */,
 				62E3E588226237F80053C838 /* MemoCollectionTableViewCell.swift */,
 				621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */,
@@ -315,6 +316,13 @@
 				628C12E42237E780009D99B5 /* SendDrawingImageDelegate.swift */,
 			);
 			path = Delegate;
+			sourceTree = "<group>";
+		};
+		62E3E59722623E810053C838 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		6A332001213159DE00FFE74F /* Util */ = {
