@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>NanumSquareExtraBold.ttf</string>
-		<string>NanumBarunGothicBold.ttf</string>
-		<string>NanumBrush.ttf</string>
-		<string>NanumBarunGothic.ttf</string>
-		<string>NanumMyeongjoEco.ttf</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -23,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.6</string>
+	<string>0.7</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>Deployment</key>
@@ -44,6 +36,14 @@
 	<string>Orbit will access to your location when in use</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Orbit will access to Photos</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>NanumSquareExtraBold.ttf</string>
+		<string>NanumBarunGothicBold.ttf</string>
+		<string>NanumBrush.ttf</string>
+		<string>NanumBarunGothic.ttf</string>
+		<string>NanumMyeongjoEco.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
