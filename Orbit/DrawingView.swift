@@ -227,7 +227,6 @@ extension DrawingView : UIImagePickerControllerDelegate, UINavigationControllerD
         // Local variable inserted by Swift 4.2 migrator.
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
-        
     }
     
 }
@@ -263,7 +262,23 @@ extension DrawingView : PhotosViewControllerDelegate , RSKImageCropViewControlle
     }
     
     func photoLibraryAuthorizationStatus() {
-        
+          showAlertForImagePickerPermission()
+    }
+    
+    func openSettings() {
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+    }
+    
+    func showAlertForImagePickerPermission() {
+        let message : String = "앨범접근권한이 없습니다. \n 설정에서 권한을 허용해야 합니다."
+        showAlert(title: nil,
+                  message: message,
+                  actionStyle: .default,
+                  cancelBtn: false,
+                  buttonTitle: "승인",
+                  onView: self) { (action) in
+                    self.openSettings()
+        }
     }
     
     func imageCropViewControllerDidCancelCrop(_ controller: RSKImageCropViewController) {

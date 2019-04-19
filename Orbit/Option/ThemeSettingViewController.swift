@@ -26,6 +26,11 @@ final class ThemeSettingViewController : UIViewController {
     private var themeList = [ThemeList : [[String : String]]]()
     private var themeData = [["group" : "naviFont","themeName": "안녕하세요"],
                      ["group" : "naviFont","themeName": "안녕하세요"],
+                     ["group" : "naviFont","themeName": "안녕하세요"],
+                     ["group" : "naviFont","themeName": "안녕하세요"],
+                     ["group" : "contentsFont","themeName": "안녕하세요"],
+                     ["group" : "contentsFont","themeName": "안녕하세요"],
+                     ["group" : "contentsFont","themeName": "안녕하세요"],
                      ["group" : "contentsFont","themeName": "안녕하세요"],
                      ["group" : "contentsFont","themeName": "안녕하세요"],
                      ["group" : "contentsFont","themeName": "안녕하세요"],
@@ -49,6 +54,14 @@ final class ThemeSettingViewController : UIViewController {
         navigationItem.hidesBackButton = true
         navigationItem.title = "폰트"
         self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
+        for family: String in UIFont.familyNames
+        {
+            print(family)
+            for names: String in UIFont.fontNames(forFamilyName: family)
+            {
+                print("== \(names)")
+            }
+        }
         setUpUI()
         sortData()
     }
@@ -83,17 +96,13 @@ extension ThemeSettingViewController : UITableViewDelegate {
                 self.navigationController?.navigationBar.largeTitleTextAttributes =
                     [NSAttributedString.Key.font : navigationTitleFont!]
                 navigationItem.title = "폰트"
-                try! realm.write {
-                    settingData[0].naviTitleFont = "NanumBarunGothicBold"
-                }
+                updateFontNameToSettingData("NanumBarunGothicBold")
             } else {
                 let navigationTitleFont = UIFont(name: "NanumBarunGothicBold", size: 26)
                 self.navigationController?.navigationBar.largeTitleTextAttributes =
                     [NSAttributedString.Key.font : navigationTitleFont!]
                 navigationItem.title = "폰트"
-                try! realm.write {
-                    settingData[0].naviTitleFont = "NanumBarunGothicBold"
-                }
+                updateFontNameToSettingData("NanumBarunGothicBold")
             }
             break
         case [0,1]:
@@ -102,39 +111,77 @@ extension ThemeSettingViewController : UITableViewDelegate {
                 self.navigationController?.navigationBar.largeTitleTextAttributes =
                     [NSAttributedString.Key.font : navigationTitleFont!]
                 navigationItem.title = "폰트"
-                try! realm.write {
-                    settingData[0].naviTitleFont = "NanumMyeongjoEco"
-                }
+                updateFontNameToSettingData("NanumMyeongjoEco")
             } else {
                 let navigationTitleFont = UIFont(name: "NanumMyeongjoEco", size: 26)
                 self.navigationController?.navigationBar.largeTitleTextAttributes =
                     [NSAttributedString.Key.font : navigationTitleFont!]
                 navigationItem.title = "폰트"
-                try! realm.write {
-                    settingData[0].naviTitleFont = "NanumMyeongjoEco"
-                }
+                updateFontNameToSettingData("NanumMyeongjoEco")
+            }
+            break
+        case [0,2] :
+            if screenWidth >= 321 {
+                let navigationTitleFont = UIFont(name: "SangSangRock", size: 34)
+                self.navigationController?.navigationBar.largeTitleTextAttributes =
+                    [NSAttributedString.Key.font : navigationTitleFont!]
+                navigationItem.title = "폰트"
+                updateFontNameToSettingData("SangSangRock")
+            } else {
+                let navigationTitleFont = UIFont(name: "SangSangRock", size: 26)
+                self.navigationController?.navigationBar.largeTitleTextAttributes =
+                    [NSAttributedString.Key.font : navigationTitleFont!]
+                navigationItem.title = "폰트"
+                updateFontNameToSettingData("SangSangRock")
+            }
+            break
+        case [0,3]:
+            if screenWidth >= 321 {
+                let navigationTitleFont = UIFont(name: "NanumSquareEB", size: 34)
+                self.navigationController?.navigationBar.largeTitleTextAttributes =
+                    [NSAttributedString.Key.font : navigationTitleFont!]
+                navigationItem.title = "폰트"
+                updateFontNameToSettingData("NanumSquareEB")
+            } else {
+                let navigationTitleFont = UIFont(name: "NanumSquareEB", size: 26)
+                self.navigationController?.navigationBar.largeTitleTextAttributes =
+                    [NSAttributedString.Key.font : navigationTitleFont!]
+                navigationItem.title = "폰트"
+                updateFontNameToSettingData("NanumSquareEB")
             }
             break
         case [1,0]:
             fontExampleTextView.font = UIFont(name: "NanumBarunGothic", size: fontSize)
-            try! realm.write {
-                settingData[0].contentsFont = "NanumBarunGothic"
-            }
+            updateFontNameToSettingData("NanumBarunGothic")
             break
         case [1,1]:
             fontExampleTextView.font = UIFont(name: "NanumBrush", size: fontSize)
-            try! realm.write {
-                settingData[0].contentsFont = "NanumBrush"
-            }
+            updateFontNameToSettingData("NanumBrush")
             break
         case [1,2]:
             fontExampleTextView.font = UIFont(name: "NanumMyeongjoEco", size: fontSize)
-            try! realm.write {
-                settingData[0].contentsFont = "NanumMyeongjoEco"
-            }
+            updateFontNameToSettingData("NanumMyeongjoEco")
+            break
+        case [1,3]:
+            fontExampleTextView.font = UIFont(name: "SangSangFlowerRoad", size: fontSize)
+            updateFontNameToSettingData("SangSangFlowerRoad")
+            break
+        case [1,4]:
+            fontExampleTextView.font = UIFont(name: "SangSangShinb7OTF", size: fontSize)
+            updateFontNameToSettingData("SangSangShinb7OTF")
+            break
+        case [1,5]:
+            fontExampleTextView.font = UIFont(name: "SSVeryBadHandwriting", size: fontSize)
+            updateFontNameToSettingData("SSVeryBadHandwriting")
             break
         default:
             break
+        }
+    }
+    
+    func updateFontNameToSettingData(_ fontName : String) {
+        try! realm.write {
+            settingData[0].contentsFont = fontName
         }
     }
 }
@@ -157,6 +204,7 @@ extension ThemeSettingViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
+        headerView.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         headerView.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: sectionHeight)
         let headerLabel = UILabel()
         headerLabel.frame = CGRect(x: 15, y: 0, width: tableView.bounds.width / 2, height: sectionHeight)
@@ -206,6 +254,7 @@ extension ThemeSettingViewController : UITableViewDataSource {
         let contentView = UIView()
         contentView.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: cell.bounds.height)
         cell.addSubview(contentView)
+        cell.prepareForReuse()
         if let sectionTitle = ThemeList(rawValue: indexPath.section),
             let listData = themeList[sectionTitle]?[indexPath.row] {
             print(listData)
@@ -220,6 +269,14 @@ extension ThemeSettingViewController : UITableViewDataSource {
                     titleLabel.text = listData["themeName"]
                     titleLabel.font = UIFont(name: "NanumMyeongjoEco", size: 20)
                     break
+                case [0,2]:
+                    titleLabel.text = listData["themeName"]
+                    titleLabel.font = UIFont(name: "SangSangRock", size: 20)
+                    break
+                case [0,3]:
+                    titleLabel.text = listData["themeName"]
+                    titleLabel.font = UIFont(name: "NanumSquareEB", size: 20)
+                    break
                 case [1,0] :
                     addTopBorderLine(to: contentView, height: 0.7)
                     titleLabel.text = listData["themeName"]
@@ -232,6 +289,18 @@ extension ThemeSettingViewController : UITableViewDataSource {
                 case [1,2] :
                     titleLabel.text = listData["themeName"]
                     titleLabel.font = UIFont(name: "NanumMyeongjoEco", size: 20)
+                    break
+                case [1,3]:
+                    titleLabel.text = listData["themeName"]
+                    titleLabel.font = UIFont(name: "SangSangFlowerRoad", size: 20)
+                    break
+                case [1,4]:
+                    titleLabel.text = listData["themeName"]
+                    titleLabel.font = UIFont(name: "SangSangShinb7OTF", size: 20)
+                    break
+                case [1,5]:
+                    titleLabel.text = listData["themeName"]
+                    titleLabel.font = UIFont(name: "SSVeryBadHandwriting", size: 20)
                     break
                 case [2,0] :
                     addTopBorderLine(to: contentView, height: 0.7)
@@ -303,6 +372,7 @@ extension ThemeSettingViewController {
         // delegate & dataSource
         themeTableView.delegate = self
         themeTableView.dataSource = self
+        
     }
     
 
@@ -434,7 +504,6 @@ extension ThemeSettingViewController {
                 btn.setTitleColor(.black, for: .normal)
             }
         }
-        
     }
     
     @objc func changeFontSize(sender : UIButton) {

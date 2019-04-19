@@ -143,6 +143,9 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Dev" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/EFCMark/EFCMark.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/EFMarkdown/EFMarkdown.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ExpandableButton/ExpandableButton.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/JTAppleCalendar/JTAppleCalendar.framework"
@@ -154,6 +157,9 @@ if [[ "$CONFIGURATION" == "Dev" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework"
 fi
 if [[ "$CONFIGURATION" == "Prod" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/EFCMark/EFCMark.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/EFMarkdown/EFMarkdown.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ExpandableButton/ExpandableButton.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/JTAppleCalendar/JTAppleCalendar.framework"

@@ -13,6 +13,8 @@ target 'Orbit' do
   pod 'ExpandableButton'
   pod 'NXDrawKit'
   pod 'RSKImageCropper'
+  pod 'EFMarkdown'
+  pod 'Alamofire'
   
   target 'OrbitTests' do
     inherit! :search_paths

@@ -27,13 +27,13 @@ extension Model {
     }
 }
 
-extension Model {
-    mutating func saveData(createdAt : Date, title : String, weather : String, content : String, image : Data) {
-        
-       let data =  Model.Contents(createdAt: createdAt, title: title, weather: weather, content: content, image: image)
-       appDelegate.datasource.append(data)
-    }
-}
+//extension Model {
+//    mutating func saveData(createdAt : Date, title : String, weather : String, content : String, image : Data) {
+//        
+//       let data =  Model.Contents(createdAt: createdAt, title: title, weather: weather, content: content, image: image)
+//       
+//    }
+//}
 
 extension Model {
 //    struct Weather: Codable {

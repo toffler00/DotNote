@@ -28,7 +28,7 @@ class OptionsViewController: UIViewController, UINavigationControllerDelegate, M
                               ["optionName" : "일기보기", "group" : "collection"],
                               ["optionName" : "의견보내기", "group" : "support"],
                               ["optionName" : "Dot Note 사용법", "group" : "support"],
-                              ["optionName" : "오픈소스 라이선스", "group" : "support"],
+                              ["optionName" : "Open-source License", "group" : "support"],
                               ["optionName" : "모든데이터 삭제", "group" : "deleteData"]]
     
     var optionList = [OptionTitle : [[String : String]]]()
@@ -209,7 +209,8 @@ extension OptionsViewController: UITableViewDelegate {
         case [2,1]:
             print(indexpath)
         case [2,2]:
-            print(indexpath)
+            let openSourceList = OpensourceLicenseVC()
+            self.navigationController?.pushViewController(openSourceList, animated: true)
         case [3,0]:
             showAlert(title: "정말 모든 기록을 삭제할까요?",
                       message: "삭제된 데이터는 복구할 수 없습니다. \n 데이터 삭제를 진행할까요?",

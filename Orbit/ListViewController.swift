@@ -238,9 +238,9 @@ extension ListViewController {
             
             let constoptionIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: optionIcon, attribute: .width, relatedBy: .equal, toItem: nil,
-                                   attribute: .width, multiplier: 1, constant: 32),
+                                   attribute: .width, multiplier: 1, constant: 25),
                 NSLayoutConstraint(item: optionIcon, attribute: .height, relatedBy: .equal, toItem: nil,
-                                   attribute: .height, multiplier: 1, constant: 32),
+                                   attribute: .height, multiplier: 1, constant: 25),
                 NSLayoutConstraint(item: optionIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
                                    attribute: .trailing, multiplier: 1, constant: -14),
                 NSLayoutConstraint(item: optionIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
@@ -257,42 +257,6 @@ extension ListViewController {
             optionIcon.isUserInteractionEnabled = true
         } else {
             optionIcon.isHidden = true
-        }
-    }
-    
-    //MARK: writeButton UIImageView
-    func setWriteBtn(bool : Bool) {
-        if bool {
-            writeButton = UIImageView()
-            writeButton.translatesAutoresizingMaskIntoConstraints = false
-            
-            let writeButtonConstraints: [NSLayoutConstraint] = [
-                NSLayoutConstraint(item: writeButton, attribute: .height, relatedBy: .equal,
-                                   toItem: nil,
-                                   attribute: .height, multiplier: 1, constant: 36),
-                NSLayoutConstraint(item: writeButton, attribute: .width, relatedBy: .equal,
-                                   toItem: nil,
-                                   attribute: .width, multiplier: 1, constant: 36),
-                NSLayoutConstraint(item: writeButton, attribute: .centerX, relatedBy: .equal,
-                                   toItem: optionIcon,
-                                   attribute: .centerX, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: writeButton, attribute: .bottom, relatedBy: .equal,
-                                   toItem: self.navigationController?.navigationBar,
-                                   attribute: .bottom, multiplier: 1, constant: -8)]
-            
-            // To add writebutton in listTableview
-            self.navigationController?.navigationBar.addSubview(writeButton)
-            self.navigationController?.navigationBar.addConstraints(writeButtonConstraints)
-            writeButton.layer.cornerRadius = writeButton.frame.width / 2
-            writeButton.clipsToBounds = true
-            writeButton.backgroundColor = .clear
-            writeButton.image = UIImage(named: "edit")
-            writeButton.isUserInteractionEnabled = true
-            // writeButton.addTarget
-            let tapWriteBtn = UITapGestureRecognizer(target: self, action: #selector(pushWriteViewController))
-            writeButton.addGestureRecognizer(tapWriteBtn)
-        } else {
-            writeButton.isHidden = true
         }
     }
     

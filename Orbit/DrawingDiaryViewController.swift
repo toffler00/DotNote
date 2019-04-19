@@ -172,11 +172,11 @@ extension DrawingDiaryViewController {
             
             let constWrtieDoneIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: writeDoneIcon, attribute: .width, relatedBy: .equal, toItem: nil,
-                                   attribute: .width, multiplier: 1, constant: 32),
+                                   attribute: .width, multiplier: 1, constant: 25),
                 NSLayoutConstraint(item: writeDoneIcon, attribute: .height, relatedBy: .equal, toItem: nil,
-                                   attribute: .height, multiplier: 1, constant: 32),
-                NSLayoutConstraint(item: writeDoneIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -8),
-                NSLayoutConstraint(item: writeDoneIcon, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -8)]
+                                   attribute: .height, multiplier: 1, constant: 25),
+                NSLayoutConstraint(item: writeDoneIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -12),
+                NSLayoutConstraint(item: writeDoneIcon, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -10)]
             navigationController?.navigationBar.addSubview(writeDoneIcon)
             navigationController?.navigationBar.addConstraints(constWrtieDoneIcon)
             

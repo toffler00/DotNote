@@ -492,14 +492,14 @@ extension WriteViewController {
         cameraIconImgView.translatesAutoresizingMaskIntoConstraints = false
         
         let constCameraIconImg : [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: cameraIconImgView, attribute: .top, relatedBy: .equal, toItem: contentTitle,
-                               attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .centerY, relatedBy: .equal, toItem: contentTitle,
+                               attribute: .centerY, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: cameraIconImgView, attribute: .leading, relatedBy: .equal, toItem: contentTitle,
-                               attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: cameraIconImgView, attribute: .trailing, relatedBy: .equal, toItem: stackBox,
-                               attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: cameraIconImgView, attribute: .bottom, relatedBy: .equal, toItem: contentTitle,
-                               attribute: .bottom, multiplier: 1, constant: 0)]
+                               attribute: .trailing, multiplier: 1, constant: 24),
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .width, relatedBy: .equal, toItem: nil,
+                               attribute: .width, multiplier: 1, constant: 25),
+            NSLayoutConstraint(item: cameraIconImgView, attribute: .height, relatedBy: .equal, toItem: nil,
+                               attribute: .height, multiplier: 1, constant: 25)]
         stackBox.addSubview(cameraIconImgView)
         stackBox.addConstraints(constCameraIconImg)
         cameraIconImgView.contentMode = .scaleAspectFit
@@ -550,16 +550,16 @@ extension WriteViewController {
             
             let constWrtieDoneIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: writeDoneIcon, attribute: .width, relatedBy: .equal, toItem: nil,
-                                   attribute: .width, multiplier: 1, constant: 32),
+                                   attribute: .width, multiplier: 1, constant: 25),
                 NSLayoutConstraint(item: writeDoneIcon, attribute: .height, relatedBy: .equal, toItem: nil,
-                                   attribute: .height, multiplier: 1, constant: 32),
-                NSLayoutConstraint(item: writeDoneIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -8),
-                NSLayoutConstraint(item: writeDoneIcon, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -8)]
+                                   attribute: .height, multiplier: 1, constant: 25),
+                NSLayoutConstraint(item: writeDoneIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -12),
+                NSLayoutConstraint(item: writeDoneIcon, attribute: .bottom, relatedBy: .equal, toItem: self.navigationController?.navigationBar, attribute: .bottom, multiplier: 1, constant: -10)]
             navigationController?.navigationBar.addSubview(writeDoneIcon)
             navigationController?.navigationBar.addConstraints(constWrtieDoneIcon)
             
             writeDoneIcon.image = UIImage(named: "checked")
-            writeDoneIcon.layer.cornerRadius = 16
+            writeDoneIcon.layer.cornerRadius = 12
             writeDoneIcon.clipsToBounds = true
             let tapWriteDonIcon = UITapGestureRecognizer(target: self, action: #selector(writeDone))
             writeDoneIcon.addGestureRecognizer(tapWriteDonIcon)

@@ -277,11 +277,11 @@ extension DiaryViewController {
             
             let constDeleteIcon : [NSLayoutConstraint] = [
                 NSLayoutConstraint(item: deleteIcon, attribute: .width, relatedBy: .equal, toItem: nil,
-                                   attribute: .width, multiplier: 1, constant: 32),
+                                   attribute: .width, multiplier: 1, constant: 27),
                 NSLayoutConstraint(item: deleteIcon, attribute: .height, relatedBy: .equal, toItem: nil,
-                                   attribute: .height, multiplier: 1, constant: 32),
+                                   attribute: .height, multiplier: 1, constant: 27),
                 NSLayoutConstraint(item: deleteIcon, attribute: .trailing, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
-                                   attribute: .trailing, multiplier: 1, constant: -10),
+                                   attribute: .trailing, multiplier: 1, constant: -12),
                 NSLayoutConstraint(item: deleteIcon, attribute: .top, relatedBy: .equal, toItem: self.navigationController?.navigationBar,
                                    attribute: .top, multiplier: 1, constant: 6)]
             navigationController?.navigationBar.addSubview(deleteIcon)
