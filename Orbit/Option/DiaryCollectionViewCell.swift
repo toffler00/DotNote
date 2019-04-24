@@ -104,16 +104,19 @@ class DiaryCollectionViewCell: UICollectionViewCell {
         titleLabel.backgroundColor = .clear
         
         contentsImg.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
-        contentsImg.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
-        contentsImg.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0).isActive = true
-        contentsImg.heightAnchor.constraint(equalToConstant: widthBounds).isActive = true
+        contentsImg.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0).isActive = true
+        contentsImg.widthAnchor.constraint(equalToConstant: widthBounds).isActive = true
+        contentsImg.heightAnchor.constraint(equalToConstant: widthBounds * 0.75).isActive = true
         contentsImg.backgroundColor = .clear
+        contentsImg.contentMode = .scaleAspectFill
+        contentsImg.clipsToBounds = true
         
-        contents.topAnchor.constraint(equalTo: contentsImg.bottomAnchor, constant: 0).isActive = true
+        
+        contents.topAnchor.constraint(equalTo: contentsImg.bottomAnchor, constant: 4).isActive = true
         contents.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4).isActive = true
-        contents.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 4).isActive = true
+        contents.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4).isActive = true
         contents.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
-        contents.backgroundColor = .clear
+        contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isEditable = false
     }
 }

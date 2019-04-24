@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import RealmSwift
+import RSKImageCropper
 
 protocol WriteDoneDelegate: class {
     func writeDone()
@@ -954,4 +955,51 @@ extension WriteViewController {
     }
 }
 
+extension WriteViewController: SendDrawingImageDelegate, RSKImageCropViewControllerDelegate, RSKImageCropViewControllerDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func sendDrawingImageDelegate(_ image: UIImage) {
+        
+    }
+    
+    func imageCropViewControllerDidCancelCrop(_ controller: RSKImageCropViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect, rotationAngle: CGFloat) {
+        self.contentImgV?.image = croppedImage
+        self.selectedImageData = croppedImage.pngData()
+        controller.dismiss(animated: true) {
+            self.transformContentImgV(view: self.contentImgV)
+        }
+    }
+    
+    func imageCropViewControllerCustomMaskRect(_ controller: RSKImageCropViewController) -> CGRect {
+        let width = self.view.bounds.width
+        let height = width * 0.75
+        let maskRect = CGRect(x: 0, y: 100, width: width, height: height)
+        return maskRect
+    }
+    
+    func imageCropViewControllerCustomMaskPath(_ controller: RSKImageCropViewController) -> UIBezierPath {
+        let rect = controller.maskRect
+        let point1 = CGPoint(x: rect.minX, y: rect.maxY)
+        let point2 = CGPoint(x: rect.maxX, y: rect.maxY)
+        let point3 = CGPoint(x: rect.maxX, y: rect.minY)
+        let point4 = CGPoint(x: rect.minX, y: rect.minY)
+        
+        let rectangle = UIBezierPath()
+        rectangle.move(to: point1)
+        rectangle.addLine(to: point2)
+        rectangle.addLine(to: point3)
+        rectangle.addLine(to: point4)
+        rectangle.close()
+        return rectangle
+    }
+    
+    func imageCropViewControllerCustomMovementRect(_ controller: RSKImageCropViewController) -> CGRect {
+        let rect = controller.maskRect
+        return rect
+    }
+    
+    
+}
 

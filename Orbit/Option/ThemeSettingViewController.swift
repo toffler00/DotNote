@@ -13,6 +13,10 @@ enum ThemeList : Int {
     case naviFont = 0, contentsFont, fontSize, total
 }
 
+enum CellStyle : String {
+    case name = "name"
+    case size = "size"
+}
 final class ThemeSettingViewController : UIViewController {
     
     private var realm = try! Realm()
@@ -223,6 +227,8 @@ extension ThemeSettingViewController : UITableViewDataSource {
             }
         }
         headerView.addSubview(headerLabel)
+        addTopBorderLine(to: headerView, height: 0.7)
+        addBottomBorderLine(to: headerView, height: 0.7)
         return headerView
     }
     
@@ -248,16 +254,14 @@ extension ThemeSettingViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
         cell.backgroundColor = .white
         cell.selectionStyle = .none
         let contentView = UIView()
         contentView.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: cell.bounds.height)
         cell.addSubview(contentView)
-        cell.prepareForReuse()
         if let sectionTitle = ThemeList(rawValue: indexPath.section),
             let listData = themeList[sectionTitle]?[indexPath.row] {
-            print(listData)
             if let titleLabel = cell.textLabel {
                 switch indexPath {
                 case [0,0] :
@@ -303,7 +307,6 @@ extension ThemeSettingViewController : UITableViewDataSource {
                     titleLabel.font = UIFont(name: "SSVeryBadHandwriting", size: 20)
                     break
                 case [2,0] :
-                    addTopBorderLine(to: contentView, height: 0.7)
                     titleLabel.text = listData["themeName"]
                     setSizeButton(cell: cell)
                     setFontSizeButton()
@@ -315,6 +318,7 @@ extension ThemeSettingViewController : UITableViewDataSource {
         }
         return cell
     }
+    
 }
 
 extension ThemeSettingViewController {
@@ -405,8 +409,8 @@ extension ThemeSettingViewController {
         sizeButtonThird.translatesAutoresizingMaskIntoConstraints = false
         sizeButtonFourth.translatesAutoresizingMaskIntoConstraints = false
         sizeButtonFifth.translatesAutoresizingMaskIntoConstraints = false
-    
         fontBtnStackView.translatesAutoresizingMaskIntoConstraints = false
+        
         cell.addSubview(fontBtnStackView)
         fontBtnStackView.addArrangedSubview(sizeButtonFirst)
         fontBtnStackView.addArrangedSubview(sizeButtonSecond)
@@ -509,7 +513,7 @@ extension ThemeSettingViewController {
     @objc func changeFontSize(sender : UIButton) {
         let tag = sender.tag
         let fontName = settingData[0].contentsFont
-        
+    
         switch tag {
         case 1:
             fontExampleTextView.font = UIFont(name: fontName, size: 16)

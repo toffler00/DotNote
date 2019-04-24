@@ -150,19 +150,24 @@ extension MemoCollectionTableViewCell : UITextViewDelegate {
         
         // title label Constraints
         let contentslConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: self.contents, attribute: .top, relatedBy: .equal, toItem: dateLabel,
+            NSLayoutConstraint(item: self.contents, attribute: .top, relatedBy: .equal,
+                               toItem: dateLabel,
                                attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.contents, attribute: .bottom, relatedBy: .equal, toItem: contentView,
+            NSLayoutConstraint(item: self.contents, attribute: .bottom, relatedBy: .equal,
+                               toItem: contentView,
                                attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.contents, attribute: .leading, relatedBy: .equal, toItem: dateLabel,
-                               attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self.contents, attribute: .trailing, relatedBy: .equal, toItem: contentView,
-                               attribute: .trailing,multiplier: 1, constant: -8)]
+            NSLayoutConstraint(item: self.contents, attribute: .leading, relatedBy: .equal,
+                               toItem: contentView,
+                               attribute: .leading, multiplier: 1, constant: leadingDistance),
+            NSLayoutConstraint(item: self.contents, attribute: .trailing, relatedBy: .equal,
+                               toItem: contentView,
+                               attribute: .trailing,multiplier: 1, constant: -leadingDistance)]
         // 중앙 먼저
         contentView.addSubview(contents)
         contentView.addConstraints(contentslConstraints)
         contents.font = UIFont(name: "NanumBarunGothic", size: 16)
         contents.isScrollEnabled = false
+        contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isEditable = false
         contents.sizeToFit()
         

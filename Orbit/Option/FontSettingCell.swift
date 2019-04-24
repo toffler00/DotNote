@@ -13,6 +13,15 @@ class FontSettingCell: UITableViewCell {
 
     var fontNameLabel : UILabel!
     var containerView : UIView!
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupLayout()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,9 +50,7 @@ class FontSettingCell: UITableViewCell {
         fontNameLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
         fontNameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 9).isActive = true
         fontNameLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
-        
     }
-    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

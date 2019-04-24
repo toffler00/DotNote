@@ -313,7 +313,8 @@ extension DrawingView : PhotosViewControllerDelegate , RSKImageCropViewControlle
     
     func imageCropViewControllerCustomMovementRect(_ controller: RSKImageCropViewController) -> CGRect {
         let rect = controller.maskRect
-        return rect    }
+        return rect
+    }
     
     
 }

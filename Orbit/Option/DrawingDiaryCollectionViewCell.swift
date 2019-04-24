@@ -111,9 +111,9 @@ class DrawingDiaryCollectionViewCell: UICollectionViewCell {
         
         contents.topAnchor.constraint(equalTo: contentsImg.bottomAnchor, constant: 4).isActive = true
         contents.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4).isActive = true
-        contents.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 4).isActive = true
+        contents.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4).isActive = true
         contents.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
-        contents.backgroundColor = .clear
+        contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isEditable = false
     }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import RSKImageCropper
 
 extension WriteViewController: PhotosViewControllerDelegate {
     func imageSelected(phAsset: PHAsset) {
@@ -29,11 +30,12 @@ extension WriteViewController: PhotosViewControllerDelegate {
         PHImageManager().requestImageData(for: phAsset, options: options) { [weak self] (imageData, _, _, _) in
             guard let `self` = self else { return }
             guard let imageData = imageData else { return }
-            
-            self.selectedImageData = imageData
-            self.contentImgV.contentMode = .scaleAspectFill
-            self.contentImgV.image = UIImage(data: imageData)
-            self.transformContentImgV(view: self.contentImgV)
+
+            guard let image = UIImage(data: imageData) else {return}
+            let imageCropper = RSKImageCropViewController(image: image, cropMode: .custom)
+            imageCropper.delegate = self
+            imageCropper.dataSource = self
+            self.present(imageCropper, animated: true, completion: nil)
         }
     }
     

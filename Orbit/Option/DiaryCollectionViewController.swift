@@ -98,7 +98,7 @@ final class DiaryCollectionViewController : UIViewController {
         
         diaryCollection.dataSource = self
         diaryCollection.delegate = self
-        
+
     }
 }
 

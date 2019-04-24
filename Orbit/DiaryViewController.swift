@@ -165,8 +165,6 @@ extension DiaryViewController {
             contentImgView.contentMode = .scaleAspectFill
             contentImgView.clipsToBounds = true
         } else {
-            switch diaryData.type {
-            case "drawing" :
                 let consContentImgV : [NSLayoutConstraint] = [
                     NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
                                        attribute: .bottom, multiplier: 1, constant: 4),
@@ -180,41 +178,8 @@ extension DiaryViewController {
                 containerView.addSubview(contentImgView)
                 containerView.addConstraints(consContentImgV)
                 contentImgView.backgroundColor = .clear
-                contentImgView.contentMode = .scaleAspectFill
+                contentImgView.contentMode = .scaleAspectFit
                 contentImgView.clipsToBounds = true
-            case "diary" :
-                let consContentImgV : [NSLayoutConstraint] = [
-                    NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
-                                       attribute: .bottom, multiplier: 1, constant: 4),
-                    NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
-                                       attribute: .width, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
-                                       attribute: .width, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
-                                       attribute: .centerX, multiplier: 1, constant: 0)]
-                
-                containerView.addSubview(contentImgView)
-                containerView.addConstraints(consContentImgV)
-                contentImgView.backgroundColor = .clear
-                contentImgView.contentMode = .scaleAspectFill
-                contentImgView.clipsToBounds = true
-            default:
-                let consContentImgV : [NSLayoutConstraint] = [
-                    NSLayoutConstraint(item: contentImgView, attribute: .top, relatedBy: .equal, toItem: titleLabel,
-                                       attribute: .bottom, multiplier: 1, constant: 4),
-                    NSLayoutConstraint(item: contentImgView, attribute: .width, relatedBy: .equal, toItem: containerView,
-                                       attribute: .width, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: contentImgView, attribute: .height, relatedBy: .equal, toItem: containerView,
-                                       attribute: .width, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: contentImgView, attribute: .centerX, relatedBy: .equal, toItem: containerView,
-                                       attribute: .centerX, multiplier: 1, constant: 0)]
-                
-                containerView.addSubview(contentImgView)
-                containerView.addConstraints(consContentImgV)
-                contentImgView.backgroundColor = .clear
-                contentImgView.contentMode = .scaleAspectFill
-                contentImgView.clipsToBounds = true
-            }
         }
         
         //MARK: contents : UITextView
@@ -223,17 +188,17 @@ extension DiaryViewController {
         
         let consContents : [NSLayoutConstraint] = [
             NSLayoutConstraint(item: contents, attribute: .top, relatedBy: .equal, toItem: contentImgView,
-                               attribute: .bottom, multiplier: 1, constant: 0),
+                               attribute: .bottom, multiplier: 1, constant: 4),
             NSLayoutConstraint(item: contents, attribute: .leading, relatedBy: .equal, toItem: containerView,
-                               attribute: .leading, multiplier: 1, constant: 8),
+                               attribute: .leading, multiplier: 1, constant: 4),
             NSLayoutConstraint(item: contents, attribute: .trailing, relatedBy: .equal, toItem: containerView,
-                               attribute: .trailing, multiplier: 1, constant: -8),
+                               attribute: .trailing, multiplier: 1, constant: -4),
             NSLayoutConstraint(item: contents, attribute: .bottom, relatedBy: .equal, toItem: containerView,
                                attribute: .bottom, multiplier: 1, constant: 0)]
         
         containerView.addSubview(contents)
         containerView.addConstraints(consContents)
-        contents.backgroundColor = UIColor.clear
+        contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
         contents.isEditable = false
         contents.sizeToFit()
         contents.isScrollEnabled = true

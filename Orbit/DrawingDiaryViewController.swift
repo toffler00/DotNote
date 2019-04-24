@@ -772,9 +772,9 @@ extension DrawingDiaryViewController {
         drawingImage.isUserInteractionEnabled = true
         
         contents.backgroundColor = UIColor(red: 246/255, green: 252/255, blue: 226/255, alpha: 1)
-        contents.topAnchor.constraint(equalTo: drawingImage.bottomAnchor, constant: 0).isActive = true
-        contents.leadingAnchor.constraint(equalTo: innerContainerView.leadingAnchor, constant: 0).isActive = true
-        contents.trailingAnchor.constraint(equalTo: innerContainerView.trailingAnchor, constant: 0).isActive = true
+        contents.topAnchor.constraint(equalTo: drawingImage.bottomAnchor, constant: 4).isActive = true
+        contents.leadingAnchor.constraint(equalTo: innerContainerView.leadingAnchor, constant: 4).isActive = true
+        contents.trailingAnchor.constraint(equalTo: innerContainerView.trailingAnchor, constant: -4).isActive = true
         contents.bottomAnchor.constraint(equalTo: innerContainerView.bottomAnchor, constant: 0).isActive = true
         let contentsGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textViewKeyboardAddToolBar))
         contents.isUserInteractionEnabled = true
