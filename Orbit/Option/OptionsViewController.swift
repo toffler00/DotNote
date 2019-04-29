@@ -10,6 +10,11 @@ import UIKit
 import RealmSwift
 import MessageUI
 
+protocol DeleteAllDataDelegate : class {
+    func deleteAllDataDelegate()
+}
+
+
 enum OptionTitle : Int {
     case theme = 0, collection, support, deleteData, total
 }
@@ -20,6 +25,7 @@ class OptionsViewController: UIViewController, UINavigationControllerDelegate, M
     // MARK: properties
     private var realmManager = RealmManager.shared.realm
     var datasourece : Results<Content>!
+    weak var deleteAllData : DeleteAllDataDelegate!
     private var optionsTableview: UITableView!
     private var spacingView : UIView!
     private var spacingInnerView : UIView!
@@ -207,7 +213,9 @@ extension OptionsViewController: UITableViewDelegate {
             composeVC.setMessageBody("Dot Note에 대한 불편한 사항이나 개선사항 또는 \n 아이디어가 있다면 보내주시기 바랍니다. \n \n 의견: ", isHTML: false)
             self.present(composeVC, animated: true, completion: nil)
         case [2,1]:
-            print(indexpath)
+            guard let tutorialVC = UIStoryboard(name: "TutorialPageView", bundle: nil).instantiateViewController(withIdentifier: "PageMasterVC") as? PageMasterVC else {return _ = UIViewController()}
+            self.present(tutorialVC, animated: true, completion: nil)
+            break
         case [2,2]:
             let openSourceList = OpensourceLicenseVC()
             self.navigationController?.pushViewController(openSourceList, animated: true)
@@ -216,7 +224,9 @@ extension OptionsViewController: UITableViewDelegate {
                       message: "삭제된 데이터는 복구할 수 없습니다. \n 데이터 삭제를 진행할까요?",
                       cancelBtn: true, buttonTitle: "승인", onView: self) { (okAction) in
                         RealmManager.shared.deletedAll(object: self.datasourece)
-                        self.navigationController?.popViewController(animated: true)}
+                        self.navigationController?.popViewController(animated: true)
+                        self.deleteAllData.deleteAllDataDelegate()
+            }
         default:
             break
         }

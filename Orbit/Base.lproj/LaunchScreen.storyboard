@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DotnoteLaunch.png" translatesAutoresizingMaskIntoConstraints="NO" id="dqM-OY-rkv">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DotnoteLaunch" translatesAutoresizingMaskIntoConstraints="NO" id="dqM-OY-rkv">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                         </subviews>
@@ -40,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="DotnoteLaunch.png" width="2048" height="2048"/>
+        <image name="DotnoteLaunch" width="2048" height="2048"/>
     </resources>
 </document>

@@ -227,7 +227,7 @@ extension ThemeSettingViewController : UITableViewDataSource {
             }
         }
         headerView.addSubview(headerLabel)
-        addTopBorderLine(to: headerView, height: 0.7)
+//        addTopBorderLine(to: headerView, height: 0.7)
         addBottomBorderLine(to: headerView, height: 0.7)
         return headerView
     }
@@ -254,71 +254,74 @@ extension ThemeSettingViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
-        cell.backgroundColor = .white
-        cell.selectionStyle = .none
-        let contentView = UIView()
-        contentView.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: cell.bounds.height)
-        cell.addSubview(contentView)
-        if let sectionTitle = ThemeList(rawValue: indexPath.section),
-            let listData = themeList[sectionTitle]?[indexPath.row] {
-            if let titleLabel = cell.textLabel {
-                switch indexPath {
-                case [0,0] :
-                    addTopBorderLine(to: contentView, height: 0.7)
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "NanumBarunGothicBold", size: 20)
-                    break
-                case [0,1] :
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "NanumMyeongjoEco", size: 20)
-                    break
-                case [0,2]:
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "SangSangRock", size: 20)
-                    break
-                case [0,3]:
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "NanumSquareEB", size: 20)
-                    break
-                case [1,0] :
-                    addTopBorderLine(to: contentView, height: 0.7)
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "NanumBarunGothic", size: 20)
-                    break
-                case [1,1] :
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "NanumBrush", size: 20)
-                    break
-                case [1,2] :
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "NanumMyeongjoEco", size: 20)
-                    break
-                case [1,3]:
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "SangSangFlowerRoad", size: 20)
-                    break
-                case [1,4]:
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "SangSangShinb7OTF", size: 20)
-                    break
-                case [1,5]:
-                    titleLabel.text = listData["themeName"]
-                    titleLabel.font = UIFont(name: "SSVeryBadHandwriting", size: 20)
-                    break
-                case [2,0] :
-                    titleLabel.text = listData["themeName"]
-                    setSizeButton(cell: cell)
-                    setFontSizeButton()
-                    break
-                default :
-                    break
-                }
-            }
+        switch indexPath {
+        case [2,0]:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FontSizeCell", for: indexPath)
+            let contentView = UIView()
+            contentView.frame = CGRect(x: 0, y: 0,
+                                       width: tableView.bounds.width,
+                                       height: cell.bounds.height)
+            cell.addSubview(contentView)
+            setSizeButton(cell: cell)
+            setFontSizeButton()
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FontNameCell", for: indexPath) as! FontSettingCell
+            enterDataIntoCell(cell: cell, indexPath: indexPath)
+            return cell
         }
-        return cell
+        
     }
     
+    func enterDataIntoCell(cell : FontSettingCell, indexPath : IndexPath) {
+        if let sectionTitle = ThemeList(rawValue: indexPath.section),
+            let listData = themeList[sectionTitle]?[indexPath.row] {
+            switch indexPath {
+            case [0,0] :
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "NanumBarunGothicBold", size: 20)
+                break
+            case [0,1] :
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "NanumMyeongjoEco", size: 20)
+                break
+            case [0,2]:
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "SangSangRock", size: 20)
+                break
+            case [0,3]:
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "NanumSquareEB", size: 20)
+                break
+            case [1,0] :
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "NanumBarunGothic", size: 20)
+                break
+            case [1,1] :
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "NanumBrush", size: 20)
+                break
+            case [1,2] :
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "NanumMyeongjoEco", size: 20)
+                break
+            case [1,3]:
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "SangSangFlowerRoad", size: 20)
+                break
+            case [1,4]:
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "SangSangShinb7OTF", size: 20)
+                break
+            case [1,5]:
+                cell.fontNameLabel.text = listData["themeName"]
+                cell.fontNameLabel.font = UIFont(name: "SSVeryBadHandwriting", size: 20)
+                break
+            default :
+                break
+            }
+        }
+    }
 }
 
 extension ThemeSettingViewController {
@@ -372,7 +375,8 @@ extension ThemeSettingViewController {
         themeTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         
         // ToRegister cell
-        themeTableView.register(UITableViewCell.self, forCellReuseIdentifier: "BasicCell")
+        themeTableView.register(FontSettingCell.self, forCellReuseIdentifier: "FontNameCell")
+        themeTableView.register(UITableViewCell.self, forCellReuseIdentifier: "FontSizeCell")
         // delegate & dataSource
         themeTableView.delegate = self
         themeTableView.dataSource = self

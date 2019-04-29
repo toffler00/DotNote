@@ -74,6 +74,7 @@ class ListViewController: UIViewController {
     // MARK: IBAction
     @objc func pushOptionViewController(_ sender: UIImageView) {
         let optionsVC = OptionsViewController()
+        optionsVC.deleteAllData = self
         navigationController?.pushViewController(optionsVC, animated: true)
     }
     

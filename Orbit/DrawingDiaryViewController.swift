@@ -181,7 +181,7 @@ extension DrawingDiaryViewController {
             navigationController?.navigationBar.addConstraints(constWrtieDoneIcon)
             
             writeDoneIcon.image = UIImage(named: "checked")
-            writeDoneIcon.layer.cornerRadius = 16
+            writeDoneIcon.layer.cornerRadius = 12
             writeDoneIcon.clipsToBounds = true
             let tapWriteDonIcon = UITapGestureRecognizer(target: self, action: #selector(writeDone))
             writeDoneIcon.addGestureRecognizer(tapWriteDonIcon)
