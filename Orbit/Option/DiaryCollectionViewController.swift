@@ -91,6 +91,7 @@ final class DiaryCollectionViewController : UIViewController {
         diaryCollection.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         diaryCollection.backgroundColor = .clear
         diaryCollection.allowsSelection = false
+        diaryCollection.isPagingEnabled = true
         
         diaryCollection.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "diaryCell")
         diaryCollection.register(DrawingDiaryCollectionViewCell.self, forCellWithReuseIdentifier: "drawingCell")
