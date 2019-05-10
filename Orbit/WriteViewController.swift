@@ -922,7 +922,6 @@ extension WriteViewController {
     fileprivate func adjustingHeight(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         let keyboardFrame: CGRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        print(keyboardFrame.height)
         if keyboardFrame.height == 0 || keyboardShown == true {
             return
         } else {
@@ -935,7 +934,6 @@ extension WriteViewController {
     fileprivate func adjustingHide(notification : NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         let keyboardFrame: CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
-        print(keyboardFrame.height)
         self.contents.frame.size.height = self.contentsTextViewCGRect.height
         keyboardShown = false
     }

@@ -29,7 +29,7 @@ class DiaryViewController: UIViewController {
     var containerView : UIView!
     var deleteIcon : UIImageView!
     var dateCollectionView : UICollectionView!
-    let user = User()
+//    let user = User()
     var diaryData : Content!
     var backButton : UIImageView = UIImageView()
     

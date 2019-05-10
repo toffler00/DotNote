@@ -127,7 +127,6 @@ class ListViewController: UIViewController {
         if listTableView == nil {
             return
         }else {
-            
             self.calendarView.reloadData()
         }
     }
@@ -140,7 +139,6 @@ class ListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(self.view.frame)
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
@@ -149,7 +147,6 @@ class ListViewController: UIViewController {
         self.view.backgroundColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
         setDatasource(in: getDate(dateFormat: "MMM yyyy"))
         setupLocationManager()
-        print(contentDate)
     }
     
     func setNavieTitle() {
@@ -187,11 +184,9 @@ class ListViewController: UIViewController {
                                 contentsFont: "NanumBarunGothic", fontSize: 16, collectionFilter: 1)
             RealmManager.shared.creat(object: data)
         }
-        print(settingData)
     }
     
     // MARK: viewWillLayoutSubviews:
-    // 뷰가 먼저 보여야하므로
     override func viewWillLayoutSubviews() {
         if self.calendarView == nil {
             setUpUI()
@@ -338,6 +333,5 @@ extension ListViewController: UITableViewDataSource{
         cell.dateLabel.text = "\(dateToString(in: data.createdAt, dateFormat: "yyyy.MM.dd EEE"))"
         return cell
     }
-    
 }
 

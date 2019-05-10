@@ -144,7 +144,7 @@ extension ListTableViewCell {
             NSLayoutConstraint(item: self.titleLabel, attribute: .bottom, relatedBy: .equal, toItem: self,
                                attribute: .bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self.titleLabel, attribute: .leading, relatedBy: .equal, toItem: dateLabel,
-                               attribute: .leading, multiplier: 1, constant: leadingDistance),
+                               attribute: .leading, multiplier: 1, constant: leadingDistance / 2),
             NSLayoutConstraint(item: self.titleLabel, attribute: .trailing, relatedBy: .equal, toItem: self,
                                attribute: .trailing,multiplier: 1, constant: 0)]
         // 중앙 먼저

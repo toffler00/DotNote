@@ -22,6 +22,17 @@ extension ListViewController : CLLocationManagerDelegate {
         
     }
     
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways:
+            print("authorizedAlways")
+        case .authorizedWhenInUse:
+            print("authorizedWhenInUse")
+        case .denied, .notDetermined, .restricted :
+            showAlertForLocationPermission()
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let geoCoder = CLGeocoder()
@@ -40,4 +51,20 @@ extension ListViewController : CLLocationManagerDelegate {
         locationManager.stopUpdatingLocation()
     }
     
+    func openSettings() {
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+    }
+    
+    func showAlertForLocationPermission() {
+        let title : String = "앱을 사용하는 동안 사용자의 위치에 접근하도록 허용하시겠습니까?"
+        let message : String = "사용자의 위치정보를 통해 \n 현재 날씨정보를 불러오는데 사용됩니다."
+        showAlert(title: title,
+                  message: message,
+                  actionStyle: .default,
+                  cancelBtn: true,
+                  buttonTitle: "승인",
+                  onView: self) { (action) in
+                    self.openSettings()
+        }
+    }
 }

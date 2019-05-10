@@ -107,10 +107,11 @@ class DiaryCollectionViewCell: UICollectionViewCell {
         contentsImg.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0).isActive = true
         contentsImg.widthAnchor.constraint(equalToConstant: widthBounds).isActive = true
         contentsImg.heightAnchor.constraint(equalToConstant: widthBounds * 0.75).isActive = true
-        contentsImg.backgroundColor = .clear
+        contentsImg.backgroundColor = .white
         contentsImg.contentMode = .scaleAspectFill
         contentsImg.clipsToBounds = true
-        
+        contentsImg.layer.borderColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 0.8).cgColor
+        contentsImg.layer.borderWidth = 0.3
         
         contents.topAnchor.constraint(equalTo: contentsImg.bottomAnchor, constant: 4).isActive = true
         contents.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4).isActive = true
