@@ -9,21 +9,14 @@
 import UIKit
 
 struct Model {
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-}
-
-extension Model {
-    
-    struct Contents {
-        var createdAt : Date?
-        var title : String?
-        var weather : String?
-        var content : String?
-        var image : Data?
-    }
-    struct User {
-        var id : UUID
-        var contents : [Model.Contents]
+    struct WeatherModel : Codable {
+        var weather: [Weather]
+        struct Weather : Codable {
+            var id : Int
+            var main : String
+            var description : String
+            var icon : String
+        }
     }
 }
 
@@ -73,16 +66,3 @@ extension Model {
 //    }
 }
 
-
-extension Model {
-    struct WeatherModel : Codable {
-        var weather: [Weather]
-        struct Weather : Codable {
-            var id : Int
-            var main : String
-            var description : String
-            var icon : String
-        }
-        
-    }
-}

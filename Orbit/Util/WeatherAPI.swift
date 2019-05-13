@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 
 class WeatherAPI {
     func call(lati : Float, longi : Float , complete: @escaping (Error?, Model.WeatherModel?) -> Void) {
@@ -15,7 +16,6 @@ class WeatherAPI {
         let apiKey = "367e5e831ef3e343cb9c0e2547a9df3e"
         
         let stringURL = "\(endPointURL)&appid=\(apiKey)&_type=json"
-        print(stringURL)
         let url = URL(string: stringURL)!
         
         var request = URLRequest(url: url)
@@ -54,5 +54,9 @@ class WeatherAPI {
                 }
             }
         }.resume()
+    }
+    
+    func callWeatherAPI() {
+        
     }
 }
