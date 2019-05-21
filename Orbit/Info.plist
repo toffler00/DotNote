@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Dot Note</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,21 +17,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1</string>
+	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>5</string>
 	<key>Deployment</key>
 	<string>$(Deployment)</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Orbit will access to Photos</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Orbit will access to your location when in use</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -40,6 +34,27 @@
 			<string></string>
 		</dict>
 	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>접근을 허용하면 Dot Note 가 사용자의 위치정보를 사용하여 날씨정보를 나타낼 수 있습니다. 허용하지 않는다면 일부 기능이 동작하지 않습니다,</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>접근을 허용하면 Dot Note 가 사용자의 앨범에 있는 사진을 불러오고 저장할 수 있습니다. 허용하지 않는다면 일부 기능을 사용할 수 없습니다.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>NanumSquareExtraBold.ttf</string>
+		<string>NanumBarunGothicBold.ttf</string>
+		<string>NanumBrush.ttf</string>
+		<string>NanumBarunGothic.ttf</string>
+		<string>NanumMyeongjoEco.ttf</string>
+		<string>SSRock.ttf</string>
+		<string>SSShinb7_otf.otf</string>
+		<string>SSShinb7.ttf</string>
+		<string>SSFlowerRoad.ttf</string>
+		<string>SSVeryBadHandwriting.ttf</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

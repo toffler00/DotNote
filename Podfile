@@ -6,10 +6,18 @@ target 'Orbit' do
   use_frameworks!
 
   # Pods for Orbit
-	pod 'Firebase/Core'
-	pod 'SwiftyBeaver'
-	pod 'RealmSwift'
-
+  pod 'SwiftyBeaver'
+  pod 'RealmSwift'
+  pod 'JTAppleCalendar'
+  pod 'ExpandableButton'
+  pod 'NXDrawKit'
+  pod 'RSKImageCropper'
+  pod 'EFMarkdown'
+  pod 'Alamofire'
+  pod 'Firebase/Core'
+  pod 'Crashlytics'
+  pod 'Fabric'
+  
   target 'OrbitTests' do
     inherit! :search_paths
     # Pods for testing

@@ -7,14 +7,63 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		620B18D22265D90D00AB5691 /* NanumBarunpenR.otf in Resources */ = {isa = PBXBuildFile; fileRef = 620B18D12265D90C00AB5691 /* NanumBarunpenR.otf */; };
+		620B18D42265D9D900AB5691 /* opensourceLicense.md in Resources */ = {isa = PBXBuildFile; fileRef = 620B18D32265D9D900AB5691 /* opensourceLicense.md */; };
+		620B18DE226610B800AB5691 /* SSFlowerRoad.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 620B18DD226610B700AB5691 /* SSFlowerRoad.ttf */; };
+		620B18E0226610C500AB5691 /* SSVeryBadHandwriting.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 620B18DF226610C500AB5691 /* SSVeryBadHandwriting.ttf */; };
+		620B18E2226610D500AB5691 /* SSRock.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 620B18E1226610D400AB5691 /* SSRock.ttf */; };
+		620B18E4226610E700AB5691 /* SSShinb7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 620B18E3226610E600AB5691 /* SSShinb7.ttf */; };
+		620B18E62266131200AB5691 /* SSShinb7_otf.otf in Resources */ = {isa = PBXBuildFile; fileRef = 620B18E52266131200AB5691 /* SSShinb7_otf.otf */; };
 		620F53B0211EF16900A94A01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53AF211EF16900A94A01 /* AppDelegate.swift */; };
 		620F53B2211EF16900A94A01 /* DiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53B1211EF16900A94A01 /* DiaryViewController.swift */; };
 		620F53B5211EF16900A94A01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 620F53B3211EF16900A94A01 /* Main.storyboard */; };
-		620F53B7211EF16900A94A01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 620F53B6211EF16900A94A01 /* Assets.xcassets */; };
 		620F53BA211EF16900A94A01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 620F53B8211EF16900A94A01 /* LaunchScreen.storyboard */; };
 		620F53C5211EF16A00A94A01 /* OrbitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53C4211EF16A00A94A01 /* OrbitTests.swift */; };
 		620F53D0211EF16A00A94A01 /* OrbitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620F53CF211EF16A00A94A01 /* OrbitUITests.swift */; };
+		621AC6D9221EEEF40029B550 /* DeleteMemoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AC6D8221EEEF40029B550 /* DeleteMemoDelegate.swift */; };
+		621AC6DC222FD8C30029B550 /* OpensourceLicenseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */; };
+		62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62254C752182F0E90084AE56 /* CutomKeyboard.swift */; };
+		6231E6162273473A007D3E0C /* TutorialPageView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6231E6152273473A007D3E0C /* TutorialPageView.storyboard */; };
+		6231E6632289900F007D3E0C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6231E6622289900F007D3E0C /* GoogleService-Info.plist */; };
+		6237172D2201A53B00549221 /* BackGroundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6237172C2201A53B00549221 /* BackGroundViewController.swift */; };
+		6237172F220C4A6D00549221 /* DrawingDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */; };
+		62826A4F22706DF1002E7E21 /* DeleteAllDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62826A4E22706DF1002E7E21 /* DeleteAllDataDelegate.swift */; };
+		62826A512271B15F002E7E21 /* PageMasterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62826A502271B15F002E7E21 /* PageMasterVC.swift */; };
+		62826A532271B190002E7E21 /* PageContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62826A522271B190002E7E21 /* PageContentVC.swift */; };
+		62849D9B219A75EB00F9761E /* CustomTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62849D9A219A75EB00F9761E /* CustomTextFiled.swift */; };
+		628C12BD22363B34009D99B5 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628C12BC22363B34009D99B5 /* DrawingView.swift */; };
+		628C12E52237E780009D99B5 /* SendDrawingImageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628C12E42237E780009D99B5 /* SendDrawingImageDelegate.swift */; };
+		62927F8D21B2A87300B4F167 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62927F8C21B2A87300B4F167 /* LocationManager.swift */; };
+		6292D56C21C51FDE00E5E521 /* ExpandableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */; };
 		6296D18C21394CD400B610C8 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6296D18B21394CD400B610C8 /* Model.swift */; };
+		62AE2E13216CFAC9004448F2 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E12216CFAC9004448F2 /* CalendarView.swift */; };
+		62AE2E15216E31F0004448F2 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E14216E31F0004448F2 /* CalendarCell.swift */; };
+		62AE2E39217B7774004448F2 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E38217B7774004448F2 /* RealmManager.swift */; };
+		62AE2E3B217DA7FF004448F2 /* ConversionDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE2E3A217DA7FF004448F2 /* ConversionDate.swift */; };
+		62B33EC221ECCABE0097C661 /* PhotosViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B33EC121ECCABE0097C661 /* PhotosViewControllerDelegate.swift */; };
+		62B33EC421ECCB1B0097C661 /* SaveMemoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B33EC321ECCB1B0097C661 /* SaveMemoDelegate.swift */; };
+		62B33EC621EDD7C70097C661 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B33EC521EDD7C70097C661 /* Assets.xcassets */; };
+		62B33EC821EDD8040097C661 /* NanumMyeongjoEco.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B33EC721EDD8040097C661 /* NanumMyeongjoEco.ttf */; };
+		62B33ECA21EDD8170097C661 /* NanumBarunGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B33EC921EDD8170097C661 /* NanumBarunGothic.ttf */; };
+		62B33ECC21EDDF480097C661 /* NanumBrush.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B33ECB21EDDF480097C661 /* NanumBrush.ttf */; };
+		62B33ECE21EDE4C30097C661 /* SetFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B33ECD21EDE4C30097C661 /* SetFont.swift */; };
+		62B33ED021EDEB4B0097C661 /* NanumBarunGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B33ECF21EDEB4B0097C661 /* NanumBarunGothicBold.ttf */; };
+		62B33ED221EE01AD0097C661 /* NanumSquareExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B33ED121EE01AD0097C661 /* NanumSquareExtraBold.ttf */; };
+		62C55D4A21DE1CC3000F42CB /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C55D4921DE1CC3000F42CB /* MemoViewController.swift */; };
+		62D73F98226889A00083CCE4 /* Slice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62D73F97226889A00083CCE4 /* Slice@2x.png */; };
+		62D73F9A22688F3F0083CCE4 /* FontSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D73F9922688F3F0083CCE4 /* FontSettingCell.swift */; };
+		62D73F9E2268960C0083CCE4 /* DotnoteLaunch.png in Resources */ = {isa = PBXBuildFile; fileRef = 62D73F9D2268960C0083CCE4 /* DotnoteLaunch.png */; };
+		62E3E58A226237FA0053C838 /* DrawingDiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E583226237F20053C838 /* DrawingDiaryCollectionViewCell.swift */; };
+		62E3E58B226237FA0053C838 /* DiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E584226237F30053C838 /* DiaryCollectionViewCell.swift */; };
+		62E3E58C226237FA0053C838 /* MemoCollectionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E585226237F50053C838 /* MemoCollectionTableView.swift */; };
+		62E3E58D226237FA0053C838 /* DiaryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E586226237F60053C838 /* DiaryCollectionViewController.swift */; };
+		62E3E58F226237FA0053C838 /* MemoCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E588226237F80053C838 /* MemoCollectionTableViewCell.swift */; };
+		62E3E590226237FA0053C838 /* DiaryWithoutImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E589226237FA0053C838 /* DiaryWithoutImageCell.swift */; };
+		62E3E592226238070053C838 /* ThemeSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E591226238070053C838 /* ThemeSettingViewController.swift */; };
+		62E3E594226238500053C838 /* DrawingDiarySaveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E593226238500053C838 /* DrawingDiarySaveDelegate.swift */; };
+		62E3E59622623A0B0053C838 /* UIButtonSetBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E59522623A0B0053C838 /* UIButtonSetBackgroundColor.swift */; };
+		62F92F8321AC00CB0083AB9A /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F92F8221AC00CB0083AB9A /* AlertController.swift */; };
+		62F92F8521AC1CF10083AB9A /* CustomNavigationBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */; };
 		6A2AFDF1213A68B900F5B38B /* DBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AFDF0213A68B900F5B38B /* DBModel.swift */; };
 		6A331FFC2131485600FFE74F /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A331FFB2131485600FFE74F /* WriteViewController.swift */; };
 		6A331FFE21314B9100FFE74F /* WriteDoneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A331FFD21314B9100FFE74F /* WriteDoneDelegate.swift */; };
@@ -54,11 +103,17 @@
 		33AFCA43DE115D59459EAB8B /* Pods_OrbitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OrbitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		44D744F7CDE1FACBB621B745 /* Pods_OrbitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OrbitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F3C0D0C32A7CDA5F16445B0 /* Pods-OrbitUITests.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitUITests.prod.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitUITests/Pods-OrbitUITests.prod.xcconfig"; sourceTree = "<group>"; };
+		620B18D12265D90C00AB5691 /* NanumBarunpenR.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumBarunpenR.otf; sourceTree = "<group>"; };
+		620B18D32265D9D900AB5691 /* opensourceLicense.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = opensourceLicense.md; sourceTree = "<group>"; };
+		620B18DD226610B700AB5691 /* SSFlowerRoad.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SSFlowerRoad.ttf; sourceTree = "<group>"; };
+		620B18DF226610C500AB5691 /* SSVeryBadHandwriting.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SSVeryBadHandwriting.ttf; sourceTree = "<group>"; };
+		620B18E1226610D400AB5691 /* SSRock.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SSRock.ttf; sourceTree = "<group>"; };
+		620B18E3226610E600AB5691 /* SSShinb7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SSShinb7.ttf; sourceTree = "<group>"; };
+		620B18E52266131200AB5691 /* SSShinb7_otf.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SSShinb7_otf.otf; sourceTree = "<group>"; };
 		620F53AC211EF16900A94A01 /* OrbitDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OrbitDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		620F53AF211EF16900A94A01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		620F53B1211EF16900A94A01 /* DiaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryViewController.swift; sourceTree = "<group>"; };
 		620F53B4211EF16900A94A01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		620F53B6211EF16900A94A01 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		620F53B9211EF16900A94A01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		620F53BB211EF16900A94A01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		620F53C0211EF16A00A94A01 /* OrbitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrbitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,7 +122,50 @@
 		620F53CB211EF16A00A94A01 /* OrbitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrbitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		620F53CF211EF16A00A94A01 /* OrbitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbitUITests.swift; sourceTree = "<group>"; };
 		620F53D1211EF16A00A94A01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		621AC6D8221EEEF40029B550 /* DeleteMemoDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteMemoDelegate.swift; sourceTree = "<group>"; };
+		621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpensourceLicenseVC.swift; sourceTree = "<group>"; };
+		62254C752182F0E90084AE56 /* CutomKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutomKeyboard.swift; sourceTree = "<group>"; };
+		6231E6152273473A007D3E0C /* TutorialPageView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TutorialPageView.storyboard; sourceTree = "<group>"; };
+		6231E6622289900F007D3E0C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6237172C2201A53B00549221 /* BackGroundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackGroundViewController.swift; sourceTree = "<group>"; };
+		6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingDiaryViewController.swift; sourceTree = "<group>"; };
+		62826A4E22706DF1002E7E21 /* DeleteAllDataDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAllDataDelegate.swift; sourceTree = "<group>"; };
+		62826A502271B15F002E7E21 /* PageMasterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMasterVC.swift; sourceTree = "<group>"; };
+		62826A522271B190002E7E21 /* PageContentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageContentVC.swift; sourceTree = "<group>"; };
+		62849D9A219A75EB00F9761E /* CustomTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFiled.swift; sourceTree = "<group>"; };
+		628C12BC22363B34009D99B5 /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
+		628C12E42237E780009D99B5 /* SendDrawingImageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendDrawingImageDelegate.swift; sourceTree = "<group>"; };
+		62927F8C21B2A87300B4F167 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableButton.swift; sourceTree = "<group>"; };
 		6296D18B21394CD400B610C8 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		62AE2E12216CFAC9004448F2 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		62AE2E14216E31F0004448F2 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
+		62AE2E38217B7774004448F2 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		62AE2E3A217DA7FF004448F2 /* ConversionDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionDate.swift; sourceTree = "<group>"; };
+		62B33EC121ECCABE0097C661 /* PhotosViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewControllerDelegate.swift; sourceTree = "<group>"; };
+		62B33EC321ECCB1B0097C661 /* SaveMemoDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveMemoDelegate.swift; sourceTree = "<group>"; };
+		62B33EC521EDD7C70097C661 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		62B33EC721EDD8040097C661 /* NanumMyeongjoEco.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumMyeongjoEco.ttf; sourceTree = "<group>"; };
+		62B33EC921EDD8170097C661 /* NanumBarunGothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumBarunGothic.ttf; sourceTree = "<group>"; };
+		62B33ECB21EDDF480097C661 /* NanumBrush.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumBrush.ttf; sourceTree = "<group>"; };
+		62B33ECD21EDE4C30097C661 /* SetFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFont.swift; sourceTree = "<group>"; };
+		62B33ECF21EDEB4B0097C661 /* NanumBarunGothicBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumBarunGothicBold.ttf; sourceTree = "<group>"; };
+		62B33ED121EE01AD0097C661 /* NanumSquareExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareExtraBold.ttf; sourceTree = "<group>"; };
+		62C55D4921DE1CC3000F42CB /* MemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
+		62D73F97226889A00083CCE4 /* Slice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Slice@2x.png"; sourceTree = "<group>"; };
+		62D73F9922688F3F0083CCE4 /* FontSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSettingCell.swift; sourceTree = "<group>"; };
+		62D73F9D2268960C0083CCE4 /* DotnoteLaunch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DotnoteLaunch.png; sourceTree = "<group>"; };
+		62E3E583226237F20053C838 /* DrawingDiaryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingDiaryCollectionViewCell.swift; sourceTree = "<group>"; };
+		62E3E584226237F30053C838 /* DiaryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewCell.swift; sourceTree = "<group>"; };
+		62E3E585226237F50053C838 /* MemoCollectionTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoCollectionTableView.swift; sourceTree = "<group>"; };
+		62E3E586226237F60053C838 /* DiaryCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewController.swift; sourceTree = "<group>"; };
+		62E3E588226237F80053C838 /* MemoCollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoCollectionTableViewCell.swift; sourceTree = "<group>"; };
+		62E3E589226237FA0053C838 /* DiaryWithoutImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryWithoutImageCell.swift; sourceTree = "<group>"; };
+		62E3E591226238070053C838 /* ThemeSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSettingViewController.swift; sourceTree = "<group>"; };
+		62E3E593226238500053C838 /* DrawingDiarySaveDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingDiarySaveDelegate.swift; sourceTree = "<group>"; };
+		62E3E59522623A0B0053C838 /* UIButtonSetBackgroundColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonSetBackgroundColor.swift; sourceTree = "<group>"; };
+		62F92F8221AC00CB0083AB9A /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
+		62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBackButton.swift; sourceTree = "<group>"; };
 		688EAB7E305E75A5D496F632 /* Pods-OrbitTests.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitTests.prod.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitTests/Pods-OrbitTests.prod.xcconfig"; sourceTree = "<group>"; };
 		6A2AFDF0213A68B900F5B38B /* DBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBModel.swift; sourceTree = "<group>"; };
 		6A331FFB2131485600FFE74F /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
@@ -125,6 +223,33 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		620B18E722671DCF00AB5691 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				62B33ECB21EDDF480097C661 /* NanumBrush.ttf */,
+				620B18E1226610D400AB5691 /* SSRock.ttf */,
+				620B18E52266131200AB5691 /* SSShinb7_otf.otf */,
+				620B18E3226610E600AB5691 /* SSShinb7.ttf */,
+				620B18DD226610B700AB5691 /* SSFlowerRoad.ttf */,
+				620B18DF226610C500AB5691 /* SSVeryBadHandwriting.ttf */,
+				62B33ED121EE01AD0097C661 /* NanumSquareExtraBold.ttf */,
+				62B33ECF21EDEB4B0097C661 /* NanumBarunGothicBold.ttf */,
+				620B18D12265D90C00AB5691 /* NanumBarunpenR.otf */,
+				62B33EC721EDD8040097C661 /* NanumMyeongjoEco.ttf */,
+				62B33EC921EDD8170097C661 /* NanumBarunGothic.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		620B18E922671E4400AB5691 /* LaunchImage */ = {
+			isa = PBXGroup;
+			children = (
+				62D73F97226889A00083CCE4 /* Slice@2x.png */,
+				62D73F9D2268960C0083CCE4 /* DotnoteLaunch.png */,
+			);
+			name = LaunchImage;
+			sourceTree = "<group>";
+		};
 		620F53A3211EF16900A94A01 = {
 			isa = PBXGroup;
 			children = (
@@ -150,23 +275,34 @@
 		620F53AE211EF16900A94A01 /* Orbit */ = {
 			isa = PBXGroup;
 			children = (
+				620B18E922671E4400AB5691 /* LaunchImage */,
+				62E3E59722623E810053C838 /* Resources */,
 				6296D18A21394CCA00B610C8 /* Model */,
 				620F53AF211EF16900A94A01 /* AppDelegate.swift */,
 				620F53B1211EF16900A94A01 /* DiaryViewController.swift */,
+				62C55D4921DE1CC3000F42CB /* MemoViewController.swift */,
 				6A331FFB2131485600FFE74F /* WriteViewController.swift */,
+				6237172C2201A53B00549221 /* BackGroundViewController.swift */,
+				6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */,
+				628C12BC22363B34009D99B5 /* DrawingView.swift */,
 				CE84E7482137D3350097357F /* ListViewController.swift */,
 				CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */,
+				6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */,
+				62AE2E12216CFAC9004448F2 /* CalendarView.swift */,
+				62AE2E14216E31F0004448F2 /* CalendarCell.swift */,
+				62927F8C21B2A87300B4F167 /* LocationManager.swift */,
 				6AFAA89A213A716100D241E2 /* PhotosViewController.swift */,
-				CE388C29213E42550063DE35 /* OptionsViewController.swift */,
 				6AFAA89C213A728D00D241E2 /* PhotoCollectionView.swift */,
 				6AFAA89E213A72CD00D241E2 /* PhotoCollectionViewCell.swift */,
-				6A6386EB21452FAA006DE95C /* WeatherAPI.swift */,
+				621AC6DA222FD85B0029B550 /* Option */,
 				6296D190213D030500B610C8 /* Delegate */,
 				6A332001213159DE00FFE74F /* Util */,
-				620F53B3211EF16900A94A01 /* Main.storyboard */,
-				620F53B6211EF16900A94A01 /* Assets.xcassets */,
+				620B18E722671DCF00AB5691 /* Fonts */,
+				6292BA6121807D55005AE13E /* StoryBoard */,
 				620F53B8211EF16900A94A01 /* LaunchScreen.storyboard */,
 				620F53BB211EF16900A94A01 /* Info.plist */,
+				6231E6622289900F007D3E0C /* GoogleService-Info.plist */,
+				62B33EC521EDD7C70097C661 /* Assets.xcassets */,
 			);
 			path = Orbit;
 			sourceTree = "<group>";
@@ -189,12 +325,50 @@
 			path = OrbitUITests;
 			sourceTree = "<group>";
 		};
+		621AC6DA222FD85B0029B550 /* Option */ = {
+			isa = PBXGroup;
+			children = (
+				CE388C29213E42550063DE35 /* OptionsViewController.swift */,
+				62E3E591226238070053C838 /* ThemeSettingViewController.swift */,
+				62D73F9922688F3F0083CCE4 /* FontSettingCell.swift */,
+				62E3E586226237F60053C838 /* DiaryCollectionViewController.swift */,
+				62E3E584226237F30053C838 /* DiaryCollectionViewCell.swift */,
+				62E3E583226237F20053C838 /* DrawingDiaryCollectionViewCell.swift */,
+				62E3E589226237FA0053C838 /* DiaryWithoutImageCell.swift */,
+				62E3E585226237F50053C838 /* MemoCollectionTableView.swift */,
+				62E3E588226237F80053C838 /* MemoCollectionTableViewCell.swift */,
+				620B18D32265D9D900AB5691 /* opensourceLicense.md */,
+				621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */,
+				6231E63B227457E1007D3E0C /* TutorialPage */,
+			);
+			path = Option;
+			sourceTree = "<group>";
+		};
+		6231E63B227457E1007D3E0C /* TutorialPage */ = {
+			isa = PBXGroup;
+			children = (
+				62826A502271B15F002E7E21 /* PageMasterVC.swift */,
+				62826A522271B190002E7E21 /* PageContentVC.swift */,
+			);
+			name = TutorialPage;
+			sourceTree = "<group>";
+		};
+		6292BA6121807D55005AE13E /* StoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				620F53B3211EF16900A94A01 /* Main.storyboard */,
+				6231E6152273473A007D3E0C /* TutorialPageView.storyboard */,
+			);
+			path = StoryBoard;
+			sourceTree = "<group>";
+		};
 		6296D18A21394CCA00B610C8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				6A2AFDF0213A68B900F5B38B /* DBModel.swift */,
 				6296D18B21394CD400B610C8 /* Model.swift */,
 				6A6386E921452A7A006DE95C /* KoreaWeahterLocationCode.swift */,
+				62AE2E38217B7774004448F2 /* RealmManager.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -203,14 +377,35 @@
 			isa = PBXGroup;
 			children = (
 				6A331FFD21314B9100FFE74F /* WriteDoneDelegate.swift */,
+				62826A4E22706DF1002E7E21 /* DeleteAllDataDelegate.swift */,
+				62B33EC121ECCABE0097C661 /* PhotosViewControllerDelegate.swift */,
+				62E3E593226238500053C838 /* DrawingDiarySaveDelegate.swift */,
+				62B33EC321ECCB1B0097C661 /* SaveMemoDelegate.swift */,
+				621AC6D8221EEEF40029B550 /* DeleteMemoDelegate.swift */,
+				628C12E42237E780009D99B5 /* SendDrawingImageDelegate.swift */,
 			);
 			path = Delegate;
+			sourceTree = "<group>";
+		};
+		62E3E59722623E810053C838 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		6A332001213159DE00FFE74F /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				6A6386EB21452FAA006DE95C /* WeatherAPI.swift */,
 				6A4A04C621313980003A51B5 /* AppTarget.swift */,
+				62AE2E3A217DA7FF004448F2 /* ConversionDate.swift */,
+				62254C752182F0E90084AE56 /* CutomKeyboard.swift */,
+				62849D9A219A75EB00F9761E /* CustomTextFiled.swift */,
+				62F92F8221AC00CB0083AB9A /* AlertController.swift */,
+				62E3E59522623A0B0053C838 /* UIButtonSetBackgroundColor.swift */,
+				62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */,
+				62B33ECD21EDE4C30097C661 /* SetFont.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -240,6 +435,7 @@
 				620F53A9211EF16900A94A01 /* Frameworks */,
 				620F53AA211EF16900A94A01 /* Resources */,
 				65EAAD5D8F770AE447A8FAB6 /* [CP] Embed Pods Frameworks */,
+				62AEA0DC2289910E0017D6BE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -336,9 +532,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62D73F98226889A00083CCE4 /* Slice@2x.png in Resources */,
+				620B18E62266131200AB5691 /* SSShinb7_otf.otf in Resources */,
+				62B33ED021EDEB4B0097C661 /* NanumBarunGothicBold.ttf in Resources */,
+				62B33ED221EE01AD0097C661 /* NanumSquareExtraBold.ttf in Resources */,
 				620F53BA211EF16900A94A01 /* LaunchScreen.storyboard in Resources */,
-				620F53B7211EF16900A94A01 /* Assets.xcassets in Resources */,
+				620B18E2226610D500AB5691 /* SSRock.ttf in Resources */,
+				620B18D22265D90D00AB5691 /* NanumBarunpenR.otf in Resources */,
+				620B18E4226610E700AB5691 /* SSShinb7.ttf in Resources */,
+				620B18D42265D9D900AB5691 /* opensourceLicense.md in Resources */,
+				62B33ECC21EDDF480097C661 /* NanumBrush.ttf in Resources */,
+				62B33EC621EDD7C70097C661 /* Assets.xcassets in Resources */,
+				6231E6632289900F007D3E0C /* GoogleService-Info.plist in Resources */,
+				62D73F9E2268960C0083CCE4 /* DotnoteLaunch.png in Resources */,
+				620B18DE226610B800AB5691 /* SSFlowerRoad.ttf in Resources */,
+				62B33EC821EDD8040097C661 /* NanumMyeongjoEco.ttf in Resources */,
+				620B18E0226610C500AB5691 /* SSVeryBadHandwriting.ttf in Resources */,
 				620F53B5211EF16900A94A01 /* Main.storyboard in Resources */,
+				6231E6162273473A007D3E0C /* TutorialPageView.storyboard in Resources */,
+				62B33ECA21EDD8170097C661 /* NanumBarunGothic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +607,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		62AEA0DC2289910E0017D6BE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/Fabric/run\n";
+		};
 		65EAAD5D8F770AE447A8FAB6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -402,7 +631,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Orbit/Pods-Orbit-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/EFCMark/EFCMark.framework",
+				"${BUILT_PRODUCTS_DIR}/EFMarkdown/EFMarkdown.framework",
+				"${BUILT_PRODUCTS_DIR}/ExpandableButton/ExpandableButton.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/JTAppleCalendar/JTAppleCalendar.framework",
+				"${BUILT_PRODUCTS_DIR}/NXDrawKit/NXDrawKit.framework",
+				"${BUILT_PRODUCTS_DIR}/RSKImageCropper/RSKImageCropper.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
@@ -410,7 +646,14 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EFCMark.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EFMarkdown.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JTAppleCalendar.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NXDrawKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSKImageCropper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
@@ -446,20 +689,53 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62F92F8521AC1CF10083AB9A /* CustomNavigationBackButton.swift in Sources */,
+				62E3E58C226237FA0053C838 /* MemoCollectionTableView.swift in Sources */,
 				6AFAA89D213A728D00D241E2 /* PhotoCollectionView.swift in Sources */,
+				62AE2E15216E31F0004448F2 /* CalendarCell.swift in Sources */,
+				62E3E58A226237FA0053C838 /* DrawingDiaryCollectionViewCell.swift in Sources */,
 				6AFAA89F213A72CD00D241E2 /* PhotoCollectionViewCell.swift in Sources */,
+				62849D9B219A75EB00F9761E /* CustomTextFiled.swift in Sources */,
+				62AE2E3B217DA7FF004448F2 /* ConversionDate.swift in Sources */,
+				62E3E59622623A0B0053C838 /* UIButtonSetBackgroundColor.swift in Sources */,
+				62AE2E13216CFAC9004448F2 /* CalendarView.swift in Sources */,
+				628C12BD22363B34009D99B5 /* DrawingView.swift in Sources */,
 				6296D18C21394CD400B610C8 /* Model.swift in Sources */,
+				62B33EC221ECCABE0097C661 /* PhotosViewControllerDelegate.swift in Sources */,
+				62826A4F22706DF1002E7E21 /* DeleteAllDataDelegate.swift in Sources */,
 				6A6386EA21452A7A006DE95C /* KoreaWeahterLocationCode.swift in Sources */,
+				62826A532271B190002E7E21 /* PageContentVC.swift in Sources */,
+				6292D56C21C51FDE00E5E521 /* ExpandableButton.swift in Sources */,
+				621AC6D9221EEEF40029B550 /* DeleteMemoDelegate.swift in Sources */,
+				62C55D4A21DE1CC3000F42CB /* MemoViewController.swift in Sources */,
+				62E3E592226238070053C838 /* ThemeSettingViewController.swift in Sources */,
+				62F92F8321AC00CB0083AB9A /* AlertController.swift in Sources */,
+				62B33EC421ECCB1B0097C661 /* SaveMemoDelegate.swift in Sources */,
+				6237172D2201A53B00549221 /* BackGroundViewController.swift in Sources */,
+				62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */,
 				CE388C2A213E42550063DE35 /* OptionsViewController.swift in Sources */,
 				6AFAA89B213A716100D241E2 /* PhotosViewController.swift in Sources */,
 				6A4A04C721313980003A51B5 /* AppTarget.swift in Sources */,
+				62B33ECE21EDE4C30097C661 /* SetFont.swift in Sources */,
 				CE9DDA472138E9B0007F0BEA /* ListTableViewCell.swift in Sources */,
 				620F53B2211EF16900A94A01 /* DiaryViewController.swift in Sources */,
+				62AE2E39217B7774004448F2 /* RealmManager.swift in Sources */,
+				62E3E58D226237FA0053C838 /* DiaryCollectionViewController.swift in Sources */,
+				62D73F9A22688F3F0083CCE4 /* FontSettingCell.swift in Sources */,
 				6A331FFC2131485600FFE74F /* WriteViewController.swift in Sources */,
 				6A2AFDF1213A68B900F5B38B /* DBModel.swift in Sources */,
+				62E3E594226238500053C838 /* DrawingDiarySaveDelegate.swift in Sources */,
 				620F53B0211EF16900A94A01 /* AppDelegate.swift in Sources */,
+				62E3E590226237FA0053C838 /* DiaryWithoutImageCell.swift in Sources */,
+				62E3E58F226237FA0053C838 /* MemoCollectionTableViewCell.swift in Sources */,
+				628C12E52237E780009D99B5 /* SendDrawingImageDelegate.swift in Sources */,
+				62927F8D21B2A87300B4F167 /* LocationManager.swift in Sources */,
+				62826A512271B15F002E7E21 /* PageMasterVC.swift in Sources */,
 				6A6386EC21452FAA006DE95C /* WeatherAPI.swift in Sources */,
+				62E3E58B226237FA0053C838 /* DiaryCollectionViewCell.swift in Sources */,
 				6A331FFE21314B9100FFE74F /* WriteDoneDelegate.swift in Sources */,
+				6237172F220C4A6D00549221 /* DrawingDiaryViewController.swift in Sources */,
+				621AC6DC222FD8C30029B550 /* OpensourceLicenseVC.swift in Sources */,
 				CE84E7492137D3350097357F /* ListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -582,7 +858,7 @@
 				APP_ICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K2MT5B5629;
+				DEVELOPMENT_TEAM = X46PH8MSE8;
 				Deployment = dev;
 				INFOPLIST_FILE = Orbit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -592,8 +868,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)DEV";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Dev;
 		};
@@ -701,7 +977,7 @@
 				APP_ICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K2MT5B5629;
+				DEVELOPMENT_TEAM = X46PH8MSE8;
 				Deployment = prod;
 				INFOPLIST_FILE = Orbit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -711,8 +987,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Prod;
 		};
@@ -769,7 +1045,7 @@
 				620F53E1211EF28A00A94A01 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Dev;
+			defaultConfigurationName = Prod;
 		};
 		620F53D4211EF16A00A94A01 /* Build configuration list for PBXNativeTarget "Orbit" */ = {
 			isa = XCConfigurationList;
@@ -778,7 +1054,7 @@
 				620F53E2211EF28A00A94A01 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Dev;
+			defaultConfigurationName = Prod;
 		};
 		620F53D7211EF16A00A94A01 /* Build configuration list for PBXNativeTarget "OrbitTests" */ = {
 			isa = XCConfigurationList;
@@ -787,7 +1063,7 @@
 				620F53E3211EF28A00A94A01 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Dev;
+			defaultConfigurationName = Prod;
 		};
 		620F53DA211EF16A00A94A01 /* Build configuration list for PBXNativeTarget "OrbitUITests" */ = {
 			isa = XCConfigurationList;
@@ -796,7 +1072,7 @@
 				620F53E4211EF28A00A94A01 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Dev;
+			defaultConfigurationName = Prod;
 		};
 /* End XCConfigurationList section */
 	};

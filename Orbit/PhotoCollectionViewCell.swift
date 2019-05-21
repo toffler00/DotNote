@@ -21,6 +21,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
             
             imageManager.requestImage(for: phAsset, targetSize: frame.size, contentMode: .aspectFill, options: synchronous, resultHandler: {[weak self] image, _ in
                 self?.imageView.image = image
+                //                self?.imageView.clipsToBounds = true
             })
         }
     }
@@ -31,13 +32,21 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
-        let imageViewConsts = [NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0),
-                               NSLayoutConstraint(item: imageView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0),
-                               NSLayoutConstraint(item: imageView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0),
-                               NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0)]
+        let imageViewConsts = [
+            NSLayoutConstraint(item: imageView!, attribute: .width, relatedBy: .equal, toItem: contentView,
+                               attribute: .width, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: imageView!, attribute: .height, relatedBy: .equal, toItem: contentView,
+                               attribute: .width, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: imageView!, attribute: .centerX, relatedBy: .equal, toItem: contentView,
+                               attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: imageView!, attribute: .centerY, relatedBy: .equal, toItem: contentView,
+                               attribute: .centerY, multiplier: 1, constant: 0)]
         
         addSubview(imageView)
         addConstraints(imageViewConsts)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        
     }
     override func prepareForReuse() {
         imageView.image = nil

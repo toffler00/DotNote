@@ -11,10 +11,12 @@ import Photos
 
 protocol PhotosViewControllerDelegate: class {
     func imageSelected(phAsset: PHAsset)
+    func photoLibraryAuthorizationStatus()
 }
 
 class PhotosViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     
+    var backButton = UIImageView()
     var photosViewControllerDelegate: PhotosViewControllerDelegate!
     
     fileprivate let photoCollectionViewCellIdentifier: String = "PhotoCollectionViewCell"
@@ -28,15 +30,27 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         self.photosViewControllerDelegate = photosViewControllerDelegate
-//        switch PHPhotoLibrary.authorizationStatus() {
-//        case .notDetermined:
-//        case .denied:
-//        case .authorized:
-//        case .restricted:
-//        }
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .notDetermined:
+            photosViewControllerDelegate.photoLibraryAuthorizationStatus()
+        case .denied:
+            photosViewControllerDelegate.photoLibraryAuthorizationStatus()
+        case .authorized:
+            break
+        case .restricted:
+            photosViewControllerDelegate.photoLibraryAuthorizationStatus()
+        }
         
         view.backgroundColor = .white
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 1, blue: 240/255, alpha: 1)
+        navigationItem.title = "나의 사진"
+        navigationItem.hidesBackButton = true
+        getFetchResult()
         
+    }
+    
+    func getFetchResult() {
         let options = PHFetchOptions()
         options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
         options.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: false) ]
@@ -45,6 +59,12 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
         fetchResult = PHAsset.fetchAssets(with: options)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: true)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        setNavigationBackButton(onView: self, in: backButton, bool: false)
+    }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
@@ -56,10 +76,18 @@ class PhotosViewController: UIViewController, UICollectionViewDataSource, UIColl
             photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
             photoCollectionView.backgroundColor = .clear
             
-            let photoCollectionViewConsts = [NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),
-                                             NSLayoutConstraint(item: photoCollectionView, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 0),
-                                             NSLayoutConstraint(item: photoCollectionView, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 0),
-                                             NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)]
+            let photoCollectionViewConsts = [NSLayoutConstraint(item: photoCollectionView, attribute: .top, relatedBy: .equal,
+                                                                toItem: view.safeAreaLayoutGuide,
+                                                                attribute: .top, multiplier: 1, constant: 0),
+                                             NSLayoutConstraint(item: photoCollectionView, attribute: .leading, relatedBy: .equal,
+                                                                toItem: view.safeAreaLayoutGuide,
+                                                                attribute: .leading, multiplier: 1, constant: 0),
+                                             NSLayoutConstraint(item: photoCollectionView, attribute: .trailing, relatedBy: .equal,
+                                                                toItem: view.safeAreaLayoutGuide,
+                                                                attribute: .trailing, multiplier: 1, constant: 0),
+                                             NSLayoutConstraint(item: photoCollectionView, attribute: .bottom, relatedBy: .equal,
+                                                                toItem: view,
+                                                                attribute: .bottom, multiplier: 1, constant: 0)]
             
             view.addSubview(photoCollectionView)
             view.addConstraints(photoCollectionViewConsts)
