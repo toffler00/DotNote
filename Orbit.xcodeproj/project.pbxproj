@@ -24,6 +24,7 @@
 		621AC6DC222FD8C30029B550 /* OpensourceLicenseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */; };
 		62254C762182F0E90084AE56 /* CutomKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62254C752182F0E90084AE56 /* CutomKeyboard.swift */; };
 		6231E6162273473A007D3E0C /* TutorialPageView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6231E6152273473A007D3E0C /* TutorialPageView.storyboard */; };
+		6231E6632289900F007D3E0C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6231E6622289900F007D3E0C /* GoogleService-Info.plist */; };
 		6237172D2201A53B00549221 /* BackGroundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6237172C2201A53B00549221 /* BackGroundViewController.swift */; };
 		6237172F220C4A6D00549221 /* DrawingDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */; };
 		62826A4F22706DF1002E7E21 /* DeleteAllDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62826A4E22706DF1002E7E21 /* DeleteAllDataDelegate.swift */; };
@@ -125,6 +126,7 @@
 		621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpensourceLicenseVC.swift; sourceTree = "<group>"; };
 		62254C752182F0E90084AE56 /* CutomKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutomKeyboard.swift; sourceTree = "<group>"; };
 		6231E6152273473A007D3E0C /* TutorialPageView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TutorialPageView.storyboard; sourceTree = "<group>"; };
+		6231E6622289900F007D3E0C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6237172C2201A53B00549221 /* BackGroundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackGroundViewController.swift; sourceTree = "<group>"; };
 		6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingDiaryViewController.swift; sourceTree = "<group>"; };
 		62826A4E22706DF1002E7E21 /* DeleteAllDataDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAllDataDelegate.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				6292BA6121807D55005AE13E /* StoryBoard */,
 				620F53B8211EF16900A94A01 /* LaunchScreen.storyboard */,
 				620F53BB211EF16900A94A01 /* Info.plist */,
+				6231E6622289900F007D3E0C /* GoogleService-Info.plist */,
 				62B33EC521EDD7C70097C661 /* Assets.xcassets */,
 			);
 			path = Orbit;
@@ -336,18 +339,18 @@
 				62E3E588226237F80053C838 /* MemoCollectionTableViewCell.swift */,
 				620B18D32265D9D900AB5691 /* opensourceLicense.md */,
 				621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */,
-				6231E63B227457E1007D3E0C /* New Group */,
+				6231E63B227457E1007D3E0C /* TutorialPage */,
 			);
 			path = Option;
 			sourceTree = "<group>";
 		};
-		6231E63B227457E1007D3E0C /* New Group */ = {
+		6231E63B227457E1007D3E0C /* TutorialPage */ = {
 			isa = PBXGroup;
 			children = (
 				62826A502271B15F002E7E21 /* PageMasterVC.swift */,
 				62826A522271B190002E7E21 /* PageContentVC.swift */,
 			);
-			name = "New Group";
+			name = TutorialPage;
 			sourceTree = "<group>";
 		};
 		6292BA6121807D55005AE13E /* StoryBoard */ = {
@@ -432,6 +435,7 @@
 				620F53A9211EF16900A94A01 /* Frameworks */,
 				620F53AA211EF16900A94A01 /* Resources */,
 				65EAAD5D8F770AE447A8FAB6 /* [CP] Embed Pods Frameworks */,
+				62AEA0DC2289910E0017D6BE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -539,6 +543,7 @@
 				620B18D42265D9D900AB5691 /* opensourceLicense.md in Resources */,
 				62B33ECC21EDDF480097C661 /* NanumBrush.ttf in Resources */,
 				62B33EC621EDD7C70097C661 /* Assets.xcassets in Resources */,
+				6231E6632289900F007D3E0C /* GoogleService-Info.plist in Resources */,
 				62D73F9E2268960C0083CCE4 /* DotnoteLaunch.png in Resources */,
 				620B18DE226610B800AB5691 /* SSFlowerRoad.ttf in Resources */,
 				62B33EC821EDD8040097C661 /* NanumMyeongjoEco.ttf in Resources */,
@@ -602,6 +607,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		62AEA0DC2289910E0017D6BE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/Fabric/run\n";
+		};
 		65EAAD5D8F770AE447A8FAB6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -613,12 +635,14 @@
 				"${BUILT_PRODUCTS_DIR}/EFCMark/EFCMark.framework",
 				"${BUILT_PRODUCTS_DIR}/EFMarkdown/EFMarkdown.framework",
 				"${BUILT_PRODUCTS_DIR}/ExpandableButton/ExpandableButton.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/JTAppleCalendar/JTAppleCalendar.framework",
 				"${BUILT_PRODUCTS_DIR}/NXDrawKit/NXDrawKit.framework",
 				"${BUILT_PRODUCTS_DIR}/RSKImageCropper/RSKImageCropper.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -626,12 +650,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EFCMark.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EFMarkdown.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableButton.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JTAppleCalendar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NXDrawKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSKImageCropper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1019,7 +1045,7 @@
 				620F53E1211EF28A00A94A01 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Dev;
+			defaultConfigurationName = Prod;
 		};
 		620F53D4211EF16A00A94A01 /* Build configuration list for PBXNativeTarget "Orbit" */ = {
 			isa = XCConfigurationList;
@@ -1028,7 +1054,7 @@
 				620F53E2211EF28A00A94A01 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Dev;
+			defaultConfigurationName = Prod;
 		};
 		620F53D7211EF16A00A94A01 /* Build configuration list for PBXNativeTarget "OrbitTests" */ = {
 			isa = XCConfigurationList;
@@ -1037,7 +1063,7 @@
 				620F53E3211EF28A00A94A01 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Dev;
+			defaultConfigurationName = Prod;
 		};
 		620F53DA211EF16A00A94A01 /* Build configuration list for PBXNativeTarget "OrbitUITests" */ = {
 			isa = XCConfigurationList;
@@ -1046,7 +1072,7 @@
 				620F53E4211EF28A00A94A01 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Dev;
+			defaultConfigurationName = Prod;
 		};
 /* End XCConfigurationList section */
 	};

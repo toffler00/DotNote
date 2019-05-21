@@ -14,6 +14,9 @@ target 'Orbit' do
   pod 'RSKImageCropper'
   pod 'EFMarkdown'
   pod 'Alamofire'
+  pod 'Firebase/Core'
+  pod 'Crashlytics'
+  pod 'Fabric'
   
   target 'OrbitTests' do
     inherit! :search_paths

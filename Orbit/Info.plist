@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Dot Note</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.7</string>
+	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>5</string>
 	<key>Deployment</key>
 	<string>$(Deployment)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -33,9 +35,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Orbit will access to your location when in use</string>
+	<string>접근을 허용하면 Dot Note 가 사용자의 위치정보를 사용하여 날씨정보를 나타낼 수 있습니다. 허용하지 않는다면 일부 기능이 동작하지 않습니다,</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Orbit will access to Photos</string>
+	<string>접근을 허용하면 Dot Note 가 사용자의 앨범에 있는 사진을 불러오고 저장할 수 있습니다. 허용하지 않는다면 일부 기능을 사용할 수 없습니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NanumSquareExtraBold.ttf</string>

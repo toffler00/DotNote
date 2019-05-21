@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>122289201949-3mudmuqveibgbli1qp55ra3nesg7h0qa.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.122289201949-3mudmuqveibgbli1qp55ra3nesg7h0qa</string>
+	<key>API_KEY</key>
+	<string>AIzaSyChoOsDTpb_jag02MNm0OqFgRy97tPQkaY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>122289201949</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>io.orbit.orbit.prod</string>
+	<key>PROJECT_ID</key>
+	<string>dotnote-5a69b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>dotnote-5a69b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:122289201949:ios:82103c0d3255fedc</string>
+	<key>DATABASE_URL</key>
+	<string>https://dotnote-5a69b.firebaseio.com</string>
+</dict>
+</plist>

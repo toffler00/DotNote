@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "620F53AB211EF16900A94A01"
-               BuildableName = "OrbitDEV.app"
+               BuildableName = "Orbit.app"
                BlueprintName = "Orbit"
                ReferencedContainer = "container:Orbit.xcodeproj">
             </BuildableReference>
@@ -53,7 +53,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "620F53AB211EF16900A94A01"
-            BuildableName = "OrbitDEV.app"
+            BuildableName = "Orbit.app"
             BlueprintName = "Orbit"
             ReferencedContainer = "container:Orbit.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "620F53AB211EF16900A94A01"
-            BuildableName = "OrbitDEV.app"
+            BuildableName = "Orbit.app"
             BlueprintName = "Orbit"
             ReferencedContainer = "container:Orbit.xcodeproj">
          </BuildableReference>
@@ -95,7 +95,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "620F53AB211EF16900A94A01"
-            BuildableName = "OrbitDEV.app"
+            BuildableName = "Orbit.app"
             BlueprintName = "Orbit"
             ReferencedContainer = "container:Orbit.xcodeproj">
          </BuildableReference>

@@ -9,6 +9,8 @@
 import UIKit
 import SwiftyBeaver
 import RealmSwift
+import Firebase
+import Crashlytics
 
 let log = SwiftyBeaver.self
 
@@ -18,6 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        
+        
         // Override point for customization after application launch.
         Thread.sleep(forTimeInterval: 1)
         let pageControl = UIPageControl.appearance(whenContainedInInstancesOf: [UIPageViewController.self])
@@ -35,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             log.addDestination(console)
         case .prod:
-            break
+            FirebaseApp.configure()
         }
         
         let config = Realm.Configuration(

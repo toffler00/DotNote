@@ -28,7 +28,6 @@ class ListViewController: UIViewController {
     let appdelegate = UIApplication.shared.delegate as! AppDelegate
     var listTableView: UITableView!
     private var writeButton: UIImageView!
-    var models = [Model.Contents]()
     var thisMonthLabel : UILabel!
     var weeks : [String] = ["일","월","화","수","목","금","토"]
     var weeksStackView : UIStackView!
