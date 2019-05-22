@@ -57,7 +57,7 @@ extension ListViewController : CLLocationManagerDelegate {
     
     func showAlertForLocationPermission() {
         let title : String = "앱을 사용하는 동안 사용자의 위치에 접근하도록 허용하시겠습니까?"
-        let message : String = "사용자의 위치정보를 통해 \n 현재 날씨정보를 불러오는데 사용됩니다."
+        let message : String = "접근을 허용하면 Dot Note 가 사용자의 위치정보를 사용하여 날씨정보를 나타낼 수 있습니다. 허용하지 않는다면 일부 기능이 동작하지 않습니다."
         showAlert(title: title,
                   message: message,
                   actionStyle: .default,

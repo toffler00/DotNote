@@ -50,9 +50,9 @@ extension WriteViewController: PhotosViewControllerDelegate {
     }
     
     func showAlertForImagePickerPermission() {
-        let message : String = "앨범접근권한이 없습니다. \n 설정에서 권한을 허용해야 합니다."
-        showAlert(title: nil,
-                  message: message,
+        let title : String = "앨범접근권한이 없습니다. \n 설정에서 권한을 허용해야 합니다."
+        showAlert(title: title,
+                  message: "접근을 허용하면 Dot Note 가 사용자의 앨범에 있는 사진을 불러오고 저장할 수 있습니다. 허용하지 않는다면 일부 기능을 사용할 수 없습니다.",
                   actionStyle: .default,
                   cancelBtn: false,
                   buttonTitle: "승인",
