@@ -80,6 +80,7 @@ class ListViewController: UIViewController {
     // MARK: @objc Method
     @objc func pushWriteViewController(){
         let writeViewController = WriteViewController(delegate: self)
+        writeViewController.selectedDate = self.selectedDate
         if self.weatherItem == nil {
             self.weatherItem = 0
             writeViewController.weatherItem = self.weatherItem
@@ -92,6 +93,7 @@ class ListViewController: UIViewController {
     
     @objc func pushDrawingViewController() {
         let drawingDiaryViewController = DrawingDiaryViewController()
+        drawingDiaryViewController.selectedDate = self.selectedDate
         if self.weatherItem == nil {
             self.weatherItem = 0
             drawingDiaryViewController.weatherItem = self.weatherItem

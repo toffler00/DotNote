@@ -40,7 +40,7 @@ class WriteViewController: UIViewController {
     fileprivate var writeDoneIcon : UIImageView!
     fileprivate var dateTF : CustomTextFiled!
     fileprivate var weatherTF : CustomTextFiled!
-    fileprivate var today : Date!
+    var selectedDate : Date!
     fileprivate var createAtMonth : String!
     var containerV : UIView!
     fileprivate var contStackV : UIStackView!
@@ -103,7 +103,7 @@ class WriteViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         if containerV == nil {
             setupLayout()
-            setInformation(in: getDate(dateFormat: "dd MMM yyyy hh mm"))
+            setInformation(in: selectedDate)
             applySetting()
         }
     }
@@ -119,14 +119,24 @@ class WriteViewController: UIViewController {
         contents.font = UIFont(name: contentsFont, size: contentsFontSize)
     }
     
-    func setInformation(in todayDate : String) {
-        today = stringToDate(in: todayDate, dateFormat: "dd MMM yyyy hh mm")
-        dayOfWeek.text = getWeekDay(in: today, dateFormat: "EEEE")
-        date.text = dateToString(in: today, dateFormat: "dd MMM yyyy")
-        createAtMonth = dateToString(in: today, dateFormat: "MMM yyyy")
-        setWeather(id: weatherItem)
+    func setInformation(in todayDate : Date) {
+//        selectedDate = stringToDate(in: todayDate, dateFormat: "dd MMM yyyy hh mm")
+        dayOfWeek.text = getWeekDay(in: selectedDate, dateFormat: "EEEE")
+        date.text = dateToString(in: selectedDate, dateFormat: "dd MMM yyyy")
+        createAtMonth = dateToString(in: selectedDate, dateFormat: "MMM yyyy")
+        let weatherID = getWeatherID()
+        setWeather(id: weatherID)
     }
     
+    private func getWeatherID() -> Int {
+        let selectDate = dateToString(in: self.selectedDate, dateFormat: "yyyyMMdd")
+        let today = getDate(dateFormat: "yyyyMMdd")
+        if selectDate == today {
+            return self.weatherItem
+        } else {
+            return 0
+        }
+    }
     func setWeather(id : Int) {
         switch id {
         case 200...299:
@@ -167,7 +177,7 @@ extension WriteViewController {
                           cancelBtn: true, buttonTitle: "확인", onView: self) { (action) in
                             self.contents.text = " "
                             let data = Content(type: self.type,
-                                               createdAt: self.today,
+                                               createdAt: self.selectedDate,
                                                createdAtMonth : self.createAtMonth ,
                                                title: self.contentTitle.text!,
                                                weather: self.weather.text!,
@@ -179,7 +189,7 @@ extension WriteViewController {
                             self.navigationController?.popViewController(animated: true)
                 }
             } else {
-                let data = Content(type : self.type, createdAt: self.today,
+                let data = Content(type : self.type, createdAt: self.selectedDate,
                                    createdAtMonth : self.createAtMonth ,title: self.contentTitle.text!,
                                    weather: self.weather.text!, body: self.contents.text!,
                                    contentsAlignment: self.contentsAlignment,image: self.selectedImageData)
@@ -866,7 +876,7 @@ extension WriteViewController {
     }
     
     @objc fileprivate func changedDate(sender : UIBarButtonItem) {
-        setInformation(in: dateToString(in: datePicker.date, dateFormat: "dd MMM yyyy hh mm"))
+        setInformation(in: datePicker.date)
         dateTF.resignFirstResponder()
     }
     

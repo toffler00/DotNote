@@ -103,14 +103,24 @@ class DrawingDiaryViewController : UIViewController {
     }
     
     private func setInfomation() {
-        let date = getDate(dateFormat: "yyyy MM dd eee hh mm ss")
-        let create = stringToDate(in: date, dateFormat: "yyyy MM dd eee hh mm ss")
-        let createDate = dateToString(in: create, dateFormat: "yyyy.M.dd.eee")
+//        let date = getDate(dateFormat: "yyyy MM dd eee hh mm ss")
+//        let create = stringToDate(in: date, dateFormat: "yyyy MM dd eee hh mm ss")
+        let createDate = dateToString(in: selectedDate, dateFormat: "yyyy.M.dd.eee")
         self.creationDate.text = createDate
-        self.selectedDate = create
-        createAtMonth = dateToString(in: create, dateFormat: "MMM yyyy")
-        setWeather(id: weatherItem)
+        createAtMonth = dateToString(in: selectedDate, dateFormat: "MMM yyyy")
+        let weatherID = getWeatherID()
+        setWeather(id: weatherID)
         changeWeatherIcon(weather: weatherName)
+    }
+    
+    private func getWeatherID() -> Int {
+        let selectDate = dateToString(in: self.selectedDate, dateFormat: "yyyyMMdd")
+        let today = getDate(dateFormat: "yyyyMMdd")
+        if selectDate == today {
+            return self.weatherItem
+        } else {
+            return 0
+        }
     }
     
     func setWeather(id : Int) {
