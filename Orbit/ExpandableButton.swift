@@ -24,7 +24,7 @@ extension ListViewController {
         
         let items : [ExpandableButtonItem] = [
             ExpandableButtonItem(image: UIImage(named: "memo"), highlightedImage: nil,
-                                 attributedTitle: nil, highlightedAttributedTitle: nil,
+                                 attributedTitle: attributeString[0], highlightedAttributedTitle: nil,
                                  contentEdgeInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0),
                                  titleEdgeInsets: UIEdgeInsets(top: 34, left: -128, bottom: 0, right: 0),
                                  imageEdgeInsets: insets, size: CGSize(width: 48, height: 48),
@@ -35,7 +35,7 @@ extension ListViewController {
                                     
             }),
             ExpandableButtonItem(image: UIImage(named: "draw"), highlightedImage: nil,
-                                 attributedTitle: nil, highlightedAttributedTitle: nil,
+                                 attributedTitle: attributeString[1], highlightedAttributedTitle: nil,
                                  contentEdgeInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0),
                                  titleEdgeInsets: UIEdgeInsets(top: 36, left: -128, bottom: 0, right: 0),
                                  imageEdgeInsets: insets, size: CGSize(width: 46, height: 46),
@@ -47,7 +47,7 @@ extension ListViewController {
                                     
             }),
             ExpandableButtonItem(image: UIImage(named: "edit"), highlightedImage: nil,
-                                 attributedTitle: nil, highlightedAttributedTitle: nil,
+                                 attributedTitle: attributeString[2], highlightedAttributedTitle: nil,
                                  contentEdgeInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0),
                                  titleEdgeInsets: UIEdgeInsets(top: 36, left: -128, bottom: 0, right: 0),
                                  imageEdgeInsets: insets, size: CGSize(width: 46, height: 46),
