@@ -88,6 +88,7 @@ class DrawingDiaryViewController : UIViewController {
             applySetting()
         }
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         unregisterForKeyboardNotification()
         unregisterForTextViewNotification()
