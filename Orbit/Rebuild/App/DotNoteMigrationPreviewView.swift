@@ -10,10 +10,12 @@ import SwiftUI
 struct DotNoteMigrationPreviewView: View {
     var entries: [DotNoteEntry]
     var settings: DotNoteSettings?
+    var loadState: DotNoteAppModel.LoadState
 
     var body: some View {
         List {
             Section {
+                LabeledContent("Load state", value: loadStateDescription)
                 LabeledContent("Imported entries", value: "\(entries.count)")
                 if let settings {
                     LabeledContent("Body font", value: settings.bodyFontName.isEmpty ? "Default" : settings.bodyFontName)
@@ -33,6 +35,19 @@ struct DotNoteMigrationPreviewView: View {
                     }
                 }
             }
+        }
+    }
+
+    private var loadStateDescription: String {
+        switch loadState {
+        case .idle:
+            return "Idle"
+        case .loading:
+            return "Loading"
+        case .loaded:
+            return "Loaded"
+        case .failed(let message):
+            return message
         }
     }
 }

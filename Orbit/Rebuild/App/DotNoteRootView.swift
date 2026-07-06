@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct DotNoteRootView: View {
-    var entries: [DotNoteEntry]
-    var settings: DotNoteSettings?
+    @ObservedObject var appModel: DotNoteAppModel
 
     var body: some View {
         NavigationStack {
-            DotNoteMigrationPreviewView(entries: entries, settings: settings)
+            DotNoteMigrationPreviewView(
+                entries: appModel.entries,
+                settings: appModel.settings,
+                loadState: appModel.loadState
+            )
                 .navigationTitle("Dot Note")
         }
     }
@@ -22,13 +25,16 @@ struct DotNoteRootView: View {
 #if DEBUG
 struct DotNoteRootView_Previews: PreviewProvider {
     static var previews: some View {
-        DotNoteRootView(
-            entries: [
-                DotNoteEntry(kind: .diary, title: "Diary", weather: "Sunny", body: "A saved diary entry."),
-                DotNoteEntry(kind: .memo, body: "A quick memo."),
-                DotNoteEntry(kind: .drawing, title: "Drawing", body: "A drawing note.")
-            ],
-            settings: DotNoteSettings(bodyFontName: "NanumBarunGothic", bodyFontSize: 16)
+        DotNoteRootView(appModel: DotNoteAppModel(
+            store: InMemoryDotNoteStore(snapshot: DotNoteStoreSnapshot(
+                entries: [
+                    DotNoteEntry(kind: .diary, title: "Diary", weather: "Sunny", body: "A saved diary entry."),
+                    DotNoteEntry(kind: .memo, body: "A quick memo."),
+                    DotNoteEntry(kind: .drawing, title: "Drawing", body: "A drawing note.")
+                ],
+                settings: DotNoteSettings(bodyFontName: "NanumBarunGothic", bodyFontSize: 16)
+            ))
+        )
         )
     }
 }

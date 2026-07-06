@@ -80,6 +80,16 @@
 		A10000000000000000000005 /* DotNoteRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000105 /* DotNoteRootView.swift */; };
 		A10000000000000000000006 /* DotNoteMigrationPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000106 /* DotNoteMigrationPreviewView.swift */; };
 		A10000000000000000000007 /* DotNoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000107 /* DotNoteApp.swift */; };
+		A10000000000000000000008 /* DotNoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000108 /* DotNoteStore.swift */; };
+		A10000000000000000000009 /* InMemoryDotNoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000109 /* InMemoryDotNoteStore.swift */; };
+		A1000000000000000000000A /* DotNoteAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000010A /* DotNoteAppModel.swift */; };
+		A1000000000000000000000B /* SwiftDataDotNoteModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000010B /* SwiftDataDotNoteModels.swift */; };
+		A1000000000000000000000C /* SwiftDataDotNoteMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000010C /* SwiftDataDotNoteMapper.swift */; };
+		A1000000000000000000000D /* DotNoteModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000010D /* DotNoteModelContainer.swift */; };
+		A1000000000000000000000E /* SwiftDataDotNoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000010E /* SwiftDataDotNoteStore.swift */; };
+		A1000000000000000000000F /* LegacyDotNoteImportSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000010F /* LegacyDotNoteImportSource.swift */; };
+		A10000000000000000000010 /* LegacyDotNoteImportState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000110 /* LegacyDotNoteImportState.swift */; };
+		A10000000000000000000011 /* LegacyDotNoteImportFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */; };
 		A30363786577CE147CA4028E /* Pods_Orbit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */; };
 		CADA18B3F13C9E1896B6E0BE /* Pods_OrbitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33AFCA43DE115D59459EAB8B /* Pods_OrbitUITests.framework */; };
 		CE388C2A213E42550063DE35 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE388C29213E42550063DE35 /* OptionsViewController.swift */; };
@@ -190,6 +200,16 @@
 		A10000000000000000000105 /* DotNoteRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteRootView.swift; sourceTree = "<group>"; };
 		A10000000000000000000106 /* DotNoteMigrationPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteMigrationPreviewView.swift; sourceTree = "<group>"; };
 		A10000000000000000000107 /* DotNoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteApp.swift; sourceTree = "<group>"; };
+		A10000000000000000000108 /* DotNoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteStore.swift; sourceTree = "<group>"; };
+		A10000000000000000000109 /* InMemoryDotNoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryDotNoteStore.swift; sourceTree = "<group>"; };
+		A1000000000000000000010A /* DotNoteAppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteAppModel.swift; sourceTree = "<group>"; };
+		A1000000000000000000010B /* SwiftDataDotNoteModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataDotNoteModels.swift; sourceTree = "<group>"; };
+		A1000000000000000000010C /* SwiftDataDotNoteMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataDotNoteMapper.swift; sourceTree = "<group>"; };
+		A1000000000000000000010D /* DotNoteModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteModelContainer.swift; sourceTree = "<group>"; };
+		A1000000000000000000010E /* SwiftDataDotNoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataDotNoteStore.swift; sourceTree = "<group>"; };
+		A1000000000000000000010F /* LegacyDotNoteImportSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDotNoteImportSource.swift; sourceTree = "<group>"; };
+		A10000000000000000000110 /* LegacyDotNoteImportState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDotNoteImportState.swift; sourceTree = "<group>"; };
+		A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDotNoteImportFactory.swift; sourceTree = "<group>"; };
 		CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Orbit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE388C29213E42550063DE35 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		CE84E7482137D3350097357F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
@@ -443,6 +463,7 @@
 				A10000000000000000000204 /* App */,
 				A10000000000000000000202 /* Domain */,
 				A10000000000000000000203 /* Migration */,
+				A10000000000000000000205 /* Store */,
 			);
 			path = Rebuild;
 			sourceTree = "<group>";
@@ -461,6 +482,9 @@
 				A10000000000000000000102 /* LegacyDotNoteSnapshots.swift */,
 				A10000000000000000000103 /* LegacyDotNoteMapper.swift */,
 				A10000000000000000000104 /* LegacyRealmStore.swift */,
+				A1000000000000000000010F /* LegacyDotNoteImportSource.swift */,
+				A10000000000000000000110 /* LegacyDotNoteImportState.swift */,
+				A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */,
 			);
 			path = Migration;
 			sourceTree = "<group>";
@@ -469,10 +493,24 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000107 /* DotNoteApp.swift */,
+				A1000000000000000000010A /* DotNoteAppModel.swift */,
 				A10000000000000000000105 /* DotNoteRootView.swift */,
 				A10000000000000000000106 /* DotNoteMigrationPreviewView.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000205 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000108 /* DotNoteStore.swift */,
+				A10000000000000000000109 /* InMemoryDotNoteStore.swift */,
+				A1000000000000000000010B /* SwiftDataDotNoteModels.swift */,
+				A1000000000000000000010C /* SwiftDataDotNoteMapper.swift */,
+				A1000000000000000000010D /* DotNoteModelContainer.swift */,
+				A1000000000000000000010E /* SwiftDataDotNoteStore.swift */,
+			);
+			path = Store;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -699,12 +737,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000007 /* DotNoteApp.swift in Sources */,
+				A10000000000000000000008 /* DotNoteStore.swift in Sources */,
 				A10000000000000000000001 /* DotNoteModels.swift in Sources */,
+				A1000000000000000000000A /* DotNoteAppModel.swift in Sources */,
 				A10000000000000000000002 /* LegacyDotNoteSnapshots.swift in Sources */,
+				A1000000000000000000000B /* SwiftDataDotNoteModels.swift in Sources */,
 				A10000000000000000000005 /* DotNoteRootView.swift in Sources */,
+				A10000000000000000000009 /* InMemoryDotNoteStore.swift in Sources */,
+				A1000000000000000000000C /* SwiftDataDotNoteMapper.swift in Sources */,
 				A10000000000000000000003 /* LegacyDotNoteMapper.swift in Sources */,
+				A1000000000000000000000D /* DotNoteModelContainer.swift in Sources */,
+				A1000000000000000000000F /* LegacyDotNoteImportSource.swift in Sources */,
 				A10000000000000000000006 /* DotNoteMigrationPreviewView.swift in Sources */,
+				A1000000000000000000000E /* SwiftDataDotNoteStore.swift in Sources */,
+				A10000000000000000000010 /* LegacyDotNoteImportState.swift in Sources */,
 				A10000000000000000000004 /* LegacyRealmStore.swift in Sources */,
+				A10000000000000000000011 /* LegacyDotNoteImportFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -810,7 +858,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -829,7 +877,7 @@
 				DEVELOPMENT_TEAM = X46PH8MSE8;
 				Deployment = dev;
 				INFOPLIST_FILE = Orbit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -929,7 +977,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -948,7 +996,7 @@
 				DEVELOPMENT_TEAM = X46PH8MSE8;
 				Deployment = prod;
 				INFOPLIST_FILE = Orbit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

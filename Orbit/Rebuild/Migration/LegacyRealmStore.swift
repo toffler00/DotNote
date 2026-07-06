@@ -58,4 +58,13 @@ final class LegacyRealmStore {
         loadSettingsSnapshot().map(DotNoteSettings.init(legacy:))
     }
 }
+
+extension LegacyRealmStore: LegacyDotNoteImportSource {
+    func loadLegacySnapshot() throws -> DotNoteStoreSnapshot {
+        DotNoteStoreSnapshot(
+            entries: loadEntries(),
+            settings: loadSettings()
+        )
+    }
+}
 #endif

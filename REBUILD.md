@@ -33,7 +33,7 @@ This branch revives the existing App Store app by rebuilding the implementation 
 
 - UI: SwiftUI
 - App lifecycle: SwiftUI `@main App`
-- Persistence: SwiftData/Core Data for the long-term store, with a Realm import bridge for existing users
+- Persistence: SwiftData for the long-term store, with a Realm import bridge for existing users
 - Drawing: PencilKit
 - Networking: `URLSession` with async/await
 - Logging: `OSLog`
@@ -56,7 +56,9 @@ This branch revives the existing App Store app by rebuilding the implementation 
 5. Done: add a legacy Realm import path before switching storage permanently.
 6. Done: add a SwiftUI shell without switching the app launch path away from the storyboard.
 7. Done: switch the app launch path away from the storyboard by using a SwiftUI `@main` entry point.
-8. Next: restore real legacy data import by adding a maintained persistence dependency or a one-time importer.
+8. Done: add the first SwiftData-backed store boundary.
+9. Done: add the one-time import boundary for legacy Realm data.
+10. Next: reconnect a maintained Realm dependency so the import source can read existing app data.
 
 ## Migration Layer
 
@@ -65,6 +67,9 @@ The first migration files live under `Orbit/Rebuild/Migration`.
 - `LegacyDotNoteSnapshots.swift` defines lightweight snapshots of the legacy Realm objects.
 - `LegacyDotNoteMapper.swift` converts snapshots into the new domain models.
 - `LegacyRealmStore.swift` reads the existing Realm database only when `RealmSwift` is available.
+- `LegacyDotNoteImportSource.swift` defines the boundary used by the new SwiftData store.
+- `LegacyDotNoteImportState.swift` tracks whether the one-time import has completed.
+- `LegacyDotNoteImportFactory.swift` activates the Realm import source only when `RealmSwift` is available.
 
 Legacy content mapping:
 
@@ -86,7 +91,7 @@ The app target keeps `PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.prod`.
 
 Initial project settings now use:
 
-- iOS deployment target: `16.0`
+- iOS deployment target: `17.0`
 - Swift language version: `5.0`
 
 The deprecated Fabric run script build phase has been removed from the app target. The old Fabric and Crashlytics pods are still present for now and should be removed in a focused dependency cleanup step.
@@ -94,8 +99,22 @@ The deprecated Fabric run script build phase has been removed from the app targe
 The SwiftUI shell lives under `Orbit/Rebuild/App`.
 
 - `DotNoteApp.swift` is the current SwiftUI app entry point.
+- `DotNoteAppModel.swift` owns the root screen state and async loading flow.
 - `DotNoteRootView.swift` is the future SwiftUI root view.
 - `DotNoteMigrationPreviewView.swift` is a temporary view for checking imported legacy entries.
+
+The first app data boundary lives under `Orbit/Rebuild/Store`.
+
+- `DotNoteStore.swift` defines the storage protocol that SwiftUI views depend on.
+- `InMemoryDotNoteStore.swift` keeps the rebuild shell runnable while the real importer is being wired.
+- `SwiftDataDotNoteModels.swift` defines the new persistent records.
+- `SwiftDataDotNoteMapper.swift` converts between persistent records and rebuild-domain models.
+- `DotNoteModelContainer.swift` creates the SwiftData `ModelContainer`.
+- `SwiftDataDotNoteStore.swift` is the first permanent store implementation.
+
+SwiftData is now the selected long-term persistence layer. Realm remains a legacy read source for one-time import only.
+
+On app startup, `SwiftDataDotNoteStore` checks whether SwiftData already has entries and whether the legacy import completion flag has been set. If SwiftData is empty and a legacy import source is available, it imports legacy entries/settings once, saves them into SwiftData, and records completion in `UserDefaults`.
 
 Current build status:
 
