@@ -14,7 +14,13 @@ final class LegacyRealmStore {
     private let realm: Realm
 
     init(configuration: Realm.Configuration = Realm.Configuration.defaultConfiguration) throws {
-        self.realm = try Realm(configuration: configuration)
+        var importConfiguration = configuration
+        importConfiguration.objectTypes = [
+            User.self,
+            Content.self,
+            Settings.self
+        ]
+        self.realm = try Realm(configuration: importConfiguration)
     }
 
     var defaultRealmFileURL: URL? {

@@ -90,6 +90,8 @@
 		A1000000000000000000000F /* LegacyDotNoteImportSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000010F /* LegacyDotNoteImportSource.swift */; };
 		A10000000000000000000010 /* LegacyDotNoteImportState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000110 /* LegacyDotNoteImportState.swift */; };
 		A10000000000000000000011 /* LegacyDotNoteImportFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */; };
+		A10000000000000000000012 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000301 /* RealmSwift */; };
+		A10000000000000000000013 /* LegacyRealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000113 /* LegacyRealmModels.swift */; };
 		A30363786577CE147CA4028E /* Pods_Orbit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */; };
 		CADA18B3F13C9E1896B6E0BE /* Pods_OrbitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33AFCA43DE115D59459EAB8B /* Pods_OrbitUITests.framework */; };
 		CE388C2A213E42550063DE35 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE388C29213E42550063DE35 /* OptionsViewController.swift */; };
@@ -210,6 +212,7 @@
 		A1000000000000000000010F /* LegacyDotNoteImportSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDotNoteImportSource.swift; sourceTree = "<group>"; };
 		A10000000000000000000110 /* LegacyDotNoteImportState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDotNoteImportState.swift; sourceTree = "<group>"; };
 		A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDotNoteImportFactory.swift; sourceTree = "<group>"; };
+		A10000000000000000000113 /* LegacyRealmModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmModels.swift; sourceTree = "<group>"; };
 		CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Orbit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE388C29213E42550063DE35 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		CE84E7482137D3350097357F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
@@ -224,6 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000000000000000000012 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +486,7 @@
 				A10000000000000000000102 /* LegacyDotNoteSnapshots.swift */,
 				A10000000000000000000103 /* LegacyDotNoteMapper.swift */,
 				A10000000000000000000104 /* LegacyRealmStore.swift */,
+				A10000000000000000000113 /* LegacyRealmModels.swift */,
 				A1000000000000000000010F /* LegacyDotNoteImportSource.swift */,
 				A10000000000000000000110 /* LegacyDotNoteImportState.swift */,
 				A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */,
@@ -529,6 +534,9 @@
 			dependencies = (
 			);
 			name = Orbit;
+			packageProductDependencies = (
+				A10000000000000000000301 /* RealmSwift */,
+			);
 			productName = Orbit;
 			productReference = 620F53AC211EF16900A94A01 /* OrbitDEV.app */;
 			productType = "com.apple.product-type.application";
@@ -603,6 +611,9 @@
 				Base,
 			);
 			mainGroup = 620F53A3211EF16900A94A01;
+			packageReferences = (
+				A10000000000000000000300 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = 620F53AD211EF16900A94A01 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -752,6 +763,7 @@
 				A1000000000000000000000E /* SwiftDataDotNoteStore.swift in Sources */,
 				A10000000000000000000010 /* LegacyDotNoteImportState.swift in Sources */,
 				A10000000000000000000004 /* LegacyRealmStore.swift in Sources */,
+				A10000000000000000000013 /* LegacyRealmModels.swift in Sources */,
 				A10000000000000000000011 /* LegacyDotNoteImportFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -858,9 +870,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = "-Wno-invalid-specialization";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -876,12 +890,14 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = X46PH8MSE8;
 				Deployment = dev;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				INFOPLIST_FILE = Orbit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_CPLUSPLUSFLAGS = "-Wno-invalid-specialization";
 				PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)DEV";
 				SWIFT_VERSION = 5.0;
@@ -977,8 +993,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CPLUSPLUSFLAGS = "-Wno-invalid-specialization";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -995,12 +1013,14 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = X46PH8MSE8;
 				Deployment = prod;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				INFOPLIST_FILE = Orbit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_CPLUSPLUSFLAGS = "-Wno-invalid-specialization";
 				PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1091,6 +1111,25 @@
 			defaultConfigurationName = Prod;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A10000000000000000000300 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.54.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A10000000000000000000301 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000300 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 620F53A4211EF16900A94A01 /* Project object */;
 }

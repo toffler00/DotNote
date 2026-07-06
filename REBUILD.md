@@ -2,6 +2,13 @@
 
 This branch revives the existing App Store app by rebuilding the implementation with SwiftUI while preserving the app identity and user data.
 
+> **Redesign guardrails:** A Claude-driven design pass will follow this
+> modernization. The current work is not a design task, but some choices here
+> affect the future redesign's freedom. Follow the guardrails in
+> [`REDESIGN_READINESS.md`](REDESIGN_READINESS.md) while working — mainly: keep
+> logic out of Views, and persist semantic values rather than presentation
+> values.
+
 ## Non-negotiables
 
 - Keep the production bundle identifier: `io.orbit.orbit.prod`.
@@ -58,7 +65,8 @@ This branch revives the existing App Store app by rebuilding the implementation 
 7. Done: switch the app launch path away from the storyboard by using a SwiftUI `@main` entry point.
 8. Done: add the first SwiftData-backed store boundary.
 9. Done: add the one-time import boundary for legacy Realm data.
-10. Next: reconnect a maintained Realm dependency so the import source can read existing app data.
+10. Done: reconnect a maintained Realm dependency so the import source can read existing app data.
+11. Next: verify the Realm-to-SwiftData import against a real or fixture Realm file.
 
 ## Migration Layer
 
@@ -67,6 +75,7 @@ The first migration files live under `Orbit/Rebuild/Migration`.
 - `LegacyDotNoteSnapshots.swift` defines lightweight snapshots of the legacy Realm objects.
 - `LegacyDotNoteMapper.swift` converts snapshots into the new domain models.
 - `LegacyRealmStore.swift` reads the existing Realm database only when `RealmSwift` is available.
+- `LegacyRealmModels.swift` defines the minimal legacy Realm object schema used only by the importer.
 - `LegacyDotNoteImportSource.swift` defines the boundary used by the new SwiftData store.
 - `LegacyDotNoteImportState.swift` tracks whether the one-time import has completed.
 - `LegacyDotNoteImportFactory.swift` activates the Realm import source only when `RealmSwift` is available.
@@ -83,7 +92,7 @@ Legacy alignment mapping:
 - `left`, `center`, and `right` map directly.
 - Unknown alignment values fall back to `.left`.
 
-Next, wire these files into the app target after the project is moved to a modern Swift toolchain setting. Until then, they remain source-controlled scaffolding and can be typechecked independently.
+The import source is now wired into the app target through Swift Package Manager's `RealmSwift` package. Realm is still treated as a legacy read-only dependency, not as the app's long-term database.
 
 ## Project Modernization Notes
 
@@ -95,6 +104,11 @@ Initial project settings now use:
 - Swift language version: `5.0`
 
 The deprecated Fabric run script build phase has been removed from the app target. The old Fabric and Crashlytics pods are still present for now and should be removed in a focused dependency cleanup step.
+
+Swift Package Manager dependencies now include:
+
+- `RealmSwift` 10.54.6
+- `realm-core` 14.14.0, resolved transitively by RealmSwift
 
 The SwiftUI shell lives under `Orbit/Rebuild/App`.
 
@@ -121,6 +135,7 @@ Current build status:
 - `xcodebuild -list -project Orbit.xcodeproj` succeeds.
 - Independent typechecking for the rebuild domain and migration files succeeds.
 - `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO` succeeds after disconnecting the app target from CocoaPods and compiling only the SwiftUI rebuild sources.
+- With RealmSwift connected, the current Xcode/SDK toolchain requires `OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization` while compiling RealmCore. The verified command is `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO`.
 - `pod install` succeeds with network access, but `xcodebuild -workspace Orbit.xcworkspace` still reports that the workspace is not a workspace file in this environment. Continue using the project build as the immediate diagnostic path while old pods are removed or replaced.
 
 Legacy UIKit files are still present in the repository for reference, but they are no longer compiled by the app target. This keeps the production bundle ID and app target alive while giving the rebuild a clean SwiftUI build surface.
