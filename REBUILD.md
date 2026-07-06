@@ -66,7 +66,8 @@ This branch revives the existing App Store app by rebuilding the implementation 
 8. Done: add the first SwiftData-backed store boundary.
 9. Done: add the one-time import boundary for legacy Realm data.
 10. Done: reconnect a maintained Realm dependency so the import source can read existing app data.
-11. Next: verify the Realm-to-SwiftData import against a real or fixture Realm file.
+11. Done: add a fixture-style unit test for the Realm-to-SwiftData import boundary.
+12. Next: run the new unit test with Simulator access and then verify against a real legacy Realm file.
 
 ## Migration Layer
 
@@ -136,6 +137,7 @@ Current build status:
 - Independent typechecking for the rebuild domain and migration files succeeds.
 - `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO` succeeds after disconnecting the app target from CocoaPods and compiling only the SwiftUI rebuild sources.
 - With RealmSwift connected, the current Xcode/SDK toolchain requires `OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization` while compiling RealmCore. The verified command is `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO`.
+- `OrbitTests/LegacyRealmImportTests.swift` creates a temporary Realm file and verifies that `LegacyRealmStore` maps legacy content/settings into the rebuild snapshot. Running `xcodebuild test` still needs Simulator access outside the current sandbox, so the test has been added but not executed in this session.
 - `pod install` succeeds with network access, but `xcodebuild -workspace Orbit.xcworkspace` still reports that the workspace is not a workspace file in this environment. Continue using the project build as the immediate diagnostic path while old pods are removed or replaced.
 
 Legacy UIKit files are still present in the repository for reference, but they are no longer compiled by the app target. This keeps the production bundle ID and app target alive while giving the rebuild a clean SwiftUI build surface.

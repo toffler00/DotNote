@@ -92,6 +92,8 @@
 		A10000000000000000000011 /* LegacyDotNoteImportFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */; };
 		A10000000000000000000012 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000301 /* RealmSwift */; };
 		A10000000000000000000013 /* LegacyRealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000113 /* LegacyRealmModels.swift */; };
+		A10000000000000000000014 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000301 /* RealmSwift */; };
+		A10000000000000000000015 /* LegacyRealmImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000114 /* LegacyRealmImportTests.swift */; };
 		A30363786577CE147CA4028E /* Pods_Orbit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */; };
 		CADA18B3F13C9E1896B6E0BE /* Pods_OrbitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33AFCA43DE115D59459EAB8B /* Pods_OrbitUITests.framework */; };
 		CE388C2A213E42550063DE35 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE388C29213E42550063DE35 /* OptionsViewController.swift */; };
@@ -213,6 +215,7 @@
 		A10000000000000000000110 /* LegacyDotNoteImportState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDotNoteImportState.swift; sourceTree = "<group>"; };
 		A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDotNoteImportFactory.swift; sourceTree = "<group>"; };
 		A10000000000000000000113 /* LegacyRealmModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmModels.swift; sourceTree = "<group>"; };
+		A10000000000000000000114 /* LegacyRealmImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmImportTests.swift; sourceTree = "<group>"; };
 		CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Orbit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE388C29213E42550063DE35 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		CE84E7482137D3350097357F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
@@ -235,6 +238,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000000000000000000014 /* RealmSwift in Frameworks */,
 				E9B9EBF10E148D0D4ED1EE5E /* Pods_OrbitTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				620F53C4211EF16A00A94A01 /* OrbitTests.swift */,
+				A10000000000000000000114 /* LegacyRealmImportTests.swift */,
 				620F53C6211EF16A00A94A01 /* Info.plist */,
 			);
 			path = OrbitTests;
@@ -556,6 +561,9 @@
 				620F53C2211EF16A00A94A01 /* PBXTargetDependency */,
 			);
 			name = OrbitTests;
+			packageProductDependencies = (
+				A10000000000000000000301 /* RealmSwift */,
+			);
 			productName = OrbitTests;
 			productReference = 620F53C0211EF16A00A94A01 /* OrbitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -772,6 +780,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000000000000000000015 /* LegacyRealmImportTests.swift in Sources */,
 				620F53C5211EF16A00A94A01 /* OrbitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -923,7 +932,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Orbit.app/Orbit";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OrbitDEV.app/OrbitDEV";
 			};
 			name = Dev;
 		};
