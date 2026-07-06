@@ -23,3 +23,10 @@ fastlane/screenshots/screenshots.html
 fastlane/test_output
 
 # End of https://www.gitignore.io/api/fastlane
+
+### macOS ###
+.DS_Store
+
+### Xcode user state ###
+xcuserdata/
+*.xcuserstate
