@@ -15,6 +15,7 @@ struct DotNoteRootView: View {
             DotNoteMigrationPreviewView(
                 entries: appModel.entries,
                 settings: appModel.settings,
+                diagnostics: appModel.diagnostics,
                 loadState: appModel.loadState
             )
                 .navigationTitle("Dot Note")

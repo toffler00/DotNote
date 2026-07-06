@@ -18,6 +18,7 @@ final class DotNoteAppModel: ObservableObject {
 
     @Published private(set) var entries: [DotNoteEntry] = []
     @Published private(set) var settings: DotNoteSettings?
+    @Published private(set) var diagnostics: DotNoteStoreDiagnostics = DotNoteStoreDiagnostics()
     @Published private(set) var loadState: LoadState = .idle
 
     private let store: DotNoteStore
@@ -35,6 +36,7 @@ final class DotNoteAppModel: ObservableObject {
             let snapshot = try await store.loadInitialSnapshot()
             entries = snapshot.entries
             settings = snapshot.settings
+            diagnostics = snapshot.diagnostics
             loadState = .loaded
         } catch {
             loadState = .failed(error.localizedDescription)

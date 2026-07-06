@@ -10,6 +10,7 @@ import SwiftUI
 struct DotNoteMigrationPreviewView: View {
     var entries: [DotNoteEntry]
     var settings: DotNoteSettings?
+    var diagnostics: DotNoteStoreDiagnostics
     var loadState: DotNoteAppModel.LoadState
 
     var body: some View {
@@ -23,6 +24,12 @@ struct DotNoteMigrationPreviewView: View {
                 } else {
                     LabeledContent("Settings", value: "Not imported")
                 }
+            }
+
+            Section("Import diagnostics") {
+                LabeledContent("Legacy source", value: legacySourceDescription)
+                LabeledContent("Import completed", value: diagnostics.didCompleteLegacyImport ? "Yes" : "No")
+                LabeledContent("Realm file", value: legacyFileDescription)
             }
 
             Section("Entries") {
@@ -49,6 +56,15 @@ struct DotNoteMigrationPreviewView: View {
         case .failed(let message):
             return message
         }
+    }
+
+    private var legacySourceDescription: String {
+        guard diagnostics.hasLegacyImportSource else { return "Unavailable" }
+        return diagnostics.legacyImportSourceDescription ?? "Available"
+    }
+
+    private var legacyFileDescription: String {
+        diagnostics.legacyImportFileURL?.path ?? "Not found"
     }
 }
 

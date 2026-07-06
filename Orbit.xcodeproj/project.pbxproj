@@ -239,7 +239,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000014 /* RealmSwift in Frameworks */,
-				E9B9EBF10E148D0D4ED1EE5E /* Pods_OrbitTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,7 +549,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 620F53D7211EF16A00A94A01 /* Build configuration list for PBXNativeTarget "OrbitTests" */;
 			buildPhases = (
-				688426A9E6CA25B9176300AE /* [CP] Check Pods Manifest.lock */,
 				620F53BC211EF16A00A94A01 /* Sources */,
 				620F53BD211EF16A00A94A01 /* Frameworks */,
 				620F53BE211EF16A00A94A01 /* Resources */,
@@ -908,6 +906,7 @@
 				);
 				OTHER_CPLUSPLUSFLAGS = "-Wno-invalid-specialization";
 				PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.prod;
+				PRODUCT_MODULE_NAME = Orbit;
 				PRODUCT_NAME = "$(TARGET_NAME)DEV";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -916,7 +915,6 @@
 		};
 		620F53DF211EF28200A94A01 /* Dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FC1B1E1206B0676A561AB518 /* Pods-OrbitTests.dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1031,6 +1029,7 @@
 				);
 				OTHER_CPLUSPLUSFLAGS = "-Wno-invalid-specialization";
 				PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.prod;
+				PRODUCT_MODULE_NAME = Orbit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1039,7 +1038,6 @@
 		};
 		620F53E3211EF28A00A94A01 /* Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 688EAB7E305E75A5D496F632 /* Pods-OrbitTests.prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

@@ -72,5 +72,9 @@ final class LegacyRealmImportTests: XCTestCase {
         XCTAssertEqual(snapshot.settings?.bodyFontName, "LegacyBodyFont")
         XCTAssertEqual(snapshot.settings?.bodyFontSize, 19)
         XCTAssertEqual(snapshot.settings?.collectionFilter, 2)
+
+        XCTAssertTrue(snapshot.diagnostics.hasLegacyImportSource)
+        XCTAssertEqual(snapshot.diagnostics.legacyImportSourceDescription, "Realm")
+        XCTAssertEqual(snapshot.diagnostics.legacyImportFileURL, realmURL)
     }
 }

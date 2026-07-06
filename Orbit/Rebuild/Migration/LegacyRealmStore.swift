@@ -23,8 +23,16 @@ final class LegacyRealmStore {
         self.realm = try Realm(configuration: importConfiguration)
     }
 
+    var sourceDescription: String {
+        "Realm"
+    }
+
+    var sourceFileURL: URL? {
+        realm.configuration.fileURL
+    }
+
     var defaultRealmFileURL: URL? {
-        Realm.Configuration.defaultConfiguration.fileURL
+        sourceFileURL
     }
 
     func loadContentSnapshots() -> [LegacyDotNoteContentSnapshot] {
@@ -69,7 +77,12 @@ extension LegacyRealmStore: LegacyDotNoteImportSource {
     func loadLegacySnapshot() throws -> DotNoteStoreSnapshot {
         DotNoteStoreSnapshot(
             entries: loadEntries(),
-            settings: loadSettings()
+            settings: loadSettings(),
+            diagnostics: DotNoteStoreDiagnostics(
+                hasLegacyImportSource: true,
+                legacyImportSourceDescription: sourceDescription,
+                legacyImportFileURL: sourceFileURL
+            )
         )
     }
 }

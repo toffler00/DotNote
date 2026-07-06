@@ -67,7 +67,9 @@ This branch revives the existing App Store app by rebuilding the implementation 
 9. Done: add the one-time import boundary for legacy Realm data.
 10. Done: reconnect a maintained Realm dependency so the import source can read existing app data.
 11. Done: add a fixture-style unit test for the Realm-to-SwiftData import boundary.
-12. Next: run the new unit test with Simulator access and then verify against a real legacy Realm file.
+12. Done: run the new unit test with Simulator access.
+13. Done: surface migration diagnostics in the temporary SwiftUI preview.
+14. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
 
 ## Migration Layer
 
@@ -116,7 +118,7 @@ The SwiftUI shell lives under `Orbit/Rebuild/App`.
 - `DotNoteApp.swift` is the current SwiftUI app entry point.
 - `DotNoteAppModel.swift` owns the root screen state and async loading flow.
 - `DotNoteRootView.swift` is the future SwiftUI root view.
-- `DotNoteMigrationPreviewView.swift` is a temporary view for checking imported legacy entries.
+- `DotNoteMigrationPreviewView.swift` is a temporary view for checking imported legacy entries and import diagnostics.
 
 The first app data boundary lives under `Orbit/Rebuild/Store`.
 
@@ -137,7 +139,8 @@ Current build status:
 - Independent typechecking for the rebuild domain and migration files succeeds.
 - `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO` succeeds after disconnecting the app target from CocoaPods and compiling only the SwiftUI rebuild sources.
 - With RealmSwift connected, the current Xcode/SDK toolchain requires `OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization` while compiling RealmCore. The verified command is `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO`.
-- `OrbitTests/LegacyRealmImportTests.swift` creates a temporary Realm file and verifies that `LegacyRealmStore` maps legacy content/settings into the rebuild snapshot. Running `xcodebuild test` still needs Simulator access outside the current sandbox, so the test has been added but not executed in this session.
+- `OrbitTests/LegacyRealmImportTests.swift` creates a temporary Realm file and verifies that `LegacyRealmStore` maps legacy content/settings and diagnostics into the rebuild snapshot.
+- `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds.
 - `pod install` succeeds with network access, but `xcodebuild -workspace Orbit.xcworkspace` still reports that the workspace is not a workspace file in this environment. Continue using the project build as the immediate diagnostic path while old pods are removed or replaced.
 
 Legacy UIKit files are still present in the repository for reference, but they are no longer compiled by the app target. This keeps the production bundle ID and app target alive while giving the rebuild a clean SwiftUI build surface.

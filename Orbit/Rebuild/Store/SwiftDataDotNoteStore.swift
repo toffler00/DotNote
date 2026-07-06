@@ -27,7 +27,9 @@ struct SwiftDataDotNoteStore: DotNoteStore {
     func loadInitialSnapshot() async throws -> DotNoteStoreSnapshot {
         let context = ModelContext(modelContainer)
         try importLegacyDataIfNeeded(in: context)
-        return try loadSnapshot(in: context)
+        var snapshot = try loadSnapshot(in: context)
+        snapshot.diagnostics = makeDiagnostics()
+        return snapshot
     }
 
     @MainActor
@@ -75,5 +77,14 @@ struct SwiftDataDotNoteStore: DotNoteStore {
         var descriptor = FetchDescriptor<DotNoteEntryRecord>()
         descriptor.fetchLimit = 1
         return try context.fetch(descriptor).isEmpty
+    }
+
+    private func makeDiagnostics() -> DotNoteStoreDiagnostics {
+        DotNoteStoreDiagnostics(
+            hasLegacyImportSource: legacyImportSource != nil,
+            legacyImportSourceDescription: legacyImportSource?.sourceDescription,
+            legacyImportFileURL: legacyImportSource?.sourceFileURL,
+            didCompleteLegacyImport: legacyImportState.didCompleteImport
+        )
     }
 }

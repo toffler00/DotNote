@@ -8,6 +8,18 @@
 import Foundation
 
 protocol LegacyDotNoteImportSource {
+    var sourceDescription: String { get }
+    var sourceFileURL: URL? { get }
+
     func loadLegacySnapshot() throws -> DotNoteStoreSnapshot
 }
 
+extension LegacyDotNoteImportSource {
+    var sourceDescription: String {
+        String(describing: Self.self)
+    }
+
+    var sourceFileURL: URL? {
+        nil
+    }
+}
