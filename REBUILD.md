@@ -73,7 +73,8 @@ This branch revives the existing App Store app by rebuilding the implementation 
 15. Done: verify the intended `Orbit_Dev` and `Orbit_Prod` scheme split.
 16. Done: add the first SwiftData write path through the SwiftUI shell.
 17. Done: add the first SwiftData edit and delete path through the SwiftUI shell.
-18. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
+18. Done: remove CocoaPods from the active project/workspace build path.
+19. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
 
 ## Migration Layer
 
@@ -112,13 +113,14 @@ Scheme split:
 - Both configurations keep the production bundle identifier `io.orbit.orbit.prod` and module name `Orbit` so the App Store identity and app container path remain aligned.
 - `Orbit_Prod` keeps its Test action on `Dev`. This is intentional: the production configuration does not enable `@testable import Orbit`, so forcing tests to `Prod` fails with an incompatible Swift module error. Release verification should use a Prod build/archive, while unit tests run through the testable Dev configuration.
 - Both shared schemes now run the current `OrbitTests` unit target only. The stale `OrbitUITests` target is no longer attached to `Orbit_Prod`.
+- CocoaPods integration has been removed from the active project and workspace. The rebuild now uses Swift Package Manager for the temporary RealmSwift import bridge.
 
 Initial project settings now use:
 
 - iOS deployment target: `17.0`
 - Swift language version: `5.0`
 
-The deprecated Fabric run script build phase has been removed from the app target. The old Fabric and Crashlytics pods are still present for now and should be removed in a focused dependency cleanup step.
+The deprecated Fabric run script build phase and CocoaPods build phases have been removed from the active project. `Podfile` and `Podfile.lock` have been removed; the old checked-in `Pods/` vendor tree can be deleted in a separate repository cleanup commit if we want to keep that large diff isolated.
 
 Swift Package Manager dependencies now include:
 
@@ -158,6 +160,6 @@ Current build status:
 - `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds with 9 tests, 1 skipped fixture test, and 0 failures.
 - `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Prod -configuration Prod -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds.
 - `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Prod -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds using the scheme's Dev Test action.
-- `pod install` succeeds with network access, but `xcodebuild -workspace Orbit.xcworkspace` still reports that the workspace is not a workspace file in this environment. Continue using the project build as the immediate diagnostic path while old pods are removed or replaced.
+- CocoaPods is no longer part of the rebuild build path. Continue using the project build as the immediate diagnostic path while the SwiftUI rebuild is still sharing the legacy repository shape.
 
 Legacy UIKit files are still present in the repository for reference, but they are no longer compiled by the app target. This keeps the production bundle ID and app target alive while giving the rebuild a clean SwiftUI build surface.

@@ -94,12 +94,9 @@
 		A10000000000000000000013 /* LegacyRealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000113 /* LegacyRealmModels.swift */; };
 		A10000000000000000000014 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000301 /* RealmSwift */; };
 		A10000000000000000000015 /* LegacyRealmImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000114 /* LegacyRealmImportTests.swift */; };
-		A30363786577CE147CA4028E /* Pods_Orbit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */; };
-		CADA18B3F13C9E1896B6E0BE /* Pods_OrbitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33AFCA43DE115D59459EAB8B /* Pods_OrbitUITests.framework */; };
 		CE388C2A213E42550063DE35 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE388C29213E42550063DE35 /* OptionsViewController.swift */; };
 		CE84E7492137D3350097357F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE84E7482137D3350097357F /* ListViewController.swift */; };
 		CE9DDA472138E9B0007F0BEA /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */; };
-		E9B9EBF10E148D0D4ED1EE5E /* Pods_OrbitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44D744F7CDE1FACBB621B745 /* Pods_OrbitTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,10 +117,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		278DB13B1E49DE50C43CF8C3 /* Pods-Orbit.dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Orbit.dev.xcconfig"; path = "Pods/Target Support Files/Pods-Orbit/Pods-Orbit.dev.xcconfig"; sourceTree = "<group>"; };
-		33AFCA43DE115D59459EAB8B /* Pods_OrbitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OrbitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		44D744F7CDE1FACBB621B745 /* Pods_OrbitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OrbitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4F3C0D0C32A7CDA5F16445B0 /* Pods-OrbitUITests.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitUITests.prod.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitUITests/Pods-OrbitUITests.prod.xcconfig"; sourceTree = "<group>"; };
 		620B18D12265D90C00AB5691 /* NanumBarunpenR.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumBarunpenR.otf; sourceTree = "<group>"; };
 		620B18D32265D9D900AB5691 /* opensourceLicense.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = opensourceLicense.md; sourceTree = "<group>"; };
 		620B18DD226610B700AB5691 /* SSFlowerRoad.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SSFlowerRoad.ttf; sourceTree = "<group>"; };
@@ -187,7 +180,6 @@
 		62E3E59522623A0B0053C838 /* UIButtonSetBackgroundColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonSetBackgroundColor.swift; sourceTree = "<group>"; };
 		62F92F8221AC00CB0083AB9A /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		62F92F8421AC1CF10083AB9A /* CustomNavigationBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBackButton.swift; sourceTree = "<group>"; };
-		688EAB7E305E75A5D496F632 /* Pods-OrbitTests.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitTests.prod.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitTests/Pods-OrbitTests.prod.xcconfig"; sourceTree = "<group>"; };
 		6A2AFDF0213A68B900F5B38B /* DBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBModel.swift; sourceTree = "<group>"; };
 		6A331FFB2131485600FFE74F /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		6A331FFD21314B9100FFE74F /* WriteDoneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteDoneDelegate.swift; sourceTree = "<group>"; };
@@ -216,13 +208,9 @@
 		A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDotNoteImportFactory.swift; sourceTree = "<group>"; };
 		A10000000000000000000113 /* LegacyRealmModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmModels.swift; sourceTree = "<group>"; };
 		A10000000000000000000114 /* LegacyRealmImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRealmImportTests.swift; sourceTree = "<group>"; };
-		CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Orbit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE388C29213E42550063DE35 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		CE84E7482137D3350097357F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
-		DD9A080CFCF0F16A7A10ED7D /* Pods-Orbit.prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Orbit.prod.xcconfig"; path = "Pods/Target Support Files/Pods-Orbit/Pods-Orbit.prod.xcconfig"; sourceTree = "<group>"; };
-		E8FD022B325BCF794A6C54DC /* Pods-OrbitUITests.dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitUITests.dev.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitUITests/Pods-OrbitUITests.dev.xcconfig"; sourceTree = "<group>"; };
-		FC1B1E1206B0676A561AB518 /* Pods-OrbitTests.dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OrbitTests.dev.xcconfig"; path = "Pods/Target Support Files/Pods-OrbitTests/Pods-OrbitTests.dev.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,7 +234,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CADA18B3F13C9E1896B6E0BE /* Pods_OrbitUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,9 +243,6 @@
 		3667E6C8A7A9D1B80AAD0B54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CB85391CFAE15A2F774AEF66 /* Pods_Orbit.framework */,
-				44D744F7CDE1FACBB621B745 /* Pods_OrbitTests.framework */,
-				33AFCA43DE115D59459EAB8B /* Pods_OrbitUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -297,7 +281,6 @@
 				620F53C3211EF16A00A94A01 /* OrbitTests */,
 				620F53CE211EF16A00A94A01 /* OrbitUITests */,
 				620F53AD211EF16900A94A01 /* Products */,
-				80E4550AD1C705F40FA9380F /* Pods */,
 				3667E6C8A7A9D1B80AAD0B54 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -452,19 +435,6 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
-		80E4550AD1C705F40FA9380F /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				278DB13B1E49DE50C43CF8C3 /* Pods-Orbit.dev.xcconfig */,
-				DD9A080CFCF0F16A7A10ED7D /* Pods-Orbit.prod.xcconfig */,
-				FC1B1E1206B0676A561AB518 /* Pods-OrbitTests.dev.xcconfig */,
-				688EAB7E305E75A5D496F632 /* Pods-OrbitTests.prod.xcconfig */,
-				E8FD022B325BCF794A6C54DC /* Pods-OrbitUITests.dev.xcconfig */,
-				4F3C0D0C32A7CDA5F16445B0 /* Pods-OrbitUITests.prod.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		A10000000000000000000201 /* Rebuild */ = {
 			isa = PBXGroup;
 			children = (
@@ -570,7 +540,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 620F53DA211EF16A00A94A01 /* Build configuration list for PBXNativeTarget "OrbitUITests" */;
 			buildPhases = (
-				453B26617A3ADED77652B67F /* [CP] Check Pods Manifest.lock */,
 				620F53C7211EF16A00A94A01 /* Sources */,
 				620F53C8211EF16A00A94A01 /* Frameworks */,
 				620F53C9211EF16A00A94A01 /* Resources */,
@@ -673,80 +642,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		3C61EAEB31D48ABB2221B985 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Orbit-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		453B26617A3ADED77652B67F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OrbitUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		65EAAD5D8F770AE447A8FAB6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Orbit/Pods-Orbit-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Orbit/Pods-Orbit-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Orbit/Pods-Orbit-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		688426A9E6CA25B9176300AE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OrbitTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		620F53A8211EF16900A94A01 /* Sources */ = {
@@ -936,7 +831,6 @@
 		};
 		620F53E0211EF28200A94A01 /* Dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E8FD022B325BCF794A6C54DC /* Pods-OrbitUITests.dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1059,7 +953,6 @@
 		};
 		620F53E4211EF28A00A94A01 /* Prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4F3C0D0C32A7CDA5F16445B0 /* Pods-OrbitUITests.prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

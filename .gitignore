@@ -30,3 +30,7 @@ fastlane/test_output
 ### Xcode user state ###
 xcuserdata/
 *.xcuserstate
+
+### Rebuild generated outputs ###
+build/
+Pods/
