@@ -3,6 +3,14 @@
 This document explains how to gather old Dot Note UI screenshots for the
 redesign pass.
 
+> **Status (obtained):** Live runtime captures of the real installed App Store
+> build are now in `docs/legacy-ui-screenshots/` (6 screenshots) and
+> `docs/legacy-ui-recordings/` (walkthrough video). See
+> [`docs/legacy-ui-screenshots/README.md`](legacy-ui-screenshots/README.md) for
+> the annotated inventory and sampled palette. The "Best Option" below has been
+> fulfilled; the remaining gaps (weather/font pickers, collection views,
+> tutorial) live in the video and can be frame-extracted if stills are needed.
+
 ## Current Reality
 
 The legacy UIKit source files and storyboards are still in the repository, but
