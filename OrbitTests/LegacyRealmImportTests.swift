@@ -77,4 +77,47 @@ final class LegacyRealmImportTests: XCTestCase {
         XCTAssertEqual(snapshot.diagnostics.legacyImportSourceDescription, "Realm")
         XCTAssertEqual(snapshot.diagnostics.legacyImportFileURL, realmURL)
     }
+
+    func testLoadLegacySnapshotFromExternalRealmFixtureWhenAvailable() throws {
+        let realmURL = try externalRealmFixtureURL()
+        let configuration = Realm.Configuration(
+            fileURL: realmURL,
+            readOnly: true,
+            objectTypes: [
+                User.self,
+                Content.self,
+                Settings.self
+            ]
+        )
+
+        let store = try LegacyRealmStore(configuration: configuration)
+        let snapshot = try store.loadLegacySnapshot()
+
+        XCTAssertTrue(snapshot.diagnostics.hasLegacyImportSource)
+        XCTAssertEqual(snapshot.diagnostics.legacyImportSourceDescription, "Realm")
+        XCTAssertEqual(snapshot.diagnostics.legacyImportFileURL, realmURL)
+        XCTAssertFalse(
+            snapshot.entries.isEmpty && snapshot.settings == nil,
+            "The legacy Realm fixture opened, but no content or settings were imported."
+        )
+    }
+
+    private func externalRealmFixtureURL() throws -> URL {
+        if let path = ProcessInfo.processInfo.environment["DOTNOTE_LEGACY_REALM_FILE"],
+           !path.isEmpty {
+            let url = URL(fileURLWithPath: path)
+            guard FileManager.default.fileExists(atPath: url.path) else {
+                throw XCTSkip("DOTNOTE_LEGACY_REALM_FILE does not exist: \(url.path)")
+            }
+            return url
+        }
+
+        let fixtureURL = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .appendingPathComponent("Fixtures/LegacyRealm/default.realm")
+        guard FileManager.default.fileExists(atPath: fixtureURL.path) else {
+            throw XCTSkip("No external legacy Realm fixture is available.")
+        }
+        return fixtureURL
+    }
 }

@@ -69,7 +69,8 @@ This branch revives the existing App Store app by rebuilding the implementation 
 11. Done: add a fixture-style unit test for the Realm-to-SwiftData import boundary.
 12. Done: run the new unit test with Simulator access.
 13. Done: surface migration diagnostics in the temporary SwiftUI preview.
-14. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
+14. Done: add an optional external Realm fixture test path for real legacy files.
+15. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
 
 ## Migration Layer
 
@@ -140,6 +141,7 @@ Current build status:
 - `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO` succeeds after disconnecting the app target from CocoaPods and compiling only the SwiftUI rebuild sources.
 - With RealmSwift connected, the current Xcode/SDK toolchain requires `OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization` while compiling RealmCore. The verified command is `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO`.
 - `OrbitTests/LegacyRealmImportTests.swift` creates a temporary Realm file and verifies that `LegacyRealmStore` maps legacy content/settings and diagnostics into the rebuild snapshot.
+- `OrbitTests/LegacyRealmImportTests.swift` also checks a real legacy Realm file when `DOTNOTE_LEGACY_REALM_FILE` points to one or when `OrbitTests/Fixtures/LegacyRealm/default.realm` exists. The fixture directory ignores `*.realm` files so personal diary data is not committed by accident.
 - `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds.
 - `pod install` succeeds with network access, but `xcodebuild -workspace Orbit.xcworkspace` still reports that the workspace is not a workspace file in this environment. Continue using the project build as the immediate diagnostic path while old pods are removed or replaced.
 

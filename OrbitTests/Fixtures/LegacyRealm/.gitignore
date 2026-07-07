@@ -1,0 +1,5 @@
+*.realm
+*.realm.*
+*.lock
+*.management/
+!README.md
