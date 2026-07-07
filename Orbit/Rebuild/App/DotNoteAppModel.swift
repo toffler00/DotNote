@@ -45,24 +45,70 @@ final class DotNoteAppModel: ObservableObject {
     }
 
     func addMemo(title: String, body: String) async {
+        await addEntry(DotNoteEntry(kind: .memo, title: title, body: body))
+    }
+
+    func addEntry(_ entry: DotNoteEntry) async {
         guard !isSaving else { return }
 
         isSaving = true
         defer { isSaving = false }
 
         do {
-            let entry = DotNoteEntry(
-                kind: .memo,
-                title: title.trimmingCharacters(in: .whitespacesAndNewlines),
-                body: body.trimmingCharacters(in: .whitespacesAndNewlines)
-            )
-            let snapshot = try await store.addEntry(entry)
-            entries = snapshot.entries
-            settings = snapshot.settings
-            diagnostics = snapshot.diagnostics
-            loadState = .loaded
+            let snapshot = try await store.addEntry(entry.trimmedTextFields())
+            apply(snapshot: snapshot)
         } catch {
             loadState = .failed(error.localizedDescription)
         }
+    }
+
+    func updateEntry(_ entry: DotNoteEntry) async {
+        guard !isSaving else { return }
+
+        isSaving = true
+        defer { isSaving = false }
+
+        do {
+            let snapshot = try await store.updateEntry(entry.trimmedTextFields())
+            apply(snapshot: snapshot)
+        } catch {
+            loadState = .failed(error.localizedDescription)
+        }
+    }
+
+    func deleteEntry(id: DotNoteEntry.ID) async {
+        guard !isSaving else { return }
+
+        isSaving = true
+        defer { isSaving = false }
+
+        do {
+            let snapshot = try await store.deleteEntry(id: id)
+            apply(snapshot: snapshot)
+        } catch {
+            loadState = .failed(error.localizedDescription)
+        }
+    }
+
+    private func apply(snapshot: DotNoteStoreSnapshot) {
+        entries = snapshot.entries
+        settings = snapshot.settings
+        diagnostics = snapshot.diagnostics
+        loadState = .loaded
+    }
+}
+
+private extension DotNoteEntry {
+    func trimmedTextFields() -> DotNoteEntry {
+        DotNoteEntry(
+            id: id,
+            kind: kind,
+            createdAt: createdAt,
+            title: title.trimmingCharacters(in: .whitespacesAndNewlines),
+            weather: weather.trimmingCharacters(in: .whitespacesAndNewlines),
+            body: body.trimmingCharacters(in: .whitespacesAndNewlines),
+            textAlignment: textAlignment,
+            imageData: imageData
+        )
     }
 }

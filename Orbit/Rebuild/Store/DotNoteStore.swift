@@ -48,4 +48,10 @@ protocol DotNoteStore {
 
     @MainActor
     func addEntry(_ entry: DotNoteEntry) async throws -> DotNoteStoreSnapshot
+
+    @MainActor
+    func updateEntry(_ entry: DotNoteEntry) async throws -> DotNoteStoreSnapshot
+
+    @MainActor
+    func deleteEntry(id: DotNoteEntry.ID) async throws -> DotNoteStoreSnapshot
 }

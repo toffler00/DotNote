@@ -12,6 +12,8 @@ struct DotNoteMigrationPreviewView: View {
     var settings: DotNoteSettings?
     var diagnostics: DotNoteStoreDiagnostics
     var loadState: DotNoteAppModel.LoadState
+    var onSelectEntry: (DotNoteEntry) -> Void = { _ in }
+    var onDeleteEntries: (IndexSet) -> Void = { _ in }
 
     var body: some View {
         List {
@@ -38,8 +40,14 @@ struct DotNoteMigrationPreviewView: View {
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(entries) { entry in
-                        DotNoteEntryPreviewRow(entry: entry)
+                        Button {
+                            onSelectEntry(entry)
+                        } label: {
+                            DotNoteEntryPreviewRow(entry: entry)
+                        }
+                        .buttonStyle(.plain)
                     }
+                    .onDelete(perform: onDeleteEntries)
                 }
             }
         }

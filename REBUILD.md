@@ -72,7 +72,8 @@ This branch revives the existing App Store app by rebuilding the implementation 
 14. Done: add an optional external Realm fixture test path for real legacy files.
 15. Done: verify the intended `Orbit_Dev` and `Orbit_Prod` scheme split.
 16. Done: add the first SwiftData write path through the SwiftUI shell.
-17. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
+17. Done: add the first SwiftData edit and delete path through the SwiftUI shell.
+18. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
 
 ## Migration Layer
 
@@ -144,7 +145,7 @@ SwiftData is now the selected long-term persistence layer. Realm remains a legac
 
 On app startup, `SwiftDataDotNoteStore` checks whether SwiftData already has entries and whether the legacy import completion flag has been set. If SwiftData is empty and a legacy import source is available, it imports legacy entries/settings once, saves them into SwiftData, and records completion in `UserDefaults`.
 
-The temporary SwiftUI shell can now create a memo through a sheet and save it into SwiftData via `DotNoteStore.addEntry(_:)`. This is still a rebuild scaffold, not the final product interaction model.
+The temporary SwiftUI shell can now create, edit, and delete entries through a sheet and save those changes into SwiftData via `DotNoteStore.addEntry(_:)`, `DotNoteStore.updateEntry(_:)`, and `DotNoteStore.deleteEntry(id:)`. This is still a rebuild scaffold, not the final product interaction model.
 
 Current build status:
 
@@ -154,7 +155,7 @@ Current build status:
 - With RealmSwift connected, the current Xcode/SDK toolchain requires `OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization` while compiling RealmCore. The verified command is `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO`.
 - `OrbitTests/LegacyRealmImportTests.swift` creates a temporary Realm file and verifies that `LegacyRealmStore` maps legacy content/settings and diagnostics into the rebuild snapshot.
 - `OrbitTests/LegacyRealmImportTests.swift` also checks a real legacy Realm file when `DOTNOTE_LEGACY_REALM_FILE` points to one or when `OrbitTests/Fixtures/LegacyRealm/default.realm` exists. The fixture directory ignores `*.realm` files so personal diary data is not committed by accident.
-- `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds with 6 tests, 1 skipped fixture test, and 0 failures.
+- `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds with 9 tests, 1 skipped fixture test, and 0 failures.
 - `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Prod -configuration Prod -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds.
 - `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Prod -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds using the scheme's Dev Test action.
 - `pod install` succeeds with network access, but `xcodebuild -workspace Orbit.xcworkspace` still reports that the workspace is not a workspace file in this environment. Continue using the project build as the immediate diagnostic path while old pods are removed or replaced.

@@ -38,9 +38,31 @@ struct SwiftDataDotNoteStore: DotNoteStore {
         context.insert(DotNoteEntryRecord(entry: entry))
         try context.save()
 
-        var snapshot = try loadSnapshot(in: context)
-        snapshot.diagnostics = makeDiagnostics()
-        return snapshot
+        return try loadSnapshotWithDiagnostics(in: context)
+    }
+
+    @MainActor
+    func updateEntry(_ entry: DotNoteEntry) async throws -> DotNoteStoreSnapshot {
+        let context = ModelContext(modelContainer)
+
+        if let record = try fetchEntryRecord(id: entry.id, in: context) {
+            record.update(with: entry)
+            try context.save()
+        }
+
+        return try loadSnapshotWithDiagnostics(in: context)
+    }
+
+    @MainActor
+    func deleteEntry(id: DotNoteEntry.ID) async throws -> DotNoteStoreSnapshot {
+        let context = ModelContext(modelContainer)
+
+        if let record = try fetchEntryRecord(id: id, in: context) {
+            context.delete(record)
+            try context.save()
+        }
+
+        return try loadSnapshotWithDiagnostics(in: context)
     }
 
     @MainActor
@@ -54,6 +76,24 @@ struct SwiftDataDotNoteStore: DotNoteStore {
         let settings = try context.fetch(settingsDescriptor).first.map(DotNoteSettings.init(record:))
 
         return DotNoteStoreSnapshot(entries: entries, settings: settings)
+    }
+
+    @MainActor
+    private func loadSnapshotWithDiagnostics(in context: ModelContext) throws -> DotNoteStoreSnapshot {
+        var snapshot = try loadSnapshot(in: context)
+        snapshot.diagnostics = makeDiagnostics()
+        return snapshot
+    }
+
+    @MainActor
+    private func fetchEntryRecord(id: DotNoteEntry.ID, in context: ModelContext) throws -> DotNoteEntryRecord? {
+        var descriptor = FetchDescriptor<DotNoteEntryRecord>(
+            predicate: #Predicate { record in
+                record.id == id
+            }
+        )
+        descriptor.fetchLimit = 1
+        return try context.fetch(descriptor).first
     }
 
     @MainActor

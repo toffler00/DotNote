@@ -45,6 +45,38 @@ class OrbitTests: XCTestCase {
     }
 
     @MainActor
+    func testSwiftDataStoreUpdatesEntry() async throws {
+        let store = SwiftDataDotNoteStore(
+            modelContainer: try DotNoteModelContainer.make(isStoredInMemoryOnly: true)
+        )
+        let entry = DotNoteEntry(kind: .memo, title: "Draft", body: "Before")
+        _ = try await store.addEntry(entry)
+
+        var updatedEntry = entry
+        updatedEntry.kind = .diary
+        updatedEntry.title = "Updated"
+        updatedEntry.weather = "Cloudy"
+        updatedEntry.body = "After"
+
+        let snapshot = try await store.updateEntry(updatedEntry)
+
+        XCTAssertEqual(snapshot.entries, [updatedEntry])
+    }
+
+    @MainActor
+    func testSwiftDataStoreDeletesEntry() async throws {
+        let store = SwiftDataDotNoteStore(
+            modelContainer: try DotNoteModelContainer.make(isStoredInMemoryOnly: true)
+        )
+        let entry = DotNoteEntry(kind: .memo, title: "Draft", body: "Delete me")
+        _ = try await store.addEntry(entry)
+
+        let snapshot = try await store.deleteEntry(id: entry.id)
+
+        XCTAssertTrue(snapshot.entries.isEmpty)
+    }
+
+    @MainActor
     func testAppModelAddsTrimmedMemo() async throws {
         let appModel = DotNoteAppModel(store: InMemoryDotNoteStore())
 
@@ -54,6 +86,18 @@ class OrbitTests: XCTestCase {
         XCTAssertEqual(appModel.entries.first?.kind, .memo)
         XCTAssertEqual(appModel.entries.first?.title, "Draft")
         XCTAssertEqual(appModel.entries.first?.body, "Body text")
+        XCTAssertEqual(appModel.loadState, .loaded)
+    }
+
+    @MainActor
+    func testAppModelDeletesEntry() async throws {
+        let entry = DotNoteEntry(kind: .memo, title: "Draft", body: "Body")
+        let appModel = DotNoteAppModel(store: InMemoryDotNoteStore(snapshot: DotNoteStoreSnapshot(entries: [entry])))
+
+        await appModel.load()
+        await appModel.deleteEntry(id: entry.id)
+
+        XCTAssertTrue(appModel.entries.isEmpty)
         XCTAssertEqual(appModel.loadState, .loaded)
     }
     

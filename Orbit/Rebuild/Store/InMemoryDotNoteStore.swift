@@ -23,4 +23,19 @@ final class InMemoryDotNoteStore: DotNoteStore {
         snapshot.entries.insert(entry, at: 0)
         return snapshot
     }
+
+    func updateEntry(_ entry: DotNoteEntry) async throws -> DotNoteStoreSnapshot {
+        guard let index = snapshot.entries.firstIndex(where: { $0.id == entry.id }) else {
+            return snapshot
+        }
+
+        snapshot.entries[index] = entry
+        snapshot.entries.sort { $0.createdAt > $1.createdAt }
+        return snapshot
+    }
+
+    func deleteEntry(id: DotNoteEntry.ID) async throws -> DotNoteStoreSnapshot {
+        snapshot.entries.removeAll { $0.id == id }
+        return snapshot
+    }
 }
