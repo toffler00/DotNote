@@ -22,8 +22,39 @@ class OrbitTests: XCTestCase {
     }
     
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        XCTAssertTrue(true)
+    }
+
+    @MainActor
+    func testSwiftDataStoreAddsEntry() async throws {
+        let store = SwiftDataDotNoteStore(
+            modelContainer: try DotNoteModelContainer.make(isStoredInMemoryOnly: true)
+        )
+        let createdAt = Date(timeIntervalSince1970: 1_234)
+        let entry = DotNoteEntry(
+            kind: .memo,
+            createdAt: createdAt,
+            title: "Saved memo",
+            body: "Stored in SwiftData"
+        )
+
+        let snapshot = try await store.addEntry(entry)
+
+        XCTAssertEqual(snapshot.entries, [entry])
+        XCTAssertFalse(snapshot.diagnostics.hasLegacyImportSource)
+    }
+
+    @MainActor
+    func testAppModelAddsTrimmedMemo() async throws {
+        let appModel = DotNoteAppModel(store: InMemoryDotNoteStore())
+
+        await appModel.addMemo(title: "  Draft  ", body: "  Body text  ")
+
+        XCTAssertEqual(appModel.entries.count, 1)
+        XCTAssertEqual(appModel.entries.first?.kind, .memo)
+        XCTAssertEqual(appModel.entries.first?.title, "Draft")
+        XCTAssertEqual(appModel.entries.first?.body, "Body text")
+        XCTAssertEqual(appModel.loadState, .loaded)
     }
     
     func testPerformanceExample() {

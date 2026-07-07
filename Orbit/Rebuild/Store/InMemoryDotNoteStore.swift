@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct InMemoryDotNoteStore: DotNoteStore {
-    private let snapshot: DotNoteStoreSnapshot
+@MainActor
+final class InMemoryDotNoteStore: DotNoteStore {
+    private var snapshot: DotNoteStoreSnapshot
 
     init(snapshot: DotNoteStoreSnapshot = DotNoteStoreSnapshot()) {
         self.snapshot = snapshot
@@ -16,5 +17,10 @@ struct InMemoryDotNoteStore: DotNoteStore {
 
     func loadInitialSnapshot() async throws -> DotNoteStoreSnapshot {
         snapshot
+    }
+
+    func addEntry(_ entry: DotNoteEntry) async throws -> DotNoteStoreSnapshot {
+        snapshot.entries.insert(entry, at: 0)
+        return snapshot
     }
 }

@@ -33,6 +33,17 @@ struct SwiftDataDotNoteStore: DotNoteStore {
     }
 
     @MainActor
+    func addEntry(_ entry: DotNoteEntry) async throws -> DotNoteStoreSnapshot {
+        let context = ModelContext(modelContainer)
+        context.insert(DotNoteEntryRecord(entry: entry))
+        try context.save()
+
+        var snapshot = try loadSnapshot(in: context)
+        snapshot.diagnostics = makeDiagnostics()
+        return snapshot
+    }
+
+    @MainActor
     private func loadSnapshot(in context: ModelContext) throws -> DotNoteStoreSnapshot {
         let entryDescriptor = FetchDescriptor<DotNoteEntryRecord>(
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]

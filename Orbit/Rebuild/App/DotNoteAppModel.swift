@@ -20,6 +20,7 @@ final class DotNoteAppModel: ObservableObject {
     @Published private(set) var settings: DotNoteSettings?
     @Published private(set) var diagnostics: DotNoteStoreDiagnostics = DotNoteStoreDiagnostics()
     @Published private(set) var loadState: LoadState = .idle
+    @Published private(set) var isSaving: Bool = false
 
     private let store: DotNoteStore
 
@@ -34,6 +35,28 @@ final class DotNoteAppModel: ObservableObject {
 
         do {
             let snapshot = try await store.loadInitialSnapshot()
+            entries = snapshot.entries
+            settings = snapshot.settings
+            diagnostics = snapshot.diagnostics
+            loadState = .loaded
+        } catch {
+            loadState = .failed(error.localizedDescription)
+        }
+    }
+
+    func addMemo(title: String, body: String) async {
+        guard !isSaving else { return }
+
+        isSaving = true
+        defer { isSaving = false }
+
+        do {
+            let entry = DotNoteEntry(
+                kind: .memo,
+                title: title.trimmingCharacters(in: .whitespacesAndNewlines),
+                body: body.trimmingCharacters(in: .whitespacesAndNewlines)
+            )
+            let snapshot = try await store.addEntry(entry)
             entries = snapshot.entries
             settings = snapshot.settings
             diagnostics = snapshot.diagnostics

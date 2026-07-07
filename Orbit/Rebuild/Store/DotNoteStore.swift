@@ -45,4 +45,7 @@ struct DotNoteStoreSnapshot: Equatable {
 protocol DotNoteStore {
     @MainActor
     func loadInitialSnapshot() async throws -> DotNoteStoreSnapshot
+
+    @MainActor
+    func addEntry(_ entry: DotNoteEntry) async throws -> DotNoteStoreSnapshot
 }
