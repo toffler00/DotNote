@@ -12,6 +12,9 @@ a scaffold. Your job is the visual/interaction redesign.
 
 ## Read in this order
 
+0. **[NEXT_SESSION_START.md](NEXT_SESSION_START.md)** — resume instructions for
+   the next fresh session, including first implementation unit and verification
+   commands.
 1. **[CLAUDE_UI_REDESIGN_HANDOFF.md](CLAUDE_UI_REDESIGN_HANDOFF.md)** — current
    rebuild state, SwiftUI file map, build/test commands, next UI work. Start here.
 2. **[legacy-ui-screenshots/README.md](legacy-ui-screenshots/README.md)** —
