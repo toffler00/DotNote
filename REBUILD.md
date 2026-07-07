@@ -54,6 +54,18 @@ This branch revives the existing App Store app by rebuilding the implementation 
 - Temporarily keep or bridge: RealmSwift, RSKImageCropper.
 - Re-evaluate: JTAppleCalendar, because a SwiftUI calendar may be simpler and safer.
 
+## UI Redesign Handoff
+
+The next UI/design pass should start from:
+
+- `docs/CLAUDE_UI_REDESIGN_HANDOFF.md`
+- `docs/LEGACY_UI_SCREENSHOT_PLAN.md`
+- `REDESIGN_READINESS.md`
+
+These documents summarize the current rebuild state, the design guardrails, and
+the available paths for collecting legacy UI screenshots before redesigning the
+old app experience for a modern SwiftUI implementation.
+
 ## First Checkpoints
 
 1. Done: confirm `rebuild` branch starts from a clean legacy baseline.
