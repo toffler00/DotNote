@@ -38,16 +38,6 @@
                ReferencedContainer = "container:Orbit.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "620F53CA211EF16A00A94A01"
-               BuildableName = "OrbitUITests.xctest"
-               BlueprintName = "OrbitUITests"
-               ReferencedContainer = "container:Orbit.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

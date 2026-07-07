@@ -70,7 +70,8 @@ This branch revives the existing App Store app by rebuilding the implementation 
 12. Done: run the new unit test with Simulator access.
 13. Done: surface migration diagnostics in the temporary SwiftUI preview.
 14. Done: add an optional external Realm fixture test path for real legacy files.
-15. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
+15. Done: verify the intended `Orbit_Dev` and `Orbit_Prod` scheme split.
+16. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
 
 ## Migration Layer
 
@@ -101,6 +102,14 @@ The import source is now wired into the app target through Swift Package Manager
 ## Project Modernization Notes
 
 The app target keeps `PRODUCT_BUNDLE_IDENTIFIER = io.orbit.orbit.prod`.
+
+Scheme split:
+
+- `Orbit_Dev` uses the `Dev` build configuration and builds `OrbitDEV.app`.
+- `Orbit_Prod` uses the `Prod` build configuration for launch, profile, analyze, and archive, and builds `Orbit.app`.
+- Both configurations keep the production bundle identifier `io.orbit.orbit.prod` and module name `Orbit` so the App Store identity and app container path remain aligned.
+- `Orbit_Prod` keeps its Test action on `Dev`. This is intentional: the production configuration does not enable `@testable import Orbit`, so forcing tests to `Prod` fails with an incompatible Swift module error. Release verification should use a Prod build/archive, while unit tests run through the testable Dev configuration.
+- Both shared schemes now run the current `OrbitTests` unit target only. The stale `OrbitUITests` target is no longer attached to `Orbit_Prod`.
 
 Initial project settings now use:
 
@@ -143,6 +152,8 @@ Current build status:
 - `OrbitTests/LegacyRealmImportTests.swift` creates a temporary Realm file and verifies that `LegacyRealmStore` maps legacy content/settings and diagnostics into the rebuild snapshot.
 - `OrbitTests/LegacyRealmImportTests.swift` also checks a real legacy Realm file when `DOTNOTE_LEGACY_REALM_FILE` points to one or when `OrbitTests/Fixtures/LegacyRealm/default.realm` exists. The fixture directory ignores `*.realm` files so personal diary data is not committed by accident.
 - `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds.
+- `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Prod -configuration Prod -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds.
+- `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Prod -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds using the scheme's Dev Test action.
 - `pod install` succeeds with network access, but `xcodebuild -workspace Orbit.xcworkspace` still reports that the workspace is not a workspace file in this environment. Continue using the project build as the immediate diagnostic path while old pods are removed or replaced.
 
 Legacy UIKit files are still present in the repository for reference, but they are no longer compiled by the app target. This keeps the production bundle ID and app target alive while giving the rebuild a clean SwiftUI build surface.
