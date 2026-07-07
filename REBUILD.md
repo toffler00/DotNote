@@ -75,7 +75,9 @@ This branch revives the existing App Store app by rebuilding the implementation 
 17. Done: add the first SwiftData edit and delete path through the SwiftUI shell.
 18. Done: remove CocoaPods from the active project/workspace build path.
 19. Done: remove the checked-in CocoaPods vendor tree.
-20. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
+20. Pending external input: verify against a real legacy Realm file from an installed app container or preserved backup.
+21. Done: add a simulator UI smoke test for the current SwiftUI shell.
+22. Next: continue rebuilding the main product screens now that the scaffold is UI-testable.
 
 ## Migration Layer
 
@@ -150,6 +152,8 @@ On app startup, `SwiftDataDotNoteStore` checks whether SwiftData already has ent
 
 The temporary SwiftUI shell can now create, edit, and delete entries through a sheet and save those changes into SwiftData via `DotNoteStore.addEntry(_:)`, `DotNoteStore.updateEntry(_:)`, and `DotNoteStore.deleteEntry(id:)`. This is still a rebuild scaffold, not the final product interaction model.
 
+The rebuild is now UI-testable at the smoke-test level. `Orbit_Dev` includes `OrbitUITests`, which launches the app in an in-memory SwiftData mode using `--dotnote-ui-testing` and verifies the current SwiftUI shell can create, edit, and delete a memo through the simulator UI.
+
 Current build status:
 
 - `xcodebuild -list -project Orbit.xcodeproj` succeeds.
@@ -161,6 +165,7 @@ Current build status:
 - `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds with 9 tests, 1 skipped fixture test, and 0 failures.
 - `xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Prod -configuration Prod -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds.
 - `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Prod -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` succeeds using the scheme's Dev Test action.
+- `xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization CODE_SIGNING_ALLOWED=NO` now runs both unit tests and the SwiftUI UI smoke test. The verified result is 9 unit tests with 1 skipped external fixture test, plus 1 UI test, all with 0 failures.
 - CocoaPods is no longer part of the rebuild build path. Continue using the project build as the immediate diagnostic path while the SwiftUI rebuild is still sharing the legacy repository shape.
 
 Legacy UIKit files are still present in the repository for reference, but they are no longer compiled by the app target. This keeps the production bundle ID and app target alive while giving the rebuild a clean SwiftUI build surface.

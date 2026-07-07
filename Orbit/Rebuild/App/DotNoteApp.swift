@@ -15,12 +15,13 @@ struct DotNoteApp: App {
 
     init() {
         do {
-            let modelContainer = try DotNoteModelContainer.make()
+            let isUITesting = ProcessInfo.processInfo.arguments.contains("--dotnote-ui-testing")
+            let modelContainer = try DotNoteModelContainer.make(isStoredInMemoryOnly: isUITesting)
             self.modelContainer = modelContainer
             _appModel = StateObject(wrappedValue: DotNoteAppModel(
                 store: SwiftDataDotNoteStore(
                     modelContainer: modelContainer,
-                    legacyImportSource: LegacyDotNoteImportFactory.makeDefaultImportSource()
+                    legacyImportSource: isUITesting ? nil : LegacyDotNoteImportFactory.makeDefaultImportSource()
                 )
             ))
         } catch {

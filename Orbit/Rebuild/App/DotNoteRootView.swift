@@ -34,6 +34,7 @@ struct DotNoteRootView: View {
                             Image(systemName: "square.and.pencil")
                         }
                         .accessibilityLabel("New note")
+                        .accessibilityIdentifier("new-note-button")
                     }
                 }
                 .sheet(item: $editorMode) { mode in
@@ -140,9 +141,12 @@ private struct DotNoteEntryEditorView: View {
 
                 Section {
                     TextField("Title", text: $title)
+                        .accessibilityIdentifier("entry-title-field")
                     TextField("Weather", text: $weather)
+                        .accessibilityIdentifier("entry-weather-field")
                     TextEditor(text: $memoBody)
                         .frame(minHeight: 160)
+                        .accessibilityIdentifier("entry-body-editor")
                 }
 
                 if !mode.isCreating {
@@ -165,6 +169,7 @@ private struct DotNoteEntryEditorView: View {
                         dismiss()
                     }
                     .disabled(isSaving)
+                    .accessibilityIdentifier("entry-cancel-button")
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
@@ -188,6 +193,7 @@ private struct DotNoteEntryEditorView: View {
                         }
                     }
                     .disabled(isSaving || memoBody.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .accessibilityIdentifier("entry-save-button")
                 }
             }
         }

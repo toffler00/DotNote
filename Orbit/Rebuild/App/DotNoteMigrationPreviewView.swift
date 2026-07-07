@@ -46,6 +46,8 @@ struct DotNoteMigrationPreviewView: View {
                             DotNoteEntryPreviewRow(entry: entry)
                         }
                         .buttonStyle(.plain)
+                        .contentShape(Rectangle())
+                        .accessibilityIdentifier("entry-row")
                     }
                     .onDelete(perform: onDeleteEntries)
                 }
