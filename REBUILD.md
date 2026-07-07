@@ -74,7 +74,8 @@ This branch revives the existing App Store app by rebuilding the implementation 
 16. Done: add the first SwiftData write path through the SwiftUI shell.
 17. Done: add the first SwiftData edit and delete path through the SwiftUI shell.
 18. Done: remove CocoaPods from the active project/workspace build path.
-19. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
+19. Done: remove the checked-in CocoaPods vendor tree.
+20. Next: verify against a real legacy Realm file from an installed app container or preserved backup.
 
 ## Migration Layer
 
@@ -120,7 +121,7 @@ Initial project settings now use:
 - iOS deployment target: `17.0`
 - Swift language version: `5.0`
 
-The deprecated Fabric run script build phase and CocoaPods build phases have been removed from the active project. `Podfile` and `Podfile.lock` have been removed; the old checked-in `Pods/` vendor tree can be deleted in a separate repository cleanup commit if we want to keep that large diff isolated.
+The deprecated Fabric run script build phase and CocoaPods build phases have been removed from the active project. `Podfile`, `Podfile.lock`, and the old checked-in `Pods/` vendor tree have been removed.
 
 Swift Package Manager dependencies now include:
 
