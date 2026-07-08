@@ -333,3 +333,44 @@ Modified:
 - Feedback uses `mailto:` and is not automated in UI tests because it depends on
   Mail/default handler availability in the simulator environment.
 - Drawing collection coverage remains pending.
+
+---
+
+## Milestone 6 — Restore Xcode 26.5 builds
+
+Commit: "Update Realm for Xcode 26.5 builds"
+Branch: `rebuild`. Status: **Dev/Prod build + full test suite verified.**
+
+### Scope
+
+Fixed the Xcode UI build failure caused by Realm Core's older S2 C++ sources
+being compiled by Xcode 26.5. The previous `realm-swift` pin (`10.54.6`) failed
+with `is_pod cannot be specialized` in `s2geometry`. Updated Realm to the
+current Xcode 26.5-compatible line while preserving the existing legacy Realm
+import path.
+
+### Files
+
+Modified:
+- `Orbit.xcodeproj/project.pbxproj` — raises the `realm-swift` package minimum
+  version to `20.0.5`.
+- `Orbit.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved` —
+  pins `realm-swift` to `20.0.5` and `realm-core` to `20.1.5`.
+- `Orbit.xcworkspace/xcshareddata/swiftpm/Package.resolved` — mirrors the same
+  resolved package pins for workspace users.
+
+### Verification
+
+- `Orbit_Dev` simulator build without the prior CLI C++ workaround:
+  **BUILD SUCCEEDED**.
+- `Orbit_Prod` simulator build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test run: **TEST SUCCEEDED**.
+  - Unit tests: 12 executed, 1 skipped external Realm fixture, 0 failures.
+  - UI tests: 4 executed, 0 failures.
+
+### Caveats / next checks
+
+- The old UIKit/Realm code remains in the target for now, mainly to keep the
+  legacy import path available while the SwiftUI rebuild matures.
+- A later cleanup pass should decide whether legacy UIKit screens stay as
+  reference-only files or move out of the app build target.
