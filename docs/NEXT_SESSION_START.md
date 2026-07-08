@@ -12,11 +12,18 @@ Start a fresh session from this file.
 - Long-term UI: SwiftUI
 - Long-term persistence: SwiftData
 - Legacy data import: read-only Realm bridge through SPM `RealmSwift`
-- Current active UI: SwiftUI scaffold, not final product UI
-- Working tree at handoff: clean
+- Current active UI: SwiftUI redesign Milestone 1 applied
+  - `DotNoteTheme` tokens are in the app target.
+  - Calendar-first home screen is active.
+  - Interim `Form` editor is still used and should be replaced next.
+- Working tree at handoff: verify with `git status`; `swift/` may contain
+  external Claude design source files that are reference material unless
+  intentionally added.
 
 Recent relevant commits:
 
+- `5bdd1ab Add redesign worklog for milestone 1`
+- `addbf55 Redesign home screen with design tokens (milestone 1)`
 - `925006d Add design handoff index for redesign pass`
 - `f85f037 Add legacy UI capture reference for redesign handoff`
 - `229c372 Document UI redesign handoff`
@@ -31,10 +38,12 @@ Recent relevant commits:
 Read these in order:
 
 1. `docs/DESIGN_HANDOFF_INDEX.md`
-2. `docs/CLAUDE_UI_REDESIGN_HANDOFF.md`
-3. `docs/legacy-ui-screenshots/README.md`
-4. `REDESIGN_READINESS.md`
-5. `REBUILD.md`
+2. `docs/REDESIGN_WORKLOG.md`
+3. `swift/HANDOFF_FOR_CLAUDE_CODE.md`
+4. `docs/CLAUDE_UI_REDESIGN_HANDOFF.md`
+5. `docs/legacy-ui-screenshots/README.md`
+6. `REDESIGN_READINESS.md`
+7. `REBUILD.md`
 
 Primary visual references:
 
@@ -56,11 +65,18 @@ Primary visual references:
   - Dev builds `OrbitDEV.app`
   - Prod builds `Orbit.app`
   - Both preserve `io.orbit.orbit.prod`
-- UI smoke test exists and passes:
+- UI smoke test exists and passed after Milestone 1:
   - Launch app
+  - Open the expanded create row
   - Create memo
   - Edit memo
   - Delete memo
+- `docs/REDESIGN_WORKLOG.md` records the important build/crash lessons:
+  - Do not reuse hand-authored pbxproj IDs; grep the exact 24-character ID
+    before adding files.
+  - `plutil -lint` only proves plist syntax, not Xcode object graph validity.
+  - Bare `simctl launch` may crash because RealmSwift is not embedded/resolved
+    the same way as the `xcodebuild test` environment.
 
 ## Current Verification Commands
 
@@ -89,32 +105,19 @@ with this Xcode/SDK combination.
 
 ## Next Recommended Work
 
-Do not jump straight into heavy styling. First replace the temporary scaffold
-with a real product screen structure that can later be visually redesigned.
+Continue from the post-Milestone 1 state, not the original scaffold state.
 
-Recommended first implementation unit:
+Recommended next implementation unit:
 
-1. Add a SwiftUI main screen file, e.g. `Orbit/Rebuild/App/DotNoteMainView.swift`.
-2. Keep `DotNoteRootView` as the navigation/root coordinator.
-3. Move the current migration diagnostics into a secondary/debug section or
-   separate temporary view.
-4. Build a calendar-first main layout based on the old app:
-   - Large `Dot Note` title
-   - Month header
-   - Weekday row
-   - Month grid
-   - Expandable create action row: memo, drawing diary, diary
-   - Entry list below the calendar
-5. Keep all behavior routed through `DotNoteAppModel`.
-6. Update `OrbitUITests` to keep covering create/edit/delete after the root UI
-   changes.
-
-Keep the first UI pass structurally faithful, not visually final:
-
-- Use system colors or a very thin local `DotNoteTheme`.
-- Do not hardcode final brand tokens into models or store.
-- Do not create a full component library yet.
-- Do not migrate behavior into SwiftUI view bodies.
+1. Replace the interim `Form` editor with typed editors:
+   - `DiaryEditorView`
+   - `DrawingEditorView`
+   - `MemoOverlayView`
+   - shared `WeatherPicker`
+2. Keep all create/edit/delete behavior routed through `DotNoteAppModel`.
+3. Keep design values inside `DotNoteTheme.swift`.
+4. Update `OrbitUITests` for the typed editor flow.
+5. Run `Orbit_Dev` build + tests before committing.
 
 ## Design Direction From Legacy Captures
 
@@ -145,8 +148,9 @@ Use this as the first message in the fresh session:
 
 ```text
 DotNote 프로젝트를 /Users/toffler/DotNote 에서 이어서 진행해줘.
-브랜치는 rebuild 이고, 먼저 docs/NEXT_SESSION_START.md, docs/DESIGN_HANDOFF_INDEX.md, REDESIGN_READINESS.md, REBUILD.md 를 읽어줘.
-그 다음 추천된 첫 UI 작업 단위대로 SwiftUI 메인 화면 구조를 시작해줘.
-현재 구조와 테스트는 유지하고, DotNoteRootView 를 coordinator 로 두면서 DotNoteMainView 를 추가해 calendar-first 홈 구조를 만들고 OrbitUITests 도 그 흐름에 맞게 갱신해줘.
+브랜치는 rebuild 이고, 먼저 docs/NEXT_SESSION_START.md, docs/DESIGN_HANDOFF_INDEX.md, docs/REDESIGN_WORKLOG.md, swift/HANDOFF_FOR_CLAUDE_CODE.md, REDESIGN_READINESS.md, REBUILD.md 를 읽어줘.
+Milestone 1은 이미 적용되어 있으니 다음은 typed editor UI(DiaryEditorView, DrawingEditorView, MemoOverlayView, WeatherPicker)를 SwiftUI로 진행해줘.
+저장/삭제/마이그레이션 로직은 건드리지 말고 DotNoteAppModel 경로만 사용해줘.
+pbxproj 파일을 수정해야 하면 기존 24자리 ID와 충돌하지 않는지 반드시 grep으로 확인해줘.
 작업 후 Orbit_Dev 테스트와 Orbit_Prod 빌드를 확인하고 적절한 시점에 커밋해줘.
 ```
