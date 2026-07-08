@@ -1,0 +1,147 @@
+# Redesign Worklog
+
+Running log of the Claude Code redesign passes against the SwiftUI rebuild.
+Source of the design direction: `swift/HANDOFF_FOR_CLAUDE_CODE.md` (+ the
+confirmed `swift/DotNoteTheme.swift`). Guardrails: `REDESIGN_READINESS.md`.
+
+---
+
+## Milestone 1 — Home screen + design tokens
+
+Commit: `addbf55` — "Redesign home screen with design tokens (milestone 1)"
+Branch: `rebuild`. Status: **done, build + UI test verified.**
+
+### Scope
+
+Applied the confirmed design pass to the calendar-first home. **View-layer only**
+— no changes to Domain / Store / Migration / AppModel logic.
+
+### Files
+
+New:
+- `Orbit/Rebuild/App/DotNoteTheme.swift` — single source of truth for design
+  tokens: palette (warm light + warm dark), spacing, radii, card shadow,
+  per-`DotNoteEntryKind` surfaces/dots/chips, `DotNoteFontTheme` (font-family
+  wrapping so a brand font change never forces a data migration), `DotNoteType`
+  (role-based fonts; wordmark fixed to Barunpen), `DotNoteWeather` (legacy label
+  → SF Symbol). Copied verbatim from `swift/DotNoteTheme.swift`.
+- `Orbit/Rebuild/App/DotNoteHomeView.swift` — `CalendarHomeView` + shared
+  components: `MonthCalendar`, `CalendarDayCell`, `EntryRow`, `CreateActionRow`,
+  `EmptyStateView`.
+
+Modified:
+- `Orbit/Rebuild/App/DotNoteRootView.swift` — root now hosts `CalendarHomeView`
+  and routes create/edit via `.sheet`. `DotNoteEntryEditorMode.create` now
+  carries a `DotNoteEntryKind` so the create pill can pre-select the type. The
+  navigation bar is hidden (the home draws its own wordmark header).
+- `Orbit/Info.plist` — registered `NanumBarunpenR.otf` in `UIAppFonts` (the
+  wordmark face; the file was already bundled in Resources but not declared).
+- `OrbitUITests/OrbitUITests.swift` — rewrote the smoke flow to the new create
+  UX (tap `create-toggle` → tap `create-memo` → editor → save → the entry shows
+  in the selected day's list → edit → delete → `empty-state`).
+- `Orbit.xcodeproj/project.pbxproj` — registered the two new source files.
+
+### Deliberate deviations from the handoff
+
+- **File layout consolidated.** The handoff lists many files under
+  `Design/Components` and `Screens/`. Because the Xcode project is **not** a
+  synchronized folder group (see error #2 below), every new file needs manual
+  pbxproj registration, so components + home were consolidated into one file to
+  cut that risk. The guardrails (View-only, tokens in one place, font enum) are
+  fully honored; only file names differ.
+- **Interim editor kept.** The typed editors (Diary / Drawing / Memo overlay)
+  are not built yet. The existing plain `Form` editor (`DotNoteEntryEditorView`,
+  private in `DotNoteRootView.swift`, English titles "New Note"/"Edit Note") is
+  reused so create/edit/delete and the smoke test stay green. It is replaced in
+  milestone 2.
+- `DotNoteMigrationPreviewView.swift` is now unused but still compiled; it will
+  be removed or demoted to a debug section in a later milestone.
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**, 0 errors.
+- `OrbitUITests` smoke test: **passed** (~23s).
+- Build/test command used (from `docs/NEXT_SESSION_START.md`):
+  ```sh
+  xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev \
+    -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' \
+    ARCHS=arm64 ONLY_ACTIVE_ARCH=YES OTHER_CPLUSPLUSFLAGS=-Wno-invalid-specialization \
+    CODE_SIGNING_ALLOWED=NO
+  ```
+
+---
+
+## Errors encountered and root causes
+
+### 1. Wordmark font never rendered (missing plist registration)
+
+The design uses `NanumBarunpenR` for the "Dot Note" wordmark. `NanumBarunpenR.otf`
+was already in the app bundle (Copy Bundle Resources) but was **not listed in
+`Info.plist` → `UIAppFonts`**, so `.custom("NanumBarunpenR", …)` would silently
+fall back to the system font. **Fix:** added `<string>NanumBarunpenR.otf</string>`
+to `UIAppFonts`.
+
+### 2. `xcodebuild` crash: "project is damaged" / `XCSwiftPackageProductDependency group unrecognized selector`
+
+Adding the new files required hand-editing `project.pbxproj` (the project has no
+`PBXFileSystemSynchronizedRootGroup`, so files are not auto-included). `plutil
+-lint` reported the file as **valid**, yet `xcodebuild -list` and `build` failed
+with:
+
+```
+-[XCSwiftPackageProductDependency group]: unrecognized selector sent to instance
+xcodebuild: error: Unable to read project 'Orbit.xcodeproj'.
+  Reason: The project 'Orbit' is damaged and cannot be opened.
+```
+
+**Root cause: object-ID collisions.** The project uses a hand-authored ID scheme
+(`A100…0XXX`). The IDs first chosen collided with existing objects:
+- `A10000000000000000000301` was already the **RealmSwift SPM product ref**
+  (`XCSwiftPackageProductDependency`). Reusing it as a `PBXFileReference` made
+  xcodebuild call `group` on the package-dependency object → crash.
+- `A10000000000000000000114` was already **`LegacyRealmImportTests.swift`**.
+
+`plutil` only validates plist syntax, not Xcode object-graph integrity, so it
+passed. **Fix:** assigned collision-free IDs after grepping the full 24-char
+literals — file refs `…0116` (Theme) / `…0115` (Home), build files `…0031` /
+`…0032`. Lesson: before inventing a pbxproj ID, grep the **exact** full-length
+string; watch specifically for SPM `productRef` IDs and test-target files.
+
+### 3. Standalone `simctl launch` crashes (not a code bug — could not screenshot)
+
+Launching `OrbitDEV.app` directly via `xcrun simctl launch` crashes at load:
+
+```
+Library not loaded: @rpath/RealmSwift.framework/RealmSwift  (terminated at launch)
+```
+
+The app links RealmSwift (SPM) as a dynamic framework that Xcode resolves via an
+injected `DYLD_FRAMEWORK_PATH` during a test run, but a bare `simctl launch` has
+no such path and `RealmSwift.framework` is not embedded in the `.app`. This is an
+environment/launch limitation, **not** a defect in the redesign — the same build
+runs fine under `xcodebuild test`. Consequence: no CLI runtime screenshot was
+captured this pass.
+
+Note (pre-existing, worth watching): if RealmSwift is not embedded ("Embed &
+Sign"), a normal archive/run outside the test harness may hit the same missing
+framework. Out of scope for the UI redesign; flag for the rebuild owner.
+
+---
+
+## Open caveats to confirm
+
+- **Wordmark rendering unverified.** Could not capture a runtime screenshot (see
+  error #3). Confirm in an Xcode Preview or a real simulator run that "Dot Note"
+  renders in the Barunpen handwriting face. If it falls back to the system font,
+  the PostScript name in `DotNoteFontTheme.postScriptName` (`"NanumBarunpenR"`)
+  likely needs to match the font's actual PostScript name.
+
+## Next milestones (handoff §4 order)
+
+1. Typed editors: `DiaryEditorView`, `DrawingEditorView` (PencilKit canvas →
+   `imageData`), `MemoOverlayView`; add `WeatherPicker`. Replace the interim
+   `Form` editor and update `OrbitUITests` accordingly.
+2. `SettingsView` + `FontListView` + `CollectionView`; wire the home `⋯` button
+   (`open-settings-button`) to Settings.
+3. Remove/repurpose `DotNoteMigrationPreviewView`. Add light/dark Previews per
+   screen using `InMemoryDotNoteStore` snapshots.
