@@ -77,6 +77,32 @@ class OrbitTests: XCTestCase {
     }
 
     @MainActor
+    func testSwiftDataStoreUpdatesSettings() async throws {
+        let store = SwiftDataDotNoteStore(
+            modelContainer: try DotNoteModelContainer.make(isStoredInMemoryOnly: true)
+        )
+        let settings = DotNoteSettings(bodyFontName: DotNoteFontTheme.brush.rawValue, bodyFontSize: 18)
+
+        let snapshot = try await store.updateSettings(settings)
+
+        XCTAssertEqual(snapshot.settings, settings)
+    }
+
+    @MainActor
+    func testSwiftDataStoreDeletesAllData() async throws {
+        let store = SwiftDataDotNoteStore(
+            modelContainer: try DotNoteModelContainer.make(isStoredInMemoryOnly: true)
+        )
+        _ = try await store.addEntry(DotNoteEntry(kind: .memo, title: "Draft", body: "Delete all"))
+        _ = try await store.updateSettings(DotNoteSettings(bodyFontName: DotNoteFontTheme.rock.rawValue))
+
+        let snapshot = try await store.deleteAllData()
+
+        XCTAssertTrue(snapshot.entries.isEmpty)
+        XCTAssertNil(snapshot.settings)
+    }
+
+    @MainActor
     func testAppModelAddsTrimmedMemo() async throws {
         let appModel = DotNoteAppModel(store: InMemoryDotNoteStore())
 
@@ -98,6 +124,17 @@ class OrbitTests: XCTestCase {
         await appModel.deleteEntry(id: entry.id)
 
         XCTAssertTrue(appModel.entries.isEmpty)
+        XCTAssertEqual(appModel.loadState, .loaded)
+    }
+
+    @MainActor
+    func testAppModelUpdatesSettings() async throws {
+        let appModel = DotNoteAppModel(store: InMemoryDotNoteStore())
+        let settings = DotNoteSettings(bodyFontName: DotNoteFontTheme.flowerRoad.rawValue)
+
+        await appModel.updateSettings(settings)
+
+        XCTAssertEqual(appModel.settings, settings)
         XCTAssertEqual(appModel.loadState, .loaded)
     }
     

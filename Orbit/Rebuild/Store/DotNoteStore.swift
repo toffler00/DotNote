@@ -54,4 +54,10 @@ protocol DotNoteStore {
 
     @MainActor
     func deleteEntry(id: DotNoteEntry.ID) async throws -> DotNoteStoreSnapshot
+
+    @MainActor
+    func updateSettings(_ settings: DotNoteSettings) async throws -> DotNoteStoreSnapshot
+
+    @MainActor
+    func deleteAllData() async throws -> DotNoteStoreSnapshot
 }

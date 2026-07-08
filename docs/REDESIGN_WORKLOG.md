@@ -207,3 +207,50 @@ Modified:
   yet.
 - Settings, font picker, collection views, and the home `⋯` settings route are
   still the next UI milestone.
+
+---
+
+## Milestone 3 — Settings, font picker, and collection entry points
+
+Commit: "Add settings and font picker redesign"
+Branch: `rebuild`. Status: **Dev build + unit/UI tests verified.**
+
+### Scope
+
+Added the first settings milestone from the redesign handoff. The home `⋯`
+button now opens a SwiftUI settings surface using the established Dot Note
+tokens. Font selection is functional and persists through the existing
+`DotNoteAppModel` boundary; collection entry points render diary/memo views from
+the current entries. This pass keeps entry CRUD and SwiftData migration behavior
+intact.
+
+### Files
+
+Modified:
+- `Orbit/Rebuild/App/DotNoteRootView.swift` — routes the home settings button to
+  a root-level `DotNoteSettingsView` overlay.
+- `Orbit/Rebuild/App/DotNoteEntryEditors.swift` — adds `DotNoteSettingsView`,
+  `DotNoteFontListView`, `DotNoteCollectionView`, collection cards, and shared
+  settings rows/groups using `DotNoteTheme`.
+- `Orbit/Rebuild/App/DotNoteAppModel.swift` — adds settings update and all-data
+  delete commands so Views still route persistence through AppModel.
+- `Orbit/Rebuild/Store/*` — extends the store boundary with `updateSettings` and
+  `deleteAllData`, implemented for SwiftData and in-memory test storage.
+- `OrbitTests/OrbitTests.swift` — covers SwiftData settings update, all-data
+  deletion, and AppModel settings updates.
+- `OrbitUITests/OrbitUITests.swift` — adds a smoke flow for opening settings,
+  selecting a body font, and returning home.
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test run: **TEST SUCCEEDED**.
+  - Unit tests: 12 executed, 1 skipped external Realm fixture, 0 failures.
+  - UI tests: 2 executed, 0 failures.
+
+### Caveats / next checks
+
+- Support rows (`의견보내기`, `사용법`, `Open-source License`) are visual entry
+  points only; their destination content is still a later milestone.
+- Collection views are read-only entry points for diary/memo. Editing from
+  collection cards and drawing collection coverage remain future work.

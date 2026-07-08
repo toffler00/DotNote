@@ -605,6 +605,427 @@ private struct DeleteButton: View {
     }
 }
 
+// MARK: - Settings
+
+struct DotNoteSettingsView: View {
+    var settings: DotNoteSettings?
+    var entries: [DotNoteEntry]
+    var isSaving: Bool
+    var onUpdateSettings: (DotNoteSettings) async -> Void
+    var onDeleteAllData: () async -> Void
+    var onClose: () -> Void
+
+    @Environment(\.colorScheme) private var scheme
+    @State private var isConfirmingDeleteAllData = false
+
+    private var currentSettings: DotNoteSettings {
+        settings ?? DotNoteSettings()
+    }
+
+    private var currentFont: DotNoteFontTheme {
+        DotNoteType.body(settings)
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.lg) {
+                    settingsHeader
+
+                    DotNoteSettingsGroup {
+                        NavigationLink {
+                            DotNoteFontListView(settings: currentSettings, isSaving: isSaving) { font in
+                                var updatedSettings = currentSettings
+                                updatedSettings.bodyFontName = font.rawValue
+                                await onUpdateSettings(updatedSettings)
+                            }
+                        } label: {
+                            DotNoteSettingsRow(
+                                icon: "textformat",
+                                title: "폰트",
+                                detail: currentFont.displayName,
+                                tint: DotNoteEntryKind.diary.dot
+                            )
+                        }
+                        .accessibilityIdentifier("settings-font-row")
+                    }
+
+                    DotNoteSettingsGroup {
+                        NavigationLink {
+                            DotNoteCollectionView(entries: entries, filter: .diary)
+                        } label: {
+                            DotNoteSettingsRow(
+                                icon: "book.pages",
+                                title: "일기보기",
+                                detail: "\(entries.filter { $0.kind == .diary }.count)",
+                                tint: DotNoteEntryKind.diary.dot
+                            )
+                        }
+                        .accessibilityIdentifier("settings-diary-collection-row")
+
+                        DotNoteSettingsDivider()
+
+                        NavigationLink {
+                            DotNoteCollectionView(entries: entries, filter: .memo)
+                        } label: {
+                            DotNoteSettingsRow(
+                                icon: "note.text",
+                                title: "메모보기",
+                                detail: "\(entries.filter { $0.kind == .memo }.count)",
+                                tint: DotNoteEntryKind.memo.dot
+                            )
+                        }
+                        .accessibilityIdentifier("settings-memo-collection-row")
+                    }
+
+                    DotNoteSettingsGroup {
+                        DotNoteSettingsRow(
+                            icon: "paperplane",
+                            title: "의견보내기",
+                            detail: nil,
+                            tint: DotNoteTheme.Palette.accent(scheme)
+                        )
+
+                        DotNoteSettingsDivider()
+
+                        DotNoteSettingsRow(
+                            icon: "questionmark.circle",
+                            title: "사용법",
+                            detail: nil,
+                            tint: DotNoteTheme.Palette.accent(scheme)
+                        )
+
+                        DotNoteSettingsDivider()
+
+                        DotNoteSettingsRow(
+                            icon: "curlybraces",
+                            title: "Open-source License",
+                            detail: nil,
+                            tint: DotNoteTheme.Palette.accent(scheme)
+                        )
+                    }
+
+                    Button(role: .destructive) {
+                        isConfirmingDeleteAllData = true
+                    } label: {
+                        DotNoteSettingsRow(
+                            icon: "trash",
+                            title: "모든데이터 삭제",
+                            detail: nil,
+                            tint: DotNoteTheme.Palette.destructive
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(isSaving)
+                    .accessibilityIdentifier("delete-all-data-button")
+                }
+                .padding(DotNoteTheme.Spacing.md)
+            }
+            .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
+            .navigationBarHidden(true)
+            .confirmationDialog(
+                "모든 데이터를 삭제할까요?",
+                isPresented: $isConfirmingDeleteAllData,
+                titleVisibility: .visible
+            ) {
+                Button("삭제", role: .destructive) {
+                    Task { await onDeleteAllData() }
+                }
+                .accessibilityIdentifier("confirm-delete-all-data")
+                Button("취소", role: .cancel) {}
+            } message: {
+                Text("되돌릴 수 없어요.")
+            }
+            .accessibilityIdentifier("settings-screen")
+        }
+    }
+
+    private var settingsHeader: some View {
+        HStack(alignment: .center, spacing: DotNoteTheme.Spacing.sm) {
+            Button(action: onClose) {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 20, weight: .semibold))
+                    .frame(width: 36, height: 36)
+                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+            }
+            .accessibilityIdentifier("settings-close-button")
+
+            Text("설정")
+                .font(DotNoteType.wordmarkFont(size: 36))
+                .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+
+            Spacer()
+        }
+    }
+}
+
+private struct DotNoteFontListView: View {
+    var settings: DotNoteSettings
+    var isSaving: Bool
+    var onSelectFont: (DotNoteFontTheme) async -> Void
+
+    @Environment(\.colorScheme) private var scheme
+    @Environment(\.dismiss) private var dismiss
+
+    private var selectedFont: DotNoteFontTheme {
+        DotNoteType.body(settings)
+    }
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.sm) {
+                Text("폰트")
+                    .font(DotNoteType.wordmarkFont(size: 36))
+                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                    .padding(.bottom, DotNoteTheme.Spacing.xs)
+
+                ForEach(DotNoteFontTheme.allCases) { font in
+                    Button {
+                        Task {
+                            await onSelectFont(font)
+                            dismiss()
+                        }
+                    } label: {
+                        HStack(spacing: DotNoteTheme.Spacing.sm) {
+                            VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.xxs) {
+                                Text(font.displayName)
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+                                Text("\(font.displayName) · 오늘의 기록")
+                                    .font(font.font(size: 19))
+                                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                                    .lineLimit(1)
+                            }
+
+                            Spacer()
+
+                            if selectedFont == font {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundStyle(DotNoteEntryKind.diary.dot)
+                            }
+                        }
+                        .padding(DotNoteTheme.Spacing.md)
+                        .background(
+                            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
+                                .fill(DotNoteTheme.Palette.card(scheme))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
+                                .stroke(selectedFont == font ? DotNoteEntryKind.diary.dot.opacity(0.42) : DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(isSaving)
+                    .accessibilityIdentifier("font-\(font.rawValue)")
+                }
+            }
+            .padding(DotNoteTheme.Spacing.md)
+        }
+        .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
+        .navigationBarTitleDisplayMode(.inline)
+        .accessibilityIdentifier("font-list-screen")
+    }
+}
+
+private struct DotNoteCollectionView: View {
+    enum Filter {
+        case diary
+        case memo
+
+        var title: String {
+            switch self {
+            case .diary: return "일기보기"
+            case .memo: return "메모보기"
+            }
+        }
+
+        var kind: DotNoteEntryKind {
+            switch self {
+            case .diary: return .diary
+            case .memo: return .memo
+            }
+        }
+    }
+
+    var entries: [DotNoteEntry]
+    var filter: Filter
+
+    @Environment(\.colorScheme) private var scheme
+
+    private var filteredEntries: [DotNoteEntry] {
+        entries
+            .filter { $0.kind == filter.kind }
+            .sorted { $0.createdAt > $1.createdAt }
+    }
+
+    private let columns = [
+        GridItem(.flexible(), spacing: DotNoteTheme.Spacing.sm),
+        GridItem(.flexible(), spacing: DotNoteTheme.Spacing.sm)
+    ]
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
+                Text(filter.title)
+                    .font(DotNoteType.wordmarkFont(size: 36))
+                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+
+                if filteredEntries.isEmpty {
+                    EmptyStateView()
+                        .padding(.top, DotNoteTheme.Spacing.xl)
+                } else {
+                    LazyVGrid(columns: columns, spacing: DotNoteTheme.Spacing.sm) {
+                        ForEach(filteredEntries) { entry in
+                            DotNoteCollectionCard(entry: entry)
+                        }
+                    }
+                }
+            }
+            .padding(DotNoteTheme.Spacing.md)
+        }
+        .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
+        .navigationBarTitleDisplayMode(.inline)
+        .accessibilityIdentifier("collection-\(filter.kind.rawValue)-screen")
+    }
+}
+
+private struct DotNoteCollectionCard: View {
+    var entry: DotNoteEntry
+
+    @Environment(\.colorScheme) private var scheme
+
+    private var primaryText: String {
+        if !entry.title.isEmpty {
+            return entry.title
+        }
+        if !entry.body.isEmpty {
+            return entry.body
+        }
+        return entry.kind.label
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.sm) {
+            ZStack(alignment: .bottomLeading) {
+                RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                    .fill(entry.kind.surface(scheme))
+                    .aspectRatio(1.08, contentMode: .fit)
+
+                if let data = entry.imageData, let image = UIImage(data: data) {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .clipShape(RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous))
+                } else {
+                    Text(primaryText)
+                        .font(DotNoteType.body(nil).font(size: 18))
+                        .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                        .lineLimit(4)
+                        .padding(DotNoteTheme.Spacing.sm)
+                }
+            }
+
+            Text(primaryText)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                .lineLimit(1)
+
+            HStack(spacing: DotNoteTheme.Spacing.xxs) {
+                Circle()
+                    .fill(entry.kind.chipForeground(scheme))
+                    .frame(width: 6, height: 6)
+                Text(Self.dateFormatter.string(from: entry.createdAt))
+                    .font(.system(size: 11))
+                    .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+            }
+        }
+        .padding(DotNoteTheme.Spacing.sm)
+        .background(
+            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
+                .fill(DotNoteTheme.Palette.card(scheme))
+        )
+    }
+
+    private static let dateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "ko_KR")
+        f.dateFormat = "M.d"
+        return f
+    }()
+}
+
+private struct DotNoteSettingsGroup<Content: View>: View {
+    @ViewBuilder var content: Content
+
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        VStack(spacing: 0) {
+            content
+        }
+        .background(
+            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
+                .fill(DotNoteTheme.Palette.card(scheme))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
+                .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
+        )
+    }
+}
+
+private struct DotNoteSettingsRow: View {
+    var icon: String
+    var title: String
+    var detail: String?
+    var tint: Color
+
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        HStack(spacing: DotNoteTheme.Spacing.sm) {
+            Image(systemName: icon)
+                .font(.system(size: 16, weight: .semibold))
+                .frame(width: 32, height: 32)
+                .background(
+                    RoundedRectangle(cornerRadius: DotNoteTheme.Radius.sm, style: .continuous)
+                        .fill(tint.opacity(scheme == .dark ? 0.22 : 0.16))
+                )
+                .foregroundStyle(tint)
+
+            Text(title)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(title == "모든데이터 삭제" ? DotNoteTheme.Palette.destructive : DotNoteTheme.Palette.ink(scheme))
+
+            Spacer()
+
+            if let detail {
+                Text(detail)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+            }
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(DotNoteTheme.Palette.faded(scheme))
+        }
+        .padding(DotNoteTheme.Spacing.md)
+        .contentShape(Rectangle())
+    }
+}
+
+private struct DotNoteSettingsDivider: View {
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        Rectangle()
+            .fill(DotNoteTheme.Palette.hairline(scheme))
+            .frame(height: 1)
+            .padding(.leading, 60)
+    }
+}
+
 private struct DotNoteEntryDraft {
     var createdAt: Date
     var title: String

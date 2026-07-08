@@ -38,4 +38,15 @@ final class InMemoryDotNoteStore: DotNoteStore {
         snapshot.entries.removeAll { $0.id == id }
         return snapshot
     }
+
+    func updateSettings(_ settings: DotNoteSettings) async throws -> DotNoteStoreSnapshot {
+        snapshot.settings = settings
+        return snapshot
+    }
+
+    func deleteAllData() async throws -> DotNoteStoreSnapshot {
+        snapshot.entries.removeAll()
+        snapshot.settings = nil
+        return snapshot
+    }
 }

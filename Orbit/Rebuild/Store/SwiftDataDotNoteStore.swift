@@ -66,6 +66,37 @@ struct SwiftDataDotNoteStore: DotNoteStore {
     }
 
     @MainActor
+    func updateSettings(_ settings: DotNoteSettings) async throws -> DotNoteStoreSnapshot {
+        let context = ModelContext(modelContainer)
+
+        if let record = try fetchSettingsRecord(in: context) {
+            record.update(with: settings)
+        } else {
+            context.insert(DotNoteSettingsRecord(settings: settings))
+        }
+        try context.save()
+
+        return try loadSnapshotWithDiagnostics(in: context)
+    }
+
+    @MainActor
+    func deleteAllData() async throws -> DotNoteStoreSnapshot {
+        let context = ModelContext(modelContainer)
+        let entries = try context.fetch(FetchDescriptor<DotNoteEntryRecord>())
+        let settings = try context.fetch(FetchDescriptor<DotNoteSettingsRecord>())
+
+        for entry in entries {
+            context.delete(entry)
+        }
+        for setting in settings {
+            context.delete(setting)
+        }
+        try context.save()
+
+        return try loadSnapshotWithDiagnostics(in: context)
+    }
+
+    @MainActor
     private func loadSnapshot(in context: ModelContext) throws -> DotNoteStoreSnapshot {
         let entryDescriptor = FetchDescriptor<DotNoteEntryRecord>(
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
@@ -92,6 +123,13 @@ struct SwiftDataDotNoteStore: DotNoteStore {
                 record.id == id
             }
         )
+        descriptor.fetchLimit = 1
+        return try context.fetch(descriptor).first
+    }
+
+    @MainActor
+    private func fetchSettingsRecord(in context: ModelContext) throws -> DotNoteSettingsRecord? {
+        var descriptor = FetchDescriptor<DotNoteSettingsRecord>()
         descriptor.fetchLimit = 1
         return try context.fetch(descriptor).first
     }

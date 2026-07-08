@@ -67,6 +67,23 @@ final class OrbitUITests: XCTestCase {
         // Deleting the only entry falls back to the empty state.
         XCTAssertTrue(app.staticTexts["아직 기록이 없어요"].waitForExistence(timeout: 5))
     }
+
+    func testOpenSettingsAndSelectFont() {
+        let settingsButton = app.buttons["open-settings-button"]
+        XCTAssertTrue(settingsButton.waitForHittable(timeout: 5))
+        settingsButton.tap()
+
+        XCTAssertTrue(app.buttons["settings-close-button"].waitForHittable(timeout: 5))
+        XCTAssertTrue(app.buttons["settings-font-row"].waitForHittable(timeout: 2))
+        app.buttons["settings-font-row"].tap()
+
+        XCTAssertTrue(app.buttons["font-brush"].waitForHittable(timeout: 2))
+        app.buttons["font-brush"].tap()
+
+        XCTAssertTrue(app.staticTexts["붓글씨"].waitForExistence(timeout: 5))
+        app.buttons["settings-close-button"].tap()
+        XCTAssertTrue(app.buttons["create-toggle"].waitForHittable(timeout: 5))
+    }
 }
 
 private extension XCUIElement {

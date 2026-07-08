@@ -11,6 +11,7 @@ import SwiftUI
 struct DotNoteRootView: View {
     @ObservedObject var appModel: DotNoteAppModel
     @State private var editorMode: DotNoteEntryEditorMode?
+    @State private var isShowingSettings = false
 
     var body: some View {
         ZStack {
@@ -20,11 +21,11 @@ struct DotNoteRootView: View {
                     settings: appModel.settings,
                     onCreate: { kind in editorMode = .create(kind) },
                     onSelectEntry: { entry in editorMode = .edit(entry) },
-                    onOpenSettings: { /* Settings screen lands in a later milestone. */ }
+                    onOpenSettings: { isShowingSettings = true }
                 )
                 .navigationBarHidden(true)
             }
-            .disabled(editorMode != nil)
+            .disabled(editorMode != nil || isShowingSettings)
 
             if let mode = editorMode {
                 DotNoteEntryEditorView(mode: mode, settings: appModel.settings, isSaving: appModel.isSaving) { entry in
@@ -41,6 +42,25 @@ struct DotNoteRootView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .zIndex(1)
+            }
+
+            if isShowingSettings {
+                DotNoteSettingsView(
+                    settings: appModel.settings,
+                    entries: appModel.entries,
+                    isSaving: appModel.isSaving,
+                    onUpdateSettings: { settings in
+                        await appModel.updateSettings(settings)
+                    },
+                    onDeleteAllData: {
+                        await appModel.deleteAllData()
+                    },
+                    onClose: {
+                        isShowingSettings = false
+                    }
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .zIndex(2)
             }
         }
     }

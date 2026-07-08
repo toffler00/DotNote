@@ -90,6 +90,34 @@ final class DotNoteAppModel: ObservableObject {
         }
     }
 
+    func updateSettings(_ settings: DotNoteSettings) async {
+        guard !isSaving else { return }
+
+        isSaving = true
+        defer { isSaving = false }
+
+        do {
+            let snapshot = try await store.updateSettings(settings)
+            apply(snapshot: snapshot)
+        } catch {
+            loadState = .failed(error.localizedDescription)
+        }
+    }
+
+    func deleteAllData() async {
+        guard !isSaving else { return }
+
+        isSaving = true
+        defer { isSaving = false }
+
+        do {
+            let snapshot = try await store.deleteAllData()
+            apply(snapshot: snapshot)
+        } catch {
+            loadState = .failed(error.localizedDescription)
+        }
+    }
+
     private func apply(snapshot: DotNoteStoreSnapshot) {
         entries = snapshot.entries
         settings = snapshot.settings
