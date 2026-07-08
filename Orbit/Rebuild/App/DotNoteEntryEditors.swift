@@ -17,6 +17,7 @@ struct DotNoteEntryEditorView: View {
     var onSave: (DotNoteEntry) async -> Void
     var onCreate: (DotNoteEntry) async -> Void
     var onDelete: (DotNoteEntry.ID) async -> Void
+    var onCancel: () -> Void
 
     var body: some View {
         switch mode.entry.kind {
@@ -27,7 +28,8 @@ struct DotNoteEntryEditorView: View {
                 isSaving: isSaving,
                 onSave: onSave,
                 onCreate: onCreate,
-                onDelete: onDelete
+                onDelete: onDelete,
+                onCancel: onCancel
             )
         case .drawing:
             DrawingEditorView(
@@ -36,7 +38,8 @@ struct DotNoteEntryEditorView: View {
                 isSaving: isSaving,
                 onSave: onSave,
                 onCreate: onCreate,
-                onDelete: onDelete
+                onDelete: onDelete,
+                onCancel: onCancel
             )
         case .memo:
             MemoOverlayView(
@@ -45,7 +48,8 @@ struct DotNoteEntryEditorView: View {
                 isSaving: isSaving,
                 onSave: onSave,
                 onCreate: onCreate,
-                onDelete: onDelete
+                onDelete: onDelete,
+                onCancel: onCancel
             )
         }
     }
@@ -58,9 +62,9 @@ private struct DiaryEditorView: View {
     var onSave: (DotNoteEntry) async -> Void
     var onCreate: (DotNoteEntry) async -> Void
     var onDelete: (DotNoteEntry.ID) async -> Void
+    var onCancel: () -> Void
 
     @Environment(\.colorScheme) private var scheme
-    @Environment(\.dismiss) private var dismiss
     @State private var draft: DotNoteEntryDraft
 
     init(
@@ -69,7 +73,8 @@ private struct DiaryEditorView: View {
         isSaving: Bool,
         onSave: @escaping (DotNoteEntry) async -> Void,
         onCreate: @escaping (DotNoteEntry) async -> Void,
-        onDelete: @escaping (DotNoteEntry.ID) async -> Void
+        onDelete: @escaping (DotNoteEntry.ID) async -> Void,
+        onCancel: @escaping () -> Void
     ) {
         self.mode = mode
         self.settings = settings
@@ -77,6 +82,7 @@ private struct DiaryEditorView: View {
         self.onSave = onSave
         self.onCreate = onCreate
         self.onDelete = onDelete
+        self.onCancel = onCancel
         _draft = State(initialValue: DotNoteEntryDraft(entry: mode.entry))
     }
 
@@ -125,7 +131,7 @@ private struct DiaryEditorView: View {
     @ToolbarContentBuilder
     private func editorToolbar(saveTint: Color) -> some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button("닫기") { dismiss() }
+            Button("닫기", action: onCancel)
                 .disabled(isSaving)
                 .accessibilityIdentifier("entry-cancel-button")
         }
@@ -166,9 +172,9 @@ private struct DrawingEditorView: View {
     var onSave: (DotNoteEntry) async -> Void
     var onCreate: (DotNoteEntry) async -> Void
     var onDelete: (DotNoteEntry.ID) async -> Void
+    var onCancel: () -> Void
 
     @Environment(\.colorScheme) private var scheme
-    @Environment(\.dismiss) private var dismiss
     @State private var draft: DotNoteEntryDraft
     @State private var canvasView = PKCanvasView()
     @State private var selectedInk = UIColor(red: 58 / 255, green: 48 / 255, blue: 43 / 255, alpha: 1)
@@ -181,7 +187,8 @@ private struct DrawingEditorView: View {
         isSaving: Bool,
         onSave: @escaping (DotNoteEntry) async -> Void,
         onCreate: @escaping (DotNoteEntry) async -> Void,
-        onDelete: @escaping (DotNoteEntry.ID) async -> Void
+        onDelete: @escaping (DotNoteEntry.ID) async -> Void,
+        onCancel: @escaping () -> Void
     ) {
         self.mode = mode
         self.settings = settings
@@ -189,6 +196,7 @@ private struct DrawingEditorView: View {
         self.onSave = onSave
         self.onCreate = onCreate
         self.onDelete = onDelete
+        self.onCancel = onCancel
         _draft = State(initialValue: DotNoteEntryDraft(entry: mode.entry))
     }
 
@@ -254,7 +262,7 @@ private struct DrawingEditorView: View {
     @ToolbarContentBuilder
     private var editorToolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button("닫기") { dismiss() }
+            Button("닫기", action: onCancel)
                 .disabled(isSaving)
                 .accessibilityIdentifier("entry-cancel-button")
         }
@@ -298,9 +306,9 @@ private struct MemoOverlayView: View {
     var onSave: (DotNoteEntry) async -> Void
     var onCreate: (DotNoteEntry) async -> Void
     var onDelete: (DotNoteEntry.ID) async -> Void
+    var onCancel: () -> Void
 
     @Environment(\.colorScheme) private var scheme
-    @Environment(\.dismiss) private var dismiss
     @State private var draft: DotNoteEntryDraft
 
     init(
@@ -309,7 +317,8 @@ private struct MemoOverlayView: View {
         isSaving: Bool,
         onSave: @escaping (DotNoteEntry) async -> Void,
         onCreate: @escaping (DotNoteEntry) async -> Void,
-        onDelete: @escaping (DotNoteEntry.ID) async -> Void
+        onDelete: @escaping (DotNoteEntry.ID) async -> Void,
+        onCancel: @escaping () -> Void
     ) {
         self.mode = mode
         self.settings = settings
@@ -317,12 +326,17 @@ private struct MemoOverlayView: View {
         self.onSave = onSave
         self.onCreate = onCreate
         self.onDelete = onDelete
+        self.onCancel = onCancel
         _draft = State(initialValue: DotNoteEntryDraft(entry: mode.entry))
     }
 
     var body: some View {
         ZStack {
             DotNoteTheme.Palette.paper(scheme).opacity(0.96).ignoresSafeArea()
+            Color.clear
+                .frame(width: 1, height: 1)
+                .accessibilityElement()
+                .accessibilityIdentifier("memo-overlay")
 
             VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
                 HStack {
@@ -392,7 +406,6 @@ private struct MemoOverlayView: View {
                             y: DotNoteTheme.Shadow.cardY)
             )
             .padding(DotNoteTheme.Spacing.lg)
-            .accessibilityIdentifier("memo-overlay")
         }
     }
 
@@ -407,7 +420,7 @@ private struct MemoOverlayView: View {
 
     private func close() async {
         if draft.isEmpty {
-            dismiss()
+            onCancel()
         } else {
             await save()
         }

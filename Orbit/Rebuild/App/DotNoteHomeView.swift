@@ -326,26 +326,29 @@ struct CreateActionRow: View {
             if expanded {
                 ForEach(kinds) { kind in
                     Button {
-                        withAnimation(.easeInOut(duration: 0.15)) { expanded = false }
-                        onPick(kind)
+                        pick(kind)
                     } label: {
                         HStack(spacing: 5) {
                             Circle().fill(kind.chipForeground(scheme)).frame(width: 7, height: 7)
                             Text(kind.label)
                         }
                         .font(.system(size: 13, weight: .medium))
-                        .padding(.horizontal, DotNoteTheme.Spacing.sm)
-                        .padding(.vertical, DotNoteTheme.Spacing.xs)
+                        .frame(minWidth: 58, minHeight: 36)
                         .background(Capsule().fill(kind.chipBackground(scheme)))
                         .foregroundStyle(kind.chipForeground(scheme))
                     }
+                    .buttonStyle(.plain)
                     .accessibilityIdentifier("create-\(kind.rawValue)")
-                    .transition(.scale.combined(with: .opacity))
                 }
             }
 
             Spacer()
         }
+    }
+
+    private func pick(_ kind: DotNoteEntryKind) {
+        onPick(kind)
+        expanded = false
     }
 }
 

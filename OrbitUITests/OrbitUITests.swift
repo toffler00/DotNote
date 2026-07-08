@@ -27,14 +27,16 @@ final class OrbitUITests: XCTestCase {
 
     func testCreateEditAndDeleteMemo() {
         // Home renders the expandable create control.
-        XCTAssertTrue(app.buttons["create-toggle"].waitForExistence(timeout: 5))
+        let createToggle = app.buttons["create-toggle"]
+        XCTAssertTrue(createToggle.waitForHittable(timeout: 5))
 
         // Expand the create row and pick "memo".
-        app.buttons["create-toggle"].tap()
-        XCTAssertTrue(app.buttons["create-memo"].waitForExistence(timeout: 2))
-        app.buttons["create-memo"].tap()
+        createToggle.tap()
+        let createMemo = app.buttons["create-memo"]
+        XCTAssertTrue(createMemo.waitForHittable(timeout: 2))
+        createMemo.tap()
 
-        XCTAssertTrue(app.otherElements["memo-overlay"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.textFields["entry-title-field"].waitForExistence(timeout: 5))
 
         app.textFields["entry-title-field"].tap()
         app.textFields["entry-title-field"].typeText("UI Smoke")
@@ -50,7 +52,7 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["UI Smoke"].waitForExistence(timeout: 5))
 
         app.staticTexts["UI Smoke"].tap()
-        XCTAssertTrue(app.otherElements["memo-overlay"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.textFields["entry-title-field"].waitForExistence(timeout: 5))
 
         app.textFields["entry-title-field"].tap()
         app.textFields["entry-title-field"].typeText(" Updated")
@@ -59,10 +61,23 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["UI Smoke Updated"].waitForExistence(timeout: 5))
 
         app.staticTexts["UI Smoke Updated"].tap()
-        XCTAssertTrue(app.otherElements["memo-overlay"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.textFields["entry-title-field"].waitForExistence(timeout: 5))
         app.buttons["entry-delete-button"].tap()
 
         // Deleting the only entry falls back to the empty state.
         XCTAssertTrue(app.staticTexts["아직 기록이 없어요"].waitForExistence(timeout: 5))
+    }
+}
+
+private extension XCUIElement {
+    func waitForHittable(timeout: TimeInterval) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if exists && isHittable {
+                return true
+            }
+            RunLoop.current.run(until: Date().addingTimeInterval(0.05))
+        }
+        return exists && isHittable
     }
 }

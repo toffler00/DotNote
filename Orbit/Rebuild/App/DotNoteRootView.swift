@@ -13,16 +13,20 @@ struct DotNoteRootView: View {
     @State private var editorMode: DotNoteEntryEditorMode?
 
     var body: some View {
-        NavigationStack {
-            CalendarHomeView(
-                entries: appModel.entries,
-                settings: appModel.settings,
-                onCreate: { kind in editorMode = .create(kind) },
-                onSelectEntry: { entry in editorMode = .edit(entry) },
-                onOpenSettings: { /* Settings screen lands in a later milestone. */ }
-            )
-            .navigationBarHidden(true)
-            .sheet(item: $editorMode) { mode in
+        ZStack {
+            NavigationStack {
+                CalendarHomeView(
+                    entries: appModel.entries,
+                    settings: appModel.settings,
+                    onCreate: { kind in editorMode = .create(kind) },
+                    onSelectEntry: { entry in editorMode = .edit(entry) },
+                    onOpenSettings: { /* Settings screen lands in a later milestone. */ }
+                )
+                .navigationBarHidden(true)
+            }
+            .disabled(editorMode != nil)
+
+            if let mode = editorMode {
                 DotNoteEntryEditorView(mode: mode, settings: appModel.settings, isSaving: appModel.isSaving) { entry in
                     await appModel.updateEntry(entry)
                     editorMode = nil
@@ -32,7 +36,11 @@ struct DotNoteRootView: View {
                 } onDelete: { id in
                     await appModel.deleteEntry(id: id)
                     editorMode = nil
+                } onCancel: {
+                    editorMode = nil
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .zIndex(1)
             }
         }
     }
