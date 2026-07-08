@@ -34,7 +34,7 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.buttons["create-memo"].waitForExistence(timeout: 2))
         app.buttons["create-memo"].tap()
 
-        XCTAssertTrue(app.navigationBars["New Note"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["memo-overlay"].waitForExistence(timeout: 5))
 
         app.textFields["entry-title-field"].tap()
         app.textFields["entry-title-field"].typeText("UI Smoke")
@@ -50,7 +50,7 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["UI Smoke"].waitForExistence(timeout: 5))
 
         app.staticTexts["UI Smoke"].tap()
-        XCTAssertTrue(app.navigationBars["Edit Note"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["memo-overlay"].waitForExistence(timeout: 5))
 
         app.textFields["entry-title-field"].tap()
         app.textFields["entry-title-field"].typeText(" Updated")
@@ -59,8 +59,8 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["UI Smoke Updated"].waitForExistence(timeout: 5))
 
         app.staticTexts["UI Smoke Updated"].tap()
-        XCTAssertTrue(app.navigationBars["Edit Note"].waitForExistence(timeout: 5))
-        app.buttons["Delete"].tap()
+        XCTAssertTrue(app.otherElements["memo-overlay"].waitForExistence(timeout: 5))
+        app.buttons["entry-delete-button"].tap()
 
         // Deleting the only entry falls back to the empty state.
         XCTAssertTrue(app.staticTexts["아직 기록이 없어요"].waitForExistence(timeout: 5))

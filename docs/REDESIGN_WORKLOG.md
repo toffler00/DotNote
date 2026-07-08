@@ -145,3 +145,65 @@ framework. Out of scope for the UI redesign; flag for the rebuild owner.
    (`open-settings-button`) to Settings.
 3. Remove/repurpose `DotNoteMigrationPreviewView`. Add light/dark Previews per
    screen using `InMemoryDotNoteStore` snapshots.
+
+---
+
+## Milestone 2 — Typed editor shell + app icon
+
+Commit: "Add typed entry editors and app icon"
+Branch: `rebuild`. Status: **Dev/Prod build verified; UI test blocked by
+environment approval/usage limit.**
+
+### Scope
+
+Continued the UI redesign from Milestone 1. This pass still keeps persistence
+behind `DotNoteAppModel`; the editor views call only the existing create/update/
+delete callbacks and do not touch Store / Migration / SwiftData code.
+
+### Files
+
+New:
+- `Orbit/Rebuild/App/DotNoteEntryEditors.swift` — replaces the interim private
+  `Form` editor with a typed editor router:
+  - `DiaryEditorView`
+  - `DrawingEditorView`
+  - `MemoOverlayView`
+  - shared `WeatherPicker`
+  - PencilKit-backed drawing canvas wrapper
+  - shared draft, delete button, alignment toolbar, drawing toolbar helpers
+- `appicon/` — source/master app icon handoff assets and generated
+  `AppIcon.appiconset`.
+
+Modified:
+- `Orbit/Rebuild/App/DotNoteRootView.swift` — now passes `settings` into
+  `DotNoteEntryEditorView` and no longer contains the interim private `Form`
+  editor.
+- `OrbitUITests/OrbitUITests.swift` — smoke flow now expects the memo overlay
+  instead of the old `"New Note"` / `"Edit Note"` navigation bars.
+- `Orbit.xcodeproj/project.pbxproj` — registered `DotNoteEntryEditors.swift`
+  with collision-checked IDs:
+  - file ref `A10000000000000000000117`
+  - build file `A10000000000000000000033`
+- `Orbit/Assets.xcassets/AppIcon.appiconset/` and
+  `Orbit/Assets.xcassets/AppIcon_dev.appiconset/` — replaced with the new Dot
+  Note icon set from `appicon/AppIcon.appiconset`.
+
+### Verification
+
+- `plutil -lint Orbit.xcodeproj/project.pbxproj`: **OK**.
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Prod` simulator build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` UI test: **not completed**. The first sandboxed run failed before
+  tests started because CoreSimulatorService became unavailable and Swift
+  package sandboxing failed. Retrying with escalated simulator access was blocked
+  by the current Codex usage/approval limit, so no UI-test result is available
+  for this pass.
+
+### Caveats / next checks
+
+- Run `Orbit_Dev` UI tests once simulator access is available again.
+- Drawing editor currently saves new PencilKit strokes to `imageData`; loading
+  existing `imageData` back into an editable PencilKit canvas is not implemented
+  yet.
+- Settings, font picker, collection views, and the home `⋯` settings route are
+  still the next UI milestone.
