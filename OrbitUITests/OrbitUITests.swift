@@ -2,7 +2,7 @@
 //  OrbitUITests.swift
 //  OrbitUITests
 //
-//  Smoke tests for the SwiftUI rebuild shell.
+//  Smoke tests for the SwiftUI rebuild shell (redesigned calendar-first home).
 //
 
 import XCTest
@@ -26,9 +26,14 @@ final class OrbitUITests: XCTestCase {
     }
 
     func testCreateEditAndDeleteMemo() {
-        XCTAssertTrue(app.navigationBars["Dot Note"].waitForExistence(timeout: 5))
+        // Home renders the expandable create control.
+        XCTAssertTrue(app.buttons["create-toggle"].waitForExistence(timeout: 5))
 
-        app.buttons["new-note-button"].tap()
+        // Expand the create row and pick "memo".
+        app.buttons["create-toggle"].tap()
+        XCTAssertTrue(app.buttons["create-memo"].waitForExistence(timeout: 2))
+        app.buttons["create-memo"].tap()
+
         XCTAssertTrue(app.navigationBars["New Note"].waitForExistence(timeout: 5))
 
         app.textFields["entry-title-field"].tap()
@@ -40,8 +45,9 @@ final class OrbitUITests: XCTestCase {
         bodyEditor.typeText("Created from UI test")
 
         app.buttons["entry-save-button"].tap()
+
+        // The new entry appears in the selected day's list on the home screen.
         XCTAssertTrue(app.staticTexts["UI Smoke"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Created from UI test"].exists)
 
         app.staticTexts["UI Smoke"].tap()
         XCTAssertTrue(app.navigationBars["Edit Note"].waitForExistence(timeout: 5))
@@ -56,6 +62,7 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Edit Note"].waitForExistence(timeout: 5))
         app.buttons["Delete"].tap()
 
-        XCTAssertTrue(app.staticTexts["No entries"].waitForExistence(timeout: 5))
+        // Deleting the only entry falls back to the empty state.
+        XCTAssertTrue(app.staticTexts["아직 기록이 없어요"].waitForExistence(timeout: 5))
     }
 }

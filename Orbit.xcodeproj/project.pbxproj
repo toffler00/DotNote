@@ -80,6 +80,8 @@
 		A10000000000000000000005 /* DotNoteRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000105 /* DotNoteRootView.swift */; };
 		A10000000000000000000006 /* DotNoteMigrationPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000106 /* DotNoteMigrationPreviewView.swift */; };
 		A10000000000000000000007 /* DotNoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000107 /* DotNoteApp.swift */; };
+		A10000000000000000000031 /* DotNoteTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000116 /* DotNoteTheme.swift */; };
+		A10000000000000000000032 /* DotNoteHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000115 /* DotNoteHomeView.swift */; };
 		A10000000000000000000008 /* DotNoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000108 /* DotNoteStore.swift */; };
 		A10000000000000000000009 /* InMemoryDotNoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000109 /* InMemoryDotNoteStore.swift */; };
 		A1000000000000000000000A /* DotNoteAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000010A /* DotNoteAppModel.swift */; };
@@ -196,6 +198,8 @@
 		A10000000000000000000105 /* DotNoteRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteRootView.swift; sourceTree = "<group>"; };
 		A10000000000000000000106 /* DotNoteMigrationPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteMigrationPreviewView.swift; sourceTree = "<group>"; };
 		A10000000000000000000107 /* DotNoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteApp.swift; sourceTree = "<group>"; };
+		A10000000000000000000116 /* DotNoteTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteTheme.swift; sourceTree = "<group>"; };
+		A10000000000000000000115 /* DotNoteHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteHomeView.swift; sourceTree = "<group>"; };
 		A10000000000000000000108 /* DotNoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteStore.swift; sourceTree = "<group>"; };
 		A10000000000000000000109 /* InMemoryDotNoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryDotNoteStore.swift; sourceTree = "<group>"; };
 		A1000000000000000000010A /* DotNoteAppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotNoteAppModel.swift; sourceTree = "<group>"; };
@@ -475,6 +479,8 @@
 				A1000000000000000000010A /* DotNoteAppModel.swift */,
 				A10000000000000000000105 /* DotNoteRootView.swift */,
 				A10000000000000000000106 /* DotNoteMigrationPreviewView.swift */,
+				A10000000000000000000116 /* DotNoteTheme.swift */,
+				A10000000000000000000115 /* DotNoteHomeView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -661,6 +667,8 @@
 				A1000000000000000000000D /* DotNoteModelContainer.swift in Sources */,
 				A1000000000000000000000F /* LegacyDotNoteImportSource.swift in Sources */,
 				A10000000000000000000006 /* DotNoteMigrationPreviewView.swift in Sources */,
+				A10000000000000000000031 /* DotNoteTheme.swift in Sources */,
+				A10000000000000000000032 /* DotNoteHomeView.swift in Sources */,
 				A1000000000000000000000E /* SwiftDataDotNoteStore.swift in Sources */,
 				A10000000000000000000010 /* LegacyDotNoteImportState.swift in Sources */,
 				A10000000000000000000004 /* LegacyRealmStore.swift in Sources */,
