@@ -55,6 +55,10 @@ struct DotNoteRootView: View {
                     onDeleteAllData: {
                         await appModel.deleteAllData()
                     },
+                    onSelectEntry: { entry in
+                        isShowingSettings = false
+                        editorMode = .edit(entry)
+                    },
                     onClose: {
                         isShowingSettings = false
                     }

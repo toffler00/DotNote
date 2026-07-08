@@ -254,3 +254,44 @@ Modified:
   points only; their destination content is still a later milestone.
 - Collection views are read-only entry points for diary/memo. Editing from
   collection cards and drawing collection coverage remain future work.
+
+---
+
+## Milestone 4 — Collection cards open existing editors
+
+Commit: "Open entries from settings collections"
+Branch: `rebuild`. Status: **Dev build + full test suite verified.**
+
+### Scope
+
+Made the settings collection entry points functional. Diary/memo collection cards
+now route back through the existing root coordinator and open the same
+type-specific editor used by the calendar home, keeping persistence behind
+`DotNoteAppModel`.
+
+### Files
+
+Modified:
+- `Orbit/Rebuild/App/DotNoteRootView.swift` — passes `onSelectEntry` into
+  `DotNoteSettingsView`; selecting an entry dismisses settings and opens the
+  editor in `.edit` mode.
+- `Orbit/Rebuild/App/DotNoteEntryEditors.swift` — makes diary/memo collection
+  cards tappable, exposes stable accessibility identifiers for collection cards,
+  and collapses each card into a single accessibility element.
+- `OrbitUITests/OrbitUITests.swift` — adds a smoke flow for creating a memo,
+  opening Settings → Memo collection, tapping the collection card, and verifying
+  the memo editor opens with the existing title.
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test run: **TEST SUCCEEDED**.
+  - Unit tests: 12 executed, 1 skipped external Realm fixture, 0 failures.
+  - UI tests: 3 executed, 0 failures.
+
+### Caveats / next checks
+
+- Collection cards now open editors for diary/memo; drawing collection entry
+  coverage is still pending.
+- Support rows (`의견보내기`, `사용법`, `Open-source License`) remain visual-only
+  until their destinations are designed.

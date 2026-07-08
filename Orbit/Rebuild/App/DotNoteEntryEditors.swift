@@ -613,6 +613,7 @@ struct DotNoteSettingsView: View {
     var isSaving: Bool
     var onUpdateSettings: (DotNoteSettings) async -> Void
     var onDeleteAllData: () async -> Void
+    var onSelectEntry: (DotNoteEntry) -> Void
     var onClose: () -> Void
 
     @Environment(\.colorScheme) private var scheme
@@ -652,7 +653,7 @@ struct DotNoteSettingsView: View {
 
                     DotNoteSettingsGroup {
                         NavigationLink {
-                            DotNoteCollectionView(entries: entries, filter: .diary)
+                            DotNoteCollectionView(entries: entries, filter: .diary, onSelectEntry: onSelectEntry)
                         } label: {
                             DotNoteSettingsRow(
                                 icon: "book.pages",
@@ -666,7 +667,7 @@ struct DotNoteSettingsView: View {
                         DotNoteSettingsDivider()
 
                         NavigationLink {
-                            DotNoteCollectionView(entries: entries, filter: .memo)
+                            DotNoteCollectionView(entries: entries, filter: .memo, onSelectEntry: onSelectEntry)
                         } label: {
                             DotNoteSettingsRow(
                                 icon: "note.text",
@@ -850,6 +851,7 @@ private struct DotNoteCollectionView: View {
 
     var entries: [DotNoteEntry]
     var filter: Filter
+    var onSelectEntry: (DotNoteEntry) -> Void
 
     @Environment(\.colorScheme) private var scheme
 
@@ -876,8 +878,16 @@ private struct DotNoteCollectionView: View {
                         .padding(.top, DotNoteTheme.Spacing.xl)
                 } else {
                     LazyVGrid(columns: columns, spacing: DotNoteTheme.Spacing.sm) {
-                        ForEach(filteredEntries) { entry in
-                            DotNoteCollectionCard(entry: entry)
+                        ForEach(Array(filteredEntries.enumerated()), id: \.element.id) { index, entry in
+                            Button {
+                                onSelectEntry(entry)
+                            } label: {
+                                DotNoteCollectionCard(entry: entry)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(entry.accessibilityTitle)
+                            .accessibilityIdentifier("collection-\(filter.kind.rawValue)-entry-\(index)")
                         }
                     }
                 }
@@ -953,6 +963,18 @@ private struct DotNoteCollectionCard: View {
         f.dateFormat = "M.d"
         return f
     }()
+}
+
+private extension DotNoteEntry {
+    var accessibilityTitle: String {
+        if !title.isEmpty {
+            return title
+        }
+        if !body.isEmpty {
+            return body
+        }
+        return kind.label
+    }
 }
 
 private struct DotNoteSettingsGroup<Content: View>: View {

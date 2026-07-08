@@ -84,6 +84,39 @@ final class OrbitUITests: XCTestCase {
         app.buttons["settings-close-button"].tap()
         XCTAssertTrue(app.buttons["create-toggle"].waitForHittable(timeout: 5))
     }
+
+    func testOpenMemoFromSettingsCollection() {
+        let createToggle = app.buttons["create-toggle"]
+        XCTAssertTrue(createToggle.waitForHittable(timeout: 5))
+
+        createToggle.tap()
+        let createMemo = app.buttons["create-memo"]
+        XCTAssertTrue(createMemo.waitForHittable(timeout: 2))
+        createMemo.tap()
+
+        XCTAssertTrue(app.textFields["entry-title-field"].waitForExistence(timeout: 5))
+        app.textFields["entry-title-field"].tap()
+        app.textFields["entry-title-field"].typeText("Collection Flow")
+
+        let bodyEditor = app.textViews["entry-body-editor"]
+        XCTAssertTrue(bodyEditor.waitForExistence(timeout: 2))
+        bodyEditor.tap()
+        bodyEditor.typeText("Opened from settings collection")
+
+        app.buttons["entry-save-button"].tap()
+        XCTAssertTrue(app.staticTexts["Collection Flow"].waitForExistence(timeout: 5))
+
+        app.buttons["open-settings-button"].tap()
+        XCTAssertTrue(app.buttons["settings-memo-collection-row"].waitForHittable(timeout: 5))
+        app.buttons["settings-memo-collection-row"].tap()
+
+        let collectionCard = app.descendants(matching: .any)["collection-memo-entry-0"]
+        XCTAssertTrue(collectionCard.waitForHittable(timeout: 5))
+        collectionCard.tap()
+
+        XCTAssertTrue(app.textFields["entry-title-field"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.textFields["entry-title-field"].value as? String == "Collection Flow")
+    }
 }
 
 private extension XCUIElement {
