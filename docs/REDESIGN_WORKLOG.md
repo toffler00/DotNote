@@ -295,3 +295,41 @@ Modified:
   coverage is still pending.
 - Support rows (`의견보내기`, `사용법`, `Open-source License`) remain visual-only
   until their destinations are designed.
+
+---
+
+## Milestone 5 — Settings support destinations
+
+Commit: "Connect settings support destinations"
+Branch: `rebuild`. Status: **Dev/Prod build + full test suite verified.**
+
+### Scope
+
+Connected the Settings support rows to functional SwiftUI destinations/actions.
+The feedback row now preserves the legacy recipient, subject, and message body
+through a `mailto:` URL. The help row opens a compact SwiftUI usage guide, and
+the license row opens the bundled `opensourceLicense.md` content inside a
+SwiftUI reader.
+
+### Files
+
+Modified:
+- `Orbit/Rebuild/App/DotNoteEntryEditors.swift` — connects feedback/help/license
+  rows, adds `DotNoteHelpView`, adds `DotNoteLicenseView`, and loads the bundled
+  open-source license markdown.
+- `OrbitUITests/OrbitUITests.swift` — adds a settings support smoke flow for the
+  help and license destinations.
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test run: **TEST SUCCEEDED**.
+  - Unit tests: 12 executed, 1 skipped external Realm fixture, 0 failures.
+  - UI tests: 4 executed, 0 failures.
+- `Orbit_Prod` simulator build: **BUILD SUCCEEDED**.
+
+### Caveats / next checks
+
+- Feedback uses `mailto:` and is not automated in UI tests because it depends on
+  Mail/default handler availability in the simulator environment.
+- Drawing collection coverage remains pending.

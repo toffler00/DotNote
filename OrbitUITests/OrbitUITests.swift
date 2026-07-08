@@ -85,6 +85,22 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.buttons["create-toggle"].waitForHittable(timeout: 5))
     }
 
+    func testOpenSettingsSupportDestinations() {
+        app.buttons["open-settings-button"].tap()
+
+        XCTAssertTrue(app.buttons["settings-help-row"].waitForHittable(timeout: 5))
+        app.buttons["settings-help-row"].tap()
+        XCTAssertTrue(app.staticTexts["사용법"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["기록하기"].waitForExistence(timeout: 2))
+
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+
+        XCTAssertTrue(app.buttons["settings-license-row"].waitForHittable(timeout: 5))
+        app.buttons["settings-license-row"].tap()
+        XCTAssertTrue(app.staticTexts["Open-source License"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Apache License"].waitForExistence(timeout: 2))
+    }
+
     func testOpenMemoFromSettingsCollection() {
         let createToggle = app.buttons["create-toggle"]
         XCTAssertTrue(createToggle.waitForHittable(timeout: 5))

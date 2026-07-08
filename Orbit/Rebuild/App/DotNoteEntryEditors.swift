@@ -617,6 +617,7 @@ struct DotNoteSettingsView: View {
     var onClose: () -> Void
 
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.openURL) private var openURL
     @State private var isConfirmingDeleteAllData = false
 
     private var currentSettings: DotNoteSettings {
@@ -680,30 +681,46 @@ struct DotNoteSettingsView: View {
                     }
 
                     DotNoteSettingsGroup {
-                        DotNoteSettingsRow(
-                            icon: "paperplane",
-                            title: "의견보내기",
-                            detail: nil,
-                            tint: DotNoteTheme.Palette.accent(scheme)
-                        )
+                        Button {
+                            openFeedbackMail()
+                        } label: {
+                            DotNoteSettingsRow(
+                                icon: "paperplane",
+                                title: "의견보내기",
+                                detail: nil,
+                                tint: DotNoteTheme.Palette.accent(scheme)
+                            )
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("settings-feedback-row")
 
                         DotNoteSettingsDivider()
 
-                        DotNoteSettingsRow(
-                            icon: "questionmark.circle",
-                            title: "사용법",
-                            detail: nil,
-                            tint: DotNoteTheme.Palette.accent(scheme)
-                        )
+                        NavigationLink {
+                            DotNoteHelpView()
+                        } label: {
+                            DotNoteSettingsRow(
+                                icon: "questionmark.circle",
+                                title: "사용법",
+                                detail: nil,
+                                tint: DotNoteTheme.Palette.accent(scheme)
+                            )
+                        }
+                        .accessibilityIdentifier("settings-help-row")
 
                         DotNoteSettingsDivider()
 
-                        DotNoteSettingsRow(
-                            icon: "curlybraces",
-                            title: "Open-source License",
-                            detail: nil,
-                            tint: DotNoteTheme.Palette.accent(scheme)
-                        )
+                        NavigationLink {
+                            DotNoteLicenseView()
+                        } label: {
+                            DotNoteSettingsRow(
+                                icon: "curlybraces",
+                                title: "Open-source License",
+                                detail: nil,
+                                tint: DotNoteTheme.Palette.accent(scheme)
+                            )
+                        }
+                        .accessibilityIdentifier("settings-license-row")
                     }
 
                     Button(role: .destructive) {
@@ -757,6 +774,15 @@ struct DotNoteSettingsView: View {
 
             Spacer()
         }
+    }
+
+    private func openFeedbackMail() {
+        let subject = "Dot Note 의견보내기".urlEncodedForMail
+        let body = "Dot Note에 대한 불편한 사항이나 개선사항 또는 아이디어가 있다면 보내주시기 바랍니다.\n\n의견: ".urlEncodedForMail
+        guard let url = URL(string: "mailto:toffler00@gmail.com?subject=\(subject)&body=\(body)") else {
+            return
+        }
+        openURL(url)
     }
 }
 
@@ -826,6 +852,99 @@ private struct DotNoteFontListView: View {
         .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("font-list-screen")
+    }
+}
+
+private struct DotNoteHelpView: View {
+    @Environment(\.colorScheme) private var scheme
+
+    private let sections: [(String, String)] = [
+        ("기록하기", "홈의 + 버튼을 열고 메모, 그림, 일기 중 하나를 골라 오늘의 기록을 남길 수 있어요."),
+        ("찾아보기", "달력에서 날짜를 고르면 그날의 기록이 아래에 모이고, 설정의 모아보기에서는 종류별로 다시 볼 수 있어요."),
+        ("꾸미기", "일기에서는 날씨와 정렬을 고르고, 그림에서는 펜 색과 굵기를 바꿔 손그림을 남길 수 있어요."),
+        ("글꼴", "설정의 폰트 메뉴에서 본문 글꼴을 바꾸면 새 화면과 기존 기록 보기에도 같은 글꼴이 적용돼요.")
+    ]
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
+                Text("사용법")
+                    .font(DotNoteType.wordmarkFont(size: 36))
+                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+
+                ForEach(sections, id: \.0) { section in
+                    VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.xs) {
+                        Text(section.0)
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                        Text(section.1)
+                            .font(DotNoteType.body(nil).font(size: 16))
+                            .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(DotNoteTheme.Spacing.md)
+                    .background(
+                        RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
+                            .fill(DotNoteTheme.Palette.card(scheme))
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
+                            .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
+                    )
+                }
+            }
+            .padding(DotNoteTheme.Spacing.md)
+        }
+        .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
+        .navigationBarTitleDisplayMode(.inline)
+        .accessibilityIdentifier("help-screen")
+    }
+}
+
+private struct DotNoteLicenseView: View {
+    @Environment(\.colorScheme) private var scheme
+
+    private var licenseText: String {
+        guard let url = Bundle.main.url(forResource: "opensourceLicense", withExtension: "md"),
+              let text = try? String(contentsOf: url, encoding: .utf8),
+              !text.isEmpty else {
+            return "Open-source license information is unavailable."
+        }
+        return text
+    }
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
+                Text("Open-source License")
+                    .font(DotNoteType.wordmarkFont(size: 32))
+                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+
+                Text("Apache License")
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+
+                Text(licenseText)
+                    .font(.system(size: 12, design: .monospaced))
+                    .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+                    .textSelection(.enabled)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(DotNoteTheme.Spacing.md)
+                    .background(
+                        RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
+                            .fill(DotNoteTheme.Palette.card(scheme))
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
+                            .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
+                    )
+            }
+            .padding(DotNoteTheme.Spacing.md)
+        }
+        .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
+        .navigationBarTitleDisplayMode(.inline)
+        .accessibilityIdentifier("license-screen")
     }
 }
 
@@ -974,6 +1093,12 @@ private extension DotNoteEntry {
             return body
         }
         return kind.label
+    }
+}
+
+private extension String {
+    var urlEncodedForMail: String {
+        addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? self
     }
 }
 
