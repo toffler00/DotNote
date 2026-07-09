@@ -82,8 +82,23 @@ the next implementation pass, then use the linked docs for deeper detail.
 - Drawing editor now supports photo import as a canvas background through
   `PhotosPicker`, with photo+PencilKit strokes composited into `imageData` on
   save.
+- Drawing editor photo placement now supports in-canvas adjustment:
+  - photo adjustment mode,
+  - drag repositioning,
+  - pinch-style scale from `0.5x` to `4x`,
+  - reset placement,
+  - save compositing that respects the adjusted rect.
+- Drawing editor toolbar/weather rows are constrained to the device width; long
+  control rows scroll internally instead of widening the whole editor layout.
 - Settings sub-screens now share the custom Settings header instead of falling
   back to the system navigation bar.
+- Settings now includes app-wide appearance selection (`system`, `light`,
+  `dark`), persisted through SwiftData and applied through
+  `preferredColorScheme`.
+- Light/dark preview coverage exists for root, home, and settings views.
+- Legacy Realm -> SwiftData import flow has unit coverage for initial import,
+  duplicate-import prevention, and preserving an already-initialized SwiftData
+  store.
 
 ### Design Tokens
 
@@ -100,6 +115,12 @@ the next implementation pass, then use the linked docs for deeper detail.
 
 ### Latest Relevant Commits
 
+- `b91e681` — Validate SwiftData legacy import flow
+- `a00a3f2` — Constrain drawing editor toolbar layout
+- `0836434` — Embed RealmSwift framework in app bundle
+- `74cdd0e` — Add drawing photo placement controls
+- `2009a9c` — Add appearance mode setting and previews
+- `5feed48` — Update continuation brief with Claude Code work
 - `e766dac` — Document settings header consistency fix; sync baseline status
 - `b004a70` — Unify settings sub-screen headers; remove destructive-title string check
 - `5c5d1be` — Document editor hierarchy polish and drawing photo import
@@ -140,7 +161,8 @@ the next implementation pass, then use the linked docs for deeper detail.
 
 ## Recommended Next Work
 
-Continue with UI polish, not another structural rewrite.
+Continue with verification and release-readiness work before another structural
+rewrite.
 
 Recommended order:
 
@@ -151,16 +173,29 @@ Recommended order:
    - draw over it
    - save
    - reopen and confirm the composited image persists
-2. Run a real light/dark visual pass on device/simulator if the new Settings
+2. Run real legacy `.realm` migration verification with an actual old app
+   backup:
+   - set `DOTNOTE_LEGACY_REALM_FILE=/path/to/default.realm` when running the
+     external fixture test, or
+   - place a local ignored fixture at
+     `OrbitTests/Fixtures/LegacyRealm/default.realm`
+3. Run a real light/dark visual pass on device/simulator if the new Settings
    appearance picker reveals any design tuning needs beyond preview coverage.
-3. Later feature work:
-   - legacy photo crop/reposition/scale parity for drawing imports
-   - real legacy `.realm` migration verification
+4. Later feature work:
+   - decide whether the in-canvas drawing photo placement is enough, or whether
+     a separate legacy-style "Move and Scale" crop screen is still desired
    - decide whether old UIKit screens stay in target or move to reference-only
      storage
 
 Recently completed:
 
+- Added SwiftData legacy import validation: first-load import, duplicate import
+  prevention, settings/image/text/date preservation, and skip behavior when
+  SwiftData already has records.
+- Fixed a launch-time dyld crash by embedding `RealmSwift.framework` in the app
+  target's `Embed Frameworks` phase.
+- Fixed drawing editor photo-adjustment layout overflow by constraining long
+  weather/toolbar rows to scroll internally.
 - Added in-canvas drawing photo placement controls: adjustment mode, drag
   reposition, pinch-style scale, reset, and save compositing that respects the
   adjusted rect. Clearing a photo now persists as cleared instead of restoring
@@ -198,16 +233,17 @@ xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Prod -configuration Prod
 
 ## Known Caveats
 
-- Standalone `simctl launch` is now usable when the RealmSwift
-  `PackageFrameworks` subfolder is included in the runtime framework path. The
-  screenshot-capture recipe is documented in `docs/REDESIGN_WORKLOG.md`.
+- Standalone `simctl launch` is now usable after embedding
+  `RealmSwift.framework` in the app bundle. The screenshot-capture recipe is
+  documented in `docs/REDESIGN_WORKLOG.md`.
 - Existing drawing `imageData` is shown as a preview/background but cannot be
   reconstructed into editable PencilKit strokes.
-- Imported drawing photos are aspect-fit and centered only. Crop, reposition,
-  and scale controls are not implemented yet.
-- End-to-end PhotosPicker automation was not completed because the system Photos
+- Imported drawing photos can be repositioned/scaled before save, but this is
+  not a separate legacy-style crop screen.
+- End-to-end PhotosPicker automation is still limited because the system Photos
   UI is outside the app's normal accessibility surface in this environment.
-- A real legacy `.realm` file is still needed before claiming migration is
+- Synthetic Realm import and SwiftData migration unit tests pass, but a real
+  legacy user `.realm` file is still needed before claiming migration is
   production-safe.
 - Some older docs intentionally preserve historical milestone notes. For current
   state, trust this file plus `docs/CURRENT_UI_BASELINE.md` first.
