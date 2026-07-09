@@ -128,16 +128,18 @@ enum DotNoteFontTheme: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    /// PostScript / registered font name. Fonts must be listed in Info.plist `UIAppFonts`.
+    /// PostScript / registered font name (verified against each .otf/.ttf's `name`
+    /// table, nameID 6 — the file's base name does not always match this).
+    /// Fonts must be listed in Info.plist `UIAppFonts`.
     var postScriptName: String {
         switch self {
         case .barunGothic: return "NanumBarunGothic"
         case .myeongjo:    return "NanumMyeongjoEco"
-        case .barunpen:    return "NanumBarunpenR"
+        case .barunpen:    return "NanumBarunpen"
         case .brush:       return "NanumBrush"
-        case .shinb7:      return "SSShinb7"
-        case .flowerRoad:  return "SSFlowerRoad"
-        case .rock:        return "SSRock"
+        case .shinb7:      return "SangSangShinb7"
+        case .flowerRoad:  return "SangSangFlowerRoad"
+        case .rock:        return "SangSangRock"
         }
     }
 
