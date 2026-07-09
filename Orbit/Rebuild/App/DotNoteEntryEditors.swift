@@ -220,6 +220,7 @@ private struct DrawingEditorView: View {
                     TextField("제목", text: $draft.title)
                         .font(.system(size: 20, weight: .bold))
                         .padding(DotNoteTheme.Spacing.md)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .background(RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg).fill(DotNoteTheme.Palette.card(scheme)))
                         .accessibilityIdentifier("entry-title-field")
 
@@ -264,6 +265,7 @@ private struct DrawingEditorView: View {
                         }
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(DotNoteTheme.Spacing.md)
             }
             .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
@@ -515,6 +517,7 @@ private struct EditorDateWeatherHeader: View {
             WeatherPicker(selection: $draft.weather)
         }
         .padding(DotNoteTheme.Spacing.md)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
                 .fill(DotNoteTheme.Palette.card(scheme))
@@ -551,28 +554,31 @@ struct WeatherPicker: View {
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        HStack(spacing: DotNoteTheme.Spacing.xs) {
-            ForEach(DotNoteWeather.presets, id: \.self) { label in
-                Button {
-                    selection = label
-                } label: {
-                    Image(systemName: DotNoteWeather.symbolName(for: label))
-                        .font(.system(size: 16, weight: .semibold))
-                        .frame(width: 44, height: 44)
-                        .background(
-                            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
-                                .fill(selection == label ? DotNoteTheme.Palette.today : DotNoteTheme.Palette.paper(scheme))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
-                                .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: selection == label ? 0 : 1)
-                        )
-                        .foregroundStyle(selection == label ? .white : DotNoteTheme.Palette.inkSoft(scheme))
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: DotNoteTheme.Spacing.xs) {
+                ForEach(DotNoteWeather.presets, id: \.self) { label in
+                    Button {
+                        selection = label
+                    } label: {
+                        Image(systemName: DotNoteWeather.symbolName(for: label))
+                            .font(.system(size: 16, weight: .semibold))
+                            .frame(width: 44, height: 44)
+                            .background(
+                                RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                                    .fill(selection == label ? DotNoteTheme.Palette.today : DotNoteTheme.Palette.paper(scheme))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                                    .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: selection == label ? 0 : 1)
+                            )
+                            .foregroundStyle(selection == label ? .white : DotNoteTheme.Palette.inkSoft(scheme))
+                    }
+                    .accessibilityLabel(label)
+                    .accessibilityIdentifier("weather-\(label)")
                 }
-                .accessibilityLabel(label)
-                .accessibilityIdentifier("weather-\(label)")
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -617,76 +623,77 @@ private struct DrawingToolbar: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.sm) {
-            HStack(spacing: DotNoteTheme.Spacing.xs) {
-                ForEach(Array(DrawingPalette.colors.enumerated()), id: \.offset) { index, color in
-                    Button {
-                        selectedInk = color
-                        isEraser = false
-                    } label: {
-                        Circle()
-                            .fill(Color(uiColor: color))
-                            .frame(width: 24, height: 24)
-                            .overlay(Circle().stroke(Color.black.opacity(color == .white ? 0.18 : 0), lineWidth: 1))
-                            .padding(5)
-                            .background(
-                                Circle()
-                                    .stroke(
-                                        color.isSameInk(as: selectedInk) && !isEraser
-                                            ? DotNoteEntryKind.drawing.dot
-                                            : DotNoteTheme.Palette.hairline(scheme),
-                                        lineWidth: color.isSameInk(as: selectedInk) && !isEraser ? 2 : 1
-                                    )
-                            )
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: DotNoteTheme.Spacing.xs) {
+                    ForEach(Array(DrawingPalette.colors.enumerated()), id: \.offset) { index, color in
+                        Button {
+                            selectedInk = color
+                            isEraser = false
+                        } label: {
+                            Circle()
+                                .fill(Color(uiColor: color))
+                                .frame(width: 24, height: 24)
+                                .overlay(Circle().stroke(Color.black.opacity(color == .white ? 0.18 : 0), lineWidth: 1))
+                                .padding(5)
+                                .background(
+                                    Circle()
+                                        .stroke(
+                                            color.isSameInk(as: selectedInk) && !isEraser
+                                                ? DotNoteEntryKind.drawing.dot
+                                                : DotNoteTheme.Palette.hairline(scheme),
+                                            lineWidth: color.isSameInk(as: selectedInk) && !isEraser ? 2 : 1
+                                        )
+                                )
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("색상 \(index + 1)")
+                        .accessibilityIdentifier("drawing-color-\(index)")
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("색상 \(index + 1)")
-                    .accessibilityIdentifier("drawing-color-\(index)")
-                }
 
-                Spacer()
-
-                PhotosPicker(selection: $photoPickerItem, matching: .images) {
-                    Image(systemName: "photo.on.rectangle")
-                        .frame(width: 34, height: 34)
-                }
-                .buttonStyle(DrawingIconButtonStyle(isActive: false, scheme: scheme))
-                .accessibilityLabel("사진 추가")
-                .accessibilityIdentifier("drawing-photo-picker")
-
-                if hasPhoto {
-                    Button {
-                        isPhotoAdjusting.toggle()
-                    } label: {
-                        Image(systemName: "crop")
+                    PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                        Image(systemName: "photo.on.rectangle")
                             .frame(width: 34, height: 34)
                     }
-                    .buttonStyle(DrawingIconButtonStyle(isActive: isPhotoAdjusting, scheme: scheme))
-                    .accessibilityLabel(isPhotoAdjusting ? "사진 위치 조정 끄기" : "사진 위치 조정")
-                    .accessibilityIdentifier("drawing-photo-adjust")
-                }
+                    .buttonStyle(DrawingIconButtonStyle(isActive: false, scheme: scheme))
+                    .accessibilityLabel("사진 추가")
+                    .accessibilityIdentifier("drawing-photo-picker")
 
-                Button {
-                    isPhotoAdjusting = false
-                    isEraser.toggle()
-                } label: {
-                    Image(systemName: isEraser ? "eraser.fill" : "pencil.tip")
-                        .frame(width: 34, height: 34)
-                }
-                .buttonStyle(DrawingIconButtonStyle(isActive: isEraser, scheme: scheme))
-                .accessibilityLabel(isEraser ? "지우개" : "펜")
-                .accessibilityIdentifier("drawing-tool-toggle")
+                    if hasPhoto {
+                        Button {
+                            isPhotoAdjusting.toggle()
+                        } label: {
+                            Image(systemName: "crop")
+                                .frame(width: 34, height: 34)
+                        }
+                        .buttonStyle(DrawingIconButtonStyle(isActive: isPhotoAdjusting, scheme: scheme))
+                        .accessibilityLabel(isPhotoAdjusting ? "사진 위치 조정 끄기" : "사진 위치 조정")
+                        .accessibilityIdentifier("drawing-photo-adjust")
+                    }
 
-                Button(action: onUndo) {
-                    Image(systemName: "arrow.uturn.backward")
-                        .frame(width: 34, height: 34)
+                    Button {
+                        isPhotoAdjusting = false
+                        isEraser.toggle()
+                    } label: {
+                        Image(systemName: isEraser ? "eraser.fill" : "pencil.tip")
+                            .frame(width: 34, height: 34)
+                    }
+                    .buttonStyle(DrawingIconButtonStyle(isActive: isEraser, scheme: scheme))
+                    .accessibilityLabel(isEraser ? "지우개" : "펜")
+                    .accessibilityIdentifier("drawing-tool-toggle")
+
+                    Button(action: onUndo) {
+                        Image(systemName: "arrow.uturn.backward")
+                            .frame(width: 34, height: 34)
+                    }
+                    .buttonStyle(DrawingIconButtonStyle(isActive: false, scheme: scheme))
+                    .accessibilityLabel("실행 취소")
+                    .accessibilityIdentifier("drawing-undo")
                 }
-                .buttonStyle(DrawingIconButtonStyle(isActive: false, scheme: scheme))
-                .accessibilityLabel("실행 취소")
-                .accessibilityIdentifier("drawing-undo")
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             if hasPhoto && isPhotoAdjusting {
-                HStack(spacing: DotNoteTheme.Spacing.sm) {
+                HStack(alignment: .top, spacing: DotNoteTheme.Spacing.sm) {
                     Image(systemName: "hand.draw")
                         .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
                         .frame(width: 24)
@@ -696,8 +703,8 @@ private struct DrawingToolbar: View {
                         .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
-
-                    Spacer(minLength: DotNoteTheme.Spacing.xs)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .layoutPriority(1)
 
                     Button(action: onResetPhoto) {
                         Image(systemName: "arrow.counterclockwise")
@@ -707,6 +714,7 @@ private struct DrawingToolbar: View {
                     .accessibilityLabel("사진 위치 초기화")
                     .accessibilityIdentifier("drawing-photo-reset")
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
 
             HStack(spacing: DotNoteTheme.Spacing.sm) {
@@ -723,8 +731,10 @@ private struct DrawingToolbar: View {
                     .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
                     .frame(width: 24)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(DotNoteTheme.Spacing.sm)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
                 .fill(DotNoteTheme.Palette.card(scheme))
@@ -828,6 +838,7 @@ private struct DrawingCanvasBoard: View {
                 .accessibilityIdentifier("drawing-photo-clear")
             }
         }
+        .frame(maxWidth: .infinity)
         .accessibilityIdentifier("drawing-canvas")
     }
 
