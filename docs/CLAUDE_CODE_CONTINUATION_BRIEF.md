@@ -72,6 +72,18 @@ the next implementation pass, then use the linked docs for deeper detail.
   - undo control
 - Latest app icon and launch screen assets from `Set-A`.
 - Launch screen central logo is fixed at `210pt x 210pt`.
+- Wordmark and font picker now use verified custom-font PostScript names for
+  all seven bundled font choices.
+- Diary/drawing editors use a Korean date capsule plus native graphical picker
+  sheet, replacing the raw system `DatePicker` resting control.
+- Weather picker unselected buttons now have a visible hairline affordance.
+- Diary/memo title-body hierarchy has been tightened with clearer grouping and
+  controls-row separation.
+- Drawing editor now supports photo import as a canvas background through
+  `PhotosPicker`, with photo+PencilKit strokes composited into `imageData` on
+  save.
+- Settings sub-screens now share the custom Settings header instead of falling
+  back to the system navigation bar.
 
 ### Design Tokens
 
@@ -88,6 +100,15 @@ the next implementation pass, then use the linked docs for deeper detail.
 
 ### Latest Relevant Commits
 
+- `e766dac` — Document settings header consistency fix; sync baseline status
+- `b004a70` — Unify settings sub-screen headers; remove destructive-title string check
+- `5c5d1be` — Document editor hierarchy polish and drawing photo import
+- `bb8577b` — Polish editor content hierarchy; add photo import to drawing canvas
+- `4059194` — Sync Next UI Work status with completed milestones
+- `09fe83c` — Document editor date/weather polish and screenshot-capture method
+- `674bf36` — Polish diary/drawing editor date and weather treatment
+- `c007cb7` — Document wordmark font fix and runtime screenshot recipe
+- `7f6e05e` — Fix mismatched PostScript names for 4 custom fonts
 - `0e1569e` — Document current UI baseline and tokens
 - `efbcfae` — Replace app icon and launch screen assets
 - `a08005d` — Increase launch screen logo size
@@ -123,25 +144,16 @@ Continue with UI polish, not another structural rewrite.
 
 Recommended order:
 
-1. Home screen visual refinement against the Set A brand tone.
-2. Diary editor polish:
-   - layout density
-   - title/body hierarchy
-   - weather/date treatment
-   - light/dark parity
-3. Memo overlay polish:
-   - sizing
-   - keyboard behavior
-   - typography
-   - save/cancel affordance clarity
-4. Settings and collection polish:
-   - card density
-   - support rows
-   - collection card image/text balance
-5. Add or improve SwiftUI previews for light and dark modes using in-memory
+1. Add or improve SwiftUI previews for light and dark modes using in-memory
    snapshots.
-6. Later feature work:
-   - legacy photo picker/crop/composite behavior
+2. Manually verify the new drawing photo-import flow on a simulator/device with
+   real Photos content:
+   - pick photo
+   - draw over it
+   - save
+   - reopen and confirm the composited image persists
+3. Later feature work:
+   - legacy photo crop/reposition/scale parity for drawing imports
    - real legacy `.realm` migration verification
    - decide whether old UIKit screens stay in target or move to reference-only
      storage
@@ -174,11 +186,15 @@ xcodebuild build -project Orbit.xcodeproj -scheme Orbit_Prod -configuration Prod
 
 ## Known Caveats
 
-- Standalone `simctl launch` may fail because RealmSwift dynamic framework
-  resolution differs from the `xcodebuild test` environment. Prefer Xcode run or
-  `xcodebuild test` for runtime checks.
+- Standalone `simctl launch` is now usable when the RealmSwift
+  `PackageFrameworks` subfolder is included in the runtime framework path. The
+  screenshot-capture recipe is documented in `docs/REDESIGN_WORKLOG.md`.
 - Existing drawing `imageData` is shown as a preview/background but cannot be
   reconstructed into editable PencilKit strokes.
+- Imported drawing photos are aspect-fit and centered only. Crop, reposition,
+  and scale controls are not implemented yet.
+- End-to-end PhotosPicker automation was not completed because the system Photos
+  UI is outside the app's normal accessibility surface in this environment.
 - A real legacy `.realm` file is still needed before claiming migration is
   production-safe.
 - Some older docs intentionally preserve historical milestone notes. For current
