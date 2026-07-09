@@ -668,6 +668,20 @@ struct DotNoteSettingsView: View {
                         DotNoteSettingsDivider()
 
                         NavigationLink {
+                            DotNoteCollectionView(entries: entries, filter: .drawing, onSelectEntry: onSelectEntry)
+                        } label: {
+                            DotNoteSettingsRow(
+                                icon: "paintpalette",
+                                title: "그림보기",
+                                detail: "\(entries.filter { $0.kind == .drawing }.count)",
+                                tint: DotNoteEntryKind.drawing.dot
+                            )
+                        }
+                        .accessibilityIdentifier("settings-drawing-collection-row")
+
+                        DotNoteSettingsDivider()
+
+                        NavigationLink {
                             DotNoteCollectionView(entries: entries, filter: .memo, onSelectEntry: onSelectEntry)
                         } label: {
                             DotNoteSettingsRow(
@@ -951,11 +965,13 @@ private struct DotNoteLicenseView: View {
 private struct DotNoteCollectionView: View {
     enum Filter {
         case diary
+        case drawing
         case memo
 
         var title: String {
             switch self {
             case .diary: return "일기보기"
+            case .drawing: return "그림보기"
             case .memo: return "메모보기"
             }
         }
@@ -963,6 +979,7 @@ private struct DotNoteCollectionView: View {
         var kind: DotNoteEntryKind {
             switch self {
             case .diary: return .diary
+            case .drawing: return .drawing
             case .memo: return .memo
             }
         }

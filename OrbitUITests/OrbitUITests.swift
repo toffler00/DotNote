@@ -133,6 +133,40 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.textFields["entry-title-field"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.textFields["entry-title-field"].value as? String == "Collection Flow")
     }
+
+    func testOpenDrawingFromSettingsCollection() {
+        let createToggle = app.buttons["create-toggle"]
+        XCTAssertTrue(createToggle.waitForHittable(timeout: 5))
+
+        createToggle.tap()
+        let createDrawing = app.buttons["create-drawing"]
+        XCTAssertTrue(createDrawing.waitForHittable(timeout: 2))
+        createDrawing.tap()
+
+        XCTAssertTrue(app.textFields["entry-title-field"].waitForExistence(timeout: 5))
+        app.textFields["entry-title-field"].tap()
+        app.textFields["entry-title-field"].typeText("Drawing Flow")
+
+        let bodyEditor = app.textViews["entry-body-editor"]
+        XCTAssertTrue(bodyEditor.waitForExistence(timeout: 2))
+        bodyEditor.tap()
+        bodyEditor.typeText("Opened drawing from settings collection")
+
+        app.buttons["entry-save-button"].tap()
+        XCTAssertTrue(app.staticTexts["Drawing Flow"].waitForExistence(timeout: 5))
+
+        app.buttons["open-settings-button"].tap()
+        XCTAssertTrue(app.buttons["settings-drawing-collection-row"].waitForHittable(timeout: 5))
+        app.buttons["settings-drawing-collection-row"].tap()
+
+        let collectionCard = app.descendants(matching: .any)["collection-drawing-entry-0"]
+        XCTAssertTrue(collectionCard.waitForHittable(timeout: 5))
+        collectionCard.tap()
+
+        XCTAssertTrue(app.staticTexts["그림 수정"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.textFields["entry-title-field"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.textFields["entry-title-field"].value as? String == "Drawing Flow")
+    }
 }
 
 private extension XCUIElement {

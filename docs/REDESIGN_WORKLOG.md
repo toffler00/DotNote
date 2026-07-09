@@ -374,3 +374,40 @@ Modified:
   legacy import path available while the SwiftUI rebuild matures.
 - A later cleanup pass should decide whether legacy UIKit screens stay as
   reference-only files or move out of the app build target.
+
+---
+
+## Milestone 7 — Drawing collection routing
+
+Commit: "Open drawings from settings collection"
+Branch: `rebuild`. Status: **Dev/Prod build + full test suite verified.**
+
+### Scope
+
+Completed the missing Settings collection route for drawing entries. Settings
+now exposes a `그림보기` row alongside diary and memo collections. Drawing cards
+use the existing collection card layout and route through the root coordinator
+into the current drawing editor in edit mode.
+
+### Files
+
+Modified:
+- `Orbit/Rebuild/App/DotNoteEntryEditors.swift` — adds the Settings drawing
+  collection row and extends the collection filter to `.drawing`.
+- `OrbitUITests/OrbitUITests.swift` — adds a UI smoke flow for creating a
+  drawing entry, opening Settings → Drawing collection, tapping the card, and
+  verifying the drawing editor reopens with the saved title.
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test run: **TEST SUCCEEDED**.
+  - Unit tests: 12 executed, 1 skipped external Realm fixture, 0 failures.
+  - UI tests: 5 executed, 0 failures.
+- `Orbit_Prod` simulator build: **BUILD SUCCEEDED**.
+
+### Caveats / next checks
+
+- The drawing collection route is now covered, but the actual drawing editor
+  still uses the current functional SwiftUI/PencilKit design rather than the
+  final redesign polish.
