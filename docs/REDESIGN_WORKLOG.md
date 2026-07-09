@@ -487,3 +487,111 @@ Added:
 - Full UI tests were intentionally skipped for this resource-only change.
 - The source `launch/` folder remains as the user-provided working input and is
   not required by the app target.
+
+---
+
+## Milestone — Wordmark font bug fix + runtime screenshot verification unblocked
+
+Commit: `7f6e05e` — "Fix mismatched PostScript names for 4 custom fonts"
+Branch: `rebuild`. Status: **done, build + full test suite verified, fix
+confirmed visually via simulator screenshot.**
+
+### Context
+
+`docs/REDESIGN_WORKLOG.md` (Milestone 1) had flagged as an open, unverified
+caveat: *"Confirm in an Xcode Preview or a real simulator run that 'Dot Note'
+renders in the Barunpen handwriting face."* This pass resolved both that caveat
+and the underlying blocker that had prevented checking it (standalone `simctl
+launch` crashing).
+
+### Finding #1 (blocker resolved): the correct dyld framework path for standalone `simctl launch`
+
+Milestone 1 recorded `simctl launch` as unusable for runtime screenshots because
+of a missing `RealmSwift.framework` dyld error, and pointed
+`DYLD_FRAMEWORK_PATH` at the build **Products** directory — which does not
+actually contain `RealmSwift.framework` (only `.o`/`.swiftmodule` remnants).
+
+The framework actually lives one level down, in the SPM package-products
+subfolder:
+
+```
+<DerivedData>/Build/Products/Dev-iphonesimulator/PackageFrameworks/RealmSwift.framework
+```
+
+Pointing `DYLD_FRAMEWORK_PATH` at that `PackageFrameworks` folder (not the
+Products root) lets a bare `simctl launch` succeed:
+
+```sh
+PRODUCTS=~/Library/Developer/Xcode/DerivedData/Orbit-*/Build/Products/Dev-iphonesimulator
+FW="$PRODUCTS/PackageFrameworks"
+SIMCTL_CHILD_DYLD_FRAMEWORK_PATH="$FW" SIMCTL_CHILD_DYLD_FALLBACK_FRAMEWORK_PATH="$FW" \
+  xcrun simctl launch <device-id> io.orbit.orbit.prod --dotnote-ui-testing
+```
+
+This unblocks real runtime screenshot verification going forward — earlier
+milestones had to rely solely on `xcodebuild test` passing, with no visual
+check. `docs/CLAUDE_CODE_CONTINUATION_BRIEF.md`'s "Known Caveats" entry about
+preferring Xcode run / `xcodebuild test` is still reasonable general advice,
+but this path is a viable fallback when a screenshot is specifically needed.
+
+### Finding #2 (real bug, fixed): 4 of 7 custom fonts had wrong `postScriptName`
+
+With runtime screenshots working, the home screen "Dot Note" wordmark was
+visibly rendering in the system sans-serif font, not the intended Barunpen
+handwriting face — confirming the Milestone 1 caveat was a real bug, not just
+an unverified assumption.
+
+Root cause: `DotNoteFontTheme.postScriptName` values were derived from font
+**filenames**, not the fonts' actual registered PostScript names (`name` table,
+nameID 6). Verified every case against the real `.otf`/`.ttf` via `fontTools`:
+
+| case | coded (wrong) | actual PostScript name |
+| --- | --- | --- |
+| `barunpen` | `NanumBarunpenR` | `NanumBarunpen` |
+| `shinb7` | `SSShinb7` | `SangSangShinb7` |
+| `flowerRoad` | `SSFlowerRoad` | `SangSangFlowerRoad` |
+| `rock` | `SSRock` | `SangSangRock` |
+
+(`barunGothic`, `myeongjo`, `brush` were already correct.) `barunpen` is fixed
+as `DotNoteType.wordmark`, so this silently broke the wordmark on **every
+screen**; `shinb7`/`flowerRoad`/`rock` are 3 of the 7 selectable body-font
+themes in the font picker, so choosing any of them would silently render body
+text in the system font instead.
+
+**Fix:** corrected the 4 strings in `Orbit/Rebuild/App/DotNoteTheme.swift`
+(`DotNoteFontTheme.postScriptName`) — the single source of truth, so no other
+file needed changes. Confirmed no other file hardcodes these font-name strings
+(`grep` came back empty).
+
+**Method note for future font additions:** don't infer PostScript name from the
+filename. Extract it directly:
+```sh
+python3 -c "
+from fontTools.ttLib import TTFont
+f = TTFont('path/to/font.otf')
+for r in f['name'].names:
+    if r.nameID == 6: print(r.toUnicode())
+"
+```
+(`fontTools` was not preinstalled; installed into a throwaway venv —
+`python3 -m venv /tmp/fontenv && /tmp/fontenv/bin/pip install fonttools`.)
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test suite (`OrbitTests` + `OrbitUITests`, 15 tests total):
+  **all passed**, no regressions.
+- Visual: simulator screenshot before/after confirms the wordmark switched from
+  system sans-serif to the Barunpen pen face.
+
+### Not done in this pass
+
+Beyond the font fix, the home screen render was inspected but no other visual
+change was made — the calendar card, empty state, and create-row already read
+as clean and on-token against `DotNoteTheme`. Further "visual refinement"
+(item 1 in `docs/CURRENT_UI_BASELINE.md` → Next UI Work) can now be iterated on
+*with real screenshots* going forward, using the `PackageFrameworks` launch
+recipe above instead of guessing from code alone.
+
+Next up per the agreed order: diary/memo editor density and typography polish
+(`docs/CURRENT_UI_BASELINE.md` → Next UI Work, item 2).
