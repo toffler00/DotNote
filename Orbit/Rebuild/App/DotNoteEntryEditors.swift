@@ -980,7 +980,8 @@ struct DotNoteSettingsView: View {
                             icon: "trash",
                             title: "모든데이터 삭제",
                             detail: nil,
-                            tint: DotNoteTheme.Palette.destructive
+                            tint: DotNoteTheme.Palette.destructive,
+                            isDestructive: true
                         )
                     }
                     .buttonStyle(.plain)
@@ -1036,6 +1037,35 @@ struct DotNoteSettingsView: View {
     }
 }
 
+/// Shared back-button + title header for settings sub-screens, matching
+/// DotNoteSettingsView's own header so pushed screens don't fall back to the
+/// system default nav bar's back button (a different, floating-pill style).
+private struct SettingsSubscreenHeader: View {
+    var title: String
+    var titleSize: CGFloat = 36
+    var onBack: () -> Void
+
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        HStack(alignment: .center, spacing: DotNoteTheme.Spacing.sm) {
+            Button(action: onBack) {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 20, weight: .semibold))
+                    .frame(width: 36, height: 36)
+                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+            }
+            .accessibilityIdentifier("subscreen-back-button")
+
+            Text(title)
+                .font(DotNoteType.wordmarkFont(size: titleSize))
+                .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+
+            Spacer()
+        }
+    }
+}
+
 private struct DotNoteFontListView: View {
     var settings: DotNoteSettings
     var isSaving: Bool
@@ -1051,9 +1081,7 @@ private struct DotNoteFontListView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.sm) {
-                Text("폰트")
-                    .font(DotNoteType.wordmarkFont(size: 36))
-                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                SettingsSubscreenHeader(title: "폰트", onBack: { dismiss() })
                     .padding(.bottom, DotNoteTheme.Spacing.xs)
 
                 ForEach(DotNoteFontTheme.allCases) { font in
@@ -1100,13 +1128,14 @@ private struct DotNoteFontListView: View {
             .padding(DotNoteTheme.Spacing.md)
         }
         .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
         .accessibilityIdentifier("font-list-screen")
     }
 }
 
 private struct DotNoteHelpView: View {
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.dismiss) private var dismiss
 
     private let sections: [(String, String)] = [
         ("기록하기", "홈의 + 버튼을 열고 메모, 그림, 일기 중 하나를 골라 오늘의 기록을 남길 수 있어요."),
@@ -1118,9 +1147,7 @@ private struct DotNoteHelpView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
-                Text("사용법")
-                    .font(DotNoteType.wordmarkFont(size: 36))
-                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                SettingsSubscreenHeader(title: "사용법", onBack: { dismiss() })
 
                 ForEach(sections, id: \.0) { section in
                     VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.xs) {
@@ -1147,13 +1174,14 @@ private struct DotNoteHelpView: View {
             .padding(DotNoteTheme.Spacing.md)
         }
         .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
         .accessibilityIdentifier("help-screen")
     }
 }
 
 private struct DotNoteLicenseView: View {
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.dismiss) private var dismiss
 
     private var licenseText: String {
         guard let url = Bundle.main.url(forResource: "opensourceLicense", withExtension: "md"),
@@ -1167,9 +1195,7 @@ private struct DotNoteLicenseView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
-                Text("Open-source License")
-                    .font(DotNoteType.wordmarkFont(size: 32))
-                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                SettingsSubscreenHeader(title: "Open-source License", titleSize: 32, onBack: { dismiss() })
 
                 Text("Apache License")
                     .font(.system(size: 15, weight: .bold))
@@ -1193,7 +1219,7 @@ private struct DotNoteLicenseView: View {
             .padding(DotNoteTheme.Spacing.md)
         }
         .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
         .accessibilityIdentifier("license-screen")
     }
 }
@@ -1226,6 +1252,7 @@ private struct DotNoteCollectionView: View {
     var onSelectEntry: (DotNoteEntry) -> Void
 
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.dismiss) private var dismiss
 
     private var filteredEntries: [DotNoteEntry] {
         entries
@@ -1241,9 +1268,7 @@ private struct DotNoteCollectionView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
-                Text(filter.title)
-                    .font(DotNoteType.wordmarkFont(size: 36))
-                    .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                SettingsSubscreenHeader(title: filter.title, onBack: { dismiss() })
 
                 if filteredEntries.isEmpty {
                     EmptyStateView()
@@ -1267,7 +1292,7 @@ private struct DotNoteCollectionView: View {
             .padding(DotNoteTheme.Spacing.md)
         }
         .background(DotNoteTheme.Palette.paper(scheme).ignoresSafeArea())
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
         .accessibilityIdentifier("collection-\(filter.kind.rawValue)-screen")
     }
 }
@@ -1380,6 +1405,7 @@ private struct DotNoteSettingsRow: View {
     var title: String
     var detail: String?
     var tint: Color
+    var isDestructive: Bool = false
 
     @Environment(\.colorScheme) private var scheme
 
@@ -1396,7 +1422,7 @@ private struct DotNoteSettingsRow: View {
 
             Text(title)
                 .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(title == "모든데이터 삭제" ? DotNoteTheme.Palette.destructive : DotNoteTheme.Palette.ink(scheme))
+                .foregroundStyle(isDestructive ? DotNoteTheme.Palette.destructive : DotNoteTheme.Palette.ink(scheme))
 
             Spacer()
 

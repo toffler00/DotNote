@@ -93,7 +93,8 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["사용법"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["기록하기"].waitForExistence(timeout: 2))
 
-        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["subscreen-back-button"].waitForHittable(timeout: 5))
+        app.buttons["subscreen-back-button"].tap()
 
         XCTAssertTrue(app.buttons["settings-license-row"].waitForHittable(timeout: 5))
         app.buttons["settings-license-row"].tap()
