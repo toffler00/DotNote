@@ -144,9 +144,10 @@ Continue with UI polish, not another structural rewrite.
 
 Recommended order:
 
-1. Manually verify the new drawing photo-import flow on a simulator/device with
+1. Manually verify the drawing photo-import flow on a simulator/device with
    real Photos content:
    - pick photo
+   - drag/scale photo placement
    - draw over it
    - save
    - reopen and confirm the composited image persists
@@ -160,6 +161,10 @@ Recommended order:
 
 Recently completed:
 
+- Added in-canvas drawing photo placement controls: adjustment mode, drag
+  reposition, pinch-style scale, reset, and save compositing that respects the
+  adjusted rect. Clearing a photo now persists as cleared instead of restoring
+  previous `imageData`.
 - Added app-wide appearance mode selection in Settings (`system`, `light`,
   `dark`), persisted via SwiftData and applied through `preferredColorScheme`.
 - Added light/dark SwiftUI previews for root, home, and settings using shared

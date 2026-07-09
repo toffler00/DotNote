@@ -896,3 +896,39 @@ User request: proceed with item 1 and add dark-mode switching in Settings.
   settings defensively fall back to `.system`.
 - This was UI/domain-settings scoped only. No legacy Realm migration behavior
   changed.
+
+## Milestone — Drawing photo placement controls
+
+User request: continue the follow-up work for the drawing editor photo feature.
+
+### Scope
+
+- Added in-canvas photo adjustment state to `DrawingEditorView`.
+- When a photo is selected, the editor now enters a photo adjustment mode.
+- Added a `crop` toolbar button (`drawing-photo-adjust`) that toggles photo
+  adjustment mode when a photo exists.
+- While adjustment mode is active:
+  - PencilKit input is temporarily disabled so the photo can receive gestures.
+  - The photo can be dragged to reposition it.
+  - The photo can be scaled from `0.5x` to `4x`.
+  - A reset button (`drawing-photo-reset`) restores centered aspect-fit
+    placement.
+- Save compositing now uses the adjusted photo rect, so the saved `imageData`
+  matches the visible photo placement plus PencilKit strokes.
+- Fixed a related clear-photo bug: removing a photo and saving no longer falls
+  back to the previously saved `imageData`.
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test suite: **TEST SUCCEEDED**.
+  - Unit tests: 12 executed, 1 skipped, 0 failures.
+  - UI tests: 5 executed, 0 failures.
+
+### Notes
+
+- This keeps the feature in the existing SwiftUI/PencilKit editor instead of
+  recreating the old UIKit "Move and Scale" crop screen.
+- End-to-end PhotosPicker interaction with real library content still needs a
+  manual simulator/device pass because the system photo picker is outside the
+  app's own UI automation surface.

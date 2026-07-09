@@ -186,6 +186,9 @@ private struct DrawingEditorView: View {
     @State private var lineWidth: CGFloat = 5
     @State private var isEraser = false
     @State private var pickedImage: UIImage?
+    @State private var photoPlacement = DrawingPhotoPlacement()
+    @State private var isPhotoAdjusting = false
+    @State private var didClearPhoto = false
     @State private var photoPickerItem: PhotosPickerItem?
 
     init(
@@ -223,17 +226,25 @@ private struct DrawingEditorView: View {
                     DrawingCanvasBoard(
                         canvasView: $canvasView,
                         image: $pickedImage,
+                        photoPlacement: $photoPlacement,
+                        isPhotoAdjusting: $isPhotoAdjusting,
                         inkColor: selectedInk,
                         lineWidth: lineWidth,
-                        isEraser: isEraser
+                        isEraser: isEraser,
+                        onClearPhoto: {
+                            didClearPhoto = true
+                        }
                     )
 
                     DrawingToolbar(
                         selectedInk: $selectedInk,
                         lineWidth: $lineWidth,
                         isEraser: $isEraser,
+                        isPhotoAdjusting: $isPhotoAdjusting,
+                        hasPhoto: pickedImage != nil,
                         photoPickerItem: $photoPickerItem,
-                        onUndo: { canvasView.undoManager?.undo() }
+                        onUndo: { canvasView.undoManager?.undo() },
+                        onResetPhoto: { photoPlacement = DrawingPhotoPlacement() }
                     )
 
                     TextEditor(text: $draft.body)
@@ -267,6 +278,9 @@ private struct DrawingEditorView: View {
                 Task {
                     guard let newItem, let data = try? await newItem.loadTransferable(type: Data.self) else { return }
                     pickedImage = UIImage(data: data)
+                    photoPlacement = DrawingPhotoPlacement()
+                    isPhotoAdjusting = true
+                    didClearPhoto = false
                 }
             }
         }
@@ -314,13 +328,13 @@ private struct DrawingEditorView: View {
     /// previously saved image when nothing changed this session.
     private func composedImageData(bounds: CGRect) -> Data? {
         guard pickedImage != nil || !canvasView.drawing.strokes.isEmpty else {
-            return mode.entry.imageData
+            return didClearPhoto ? nil : mode.entry.imageData
         }
         let renderer = UIGraphicsImageRenderer(bounds: bounds)
         let composed = renderer.image { _ in
             if let pickedImage {
                 let inset = bounds.insetBy(dx: DotNoteTheme.Spacing.sm, dy: DotNoteTheme.Spacing.sm)
-                pickedImage.draw(in: pickedImage.aspectFitRect(in: inset))
+                pickedImage.draw(in: pickedImage.placedRect(in: inset, placement: photoPlacement))
             }
             canvasView.drawing.image(from: bounds, scale: UIScreen.main.scale).draw(in: bounds)
         }
@@ -593,8 +607,11 @@ private struct DrawingToolbar: View {
     @Binding var selectedInk: UIColor
     @Binding var lineWidth: CGFloat
     @Binding var isEraser: Bool
+    @Binding var isPhotoAdjusting: Bool
+    var hasPhoto: Bool
     @Binding var photoPickerItem: PhotosPickerItem?
     var onUndo: () -> Void
+    var onResetPhoto: () -> Void
 
     @Environment(\.colorScheme) private var scheme
 
@@ -636,7 +653,20 @@ private struct DrawingToolbar: View {
                 .accessibilityLabel("사진 추가")
                 .accessibilityIdentifier("drawing-photo-picker")
 
+                if hasPhoto {
+                    Button {
+                        isPhotoAdjusting.toggle()
+                    } label: {
+                        Image(systemName: "crop")
+                            .frame(width: 34, height: 34)
+                    }
+                    .buttonStyle(DrawingIconButtonStyle(isActive: isPhotoAdjusting, scheme: scheme))
+                    .accessibilityLabel(isPhotoAdjusting ? "사진 위치 조정 끄기" : "사진 위치 조정")
+                    .accessibilityIdentifier("drawing-photo-adjust")
+                }
+
                 Button {
+                    isPhotoAdjusting = false
                     isEraser.toggle()
                 } label: {
                     Image(systemName: isEraser ? "eraser.fill" : "pencil.tip")
@@ -653,6 +683,30 @@ private struct DrawingToolbar: View {
                 .buttonStyle(DrawingIconButtonStyle(isActive: false, scheme: scheme))
                 .accessibilityLabel("실행 취소")
                 .accessibilityIdentifier("drawing-undo")
+            }
+
+            if hasPhoto && isPhotoAdjusting {
+                HStack(spacing: DotNoteTheme.Spacing.sm) {
+                    Image(systemName: "hand.draw")
+                        .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+                        .frame(width: 24)
+
+                    Text("사진을 드래그하거나 두 손가락으로 확대해요.")
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+
+                    Spacer(minLength: DotNoteTheme.Spacing.xs)
+
+                    Button(action: onResetPhoto) {
+                        Image(systemName: "arrow.counterclockwise")
+                            .frame(width: 30, height: 30)
+                    }
+                    .buttonStyle(DrawingIconButtonStyle(isActive: false, scheme: scheme))
+                    .accessibilityLabel("사진 위치 초기화")
+                    .accessibilityIdentifier("drawing-photo-reset")
+                }
             }
 
             HStack(spacing: DotNoteTheme.Spacing.sm) {
@@ -695,14 +749,35 @@ private enum DrawingPalette {
     ]
 }
 
+private struct DrawingPhotoPlacement: Equatable {
+    var scale: CGFloat = 1
+    var offset: CGSize = .zero
+
+    func applying(scale scaleDelta: CGFloat, offset offsetDelta: CGSize) -> DrawingPhotoPlacement {
+        DrawingPhotoPlacement(
+            scale: (scale * scaleDelta).clamped(to: 0.5...4),
+            offset: CGSize(width: offset.width + offsetDelta.width, height: offset.height + offsetDelta.height)
+        )
+    }
+}
+
 private struct DrawingCanvasBoard: View {
     @Binding var canvasView: PKCanvasView
     @Binding var image: UIImage?
+    @Binding var photoPlacement: DrawingPhotoPlacement
+    @Binding var isPhotoAdjusting: Bool
     var inkColor: UIColor
     var lineWidth: CGFloat
     var isEraser: Bool
+    var onClearPhoto: () -> Void
 
     @Environment(\.colorScheme) private var scheme
+    @GestureState private var photoDragDelta: CGSize = .zero
+    @GestureState private var photoScaleDelta: CGFloat = 1
+
+    private var effectivePhotoPlacement: DrawingPhotoPlacement {
+        photoPlacement.applying(scale: photoScaleDelta, offset: photoDragDelta)
+    }
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -715,10 +790,17 @@ private struct DrawingCanvasBoard: View {
                         .resizable()
                         .scaledToFit()
                         .padding(DotNoteTheme.Spacing.sm)
+                        .scaleEffect(effectivePhotoPlacement.scale)
+                        .offset(effectivePhotoPlacement.offset)
+                        .gesture(photoAdjustmentGesture)
+                        .allowsHitTesting(isPhotoAdjusting)
+                        .zIndex(isPhotoAdjusting ? 2 : 0)
                         .accessibilityIdentifier("drawing-canvas-preview")
                 }
 
                 DrawingCanvas(canvasView: $canvasView, inkColor: inkColor, lineWidth: lineWidth, isEraser: isEraser)
+                    .allowsHitTesting(!isPhotoAdjusting)
+                    .zIndex(1)
             }
             .frame(height: 320)
             .clipShape(RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous))
@@ -731,6 +813,9 @@ private struct DrawingCanvasBoard: View {
             if image != nil {
                 Button {
                     image = nil
+                    photoPlacement = DrawingPhotoPlacement()
+                    isPhotoAdjusting = false
+                    onClearPhoto()
                 } label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 11, weight: .bold))
@@ -745,22 +830,47 @@ private struct DrawingCanvasBoard: View {
         }
         .accessibilityIdentifier("drawing-canvas")
     }
+
+    private var photoAdjustmentGesture: some Gesture {
+        let drag = DragGesture()
+            .updating($photoDragDelta) { value, state, _ in
+                state = value.translation
+            }
+            .onEnded { value in
+                photoPlacement = photoPlacement.applying(scale: 1, offset: value.translation)
+            }
+
+        let zoom = MagnificationGesture()
+            .updating($photoScaleDelta) { value, state, _ in
+                state = value
+            }
+            .onEnded { value in
+                photoPlacement = photoPlacement.applying(scale: value, offset: .zero)
+            }
+
+        return drag.simultaneously(with: zoom)
+    }
 }
 
 private extension UIImage {
-    /// The centered, aspect-fit rect for drawing this image inside `bounds` —
-    /// mirrors SwiftUI's `.scaledToFit()` so the saved composite matches the
-    /// on-screen preview.
-    func aspectFitRect(in bounds: CGRect) -> CGRect {
+    /// The rect for drawing this image inside `bounds`, including the same
+    /// scale/offset controls shown in `DrawingCanvasBoard`.
+    func placedRect(in bounds: CGRect, placement: DrawingPhotoPlacement) -> CGRect {
         guard size.width > 0, size.height > 0 else { return bounds }
         let scale = min(bounds.width / size.width, bounds.height / size.height)
-        let fitSize = CGSize(width: size.width * scale, height: size.height * scale)
+        let fitSize = CGSize(width: size.width * scale * placement.scale, height: size.height * scale * placement.scale)
         return CGRect(
-            x: bounds.midX - fitSize.width / 2,
-            y: bounds.midY - fitSize.height / 2,
+            x: bounds.midX - fitSize.width / 2 + placement.offset.width,
+            y: bounds.midY - fitSize.height / 2 + placement.offset.height,
             width: fitSize.width,
             height: fitSize.height
         )
+    }
+}
+
+private extension CGFloat {
+    func clamped(to range: ClosedRange<CGFloat>) -> CGFloat {
+        Swift.min(Swift.max(self, range.lowerBound), range.upperBound)
     }
 }
 

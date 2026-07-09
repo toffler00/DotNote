@@ -93,13 +93,15 @@ app surfaces in this order:
    also includes an app-wide appearance mode picker (`system`, `light`, `dark`)
    persisted through SwiftData.
 
-Not yet scheduled: legacy photo crop/reposition/scale parity for the drawing
-canvas (the new photo import places the photo aspect-fit/centered only).
+Partially addressed: legacy photo crop/reposition/scale parity for the drawing
+canvas. Imported photos can now be repositioned by dragging and resized with a
+pinch-style gesture before saving. This is not a separate legacy "Move and
+Scale" crop screen, but it covers the practical in-canvas placement need.
 
 Remaining follow-up checks:
 
 - Manually verify the drawing photo-import flow with real Photos content on a
-  simulator/device.
+  simulator/device, including drag/scale placement before save.
 - Run a real dark-mode visual pass on device/simulator if design tuning is
   needed beyond the current preview coverage.
 - Real legacy `.realm` migration verification before release prep.
