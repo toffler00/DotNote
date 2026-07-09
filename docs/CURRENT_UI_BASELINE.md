@@ -74,10 +74,20 @@ The next recommended implementation unit is not another entry-point rewrite.
 Start from the existing `CalendarHomeView` and continue polishing the visible
 app surfaces in this order:
 
-1. Home screen visual refinement against the latest Set A brand tone.
+1. ~~Home screen visual refinement against the latest Set A brand tone.~~ Done —
+   fixed the wordmark font (see `docs/REDESIGN_WORKLOG.md`); the rest of the
+   home screen already read as clean and on-token.
 2. Entry editor polish, especially diary and memo density/typography.
+   **Partially done:** diary/drawing date+weather header restyled (Korean
+   date capsule, weather-button affordance). Still open: title/body density
+   and typography hierarchy in the diary/memo editors.
 3. Settings and collection polish.
 4. Preview coverage for light/dark states using in-memory snapshots.
+
+For capturing real (not guessed) screenshots of a mid-flow screen, see the
+temporary-XCUITest-attachment method documented in `docs/REDESIGN_WORKLOG.md`
+(the "Method" section under the date/weather-treatment milestone), plus the
+`PackageFrameworks` launch recipe for standalone `simctl launch` runs.
 
 For verification, use the lean operating rule:
 
