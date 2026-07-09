@@ -595,3 +595,99 @@ recipe above instead of guessing from code alone.
 
 Next up per the agreed order: diary/memo editor density and typography polish
 (`docs/CURRENT_UI_BASELINE.md` → Next UI Work, item 2).
+
+---
+
+## Milestone — Diary/drawing editor date & weather treatment
+
+Commit: `674bf36` — "Polish diary/drawing editor date and weather treatment"
+Branch: `rebuild`. Status: **done, build + full test suite verified, fix
+confirmed visually via simulator screenshots (before/after).**
+
+### Method: capturing real screenshots of interactive states via a temporary XCUITest
+
+Static launch screenshots (previous milestone) only reach the home screen.
+To see an editor mid-interaction (a real target for "polish"), added a
+throwaway UI test method that walks the flow and attaches screenshots as
+`XCTAttachment(lifetime: .keepAlways)`, ran it with a `-resultBundlePath`, then
+extracted the PNGs:
+
+```sh
+xcodebuild test -project Orbit.xcodeproj -scheme Orbit_Dev -configuration Dev \
+  -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' \
+  -only-testing:OrbitUITests/OrbitUITests/testZZZCaptureEditorScreenshots \
+  -resultBundlePath /path/to/result.xcresult ARCHS=arm64 ONLY_ACTIVE_ARCH=YES \
+  CODE_SIGNING_ALLOWED=NO
+
+xcrun xcresulttool export attachments --path /path/to/result.xcresult --output-path /path/to/out
+```
+
+The test method opened the diary/memo/drawing editors via the existing
+`create-toggle` → `create-<kind>` flow, typed sample Korean text into the title/
+body fields, and attached a screenshot at each stop. It was added, run twice
+(before/after the fix), then **deleted** — it is not part of the permanent
+suite. This is a reusable recipe for future polish passes: prefer it over
+guessing from source alone whenever a change targets a mid-flow screen the
+static home screenshot can't reach.
+
+### What the screenshots showed
+
+With real screenshots of the diary and drawing editors (which share
+`EditorDateWeatherHeader`), two concrete issues were visible that source
+reading alone hadn't surfaced:
+
+1. **Date control was the raw system `DatePicker` compact style** — rendered as
+   a plain gray pill in English (`"Jul 9, 2026"`), in the system font, ignoring
+   `DotNoteTheme` typography/color entirely and breaking from the Korean
+   date+weekday convention used everywhere else in the redesign (e.g. the home
+   screen's `"7월 9일 · 목요일"` selected-day header).
+2. **`WeatherPicker`'s unselected buttons had almost no visible affordance** —
+   their resting fill (`Palette.paper`) was nearly identical to the header
+   card's background (`Palette.card`, off-white vs. white), so unselected
+   weather icons looked like static glyphs rather than tappable controls.
+
+Both are explicitly in scope: `docs/CURRENT_UI_BASELINE.md` → Next UI Work
+item 2 names "weather/date treatment" directly.
+
+### Fix
+
+In `Orbit/Rebuild/App/DotNoteEntryEditors.swift`, `EditorDateWeatherHeader`:
+
+- Replaced the inline `DatePicker` with a themed capsule button
+  (`kind.chipBackground`/`chipForeground`, app typography) showing
+  `"M월 d일 EEEE"` in `ko_KR`. Tapping it presents a `.sheet` with a
+  `.graphical` `DatePicker` (`.presentationDetents([.medium])`) for actual date
+  entry — full control over the resting-state look, native picker for input.
+  Kept the `entry-date-picker` accessibility identifier on the new button (not
+  referenced by any existing test, so no test changes were needed here).
+- Added a `hairline` stroke to `WeatherPicker`'s unselected state so the six
+  weather buttons read as a button group at rest, not floating icons. Selected
+  state (amber fill, per `Palette.today`) is unchanged.
+
+Shared component, so the fix applies to both `DiaryEditorView` and
+`DrawingEditorView` from one change. `MemoOverlayView` doesn't use this header
+(no date/weather fields by design) and was left untouched — it already read as
+clean and on-token in the screenshot pass.
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test suite (`OrbitTests` + `OrbitUITests`): **all 15 passed**,
+  no regressions.
+- Visual: before/after screenshots via the method above confirm the date pill
+  now reads `"7월 9일 목요일"` in the diary-tint capsule (diary editor) / drawing
+  tint (drawing editor), and the weather buttons show a visible hairline
+  boundary at rest.
+
+### Not done in this pass
+
+- Diary/memo *density and typography hierarchy* beyond the date/weather header
+  — title/body spacing already read reasonably clean in the screenshots and
+  was left alone to keep this change scoped to the concrete issue found.
+- Dark-mode screenshots were not captured (`XCUIApplication` launch-time
+  color-scheme override wasn't wired up for this pass); the token values for
+  dark were reasoned about from `DotNoteTheme` but not visually confirmed.
+  Light/dark parity is item 4 in `docs/CURRENT_UI_BASELINE.md` → Next UI Work.
+
+Next up per the agreed order: settings and collection polish (`docs/CURRENT_UI_BASELINE.md`
+→ Next UI Work, item 3), then light/dark preview coverage (item 4).
