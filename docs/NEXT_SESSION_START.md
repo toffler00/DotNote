@@ -41,13 +41,14 @@ Recent relevant commits:
 Read these in order:
 
 1. `docs/DESIGN_HANDOFF_INDEX.md`
-2. `docs/CURRENT_UI_BASELINE.md`
-3. `docs/REDESIGN_WORKLOG.md`
-4. `swift/HANDOFF_FOR_CLAUDE_CODE.md`
-5. `docs/CLAUDE_UI_REDESIGN_HANDOFF.md`
-6. `docs/legacy-ui-screenshots/README.md`
-7. `REDESIGN_READINESS.md`
-8. `REBUILD.md`
+2. `docs/CLAUDE_CODE_CONTINUATION_BRIEF.md`
+3. `docs/CURRENT_UI_BASELINE.md`
+4. `docs/REDESIGN_WORKLOG.md`
+5. `swift/HANDOFF_FOR_CLAUDE_CODE.md`
+6. `docs/CLAUDE_UI_REDESIGN_HANDOFF.md`
+7. `docs/legacy-ui-screenshots/README.md`
+8. `REDESIGN_READINESS.md`
+9. `REBUILD.md`
 
 Primary visual references:
 
@@ -153,7 +154,7 @@ Use this as the first message in the fresh session:
 
 ```text
 DotNote 프로젝트를 /Users/toffler/DotNote 에서 이어서 진행해줘.
-브랜치는 rebuild 이고, 먼저 docs/NEXT_SESSION_START.md, docs/DESIGN_HANDOFF_INDEX.md, docs/CURRENT_UI_BASELINE.md, docs/REDESIGN_WORKLOG.md, swift/HANDOFF_FOR_CLAUDE_CODE.md, REDESIGN_READINESS.md, REBUILD.md 를 읽어줘.
+브랜치는 rebuild 이고, 먼저 docs/NEXT_SESSION_START.md, docs/DESIGN_HANDOFF_INDEX.md, docs/CLAUDE_CODE_CONTINUATION_BRIEF.md, docs/CURRENT_UI_BASELINE.md, docs/REDESIGN_WORKLOG.md, swift/HANDOFF_FOR_CLAUDE_CODE.md, REDESIGN_READINESS.md, REBUILD.md 를 읽어줘.
 현재 SwiftUI 진입점은 DotNoteApp → DotNoteRootView → CalendarHomeView 이고, typed editors/settings/collections/Set A icon/launch screen까지 적용되어 있어.
 다음은 현재 구조를 유지한 채 홈 화면과 에디터/설정의 시각 polish를 이어가줘.
 저장/삭제/마이그레이션 로직은 건드리지 말고 DotNoteAppModel 경로만 사용해줘.

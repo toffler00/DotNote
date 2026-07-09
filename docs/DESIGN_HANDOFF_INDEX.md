@@ -12,27 +12,30 @@ a scaffold. Your job is the visual/interaction redesign.
 
 ## Read in this order
 
-0. **[NEXT_SESSION_START.md](NEXT_SESSION_START.md)** — resume instructions for
+0. **[CLAUDE_CODE_CONTINUATION_BRIEF.md](CLAUDE_CODE_CONTINUATION_BRIEF.md)** —
+   short operational handoff for Claude Code: current state, guardrails, next
+   work, and verification policy.
+1. **[NEXT_SESSION_START.md](NEXT_SESSION_START.md)** — resume instructions for
    the next fresh session, including first implementation unit and verification
    commands.
-1. **[CURRENT_UI_BASELINE.md](CURRENT_UI_BASELINE.md)** — current SwiftUI entry
+2. **[CURRENT_UI_BASELINE.md](CURRENT_UI_BASELINE.md)** — current SwiftUI entry
    route, first-screen baseline, and active design-token source of truth.
-2. **[REDESIGN_WORKLOG.md](REDESIGN_WORKLOG.md)** — latest redesign execution
+3. **[REDESIGN_WORKLOG.md](REDESIGN_WORKLOG.md)** — latest redesign execution
    log. Read this before changing UI code; it records the applied milestones,
    build/test status, pbxproj ID-collision failure mode, and caveats.
-3. **[CLAUDE_UI_REDESIGN_HANDOFF.md](CLAUDE_UI_REDESIGN_HANDOFF.md)** — current
+4. **[CLAUDE_UI_REDESIGN_HANDOFF.md](CLAUDE_UI_REDESIGN_HANDOFF.md)** — current
    rebuild state, SwiftUI file map, build/test commands, next UI work. Start here.
-4. **[legacy-ui-screenshots/README.md](legacy-ui-screenshots/README.md)** —
+5. **[legacy-ui-screenshots/README.md](legacy-ui-screenshots/README.md)** —
    annotated inventory of the old app: per-screen anatomy, sampled color palette,
    observed flows, and coverage gaps. The visual ground truth.
-5. **[legacy-ui-recordings/dotnote-walkthrough.mp4](legacy-ui-recordings/dotnote-walkthrough.mp4)**
+6. **[legacy-ui-recordings/dotnote-walkthrough.mp4](legacy-ui-recordings/dotnote-walkthrough.mp4)**
    — ~112s runtime walkthrough. Motion, transitions, and flows (weather picker,
    font picker, photo pick + crop, drawing palette, collection views).
-6. **[../REDESIGN_READINESS.md](../REDESIGN_READINESS.md)** — guardrails you must
+7. **[../REDESIGN_READINESS.md](../REDESIGN_READINESS.md)** — guardrails you must
    follow. Short version: change **View files only**, keep storage/migration/
    filtering logic out of views, and never hardcode design tokens into the data
    layer.
-7. **[LEGACY_UI_SCREENSHOT_PLAN.md](LEGACY_UI_SCREENSHOT_PLAN.md)** — where to
+8. **[LEGACY_UI_SCREENSHOT_PLAN.md](LEGACY_UI_SCREENSHOT_PLAN.md)** — where to
    find exact color hex, font file names, and asset names from the source when a
    screenshot is not enough.
 
@@ -57,7 +60,8 @@ components → per-screen restyle → (if scope grows) UX/flow rework.
 Current progress: the SwiftUI redesign has moved beyond the original home
 screen scaffold. Calendar home, typed editors, settings, font picker,
 collections, support destinations, drawing editor polish, app icon, and launch
-screen assets have all been applied. Continue from `CURRENT_UI_BASELINE.md` and
+screen assets have all been applied. Continue from
+`CLAUDE_CODE_CONTINUATION_BRIEF.md`, `CURRENT_UI_BASELINE.md`, and
 `REDESIGN_WORKLOG.md`, not from the older scaffold notes alone.
 
 ## Do not start until
