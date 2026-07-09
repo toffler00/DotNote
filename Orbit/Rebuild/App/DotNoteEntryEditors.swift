@@ -437,13 +437,29 @@ private struct EditorDateWeatherHeader: View {
     var kind: DotNoteEntryKind
 
     @Environment(\.colorScheme) private var scheme
+    @State private var isPickingDate = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.sm) {
-            DatePicker("날짜", selection: $draft.createdAt, displayedComponents: .date)
-                .font(.system(size: 14, weight: .semibold))
-                .tint(kind.chipForeground(scheme))
+            HStack {
+                Text("날짜")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+
+                Spacer()
+
+                Button {
+                    isPickingDate = true
+                } label: {
+                    Text(Self.dateFormatter.string(from: draft.createdAt))
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(kind.chipForeground(scheme))
+                        .padding(.horizontal, DotNoteTheme.Spacing.sm)
+                        .padding(.vertical, 6)
+                        .background(Capsule().fill(kind.chipBackground(scheme)))
+                }
                 .accessibilityIdentifier("entry-date-picker")
+            }
 
             WeatherPicker(selection: $draft.weather)
         }
@@ -452,7 +468,30 @@ private struct EditorDateWeatherHeader: View {
             RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg, style: .continuous)
                 .fill(DotNoteTheme.Palette.card(scheme))
         )
+        .sheet(isPresented: $isPickingDate) {
+            NavigationStack {
+                DatePicker("날짜", selection: $draft.createdAt, displayedComponents: .date)
+                    .datePickerStyle(.graphical)
+                    .tint(kind.chipForeground(scheme))
+                    .padding(DotNoteTheme.Spacing.md)
+                    .navigationTitle("날짜 선택")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("완료") { isPickingDate = false }
+                        }
+                    }
+            }
+            .presentationDetents([.medium])
+        }
     }
+
+    private static let dateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "ko_KR")
+        f.dateFormat = "M월 d일 EEEE"
+        return f
+    }()
 }
 
 struct WeatherPicker: View {
@@ -472,6 +511,10 @@ struct WeatherPicker: View {
                         .background(
                             RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
                                 .fill(selection == label ? DotNoteTheme.Palette.today : DotNoteTheme.Palette.paper(scheme))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                                .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: selection == label ? 0 : 1)
                         )
                         .foregroundStyle(selection == label ? .white : DotNoteTheme.Palette.inkSoft(scheme))
                 }
