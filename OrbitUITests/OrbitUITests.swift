@@ -81,6 +81,9 @@ final class OrbitUITests: XCTestCase {
         app.buttons["font-brush"].tap()
 
         XCTAssertTrue(app.staticTexts["붓글씨"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["appearance-dark"].waitForHittable(timeout: 2))
+        app.buttons["appearance-dark"].tap()
+        XCTAssertTrue(app.staticTexts["항상 어두운 화면으로 표시해요."].waitForExistence(timeout: 5))
         app.buttons["settings-close-button"].tap()
         XCTAssertTrue(app.buttons["create-toggle"].waitForHittable(timeout: 5))
     }

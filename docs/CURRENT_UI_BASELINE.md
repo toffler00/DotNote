@@ -87,11 +87,22 @@ app surfaces in this order:
    sub-screens now share Settings root's custom header (flat chevron +
    wordmark title) instead of the system default nav bar's floating-pill back
    button. See `docs/REDESIGN_WORKLOG.md`.
-4. Preview coverage for light/dark states using in-memory snapshots. **Only
-   remaining item from the original list.**
+4. ~~Preview coverage for light/dark states using in-memory snapshots.~~ Done —
+   `DotNoteRootView`, `CalendarHomeView`, and `DotNoteSettingsView` now expose
+   light/dark SwiftUI previews backed by shared in-memory preview data. Settings
+   also includes an app-wide appearance mode picker (`system`, `light`, `dark`)
+   persisted through SwiftData.
 
 Not yet scheduled: legacy photo crop/reposition/scale parity for the drawing
 canvas (the new photo import places the photo aspect-fit/centered only).
+
+Remaining follow-up checks:
+
+- Manually verify the drawing photo-import flow with real Photos content on a
+  simulator/device.
+- Run a real dark-mode visual pass on device/simulator if design tuning is
+  needed beyond the current preview coverage.
+- Real legacy `.realm` migration verification before release prep.
 
 For capturing real (not guessed) screenshots of a mid-flow screen, see the
 temporary-XCUITest-attachment method documented in `docs/REDESIGN_WORKLOG.md`

@@ -48,6 +48,7 @@ final class DotNoteSettingsRecord {
     var bodyFontName: String
     var bodyFontSize: Int
     var collectionFilter: Int
+    var appearanceModeRawValue: String?
 
     init(
         id: String = "default",
@@ -55,7 +56,8 @@ final class DotNoteSettingsRecord {
         contentTitleFontName: String = "",
         bodyFontName: String = "",
         bodyFontSize: Int = 16,
-        collectionFilter: Int = 0
+        collectionFilter: Int = 0,
+        appearanceModeRawValue: String? = DotNoteAppearanceMode.system.rawValue
     ) {
         self.id = id
         self.navigationTitleFontName = navigationTitleFontName
@@ -63,6 +65,6 @@ final class DotNoteSettingsRecord {
         self.bodyFontName = bodyFontName
         self.bodyFontSize = bodyFontSize
         self.collectionFilter = collectionFilter
+        self.appearanceModeRawValue = appearanceModeRawValue
     }
 }
-

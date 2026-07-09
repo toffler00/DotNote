@@ -853,9 +853,46 @@ fix from an earlier milestone is holding.
 - Collection grid density/empty-slot layout when there's only 1 item in a
   2-column grid (currently just leaves the second column blank — looked fine
   in the screenshot, not treated as a defect).
-- Dark-mode screenshots still not captured — item 4 (`docs/CURRENT_UI_BASELINE.md`
-  → Next UI Work) remains open.
+- Dark-mode screenshots were not captured in this pass; item 4 was handled in
+  the next appearance-mode milestone below.
 
 All three original polish items (home, editors, settings/collection) are now
-addressed. Only item 4 (light/dark preview coverage) remains from the original
-`docs/CURRENT_UI_BASELINE.md` → Next UI Work list.
+addressed. The follow-up appearance-mode milestone closes item 4 from the
+original `docs/CURRENT_UI_BASELINE.md` → Next UI Work list.
+
+## Milestone — Appearance mode setting + light/dark previews
+
+User request: proceed with item 1 and add dark-mode switching in Settings.
+
+### Scope
+
+- Added `DotNoteAppearanceMode` (`system`, `light`, `dark`) to the domain
+  settings model.
+- Persisted the selected appearance mode through SwiftData via
+  `DotNoteSettingsRecord.appearanceModeRawValue`.
+- Applied the setting app-wide from `DotNoteRootView` using
+  `.preferredColorScheme(...)`.
+- Added a Settings appearance picker with three explicit choices:
+  `시스템`, `라이트`, `다크`.
+- Added light/dark SwiftUI preview coverage for:
+  - `DotNoteRootView`
+  - `CalendarHomeView`
+  - `DotNoteSettingsView`
+- Added shared in-memory preview fixtures in `DotNotePreviewData`.
+- Updated unit/UI tests so settings persistence and the new Settings control are
+  covered.
+
+### Verification
+
+- `git diff --check`: passed.
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test suite: **TEST SUCCEEDED**.
+  - Unit tests: 12 executed, 1 skipped, 0 failures.
+  - UI tests: 5 executed, 0 failures.
+
+### Notes
+
+- `appearanceModeRawValue` is optional in the SwiftData record so old persisted
+  settings defensively fall back to `.system`.
+- This was UI/domain-settings scoped only. No legacy Realm migration behavior
+  changed.

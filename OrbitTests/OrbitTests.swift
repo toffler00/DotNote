@@ -81,7 +81,11 @@ class OrbitTests: XCTestCase {
         let store = SwiftDataDotNoteStore(
             modelContainer: try DotNoteModelContainer.make(isStoredInMemoryOnly: true)
         )
-        let settings = DotNoteSettings(bodyFontName: DotNoteFontTheme.brush.rawValue, bodyFontSize: 18)
+        let settings = DotNoteSettings(
+            bodyFontName: DotNoteFontTheme.brush.rawValue,
+            bodyFontSize: 18,
+            appearanceMode: .dark
+        )
 
         let snapshot = try await store.updateSettings(settings)
 
@@ -94,7 +98,7 @@ class OrbitTests: XCTestCase {
             modelContainer: try DotNoteModelContainer.make(isStoredInMemoryOnly: true)
         )
         _ = try await store.addEntry(DotNoteEntry(kind: .memo, title: "Draft", body: "Delete all"))
-        _ = try await store.updateSettings(DotNoteSettings(bodyFontName: DotNoteFontTheme.rock.rawValue))
+        _ = try await store.updateSettings(DotNoteSettings(bodyFontName: DotNoteFontTheme.rock.rawValue, appearanceMode: .light))
 
         let snapshot = try await store.deleteAllData()
 
@@ -130,7 +134,7 @@ class OrbitTests: XCTestCase {
     @MainActor
     func testAppModelUpdatesSettings() async throws {
         let appModel = DotNoteAppModel(store: InMemoryDotNoteStore())
-        let settings = DotNoteSettings(bodyFontName: DotNoteFontTheme.flowerRoad.rawValue)
+        let settings = DotNoteSettings(bodyFontName: DotNoteFontTheme.flowerRoad.rawValue, appearanceMode: .dark)
 
         await appModel.updateSettings(settings)
 

@@ -864,6 +864,10 @@ struct DotNoteSettingsView: View {
         DotNoteType.body(settings)
     }
 
+    private var currentAppearanceMode: DotNoteAppearanceMode {
+        currentSettings.appearanceMode
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -886,6 +890,14 @@ struct DotNoteSettingsView: View {
                             )
                         }
                         .accessibilityIdentifier("settings-font-row")
+                    }
+
+                    DotNoteSettingsGroup {
+                        DotNoteAppearanceModePicker(selection: currentAppearanceMode, isSaving: isSaving) { mode in
+                            var updatedSettings = currentSettings
+                            updatedSettings.appearanceMode = mode
+                            await onUpdateSettings(updatedSettings)
+                        }
                     }
 
                     DotNoteSettingsGroup {
@@ -1063,6 +1075,73 @@ private struct SettingsSubscreenHeader: View {
 
             Spacer()
         }
+    }
+}
+
+private struct DotNoteAppearanceModePicker: View {
+    var selection: DotNoteAppearanceMode
+    var isSaving: Bool
+    var onSelectMode: (DotNoteAppearanceMode) async -> Void
+
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.sm) {
+            HStack(spacing: DotNoteTheme.Spacing.sm) {
+                Image(systemName: "circle.lefthalf.filled")
+                    .font(.system(size: 16, weight: .semibold))
+                    .frame(width: 32, height: 32)
+                    .background(
+                        RoundedRectangle(cornerRadius: DotNoteTheme.Radius.sm, style: .continuous)
+                            .fill(DotNoteTheme.Palette.accent(scheme).opacity(scheme == .dark ? 0.22 : 0.16))
+                    )
+                    .foregroundStyle(DotNoteTheme.Palette.accent(scheme))
+
+                VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.xxs) {
+                    Text("화면 모드")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
+                    Text(selection.detailText)
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+                }
+
+                Spacer()
+            }
+
+            HStack(spacing: DotNoteTheme.Spacing.xs) {
+                ForEach(DotNoteAppearanceMode.allCases) { mode in
+                    Button {
+                        Task { await onSelectMode(mode) }
+                    } label: {
+                        HStack(spacing: DotNoteTheme.Spacing.xxs) {
+                            Image(systemName: mode.symbolName)
+                                .font(.system(size: 12, weight: .semibold))
+                            Text(mode.displayName)
+                                .font(.system(size: 13, weight: .semibold))
+                                .lineLimit(1)
+                        }
+                        .frame(maxWidth: .infinity, minHeight: 36)
+                        .padding(.horizontal, DotNoteTheme.Spacing.xs)
+                        .background(
+                            Capsule()
+                                .fill(selection == mode ? DotNoteTheme.Palette.ink(scheme) : DotNoteTheme.Palette.paper(scheme))
+                        )
+                        .foregroundStyle(selection == mode ? DotNoteTheme.Palette.paper(scheme) : DotNoteTheme.Palette.inkSoft(scheme))
+                        .overlay(
+                            Capsule()
+                                .stroke(selection == mode ? DotNoteTheme.Palette.ink(scheme).opacity(0) : DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(isSaving)
+                    .accessibilityIdentifier("appearance-\(mode.rawValue)")
+                }
+            }
+        }
+        .padding(DotNoteTheme.Spacing.md)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("appearance-mode-picker")
     }
 }
 
@@ -1495,3 +1574,65 @@ private extension DotNoteTextAlignment {
         }
     }
 }
+
+private extension DotNoteAppearanceMode {
+    var displayName: String {
+        switch self {
+        case .system: return "시스템"
+        case .light: return "라이트"
+        case .dark: return "다크"
+        }
+    }
+
+    var detailText: String {
+        switch self {
+        case .system: return "기기 설정을 따라가요."
+        case .light: return "항상 밝은 화면으로 표시해요."
+        case .dark: return "항상 어두운 화면으로 표시해요."
+        }
+    }
+
+    var symbolName: String {
+        switch self {
+        case .system: return "circle.lefthalf.filled"
+        case .light: return "sun.max"
+        case .dark: return "moon"
+        }
+    }
+}
+
+#if DEBUG
+struct DotNoteSettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            DotNoteSettingsView(
+                settings: DotNotePreviewData.settings,
+                entries: DotNotePreviewData.entries,
+                isSaving: false,
+                onUpdateSettings: { _ in },
+                onDeleteAllData: {},
+                onSelectEntry: { _ in },
+                onClose: {}
+            )
+            .preferredColorScheme(.light)
+            .previewDisplayName("Settings Light")
+
+            DotNoteSettingsView(
+                settings: {
+                    var settings = DotNotePreviewData.settings
+                    settings.appearanceMode = .dark
+                    return settings
+                }(),
+                entries: DotNotePreviewData.entries,
+                isSaving: false,
+                onUpdateSettings: { _ in },
+                onDeleteAllData: {},
+                onSelectEntry: { _ in },
+                onClose: {}
+            )
+            .preferredColorScheme(.dark)
+            .previewDisplayName("Settings Dark")
+        }
+    }
+}
+#endif

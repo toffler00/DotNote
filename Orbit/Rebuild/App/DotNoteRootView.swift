@@ -67,6 +67,7 @@ struct DotNoteRootView: View {
                 .zIndex(2)
             }
         }
+        .preferredColorScheme(appModel.settings?.appearanceMode.preferredColorScheme)
     }
 }
 
@@ -101,19 +102,66 @@ enum DotNoteEntryEditorMode: Identifiable {
 }
 
 #if DEBUG
-struct DotNoteRootView_Previews: PreviewProvider {
-    static var previews: some View {
-        DotNoteRootView(appModel: DotNoteAppModel(
-            store: InMemoryDotNoteStore(snapshot: DotNoteStoreSnapshot(
-                entries: [
-                    DotNoteEntry(kind: .diary, title: "Diary", weather: "맑음", body: "A saved diary entry."),
-                    DotNoteEntry(kind: .memo, body: "A quick memo."),
-                    DotNoteEntry(kind: .drawing, title: "Drawing", body: "A drawing note.")
-                ],
-                settings: DotNoteSettings(bodyFontName: "barunGothic", bodyFontSize: 16)
-            ))
+@MainActor
+enum DotNotePreviewData {
+    static let entries: [DotNoteEntry] = [
+        DotNoteEntry(
+            kind: .diary,
+            createdAt: Date(),
+            title: "여름 일기",
+            weather: "맑음",
+            body: "햇빛이 오래 남아 있는 하루.",
+            textAlignment: .left
+        ),
+        DotNoteEntry(
+            kind: .memo,
+            createdAt: Date().addingTimeInterval(-3600),
+            body: "장보기: 커피, 우유, 노트"
+        ),
+        DotNoteEntry(
+            kind: .drawing,
+            createdAt: Date().addingTimeInterval(-7200),
+            title: "스케치",
+            weather: "구름조금",
+            body: "사진 위에 선을 더해보기."
         )
+    ]
+
+    static let settings = DotNoteSettings(
+        bodyFontName: DotNoteFontTheme.barunGothic.rawValue,
+        bodyFontSize: 16
+    )
+
+    static func appModel(appearanceMode: DotNoteAppearanceMode = .system) -> DotNoteAppModel {
+        var settings = Self.settings
+        settings.appearanceMode = appearanceMode
+        return DotNoteAppModel(
+            store: InMemoryDotNoteStore(snapshot: DotNoteStoreSnapshot(entries: entries, settings: settings))
         )
     }
 }
+
+struct DotNoteRootView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            DotNoteRootView(appModel: DotNotePreviewData.appModel(appearanceMode: .light))
+                .previewDisplayName("Root Light")
+            DotNoteRootView(appModel: DotNotePreviewData.appModel(appearanceMode: .dark))
+                .previewDisplayName("Root Dark")
+        }
+    }
+}
 #endif
+
+private extension DotNoteAppearanceMode {
+    var preferredColorScheme: ColorScheme? {
+        switch self {
+        case .system:
+            return nil
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        }
+    }
+}

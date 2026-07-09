@@ -54,7 +54,8 @@ extension DotNoteSettings {
             contentTitleFontName: record.contentTitleFontName,
             bodyFontName: record.bodyFontName,
             bodyFontSize: record.bodyFontSize,
-            collectionFilter: record.collectionFilter
+            collectionFilter: record.collectionFilter,
+            appearanceMode: DotNoteAppearanceMode(rawValue: record.appearanceModeRawValue ?? "") ?? .system
         )
     }
 }
@@ -66,7 +67,8 @@ extension DotNoteSettingsRecord {
             contentTitleFontName: settings.contentTitleFontName,
             bodyFontName: settings.bodyFontName,
             bodyFontSize: settings.bodyFontSize,
-            collectionFilter: settings.collectionFilter
+            collectionFilter: settings.collectionFilter,
+            appearanceModeRawValue: settings.appearanceMode.rawValue
         )
     }
 
@@ -76,6 +78,6 @@ extension DotNoteSettingsRecord {
         bodyFontName = settings.bodyFontName
         bodyFontSize = settings.bodyFontSize
         collectionFilter = settings.collectionFilter
+        appearanceModeRawValue = settings.appearanceMode.rawValue
     }
 }
-

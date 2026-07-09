@@ -374,3 +374,35 @@ struct EmptyStateView: View {
         .accessibilityIdentifier("empty-state")
     }
 }
+
+#if DEBUG
+struct CalendarHomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            CalendarHomeView(
+                entries: DotNotePreviewData.entries,
+                settings: DotNotePreviewData.settings,
+                onCreate: { _ in },
+                onSelectEntry: { _ in },
+                onOpenSettings: {}
+            )
+            .preferredColorScheme(.light)
+            .previewDisplayName("Home Light")
+
+            CalendarHomeView(
+                entries: DotNotePreviewData.entries,
+                settings: {
+                    var settings = DotNotePreviewData.settings
+                    settings.appearanceMode = .dark
+                    return settings
+                }(),
+                onCreate: { _ in },
+                onSelectEntry: { _ in },
+                onOpenSettings: {}
+            )
+            .preferredColorScheme(.dark)
+            .previewDisplayName("Home Dark")
+        }
+    }
+}
+#endif

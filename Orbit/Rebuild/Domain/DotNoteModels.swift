@@ -54,24 +54,35 @@ enum DotNoteTextAlignment: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
+enum DotNoteAppearanceMode: String, Codable, CaseIterable, Identifiable {
+    case system
+    case light
+    case dark
+
+    var id: String { rawValue }
+}
+
 struct DotNoteSettings: Codable, Equatable {
     var navigationTitleFontName: String
     var contentTitleFontName: String
     var bodyFontName: String
     var bodyFontSize: Int
     var collectionFilter: Int
+    var appearanceMode: DotNoteAppearanceMode
 
     init(
         navigationTitleFontName: String = "",
         contentTitleFontName: String = "",
         bodyFontName: String = "",
         bodyFontSize: Int = 16,
-        collectionFilter: Int = 0
+        collectionFilter: Int = 0,
+        appearanceMode: DotNoteAppearanceMode = .system
     ) {
         self.navigationTitleFontName = navigationTitleFontName
         self.contentTitleFontName = contentTitleFontName
         self.bodyFontName = bodyFontName
         self.bodyFontSize = bodyFontSize
         self.collectionFilter = collectionFilter
+        self.appearanceMode = appearanceMode
     }
 }

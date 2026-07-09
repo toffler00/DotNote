@@ -144,19 +144,26 @@ Continue with UI polish, not another structural rewrite.
 
 Recommended order:
 
-1. Add or improve SwiftUI previews for light and dark modes using in-memory
-   snapshots.
-2. Manually verify the new drawing photo-import flow on a simulator/device with
+1. Manually verify the new drawing photo-import flow on a simulator/device with
    real Photos content:
    - pick photo
    - draw over it
    - save
    - reopen and confirm the composited image persists
+2. Run a real light/dark visual pass on device/simulator if the new Settings
+   appearance picker reveals any design tuning needs beyond preview coverage.
 3. Later feature work:
    - legacy photo crop/reposition/scale parity for drawing imports
    - real legacy `.realm` migration verification
    - decide whether old UIKit screens stay in target or move to reference-only
      storage
+
+Recently completed:
+
+- Added app-wide appearance mode selection in Settings (`system`, `light`,
+  `dark`), persisted via SwiftData and applied through `preferredColorScheme`.
+- Added light/dark SwiftUI previews for root, home, and settings using shared
+  in-memory preview data.
 
 ## Verification Policy
 
