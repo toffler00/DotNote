@@ -94,6 +94,7 @@
 		A10000000000000000000010 /* LegacyDotNoteImportState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000110 /* LegacyDotNoteImportState.swift */; };
 		A10000000000000000000011 /* LegacyDotNoteImportFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000111 /* LegacyDotNoteImportFactory.swift */; };
 		A10000000000000000000012 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000301 /* RealmSwift */; };
+		A10000000000000000000016 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000301 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		A10000000000000000000013 /* LegacyRealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000113 /* LegacyRealmModels.swift */; };
 		A10000000000000000000014 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000301 /* RealmSwift */; };
 		A10000000000000000000015 /* LegacyRealmImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000114 /* LegacyRealmImportTests.swift */; };
@@ -218,6 +219,20 @@
 		CE84E7482137D3350097357F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A10000000000000000000017 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A10000000000000000000016 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		620F53A9211EF16900A94A01 /* Frameworks */ = {
@@ -510,6 +525,7 @@
 			buildPhases = (
 				620F53A8211EF16900A94A01 /* Sources */,
 				620F53A9211EF16900A94A01 /* Frameworks */,
+				A10000000000000000000017 /* Embed Frameworks */,
 				620F53AA211EF16900A94A01 /* Resources */,
 			);
 			buildRules = (
