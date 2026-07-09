@@ -451,3 +451,39 @@ Modified:
   reconstructed into editable PencilKit strokes. New strokes save as the current
   canvas output, and entries with no new strokes preserve the previous image.
 - Legacy photo picker/crop/composite behavior is still a separate feature pass.
+
+---
+
+## Milestone 9 — Launch screen assets
+
+Commit: "Apply redesigned launch screen"
+Branch: `rebuild`. Status: **Dev/Prod build verified.**
+
+### Scope
+
+Applied the redesigned Dot Note launch screen resources. The launch storyboard
+now uses a centered `LaunchLogo` image on a named `LaunchBackground` color, with
+light/dark asset variants supplied through the asset catalog.
+
+### Files
+
+Modified:
+- `Orbit/Base.lproj/LaunchScreen.storyboard` — replaces the old full-screen
+  `DotnoteLaunch` image layout with a centered logo and named background color.
+
+Added:
+- `Orbit/Assets.xcassets/LaunchLogo.imageset/` — light/dark launch logo PNGs at
+  1x, 2x, and 3x.
+- `Orbit/Assets.xcassets/LaunchBackground.colorset/` — light/dark launch
+  background named color.
+
+### Verification
+
+- `Orbit_Dev` simulator build: **BUILD SUCCEEDED**.
+- `Orbit_Prod` simulator build: **BUILD SUCCEEDED**.
+
+### Caveats / next checks
+
+- Full UI tests were intentionally skipped for this resource-only change.
+- The source `launch/` folder remains as the user-provided working input and is
+  not required by the app target.
