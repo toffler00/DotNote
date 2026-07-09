@@ -169,6 +169,7 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["drawing-canvas"].waitForExistence(timeout: 2))
         XCTAssertTrue(app.descendants(matching: .any)["drawing-toolbar"].waitForExistence(timeout: 2))
         XCTAssertTrue(app.buttons["drawing-color-3"].waitForHittable(timeout: 2))
+        XCTAssertTrue(app.buttons["drawing-photo-picker"].waitForHittable(timeout: 2))
         XCTAssertTrue(app.buttons["drawing-tool-toggle"].waitForHittable(timeout: 2))
         XCTAssertTrue(app.buttons["drawing-undo"].waitForHittable(timeout: 2))
     }

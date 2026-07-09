@@ -7,6 +7,7 @@
 //
 
 import PencilKit
+import PhotosUI
 import SwiftUI
 import UIKit
 
@@ -92,7 +93,7 @@ private struct DiaryEditorView: View {
                 VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
                     EditorDateWeatherHeader(draft: $draft, kind: .diary)
 
-                    VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
+                    VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.sm) {
                         TextField("제목", text: $draft.title)
                             .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(DotNoteTheme.Palette.ink(scheme))
@@ -104,6 +105,10 @@ private struct DiaryEditorView: View {
                             .scrollContentBackground(.hidden)
                             .frame(minHeight: 190)
                             .accessibilityIdentifier("entry-body-editor")
+
+                        Rectangle()
+                            .fill(DotNoteTheme.Palette.hairline(scheme))
+                            .frame(height: 1)
 
                         AlignmentToolbar(selection: $draft.textAlignment, tint: DotNoteEntryKind.diary.dot)
                     }
@@ -180,6 +185,8 @@ private struct DrawingEditorView: View {
     @State private var selectedInk = DrawingPalette.colors[0]
     @State private var lineWidth: CGFloat = 5
     @State private var isEraser = false
+    @State private var pickedImage: UIImage?
+    @State private var photoPickerItem: PhotosPickerItem?
 
     init(
         mode: DotNoteEntryEditorMode,
@@ -198,6 +205,7 @@ private struct DrawingEditorView: View {
         self.onDelete = onDelete
         self.onCancel = onCancel
         _draft = State(initialValue: DotNoteEntryDraft(entry: mode.entry))
+        _pickedImage = State(initialValue: mode.entry.imageData.flatMap(UIImage.init(data:)))
     }
 
     var body: some View {
@@ -214,7 +222,7 @@ private struct DrawingEditorView: View {
 
                     DrawingCanvasBoard(
                         canvasView: $canvasView,
-                        imageData: mode.entry.imageData,
+                        image: $pickedImage,
                         inkColor: selectedInk,
                         lineWidth: lineWidth,
                         isEraser: isEraser
@@ -224,6 +232,7 @@ private struct DrawingEditorView: View {
                         selectedInk: $selectedInk,
                         lineWidth: $lineWidth,
                         isEraser: $isEraser,
+                        photoPickerItem: $photoPickerItem,
                         onUndo: { canvasView.undoManager?.undo() }
                     )
 
@@ -254,6 +263,12 @@ private struct DrawingEditorView: View {
                 canvasView.backgroundColor = .clear
                 canvasView.drawingPolicy = .anyInput
             }
+            .onChange(of: photoPickerItem) { _, newItem in
+                Task {
+                    guard let newItem, let data = try? await newItem.loadTransferable(type: Data.self) else { return }
+                    pickedImage = UIImage(data: data)
+                }
+            }
         }
     }
 
@@ -279,21 +294,37 @@ private struct DrawingEditorView: View {
                     .padding(8)
                     .background(Circle().fill(DotNoteEntryKind.drawing.dot))
             }
-            .disabled(isSaving || draft.isEmpty)
+            .disabled(isSaving || (draft.isEmpty && pickedImage == nil && canvasView.drawing.strokes.isEmpty))
             .accessibilityIdentifier("entry-save-button")
         }
     }
 
     private func save() async {
         let bounds = canvasView.bounds.isEmpty ? CGRect(origin: .zero, size: CGSize(width: 320, height: 280)) : canvasView.bounds
-        let image = canvasView.drawing.image(from: bounds, scale: UIScreen.main.scale)
-        let imageData = canvasView.drawing.strokes.isEmpty ? mode.entry.imageData : image.pngData()
-        let entry = draft.entry(id: mode.entry.id, kind: .drawing, imageData: imageData)
+        let entry = draft.entry(id: mode.entry.id, kind: .drawing, imageData: composedImageData(bounds: bounds))
         if mode.isCreating {
             await onCreate(entry)
         } else {
             await onSave(entry)
         }
+    }
+
+    /// Bakes the picked photo (if any) and the PencilKit strokes into one image,
+    /// matching what `DrawingCanvasBoard` shows on screen. Falls back to the
+    /// previously saved image when nothing changed this session.
+    private func composedImageData(bounds: CGRect) -> Data? {
+        guard pickedImage != nil || !canvasView.drawing.strokes.isEmpty else {
+            return mode.entry.imageData
+        }
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        let composed = renderer.image { _ in
+            if let pickedImage {
+                let inset = bounds.insetBy(dx: DotNoteTheme.Spacing.sm, dy: DotNoteTheme.Spacing.sm)
+                pickedImage.draw(in: pickedImage.aspectFitRect(in: inset))
+            }
+            canvasView.drawing.image(from: bounds, scale: UIScreen.main.scale).draw(in: bounds)
+        }
+        return composed.pngData()
     }
 }
 
@@ -358,41 +389,47 @@ private struct MemoOverlayView: View {
                     .accessibilityIdentifier("entry-cancel-button")
                 }
 
-                TextField("제목", text: $draft.title)
-                    .font(.system(size: 18, weight: .semibold))
-                    .accessibilityIdentifier("entry-title-field")
+                VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.sm) {
+                    TextField("제목", text: $draft.title)
+                        .font(.system(size: 18, weight: .semibold))
+                        .accessibilityIdentifier("entry-title-field")
 
-                TextEditor(text: $draft.body)
-                    .font(DotNoteType.body(settings).font(size: CGFloat(settings?.bodyFontSize ?? 16)))
-                    .scrollContentBackground(.hidden)
-                    .frame(minHeight: 170)
-                    .accessibilityIdentifier("entry-body-editor")
+                    TextEditor(text: $draft.body)
+                        .font(DotNoteType.body(settings).font(size: CGFloat(settings?.bodyFontSize ?? 16)))
+                        .scrollContentBackground(.hidden)
+                        .frame(minHeight: 170)
+                        .accessibilityIdentifier("entry-body-editor")
 
-                HStack {
-                    if !mode.isCreating {
-                        Button(role: .destructive) {
-                            Task { await onDelete(mode.entry.id) }
-                        } label: {
-                            Label("삭제", systemImage: "trash")
+                    Rectangle()
+                        .fill(DotNoteTheme.Palette.hairline(scheme))
+                        .frame(height: 1)
+
+                    HStack {
+                        if !mode.isCreating {
+                            Button(role: .destructive) {
+                                Task { await onDelete(mode.entry.id) }
+                            } label: {
+                                Label("삭제", systemImage: "trash")
+                            }
+                            .disabled(isSaving)
+                            .accessibilityIdentifier("entry-delete-button")
                         }
-                        .disabled(isSaving)
-                        .accessibilityIdentifier("entry-delete-button")
-                    }
 
-                    Spacer()
+                        Spacer()
 
-                    Button {
-                        Task { await save() }
-                    } label: {
-                        Label("저장", systemImage: "checkmark")
-                            .font(.system(size: 14, weight: .semibold))
-                            .padding(.horizontal, DotNoteTheme.Spacing.md)
-                            .padding(.vertical, DotNoteTheme.Spacing.xs)
-                            .background(Capsule().fill(DotNoteEntryKind.memo.dot))
-                            .foregroundStyle(.white)
+                        Button {
+                            Task { await save() }
+                        } label: {
+                            Label("저장", systemImage: "checkmark")
+                                .font(.system(size: 14, weight: .semibold))
+                                .padding(.horizontal, DotNoteTheme.Spacing.md)
+                                .padding(.vertical, DotNoteTheme.Spacing.xs)
+                                .background(Capsule().fill(DotNoteEntryKind.memo.dot))
+                                .foregroundStyle(.white)
+                        }
+                        .disabled(isSaving || draft.isEmpty)
+                        .accessibilityIdentifier("entry-save-button")
                     }
-                    .disabled(isSaving || draft.isEmpty)
-                    .accessibilityIdentifier("entry-save-button")
                 }
             }
             .padding(DotNoteTheme.Spacing.lg)
@@ -556,6 +593,7 @@ private struct DrawingToolbar: View {
     @Binding var selectedInk: UIColor
     @Binding var lineWidth: CGFloat
     @Binding var isEraser: Bool
+    @Binding var photoPickerItem: PhotosPickerItem?
     var onUndo: () -> Void
 
     @Environment(\.colorScheme) private var scheme
@@ -589,6 +627,14 @@ private struct DrawingToolbar: View {
                 }
 
                 Spacer()
+
+                PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                    Image(systemName: "photo.on.rectangle")
+                        .frame(width: 34, height: 34)
+                }
+                .buttonStyle(DrawingIconButtonStyle(isActive: false, scheme: scheme))
+                .accessibilityLabel("사진 추가")
+                .accessibilityIdentifier("drawing-photo-picker")
 
                 Button {
                     isEraser.toggle()
@@ -651,7 +697,7 @@ private enum DrawingPalette {
 
 private struct DrawingCanvasBoard: View {
     @Binding var canvasView: PKCanvasView
-    var imageData: Data?
+    @Binding var image: UIImage?
     var inkColor: UIColor
     var lineWidth: CGFloat
     var isEraser: Bool
@@ -659,28 +705,62 @@ private struct DrawingCanvasBoard: View {
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
-                .fill(Color.white)
+        ZStack(alignment: .topTrailing) {
+            ZStack {
+                RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                    .fill(Color.white)
 
-            if let imageData, let image = UIImage(data: imageData) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .padding(DotNoteTheme.Spacing.sm)
-                    .accessibilityIdentifier("drawing-canvas-preview")
+                if let image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .padding(DotNoteTheme.Spacing.sm)
+                        .accessibilityIdentifier("drawing-canvas-preview")
+                }
+
+                DrawingCanvas(canvasView: $canvasView, inkColor: inkColor, lineWidth: lineWidth, isEraser: isEraser)
             }
+            .frame(height: 320)
+            .clipShape(RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                    .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
+            )
+            .shadow(color: DotNoteTheme.Shadow.cardColor.opacity(scheme == .dark ? 0.45 : 0.12), radius: 10, y: 4)
 
-            DrawingCanvas(canvasView: $canvasView, inkColor: inkColor, lineWidth: lineWidth, isEraser: isEraser)
+            if image != nil {
+                Button {
+                    image = nil
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 26, height: 26)
+                        .background(Circle().fill(DotNoteTheme.Palette.ink(scheme).opacity(0.75)))
+                }
+                .padding(DotNoteTheme.Spacing.xs)
+                .accessibilityLabel("사진 제거")
+                .accessibilityIdentifier("drawing-photo-clear")
+            }
         }
-        .frame(height: 320)
-        .clipShape(RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
-                .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
-        )
-        .shadow(color: DotNoteTheme.Shadow.cardColor.opacity(scheme == .dark ? 0.45 : 0.12), radius: 10, y: 4)
         .accessibilityIdentifier("drawing-canvas")
+    }
+}
+
+private extension UIImage {
+    /// The centered, aspect-fit rect for drawing this image inside `bounds` —
+    /// mirrors SwiftUI's `.scaledToFit()` so the saved composite matches the
+    /// on-screen preview.
+    func aspectFitRect(in bounds: CGRect) -> CGRect {
+        guard size.width > 0, size.height > 0 else { return bounds }
+        let scale = min(bounds.width / size.width, bounds.height / size.height)
+        let fitSize = CGSize(width: size.width * scale, height: size.height * scale)
+        return CGRect(
+            x: bounds.midX - fitSize.width / 2,
+            y: bounds.midY - fitSize.height / 2,
+            width: fitSize.width,
+            height: fitSize.height
+        )
     }
 }
 
