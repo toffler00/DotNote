@@ -107,6 +107,85 @@ class OrbitTests: XCTestCase {
     }
 
     @MainActor
+    func testSwiftDataStoreImportsLegacySnapshotOnInitialLoad() async throws {
+        let defaults = try makeIsolatedDefaults()
+        let legacyEntries = [
+            DotNoteEntry(
+                kind: .memo,
+                createdAt: Date(timeIntervalSince1970: 2_000),
+                title: "Legacy memo",
+                weather: "sunny",
+                body: "Imported memo",
+                textAlignment: .center,
+                imageData: Data([0x01, 0x02])
+            ),
+            DotNoteEntry(
+                kind: .drawing,
+                createdAt: Date(timeIntervalSince1970: 1_000),
+                title: "Legacy drawing",
+                weather: "cloudy",
+                body: "Imported drawing",
+                imageData: Data([0x03, 0x04])
+            )
+        ]
+        let legacySettings = DotNoteSettings(
+            navigationTitleFontName: "LegacyNavigationFont",
+            contentTitleFontName: "LegacyTitleFont",
+            bodyFontName: "LegacyBodyFont",
+            bodyFontSize: 19,
+            collectionFilter: 2,
+            appearanceMode: .system
+        )
+        let importSource = CountingLegacyImportSource(
+            snapshot: DotNoteStoreSnapshot(entries: legacyEntries, settings: legacySettings)
+        )
+        let store = SwiftDataDotNoteStore(
+            modelContainer: try DotNoteModelContainer.make(isStoredInMemoryOnly: true),
+            legacyImportSource: importSource,
+            legacyImportState: LegacyDotNoteImportState(defaults: defaults)
+        )
+
+        let firstSnapshot = try await store.loadInitialSnapshot()
+        let secondSnapshot = try await store.loadInitialSnapshot()
+
+        XCTAssertEqual(firstSnapshot.entries, legacyEntries)
+        XCTAssertEqual(firstSnapshot.settings, legacySettings)
+        XCTAssertTrue(firstSnapshot.diagnostics.hasLegacyImportSource)
+        XCTAssertEqual(firstSnapshot.diagnostics.legacyImportSourceDescription, "TestLegacy")
+        XCTAssertTrue(firstSnapshot.diagnostics.didCompleteLegacyImport)
+        XCTAssertEqual(secondSnapshot.entries, legacyEntries)
+        XCTAssertEqual(importSource.loadCount, 1)
+    }
+
+    @MainActor
+    func testSwiftDataStoreSkipsLegacyImportWhenSwiftDataAlreadyHasSettings() async throws {
+        let defaults = try makeIsolatedDefaults()
+        let modelContainer = try DotNoteModelContainer.make(isStoredInMemoryOnly: true)
+        let existingSettings = DotNoteSettings(bodyFontName: DotNoteFontTheme.rock.rawValue, appearanceMode: .dark)
+        let existingStore = SwiftDataDotNoteStore(modelContainer: modelContainer)
+        _ = try await existingStore.updateSettings(existingSettings)
+
+        let importSource = CountingLegacyImportSource(
+            snapshot: DotNoteStoreSnapshot(
+                entries: [DotNoteEntry(kind: .memo, title: "Should not import", body: "Legacy")],
+                settings: DotNoteSettings(bodyFontName: "LegacyBodyFont")
+            )
+        )
+        let importingStore = SwiftDataDotNoteStore(
+            modelContainer: modelContainer,
+            legacyImportSource: importSource,
+            legacyImportState: LegacyDotNoteImportState(defaults: defaults)
+        )
+
+        let snapshot = try await importingStore.loadInitialSnapshot()
+
+        XCTAssertTrue(snapshot.entries.isEmpty)
+        XCTAssertEqual(snapshot.settings, existingSettings)
+        XCTAssertTrue(snapshot.diagnostics.didCompleteLegacyImport)
+        XCTAssertEqual(importSource.loadCount, 0)
+    }
+
+    @MainActor
     func testAppModelAddsTrimmedMemo() async throws {
         let appModel = DotNoteAppModel(store: InMemoryDotNoteStore())
 
@@ -148,5 +227,31 @@ class OrbitTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-    
+
+    private func makeIsolatedDefaults() throws -> UserDefaults {
+        let suiteName = "io.orbit.dotnote.tests.\(UUID().uuidString)"
+        guard let defaults = UserDefaults(suiteName: suiteName) else {
+            throw XCTSkip("Unable to create isolated UserDefaults suite.")
+        }
+        defaults.removePersistentDomain(forName: suiteName)
+        return defaults
+    }
+}
+
+private final class CountingLegacyImportSource: LegacyDotNoteImportSource {
+    let snapshot: DotNoteStoreSnapshot
+    private(set) var loadCount = 0
+
+    init(snapshot: DotNoteStoreSnapshot) {
+        self.snapshot = snapshot
+    }
+
+    var sourceDescription: String {
+        "TestLegacy"
+    }
+
+    func loadLegacySnapshot() throws -> DotNoteStoreSnapshot {
+        loadCount += 1
+        return snapshot
+    }
 }

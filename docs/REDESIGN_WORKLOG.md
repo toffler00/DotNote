@@ -932,3 +932,44 @@ User request: continue the follow-up work for the drawing editor photo feature.
 - End-to-end PhotosPicker interaction with real library content still needs a
   manual simulator/device pass because the system photo picker is outside the
   app's own UI automation surface.
+
+## Milestone — Legacy data migration validation
+
+User request: proceed with data migration validation.
+
+### Scope
+
+- Reviewed the current legacy Realm import bridge and SwiftData store boundary.
+- Added SwiftData end-to-end migration coverage for:
+  - first app load importing a legacy snapshot into SwiftData,
+  - preserving entries, settings, image data, text alignment, weather, and dates,
+  - marking legacy import as complete,
+  - preventing a second import on a later load.
+- Tightened the import guard so legacy import only runs when SwiftData has no
+  entry records and no settings record. This avoids mixing legacy data into an
+  already-initialized SwiftData store.
+- Added coverage for the edge case where SwiftData already has settings but no
+  entries; legacy import is skipped and the existing settings are preserved.
+
+### Verification
+
+- `git diff --check`: passed.
+- `Orbit_Dev` unit tests: **TEST SUCCEEDED**.
+  - Unit tests: 14 executed, 1 skipped external Realm fixture, 0 failures.
+- Synthetic Realm file import test passed:
+  - `LegacyRealmImportTests.testLoadLegacySnapshotFromRealmFile`
+  - This creates a temporary Realm file with legacy `Content` and `Settings`
+    objects, then verifies the importer reads it correctly.
+- Attempted external Realm fixture validation using simulator-discovered
+  `default.realm` candidates, but XCTest did not receive
+  `DOTNOTE_LEGACY_REALM_FILE` from the command environment in this run, so the
+  external fixture test remained skipped.
+
+### Notes
+
+- No real legacy user `default.realm` file is committed or copied into the repo.
+  Realm files may contain personal diary data and remain ignored by git.
+- Before release, run the external fixture test with a real legacy app backup:
+  `DOTNOTE_LEGACY_REALM_FILE=/path/to/default.realm xcodebuild test ...`
+  or place a local ignored fixture at
+  `OrbitTests/Fixtures/LegacyRealm/default.realm`.

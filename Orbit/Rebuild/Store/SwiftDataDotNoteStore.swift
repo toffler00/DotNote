@@ -137,7 +137,7 @@ struct SwiftDataDotNoteStore: DotNoteStore {
     @MainActor
     private func importLegacyDataIfNeeded(in context: ModelContext) throws {
         guard !legacyImportState.didCompleteImport else { return }
-        guard try hasNoSwiftDataEntries(in: context) else {
+        guard try hasNoSwiftDataRecords(in: context) else {
             legacyImportState.markImportCompleted()
             return
         }
@@ -162,10 +162,14 @@ struct SwiftDataDotNoteStore: DotNoteStore {
     }
 
     @MainActor
-    private func hasNoSwiftDataEntries(in context: ModelContext) throws -> Bool {
-        var descriptor = FetchDescriptor<DotNoteEntryRecord>()
-        descriptor.fetchLimit = 1
-        return try context.fetch(descriptor).isEmpty
+    private func hasNoSwiftDataRecords(in context: ModelContext) throws -> Bool {
+        var entryDescriptor = FetchDescriptor<DotNoteEntryRecord>()
+        var settingsDescriptor = FetchDescriptor<DotNoteSettingsRecord>()
+        entryDescriptor.fetchLimit = 1
+        settingsDescriptor.fetchLimit = 1
+
+        return try context.fetch(entryDescriptor).isEmpty
+            && context.fetch(settingsDescriptor).isEmpty
     }
 
     private func makeDiagnostics() -> DotNoteStoreDiagnostics {
