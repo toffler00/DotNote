@@ -16,6 +16,7 @@ import SwiftUI
 enum DotNoteTheme {
 
     /// Core palette. Each token resolves per color scheme (warm light / warm dark).
+    /// `paper` matches the Set A app icon and launch-screen background.
     /// Pure black is intentionally avoided — the dark scheme keeps the brand's warm cast.
     enum Palette {
         static func paper(_ s: ColorScheme) -> Color   { s == .dark ? Color(hex: 0x1E1916) : Color(hex: 0xFFFEF6) }
