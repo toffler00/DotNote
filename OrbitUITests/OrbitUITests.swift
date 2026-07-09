@@ -166,6 +166,11 @@ final class OrbitUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["그림 수정"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.textFields["entry-title-field"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.textFields["entry-title-field"].value as? String == "Drawing Flow")
+        XCTAssertTrue(app.descendants(matching: .any)["drawing-canvas"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["drawing-toolbar"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.buttons["drawing-color-3"].waitForHittable(timeout: 2))
+        XCTAssertTrue(app.buttons["drawing-tool-toggle"].waitForHittable(timeout: 2))
+        XCTAssertTrue(app.buttons["drawing-undo"].waitForHittable(timeout: 2))
     }
 }
 

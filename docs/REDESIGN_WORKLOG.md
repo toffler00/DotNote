@@ -411,3 +411,43 @@ Modified:
 - The drawing collection route is now covered, but the actual drawing editor
   still uses the current functional SwiftUI/PencilKit design rather than the
   final redesign polish.
+
+---
+
+## Milestone 8 — Drawing editor UI polish
+
+Commit: "Polish drawing editor canvas tools"
+Branch: `rebuild`. Status: **Dev/Prod build + full test suite verified.**
+
+### Scope
+
+Polished the SwiftUI/PencilKit drawing editor surface before adding larger
+legacy features such as photo import/crop. The editor now presents a taller
+white canvas board, displays existing saved `imageData` as a non-destructive
+background preview, and exposes a more modern tool palette with selected color
+rings, icon buttons, a line-width slider, and stronger accessibility metadata.
+
+### Files
+
+Modified:
+- `Orbit/Rebuild/App/DotNoteEntryEditors.swift` — introduces the drawing canvas
+  board, shared drawing palette, icon button styling, saved-image preview, and
+  explicit accessibility labels for drawing controls.
+- `OrbitUITests/OrbitUITests.swift` — extends the drawing collection smoke test
+  to verify that the reopened drawing editor exposes the canvas, toolbar, color
+  swatch, pen/eraser toggle, and undo controls.
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test run: **TEST SUCCEEDED**.
+  - Unit tests: 12 executed, 1 skipped external Realm fixture, 0 failures.
+  - UI tests: 5 executed, 0 failures.
+- `Orbit_Prod` simulator build: **BUILD SUCCEEDED**.
+
+### Caveats / next checks
+
+- Existing `imageData` is shown as a preview/background, but it still cannot be
+  reconstructed into editable PencilKit strokes. New strokes save as the current
+  canvas output, and entries with no new strokes preserve the previous image.
+- Legacy photo picker/crop/composite behavior is still a separate feature pass.

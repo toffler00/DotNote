@@ -177,7 +177,7 @@ private struct DrawingEditorView: View {
     @Environment(\.colorScheme) private var scheme
     @State private var draft: DotNoteEntryDraft
     @State private var canvasView = PKCanvasView()
-    @State private var selectedInk = UIColor(red: 58 / 255, green: 48 / 255, blue: 43 / 255, alpha: 1)
+    @State private var selectedInk = DrawingPalette.colors[0]
     @State private var lineWidth: CGFloat = 5
     @State private var isEraser = false
 
@@ -212,15 +212,13 @@ private struct DrawingEditorView: View {
                         .background(RoundedRectangle(cornerRadius: DotNoteTheme.Radius.lg).fill(DotNoteTheme.Palette.card(scheme)))
                         .accessibilityIdentifier("entry-title-field")
 
-                    DrawingCanvas(canvasView: $canvasView, inkColor: selectedInk, lineWidth: lineWidth, isEraser: isEraser)
-                        .frame(height: 280)
-                        .background(Color.white)
-                        .clipShape(RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
-                                .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
-                        )
-                        .accessibilityIdentifier("drawing-canvas")
+                    DrawingCanvasBoard(
+                        canvasView: $canvasView,
+                        imageData: mode.entry.imageData,
+                        inkColor: selectedInk,
+                        lineWidth: lineWidth,
+                        isEraser: isEraser
+                    )
 
                     DrawingToolbar(
                         selectedInk: $selectedInk,
@@ -517,28 +515,33 @@ private struct DrawingToolbar: View {
     @Binding var isEraser: Bool
     var onUndo: () -> Void
 
-    private let colors: [UIColor] = [
-        UIColor(red: 58 / 255, green: 48 / 255, blue: 43 / 255, alpha: 1),
-        UIColor(red: 208 / 255, green: 69 / 255, blue: 59 / 255, alpha: 1),
-        UIColor(red: 224 / 255, green: 169 / 255, blue: 79 / 255, alpha: 1),
-        UIColor(red: 91 / 255, green: 139 / 255, blue: 176 / 255, alpha: 1),
-        UIColor(red: 123 / 255, green: 160 / 255, blue: 91 / 255, alpha: 1),
-        .white
-    ]
+    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
         VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.sm) {
             HStack(spacing: DotNoteTheme.Spacing.xs) {
-                ForEach(Array(colors.enumerated()), id: \.offset) { index, color in
+                ForEach(Array(DrawingPalette.colors.enumerated()), id: \.offset) { index, color in
                     Button {
                         selectedInk = color
                         isEraser = false
                     } label: {
                         Circle()
                             .fill(Color(uiColor: color))
-                            .frame(width: 28, height: 28)
+                            .frame(width: 24, height: 24)
                             .overlay(Circle().stroke(Color.black.opacity(color == .white ? 0.18 : 0), lineWidth: 1))
+                            .padding(5)
+                            .background(
+                                Circle()
+                                    .stroke(
+                                        color.isSameInk(as: selectedInk) && !isEraser
+                                            ? DotNoteEntryKind.drawing.dot
+                                            : DotNoteTheme.Palette.hairline(scheme),
+                                        lineWidth: color.isSameInk(as: selectedInk) && !isEraser ? 2 : 1
+                                    )
+                            )
                     }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("색상 \(index + 1)")
                     .accessibilityIdentifier("drawing-color-\(index)")
                 }
 
@@ -550,19 +553,110 @@ private struct DrawingToolbar: View {
                     Image(systemName: isEraser ? "eraser.fill" : "pencil.tip")
                         .frame(width: 34, height: 34)
                 }
+                .buttonStyle(DrawingIconButtonStyle(isActive: isEraser, scheme: scheme))
+                .accessibilityLabel(isEraser ? "지우개" : "펜")
                 .accessibilityIdentifier("drawing-tool-toggle")
 
                 Button(action: onUndo) {
                     Image(systemName: "arrow.uturn.backward")
                         .frame(width: 34, height: 34)
                 }
+                .buttonStyle(DrawingIconButtonStyle(isActive: false, scheme: scheme))
+                .accessibilityLabel("실행 취소")
                 .accessibilityIdentifier("drawing-undo")
             }
 
-            Slider(value: $lineWidth, in: 2...16)
-                .tint(DotNoteEntryKind.drawing.dot)
-                .accessibilityIdentifier("drawing-line-width")
+            HStack(spacing: DotNoteTheme.Spacing.sm) {
+                Image(systemName: "line.diagonal")
+                    .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+                    .frame(width: 24)
+
+                Slider(value: $lineWidth, in: 2...16)
+                    .tint(DotNoteEntryKind.drawing.dot)
+                    .accessibilityIdentifier("drawing-line-width")
+
+                Text("\(Int(lineWidth))")
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
+                    .frame(width: 24)
+            }
         }
+        .padding(DotNoteTheme.Spacing.sm)
+        .background(
+            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                .fill(DotNoteTheme.Palette.card(scheme))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
+        )
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("drawing-toolbar")
+    }
+}
+
+private enum DrawingPalette {
+    static let colors: [UIColor] = [
+        UIColor(red: 58 / 255, green: 48 / 255, blue: 43 / 255, alpha: 1),
+        UIColor(red: 208 / 255, green: 69 / 255, blue: 59 / 255, alpha: 1),
+        UIColor(red: 224 / 255, green: 169 / 255, blue: 79 / 255, alpha: 1),
+        UIColor(red: 91 / 255, green: 139 / 255, blue: 176 / 255, alpha: 1),
+        UIColor(red: 123 / 255, green: 160 / 255, blue: 91 / 255, alpha: 1),
+        .white
+    ]
+}
+
+private struct DrawingCanvasBoard: View {
+    @Binding var canvasView: PKCanvasView
+    var imageData: Data?
+    var inkColor: UIColor
+    var lineWidth: CGFloat
+    var isEraser: Bool
+
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                .fill(Color.white)
+
+            if let imageData, let image = UIImage(data: imageData) {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .padding(DotNoteTheme.Spacing.sm)
+                    .accessibilityIdentifier("drawing-canvas-preview")
+            }
+
+            DrawingCanvas(canvasView: $canvasView, inkColor: inkColor, lineWidth: lineWidth, isEraser: isEraser)
+        }
+        .frame(height: 320)
+        .clipShape(RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
+        )
+        .shadow(color: DotNoteTheme.Shadow.cardColor.opacity(scheme == .dark ? 0.45 : 0.12), radius: 10, y: 4)
+        .accessibilityIdentifier("drawing-canvas")
+    }
+}
+
+private struct DrawingIconButtonStyle: ButtonStyle {
+    var isActive: Bool
+    var scheme: ColorScheme
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundStyle(isActive ? DotNoteEntryKind.drawing.dot : DotNoteTheme.Palette.inkSoft(scheme))
+            .background(
+                RoundedRectangle(cornerRadius: DotNoteTheme.Radius.sm, style: .continuous)
+                    .fill(isActive ? DotNoteEntryKind.drawing.dot.opacity(0.16) : DotNoteTheme.Palette.paper(scheme))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: DotNoteTheme.Radius.sm, style: .continuous)
+                    .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: 1)
+            )
+            .opacity(configuration.isPressed ? 0.72 : 1)
     }
 }
 
@@ -585,6 +679,25 @@ private struct DrawingCanvas: UIViewRepresentable {
 
     private var currentTool: PKTool {
         isEraser ? PKEraserTool(.vector) : PKInkingTool(.pen, color: inkColor, width: lineWidth)
+    }
+}
+
+private extension UIColor {
+    func isSameInk(as other: UIColor) -> Bool {
+        var r1: CGFloat = 0
+        var g1: CGFloat = 0
+        var b1: CGFloat = 0
+        var a1: CGFloat = 0
+        var r2: CGFloat = 0
+        var g2: CGFloat = 0
+        var b2: CGFloat = 0
+        var a2: CGFloat = 0
+        getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
+        other.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
+        return abs(r1 - r2) < 0.01
+            && abs(g1 - g2) < 0.01
+            && abs(b1 - b2) < 0.01
+            && abs(a1 - a2) < 0.01
     }
 }
 
