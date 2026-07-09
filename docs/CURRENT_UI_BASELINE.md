@@ -77,12 +77,17 @@ app surfaces in this order:
 1. ~~Home screen visual refinement against the latest Set A brand tone.~~ Done —
    fixed the wordmark font (see `docs/REDESIGN_WORKLOG.md`); the rest of the
    home screen already read as clean and on-token.
-2. Entry editor polish, especially diary and memo density/typography.
-   **Partially done:** diary/drawing date+weather header restyled (Korean
-   date capsule, weather-button affordance). Still open: title/body density
-   and typography hierarchy in the diary/memo editors.
+2. ~~Entry editor polish, especially diary and memo density/typography.~~ Done —
+   diary/drawing date+weather header restyled (Korean date capsule,
+   weather-button affordance); diary/memo title-body grouping tightened with a
+   hairline divider before the controls row. Drawing canvas also gained photo
+   import (picked at explicit user request, pulled forward from unscheduled
+   future work — see `docs/REDESIGN_WORKLOG.md`).
 3. Settings and collection polish.
 4. Preview coverage for light/dark states using in-memory snapshots.
+
+Not yet scheduled: legacy photo crop/reposition/scale parity for the drawing
+canvas (the new photo import places the photo aspect-fit/centered only).
 
 For capturing real (not guessed) screenshots of a mid-flow screen, see the
 temporary-XCUITest-attachment method documented in `docs/REDESIGN_WORKLOG.md`

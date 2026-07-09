@@ -691,3 +691,100 @@ clean and on-token in the screenshot pass.
 
 Next up per the agreed order: settings and collection polish (`docs/CURRENT_UI_BASELINE.md`
 → Next UI Work, item 3), then light/dark preview coverage (item 4).
+
+---
+
+## Milestone — Editor content hierarchy + drawing photo import
+
+Commit: `bb8577b` — "Polish editor content hierarchy; add photo import to
+drawing canvas"
+Branch: `rebuild`. Status: **done, build + full test suite verified, both
+changes confirmed visually via simulator screenshots.**
+
+### Part 1: diary/memo title-body hierarchy
+
+Completes the remaining part of item 2 (density/typography) left open by the
+previous milestone. In `DiaryEditorView` and `MemoOverlayView`, title and body
+sat in one `VStack` with a single uniform spacing value shared with the
+"controls" row below (alignment toolbar for diary; delete/save row for memo),
+so nothing visually distinguished "this is one written thing" from "these are
+actions on it."
+
+Fix: tightened the title→body gap (`Spacing.md` → `Spacing.sm`) so they read as
+one grouped block, and added a 1pt `hairline`-colored `Rectangle()` divider
+directly before the controls row. Same pattern applied to both editors for
+consistency. Confirmed via screenshots (`diary-editor-hierarchy`,
+`memo-overlay-hierarchy`) that the divider renders correctly above the (below-
+the-fold, keyboard-covered) controls row in both.
+
+### Part 2: drawing canvas photo import (new feature, not prior scope)
+
+The user asked to add photo import to the drawing editor's palette/toolbar
+area, and to check whether it was already planned. It was **not**: confirmed
+absent from `Orbit/Rebuild/` source (`grep` for `PhotosPicker`/`PHPicker`/
+`UIImagePickerController` returned nothing) and only tracked as unscheduled
+"legacy photo picker/crop/composite behavior" future work in
+`docs/CLAUDE_CODE_CONTINUATION_BRIEF.md` and this worklog — not part of the
+agreed near-term polish order. Implemented it now per the explicit request,
+scoped to "import a photo to draw over," not legacy's full crop/composite flow.
+
+Implementation (`DotNoteEntryEditors.swift`):
+
+- `DrawingToolbar` gained a `photo.on.rectangle` button (PhotosUI's
+  `PhotosPicker`) in the same row as the color swatches / pen-eraser toggle /
+  undo, styled with the existing `DrawingIconButtonStyle`. `PhotosPicker`
+  doesn't need `NSPhotoLibraryUsageDescription` for picker-only access (it runs
+  out-of-process); the key already existed in `Info.plist` from legacy code
+  regardless.
+- `DrawingCanvasBoard` changed from a static `imageData: Data?` (decoded once)
+  to `@Binding var image: UIImage?`, so a freshly picked photo shows live as a
+  background layer behind the PencilKit canvas — plus a small circular "x"
+  button (top-trailing) to clear it.
+- `DrawingEditorView` loads the picked `PhotosPickerItem` via
+  `loadTransferable(type: Data.self)` in `.onChange(of: photoPickerItem)`, and
+  on save composites the photo + the live `PKDrawing` strokes into one image
+  with `UIGraphicsImageRenderer` (a new `UIImage.aspectFitRect(in:)` helper
+  mirrors `.scaledToFit()`'s centering so the saved result matches what was
+  on screen). The composited image is what's written to `DotNoteEntry
+  .imageData` — no `Domain`/`Store` model changes; a photo is just pixels in
+  the same field a strokes-only drawing already used.
+- Incidental bug fix found while wiring this up: the save button's `.disabled`
+  check was `isSaving || draft.isEmpty`, where `draft.isEmpty` only looks at
+  title/body text — a drawing with a photo and/or pencil strokes but no typed
+  text could never be saved, before or after this change's photo feature.
+  Fixed to also check `pickedImage == nil && canvasView.drawing.strokes
+  .isEmpty`.
+
+Confirmed via screenshot (`drawing-editor-photo-button`) that the icon renders
+correctly in the toolbar. Did not exercise an actual photo selection in an
+automated test — `PhotosPicker` opens the system Photos UI in a separate
+process that XCUITest can't drive reliably against this environment's
+simulator photo library, and the app's own accessibility identifiers don't
+reach into it. Added a permanent assertion instead
+(`testOpenDrawingFromSettingsCollection` now checks `drawing-photo-picker`
+exists/hittable) to catch a regression in the button itself.
+
+### Verification
+
+- `Orbit_Dev` build: **BUILD SUCCEEDED**.
+- `Orbit_Dev` full test suite: **all 15 passed**, no regressions.
+- Visual: screenshots via the temporary-XCUITest-attachment method (see prior
+  milestone) for all three editors, confirming both changes.
+
+### Not done in this pass
+
+- Actual end-to-end verification of "pick a real photo → draw over it → save →
+  reopen and see both" was not performed (no reliable way to drive the system
+  photo picker from this environment). The compositing logic
+  (`composedImageData`) was reviewed carefully but should get a manual pass on
+  a real device/simulator with photos before considering this fully verified.
+- No crop/reposition/scale step for the imported photo (legacy had this); the
+  photo is placed aspect-fit and centered, full stop. If precise placement
+  matters, that's a follow-up.
+- Dark-mode screenshots still not captured (same gap as the previous
+  milestone).
+
+Next up per the agreed order: settings and collection polish (item 3), then
+light/dark preview coverage (item 4). The photo-import feature was pulled
+forward from unscheduled future work at explicit request; legacy photo
+crop/scale parity remains unscheduled.
