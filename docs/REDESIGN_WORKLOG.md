@@ -788,3 +788,74 @@ Next up per the agreed order: settings and collection polish (item 3), then
 light/dark preview coverage (item 4). The photo-import feature was pulled
 forward from unscheduled future work at explicit request; legacy photo
 crop/scale parity remains unscheduled.
+
+---
+
+## Milestone — Settings/collection header consistency (item 3 complete)
+
+Commit: `b004a70` — "Unify settings sub-screen headers; remove
+destructive-title string check"
+Branch: `rebuild`. Status: **done, Dev test suite + Prod build verified,
+confirmed visually via simulator screenshots.**
+
+### What screenshots found
+
+Real screenshots (not code reading) of Settings' four pushed sub-screens
+(font list, help, license, diary/drawing/memo collection) showed each one's
+back button rendering as a system-default **floating circular pill** at the
+top-left, on its own row above the custom large title — visually different
+from Settings root's own hand-built header, which pairs a small flat chevron
+(no background) inline with the title in one row. Root cause: the four
+sub-screens are pushed via `NavigationLink` inside Settings' `NavigationStack`
+and never called `.navigationBarHidden(true)` or supplied a custom header, so
+they fell back to the system nav bar — the same "raw system control breaks the
+app's custom-header language" pattern as the diary/drawing date picker fixed
+in an earlier milestone.
+
+### Fix
+
+Added `SettingsSubscreenHeader` (chevron button + `DotNoteType.wordmarkFont`
+title, one row) and applied it plus `.navigationBarHidden(true)` to
+`DotNoteFontListView`, `DotNoteHelpView`, `DotNoteLicenseView`, and
+`DotNoteCollectionView`, matching `DotNoteSettingsView`'s own header exactly.
+Back action is `@Environment(\.dismiss)` — `DotNoteFontListView` already used
+this after picking a font, so the pattern was already proven in this codebase.
+
+Also fixed while in the area: `DotNoteSettingsRow` picked its destructive
+(red) title color by string-comparing `title == "모든데이터 삭제"`. Replaced
+with an explicit `isDestructive: Bool = false` parameter.
+
+### Test impact
+
+`app.navigationBars.buttons.element(boundBy: 0).tap()` (used in
+`testOpenSettingsSupportDestinations` to go back from Help) would have found
+nothing once the nav bar was hidden — updated to tap the new
+`subscreen-back-button` accessibility identifier instead, which all four
+sub-screens now share (only one is ever on screen, so no ambiguity for tests).
+
+### Incidental confirmation
+
+The font list screenshot renders all 7 `DotNoteFontTheme` entries in their
+actual custom faces (바른고딕/명조/바른펜/붓글씨/신비/플라워로드/록 each
+visibly distinct) — a secondary visual confirmation that the PostScript-name
+fix from an earlier milestone is holding.
+
+### Verification
+
+- `Orbit_Dev` full test suite: **all 15 passed**, no regressions.
+- `Orbit_Prod` build: **BUILD SUCCEEDED** (checked because this touched
+  navigation chrome broadly, not just one screen).
+- Visual: screenshots of settings root, font list, diary collection, help,
+  and license, before/after, via the temporary-XCUITest-attachment method.
+
+### Not done in this pass
+
+- Collection grid density/empty-slot layout when there's only 1 item in a
+  2-column grid (currently just leaves the second column blank — looked fine
+  in the screenshot, not treated as a defect).
+- Dark-mode screenshots still not captured — item 4 (`docs/CURRENT_UI_BASELINE.md`
+  → Next UI Work) remains open.
+
+All three original polish items (home, editors, settings/collection) are now
+addressed. Only item 4 (light/dark preview coverage) remains from the original
+`docs/CURRENT_UI_BASELINE.md` → Next UI Work list.

@@ -83,8 +83,12 @@ app surfaces in this order:
    hairline divider before the controls row. Drawing canvas also gained photo
    import (picked at explicit user request, pulled forward from unscheduled
    future work — see `docs/REDESIGN_WORKLOG.md`).
-3. Settings and collection polish.
-4. Preview coverage for light/dark states using in-memory snapshots.
+3. ~~Settings and collection polish.~~ Done — font list/help/license/collection
+   sub-screens now share Settings root's custom header (flat chevron +
+   wordmark title) instead of the system default nav bar's floating-pill back
+   button. See `docs/REDESIGN_WORKLOG.md`.
+4. Preview coverage for light/dark states using in-memory snapshots. **Only
+   remaining item from the original list.**
 
 Not yet scheduled: legacy photo crop/reposition/scale parity for the drawing
 canvas (the new photo import places the photo aspect-fit/centered only).
