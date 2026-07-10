@@ -268,6 +268,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A10000000000000000000118 /* Legacy */ = {
+			isa = PBXGroup;
+			children = (
+				6296D18A21394CCA00B610C8 /* Model */,
+				620F53AF211EF16900A94A01 /* AppDelegate.swift */,
+				620F53B1211EF16900A94A01 /* DiaryViewController.swift */,
+				62C55D4921DE1CC3000F42CB /* MemoViewController.swift */,
+				6A331FFB2131485600FFE74F /* WriteViewController.swift */,
+				6237172C2201A53B00549221 /* BackGroundViewController.swift */,
+				6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */,
+				628C12BC22363B34009D99B5 /* DrawingView.swift */,
+				CE84E7482137D3350097357F /* ListViewController.swift */,
+				CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */,
+				6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */,
+				62AE2E12216CFAC9004448F2 /* CalendarView.swift */,
+				62AE2E14216E31F0004448F2 /* CalendarCell.swift */,
+				62927F8C21B2A87300B4F167 /* LocationManager.swift */,
+				6AFAA89A213A716100D241E2 /* PhotosViewController.swift */,
+				6AFAA89C213A728D00D241E2 /* PhotoCollectionView.swift */,
+				6AFAA89E213A72CD00D241E2 /* PhotoCollectionViewCell.swift */,
+				621AC6DA222FD85B0029B550 /* Option */,
+				6296D190213D030500B610C8 /* Delegate */,
+				6A332001213159DE00FFE74F /* Util */,
+				6292BA6121807D55005AE13E /* StoryBoard */,
+			);
+			path = Legacy;
+			sourceTree = "<group>";
+		};
 		620B18E722671DCF00AB5691 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -321,33 +349,14 @@
 			children = (
 				620B18E922671E4400AB5691 /* LaunchImage */,
 				62E3E59722623E810053C838 /* Resources */,
-				6296D18A21394CCA00B610C8 /* Model */,
-				620F53AF211EF16900A94A01 /* AppDelegate.swift */,
-				620F53B1211EF16900A94A01 /* DiaryViewController.swift */,
-				62C55D4921DE1CC3000F42CB /* MemoViewController.swift */,
-				6A331FFB2131485600FFE74F /* WriteViewController.swift */,
-				6237172C2201A53B00549221 /* BackGroundViewController.swift */,
-				6237172E220C4A6D00549221 /* DrawingDiaryViewController.swift */,
-				628C12BC22363B34009D99B5 /* DrawingView.swift */,
-				CE84E7482137D3350097357F /* ListViewController.swift */,
-				CE9DDA462138E9B0007F0BEA /* ListTableViewCell.swift */,
-				6292D56B21C51FDE00E5E521 /* ExpandableButton.swift */,
-				62AE2E12216CFAC9004448F2 /* CalendarView.swift */,
-				62AE2E14216E31F0004448F2 /* CalendarCell.swift */,
-				62927F8C21B2A87300B4F167 /* LocationManager.swift */,
-				6AFAA89A213A716100D241E2 /* PhotosViewController.swift */,
-				6AFAA89C213A728D00D241E2 /* PhotoCollectionView.swift */,
-				6AFAA89E213A72CD00D241E2 /* PhotoCollectionViewCell.swift */,
 				A10000000000000000000201 /* Rebuild */,
-				621AC6DA222FD85B0029B550 /* Option */,
-				6296D190213D030500B610C8 /* Delegate */,
-				6A332001213159DE00FFE74F /* Util */,
+				A10000000000000000000118 /* Legacy */,
 				620B18E722671DCF00AB5691 /* Fonts */,
-				6292BA6121807D55005AE13E /* StoryBoard */,
 				620F53B8211EF16900A94A01 /* LaunchScreen.storyboard */,
 				620F53BB211EF16900A94A01 /* Info.plist */,
 				6231E6622289900F007D3E0C /* GoogleService-Info.plist */,
 				62B33EC521EDD7C70097C661 /* Assets.xcassets */,
+				620B18D32265D9D900AB5691 /* opensourceLicense.md */,
 			);
 			path = Orbit;
 			sourceTree = "<group>";
@@ -383,7 +392,6 @@
 				62E3E589226237FA0053C838 /* DiaryWithoutImageCell.swift */,
 				62E3E585226237F50053C838 /* MemoCollectionTableView.swift */,
 				62E3E588226237F80053C838 /* MemoCollectionTableViewCell.swift */,
-				620B18D32265D9D900AB5691 /* opensourceLicense.md */,
 				621AC6DB222FD8C30029B550 /* OpensourceLicenseVC.swift */,
 				6231E63B227457E1007D3E0C /* TutorialPage */,
 			);
