@@ -1111,3 +1111,5 @@ Follow-up:
   pick arbitrary pen colors without recreating a full custom HSB editor. The
   selected custom color flows directly into the existing `UIColor`-backed
   PencilKit tool path.
+- Restored pen-width selection to the continuous slider after user feedback,
+  while keeping the redesigned color row and custom-color control.

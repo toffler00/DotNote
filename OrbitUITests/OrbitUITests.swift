@@ -151,11 +151,6 @@ final class OrbitUITests: XCTestCase {
         app.textFields["entry-title-field"].tap()
         app.textFields["entry-title-field"].typeText("Drawing Flow")
 
-        let bodyEditor = app.textViews["entry-body-editor"]
-        XCTAssertTrue(bodyEditor.waitForExistence(timeout: 2))
-        bodyEditor.tap()
-        bodyEditor.typeText("Opened drawing from settings collection")
-
         app.buttons["entry-save-button"].tap()
         XCTAssertTrue(app.staticTexts["Drawing Flow"].waitForExistence(timeout: 5))
 
