@@ -166,26 +166,32 @@ rewrite.
 
 Recommended order:
 
-1. Manually verify the drawing photo-import flow on a simulator/device with
-   real Photos content:
-   - pick photo
-   - drag/scale photo placement
-   - draw over it
-   - save
-   - reopen and confirm the composited image persists
+1. ~~Manually verify the drawing photo-import flow~~ Done — verified end-to-end
+   via simulator (seeded photo library + XCUITest driving the real PHPicker
+   sheet). Pick → canvas → save → reopen persistence confirmed, reproduced 5+
+   times. One open, unreproduced observation from a two-consecutive-strokes
+   pattern (possible photo loss) needs a real-device/finger check — see
+   `docs/REDESIGN_WORKLOG.md` for the exact repro attempt and why it's not
+   confirmed as a real bug yet.
 2. Run real legacy `.realm` migration verification with an actual old app
-   backup:
+   backup — **still blocked**, needs the user to supply a real backup:
    - set `DOTNOTE_LEGACY_REALM_FILE=/path/to/default.realm` when running the
      external fixture test, or
    - place a local ignored fixture at
      `OrbitTests/Fixtures/LegacyRealm/default.realm`
-3. Run a real light/dark visual pass on device/simulator if the new Settings
-   appearance picker reveals any design tuning needs beyond preview coverage.
+3. ~~Run a real light/dark visual pass~~ Done — simulator system-appearance
+   toggle + real screenshots of home/diary editor/memo overlay/Settings. Clean,
+   no contrast issues, warm dark palette holds up everywhere. See
+   `docs/REDESIGN_WORKLOG.md`.
 4. Later feature work:
    - decide whether the in-canvas drawing photo placement is enough, or whether
-     a separate legacy-style "Move and Scale" crop screen is still desired
-   - decide whether old UIKit screens stay in target or move to reference-only
-     storage
+     a separate legacy-style "Move and Scale" crop screen is still desired —
+     still open
+   - ~~decide whether old UIKit screens stay in target or move to
+     reference-only storage~~ Decided — moved to `Orbit/Legacy/` now (commit
+     `9c02495`), rather than waiting for migration verification. See
+     `docs/REDESIGN_WORKLOG.md` for what moved and the one active-resource
+     exception (`opensourceLicense.md`).
 
 Recently completed:
 

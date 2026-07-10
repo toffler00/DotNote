@@ -84,6 +84,10 @@ Likely blockers:
 
 Useful legacy files:
 
+> **Path update:** these have since been physically relocated to
+> `Orbit/Legacy/...` (see `docs/REDESIGN_WORKLOG.md`, commit `9c02495`).
+> Prepend `Legacy/` after `Orbit/` to find them now.
+
 - `Orbit/AppDelegate.swift`
 - `Orbit/StoryBoard/Base.lproj/Main.storyboard`
 - `Orbit/StoryBoard/TutorialPageView.storyboard`

@@ -973,3 +973,100 @@ User request: proceed with data migration validation.
   `DOTNOTE_LEGACY_REALM_FILE=/path/to/default.realm xcodebuild test ...`
   or place a local ignored fixture at
   `OrbitTests/Fixtures/LegacyRealm/default.realm`.
+
+---
+
+## Milestone — Drawing photo-import e2e, light/dark visual pass, legacy UIKit reorg
+
+Branch: `rebuild`. Status: **verification tasks done (no code changes needed);
+legacy reorg committed as `9c02495`.**
+
+Addresses the "Recommended Next Work" items from `docs/CLAUDE_CODE_CONTINUATION_BRIEF.md`
+/ `docs/NEXT_SESSION_START.md` (items 1 and 3), plus the open "decide" item on
+legacy UIKit screens (item 5).
+
+### 1. Drawing photo-import end-to-end verification
+
+Method: seeded the simulator's photo library with `xcrun simctl addmedia`, then
+drove the real flow via a temporary XCUITest — open drawing editor → tap
+`drawing-photo-picker` → tap a photo in the system PHPicker sheet (not in our
+accessibility tree; tapped by normalized window coordinate) → draw a stroke →
+save → reopen from home → confirm the composited image persisted.
+
+**Confirmed working, reproduced 5+ times:** pick → canvas shows photo → save →
+reopen shows the same photo. The core ask from the recommended-work list is
+verified.
+
+**Open, unresolved observation:** in one run, after drawing two consecutive
+back-to-back strokes (second stroke's touch-down at the same point the first
+one's touch-up ended), the photo disappeared from the canvas and stayed gone
+after save/reopen — only the stroke persisted. Could not reliably reproduce
+this with a single clean stroke across several follow-up attempts (both fast
+and slow/held single drags left no photo loss, and in some attempts no visible
+stroke was drawn at all — XCUITest's synthesized touch timing for PKCanvasView
+is inconsistent in this environment). Not confirmed as a real app bug; could be
+an XCUITest touch-synthesis artifact that doesn't reflect real finger input.
+**Recommend a real-device/finger check**: pick a photo, draw two quick separate
+strokes that start near where the previous one ended, save, reopen — confirm
+the photo is still there.
+
+### 2. Light/dark real visual pass
+
+Set the simulator's system appearance directly (`xcrun simctl ui <device>
+appearance dark`), relying on the app's default `.system` appearance mode, and
+captured real screenshots (not Xcode canvas previews) of home, diary editor,
+memo overlay, and Settings (including the new 화면 모드 시스템/라이트/다크
+segmented picker added in `2009a9c`).
+
+**Result: clean.** Warm dark palette holds up everywhere — no pure black
+anywhere, diary/memo surfaces keep their tinted-dark variants, the weather
+picker hairline affordance (from an earlier milestone) is visible in dark mode
+too, amber "today" fill and accent colors keep their saturation. No contrast or
+legibility issues found. This closes out the "real light/dark visual pass"
+recommended-work item.
+
+### 3. Legacy UIKit screens — decided: relocate now
+
+Discussed the fate of the legacy UIKit source (previously only "should we keep
+it" in the abstract). Verified via direct pbxproj inspection that **none of the
+legacy view controllers/support files were in any active Sources build phase**
+already — they were inert. Decision: move them into `Orbit/Legacy/` now (not
+wait for migration verification) for repository clarity, since it's a pure
+organization change with zero build/behavior risk. Full detail in the commit
+message for `9c02495`; summary:
+
+- Moved ~50 files (20 root-level legacy `.swift` files + `Delegate/`, `Util/`,
+  `StoryBoard/`, `Option/` folders + the `Model` group) into `Orbit/Legacy/`
+  via `git mv` (history preserved).
+- Found and preserved one landmine: `Option/opensourceLicense.md` is **still
+  actively read** by the current SwiftUI license screen
+  (`Bundle.main.url(forResource:withExtension:)`). Extracted it out of the
+  move and relocated it to `Orbit/opensourceLicense.md` instead, keeping its
+  Resources build-phase membership untouched.
+- pbxproj surgery: added one new `Legacy` PBXGroup and re-parented the
+  existing group objects under it, rather than editing 50+ individual file
+  `path` values — much lower risk given this project's documented history of
+  "damaged project" from ID mistakes (see the pbxproj ID-collision note
+  earlier in this file). New group ID `A10000000000000000000118`, grepped
+  clean before use per that same lesson.
+- The underlying legacy Realm model files (`DBModel.swift`, `Model.swift`,
+  `RealmManager.swift`) were moved, **not deleted** — `REBUILD.md`'s
+  non-negotiable against removing them before real `.realm` migration
+  verification still applies. Confirmed before moving that
+  `Rebuild/Migration/*` has its own independent legacy-schema definitions and
+  does not import these files, so the move doesn't touch the active import
+  bridge.
+
+### Verification
+
+- `Orbit_Dev` full test suite: **all 17 passed** (including the license-screen
+  text assertion, which is a live proof `opensourceLicense.md` still loads
+  correctly from its new location).
+- `Orbit_Prod` build: **BUILD SUCCEEDED**.
+- `xcodebuild -list` and `plutil -lint` both clean after the pbxproj edit.
+
+### Not done in this pass
+
+- The photo-loss observation above needs a real-device check to close out.
+- Real legacy `.realm` migration verification (item 2 in the recommended list)
+  is still blocked on the user supplying an actual legacy backup file.

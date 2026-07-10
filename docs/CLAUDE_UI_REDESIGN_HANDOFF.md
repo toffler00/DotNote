@@ -73,6 +73,12 @@ Most important rules:
 The old UIKit code remains in the repository for reference only. Do not rebuild
 new UI by directly depending on these controllers.
 
+> **Path update:** these files have since been physically relocated to
+> `Orbit/Legacy/...` (see `docs/REDESIGN_WORKLOG.md`, commit `9c02495`). The
+> paths below are historical/pre-move; prepend `Legacy/` after `Orbit/` to find
+> them now (e.g. `Orbit/ListViewController.swift` →
+> `Orbit/Legacy/ListViewController.swift`).
+
 Primary legacy screens:
 
 - Main calendar/list: `Orbit/ListViewController.swift`
