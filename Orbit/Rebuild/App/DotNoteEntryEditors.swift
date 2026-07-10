@@ -151,8 +151,9 @@ private struct DiaryEditorView: View {
                 Task { await save() }
             } label: {
                 Image(systemName: "checkmark")
+                    .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(.white)
-                    .padding(8)
+                    .frame(width: 36, height: 36)
                     .background(Circle().fill(saveTint))
             }
             .disabled(isSaving)
@@ -306,8 +307,9 @@ private struct DrawingEditorView: View {
                 Task { await save() }
             } label: {
                 Image(systemName: "checkmark")
+                    .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(.white)
-                    .padding(8)
+                    .frame(width: 36, height: 36)
                     .background(Circle().fill(DotNoteEntryKind.drawing.dot))
             }
             .disabled(isSaving || (draft.isEmpty && pickedImage == nil && canvasView.drawing.strokes.isEmpty))
