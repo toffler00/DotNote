@@ -621,6 +621,20 @@ private struct DrawingToolbar: View {
 
     @Environment(\.colorScheme) private var scheme
 
+    private var customInkBinding: Binding<Color> {
+        Binding(
+            get: { Color(uiColor: selectedInk) },
+            set: { newColor in
+                selectedInk = UIColor(newColor)
+                isEraser = false
+            }
+        )
+    }
+
+    private var isUsingCustomInk: Bool {
+        !isEraser && !DrawingPalette.colors.contains { $0.isSameInk(as: selectedInk) }
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: DotNoteTheme.Spacing.md) {
             HStack(spacing: DotNoteTheme.Spacing.xs) {
@@ -636,6 +650,15 @@ private struct DrawingToolbar: View {
                     .accessibilityLabel("색상 \(index + 1)")
                     .accessibilityIdentifier("drawing-color-\(index)")
                 }
+
+                DrawingCustomColorButton(
+                    selection: customInkBinding,
+                    currentColor: selectedInk,
+                    isSelected: isUsingCustomInk,
+                    scheme: scheme
+                )
+                .accessibilityLabel("커스텀 색상")
+                .accessibilityIdentifier("drawing-custom-color")
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -755,13 +778,49 @@ private struct DrawingColorButton: View {
                     .frame(width: 24, height: 24)
                     .overlay(Circle().stroke(Color.black.opacity(color == .white ? 0.18 : 0), lineWidth: 1))
             }
-            .frame(width: 44, height: 40)
+            .frame(width: 40, height: 40)
             .overlay(
                 RoundedRectangle(cornerRadius: DotNoteTheme.Radius.sm, style: .continuous)
                     .stroke(isSelected ? DotNoteEntryKind.drawing.dot : DotNoteTheme.Palette.hairline(scheme), lineWidth: isSelected ? 2 : 1)
             )
         }
         .buttonStyle(.plain)
+    }
+}
+
+private struct DrawingCustomColorButton: View {
+    @Binding var selection: Color
+    var currentColor: UIColor
+    var isSelected: Bool
+    var scheme: ColorScheme
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.sm, style: .continuous)
+                .fill(isSelected ? DotNoteEntryKind.drawing.dot.opacity(0.14) : DotNoteTheme.Palette.paper(scheme))
+
+            Circle()
+                .fill(AngularGradient(colors: [.red, .yellow, .green, .cyan, .blue, .purple, .red], center: .center))
+                .frame(width: 24, height: 24)
+                .overlay(Circle().stroke(Color.white.opacity(0.9), lineWidth: 2))
+
+            if isSelected {
+                Circle()
+                    .fill(Color(uiColor: currentColor))
+                    .frame(width: 13, height: 13)
+                    .overlay(Circle().stroke(Color.white, lineWidth: 1.5))
+            }
+
+            ColorPicker("", selection: $selection, supportsOpacity: false)
+                .labelsHidden()
+                .frame(width: 40, height: 40)
+                .opacity(0.04)
+        }
+        .frame(width: 40, height: 40)
+        .overlay(
+            RoundedRectangle(cornerRadius: DotNoteTheme.Radius.sm, style: .continuous)
+                .stroke(isSelected ? DotNoteEntryKind.drawing.dot : DotNoteTheme.Palette.hairline(scheme), lineWidth: isSelected ? 2 : 1)
+        )
     }
 }
 

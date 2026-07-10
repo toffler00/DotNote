@@ -1103,3 +1103,11 @@ Implementation:
   per-width identifiers added for future UI tests.
 - Kept photo import, photo adjustment, eraser, and undo controls in a separate
   icon row so the color/width selections are easier to hit on a phone screen.
+
+Follow-up:
+
+- Added a custom-color control at the end of the drawing color row. It uses
+  SwiftUI's system `ColorPicker` under a compact rainbow swatch, so users can
+  pick arbitrary pen colors without recreating a full custom HSB editor. The
+  selected custom color flows directly into the existing `UIColor`-backed
+  PencilKit tool path.
