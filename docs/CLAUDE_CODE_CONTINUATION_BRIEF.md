@@ -90,6 +90,18 @@ the next implementation pass, then use the linked docs for deeper detail.
   - save compositing that respects the adjusted rect.
 - Drawing editor toolbar/weather rows are constrained to the device width; long
   control rows scroll internally instead of widening the whole editor layout.
+- Diary and drawing editor weather rows now expand to the available device
+  width while keeping their weather buttons inside an internal horizontal
+  scroll row.
+- Diary and drawing editor top-right save/check buttons are constrained to a
+  fixed circular `36pt x 36pt` hit shape so the circle is not clipped vertically.
+- Drawing editor color selection was redesigned as a compact custom popover
+  with preset swatches plus hue/saturation/brightness sliders.
+- Drawing editor pen-width control remains the existing slider interaction by
+  product decision, but its toolbar footprint was narrowed so photo, pen/eraser,
+  undo, and related controls fit into one horizontally scrolling row on mobile.
+- Drawing editor photo import is now guarded so pen input does not accidentally
+  clear the selected/background photo state.
 - Settings sub-screens now share the custom Settings header instead of falling
   back to the system navigation bar.
 - Settings now includes app-wide appearance selection (`system`, `light`,
@@ -115,6 +127,16 @@ the next implementation pass, then use the linked docs for deeper detail.
 
 ### Latest Relevant Commits
 
+- `c6e0075` — Expand editor weather picker layout
+- `c6edccf` — Refine drawing editor toolbar layout
+- `e6ae787` — Constrain editor save buttons
+- `7c585c9` — Restore drawing width slider
+- `f722422` — Add custom drawing color picker
+- `7b7018f` — Polish drawing toolbar selection controls
+- `0e42bd4` — Guard drawing photo clear during pen input
+- `b91b0aa` — Document photo e2e verification, dark-mode pass, and legacy reorg
+- `9c02495` — Relocate legacy UIKit source into Orbit/Legacy/
+- `a7267f3` — Update Claude handoff with migration status
 - `b91e681` — Validate SwiftData legacy import flow
 - `a00a3f2` — Constrain drawing editor toolbar layout
 - `0836434` — Embed RealmSwift framework in app bundle
@@ -161,8 +183,8 @@ the next implementation pass, then use the linked docs for deeper detail.
 
 ## Recommended Next Work
 
-Continue with verification and release-readiness work before another structural
-rewrite.
+Continue with small mobile UI polish and release-readiness checks. Avoid another
+structural rewrite unless the user explicitly asks for it.
 
 Recommended order:
 
@@ -187,16 +209,46 @@ Recommended order:
      — keep the current in-canvas drag/scale placement. Do not recreate the
      legacy-style separate "Move and Scale" crop screen unless the product
      direction changes later.
-   - Continue the drawing editor UI polish around color selection and pen-width
-     selection while keeping the current drawing/photo architecture intact.
+   - ~~continue drawing editor UI polish around color selection~~ Done — custom
+     color popover with preset swatches and HSB sliders is applied.
+   - ~~decide pen-width UX~~ Decided — keep the existing slider interaction, but
+     keep its mobile footprint compact.
    - ~~decide whether old UIKit screens stay in target or move to
      reference-only storage~~ Decided — moved to `Orbit/Legacy/` now (commit
      `9c02495`), rather than waiting for migration verification. See
      `docs/REDESIGN_WORKLOG.md` for what moved and the one active-resource
      exception (`opensourceLicense.md`).
 
+Next practical tasks:
+
+1. Do a focused real-device visual pass for diary and drawing editors after any
+   future editor layout change:
+   - top save/check button remains a complete circle,
+   - weather picker fills the visible width without making the editor wider
+     than the screen,
+   - drawing toolbar stays usable on small phones,
+   - photo import adjustment mode does not resize the whole editor outside the
+     safe area.
+2. If the user wants more editor polish, stay in `DotNoteEntryEditors.swift`
+   first. Current likely polish areas are spacing, toolbar grouping, and color
+   picker affordance; do not change Store/Migration for this class of work.
+3. Before release-oriented work, run `Orbit_Prod` build once in addition to the
+   normal `Orbit_Dev` build/test.
+
 Recently completed:
 
+- Expanded diary/drawing weather pickers to the mobile screen width.
+- Narrowed the drawing pen-width slider area so drawing toolbar controls fit in
+  one horizontally scrolling row.
+- Fixed diary/drawing save button clipping by reducing and constraining the
+  circular check button.
+- Restored the user's preferred pen-width slider UX after briefly exploring a
+  compact preset-style control.
+- Added the redesigned drawing color picker popover.
+- Ran a lightweight mobile layout check for the diary/drawing editor paths:
+  `Orbit_Dev` build succeeded, and `Orbit_Dev` full tests succeeded
+  (19 tests total, 1 skipped legacy external fixture, 0 failures). No code
+  changes were made during that check.
 - Added SwiftData legacy import validation: first-load import, duplicate import
   prevention, settings/image/text/date preservation, and skip behavior when
   SwiftData already has records.

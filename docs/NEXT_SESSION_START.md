@@ -21,6 +21,12 @@ Start a fresh session from this file.
     are applied.
   - Drawing editor supports photo import plus in-canvas photo placement
     adjustment before save.
+  - Drawing editor color picker has a custom popover with preset swatches and
+    HSB sliders.
+  - Drawing editor pen width uses the existing slider UX, with a compact toolbar
+    footprint for mobile.
+  - Diary/drawing weather rows and save buttons have been tightened for mobile
+    layout.
   - Settings includes persisted appearance mode (`system`, `light`, `dark`).
   - Legacy Realm -> SwiftData migration has synthetic Realm and SwiftData
     import-flow unit coverage.
@@ -30,6 +36,15 @@ Start a fresh session from this file.
 
 Recent relevant commits:
 
+- `c6e0075 Expand editor weather picker layout`
+- `c6edccf Refine drawing editor toolbar layout`
+- `e6ae787 Constrain editor save buttons`
+- `7c585c9 Restore drawing width slider`
+- `f722422 Add custom drawing color picker`
+- `7b7018f Polish drawing toolbar selection controls`
+- `0e42bd4 Guard drawing photo clear during pen input`
+- `b91b0aa Document photo e2e verification, dark-mode pass, and legacy reorg`
+- `9c02495 Relocate legacy UIKit source into Orbit/Legacy/`
 - `b91e681 Validate SwiftData legacy import flow`
 - `a00a3f2 Constrain drawing editor toolbar layout`
 - `0836434 Embed RealmSwift framework in app bundle`
@@ -123,27 +138,20 @@ scaffold state.
 
 Recommended next implementation unit:
 
-1. Manually verify drawing photo import on a simulator/device with real Photos
-   content:
-   - pick photo
-   - enter photo adjustment mode
-   - drag/scale placement
-   - draw over the photo
-   - save
-   - reopen and confirm the composited image persists
-2. Verify migration with a real legacy `default.realm` backup before release:
-   - use `DOTNOTE_LEGACY_REALM_FILE=/path/to/default.realm`, or
-   - place a local ignored file at
-     `OrbitTests/Fixtures/LegacyRealm/default.realm`
-3. Run a real light/dark visual pass on device/simulator using the Settings
-   appearance picker.
-4. Decide whether the current in-canvas drawing photo placement is enough, or
-   whether a separate legacy-style crop screen is still required.
-5. Decide whether old UIKit screens stay in target or move to reference-only
-   storage after migration verification is complete.
-6. Keep all create/edit/delete behavior routed through `DotNoteAppModel`.
-7. Keep design values inside `DotNoteTheme.swift`.
-8. Run `Orbit_Dev` build + tests before committing normal UI changes.
+1. Continue small editor UI polish only where the user points out real mobile
+   layout issues. The current diary/drawing editor mobile layout has passed a
+   quick `Orbit_Dev` build + full test check.
+2. For drawing photo import, keep the current in-canvas placement UX. The user
+   decided not to recreate a separate legacy-style crop screen.
+3. Migration is now treated as regression safety because there is no old Realm
+   backup available. Keep the synthetic Realm and SwiftData import-flow tests
+   passing; do not block progress on a real `default.realm` fixture unless one
+   appears later.
+4. Keep all create/edit/delete behavior routed through `DotNoteAppModel`.
+5. Keep design values inside `DotNoteTheme.swift`.
+6. Run `Orbit_Dev` build + tests before committing normal UI changes. Run
+   `Orbit_Prod` build as well for resource, bundle, launch screen, scheme, or
+   release-oriented changes.
 
 ## Design Direction From Legacy Captures
 
@@ -163,11 +171,12 @@ Preserve these as baseline cues unless the user explicitly changes direction:
 
 ## Open Risks / Pending Input
 
-- A real legacy `.realm` file is still needed to verify migration against real
-  user data. Synthetic Realm and SwiftData import-flow unit tests already pass.
-- The SwiftUI UI is functional but still needs real-device visual QA,
-  especially drawing photo import and dark mode.
-- The old UIKit files remain in the repo for reference/legacy import context.
+- There is no real legacy `.realm` backup available. Synthetic Realm and
+  SwiftData import-flow unit tests are the migration safety net for now.
+- The SwiftUI UI is functional, but real-device visual QA is still valuable
+  after each editor layout change.
+- Old UIKit files have been moved to `Orbit/Legacy/` as reference-only source,
+  with active resource exceptions documented in `docs/REDESIGN_WORKLOG.md`.
 - Do not remove legacy Realm models until real migration verification is done.
 
 ## Suggested First Prompt For New Session
@@ -178,8 +187,8 @@ Use this as the first message in the fresh session:
 DotNote 프로젝트를 /Users/toffler/DotNote 에서 이어서 진행해줘.
 브랜치는 rebuild 이고, 먼저 docs/NEXT_SESSION_START.md, docs/DESIGN_HANDOFF_INDEX.md, docs/CLAUDE_CODE_CONTINUATION_BRIEF.md, docs/CURRENT_UI_BASELINE.md, docs/REDESIGN_WORKLOG.md, swift/HANDOFF_FOR_CLAUDE_CODE.md, REDESIGN_READINESS.md, REBUILD.md 를 읽어줘.
 현재 SwiftUI 진입점은 DotNoteApp → DotNoteRootView → CalendarHomeView 이고, typed editors/settings/collections/Set A icon/launch screen까지 적용되어 있어.
-최근에는 RealmSwift embed 런치 크래시 수정, drawing photo placement controls, drawing editor layout overflow fix, SwiftData legacy import validation까지 완료됐어.
-다음은 현재 구조를 유지한 채 실제 Photos 기반 그림 사진 import 수동 검증, 실제 legacy default.realm 마이그레이션 검증, 라이트/다크 실기기 visual QA 순서로 진행해줘.
+최근에는 RealmSwift embed 런치 크래시 수정, drawing photo placement controls, drawing editor layout overflow fix, SwiftData legacy import validation, drawing color picker 개선, 펜 굵기 슬라이더 복원, 일기/그림 편집 모바일 레이아웃 점검까지 완료됐어.
+다음은 현재 구조를 유지한 채 사용자가 지적하는 모바일 레이아웃/UI polish를 작은 단위로 진행해줘. 그림 사진 배치는 현재 in-canvas drag/scale 방식 유지, 실제 legacy default.realm은 없으므로 synthetic import 테스트를 회귀 안전망으로 봐줘.
 저장/삭제 로직은 DotNoteAppModel 경로만 사용하고, migration/store 쪽은 검증 목적의 최소 변경만 해줘.
 pbxproj 파일을 수정해야 하면 기존 24자리 ID와 충돌하지 않는지 반드시 grep으로 확인해줘.
 작업 후 일반 UI 변경은 Orbit_Dev 테스트, 리소스/번들 변경은 Orbit_Dev 빌드와 Orbit_Prod 빌드를 확인하고 적절한 시점에 커밋해줘.
