@@ -820,7 +820,7 @@ private struct DrawingCanvasBoard: View {
             )
             .shadow(color: DotNoteTheme.Shadow.cardColor.opacity(scheme == .dark ? 0.45 : 0.12), radius: 10, y: 4)
 
-            if image != nil {
+            if image != nil && isPhotoAdjusting {
                 Button {
                     image = nil
                     photoPlacement = DrawingPhotoPlacement()

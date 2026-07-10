@@ -1010,6 +1010,12 @@ an XCUITest touch-synthesis artifact that doesn't reflect real finger input.
 strokes that start near where the previous one ended, save, reopen — confirm
 the photo is still there.
 
+Follow-up mitigation: `DrawingCanvasBoard` now only shows the photo clear
+button while photo adjustment mode is active. The only normal code path that
+sets `pickedImage` to `nil` is that clear button, so keeping it out of the
+hit-test surface during pen drawing reduces the chance that quick synthesized
+or real strokes near the top-right corner accidentally remove the photo.
+
 ### 2. Light/dark real visual pass
 
 Set the simulator's system appearance directly (`xcrun simctl ui <device>
