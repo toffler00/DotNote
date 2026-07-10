@@ -516,7 +516,7 @@ private struct EditorDateWeatherHeader: View {
                 .accessibilityIdentifier("entry-date-picker")
             }
 
-            WeatherPicker(selection: $draft.weather)
+            WeatherPicker(selection: $draft.weather, fillsAvailableWidth: kind == .drawing)
         }
         .padding(DotNoteTheme.Spacing.md)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -552,35 +552,51 @@ private struct EditorDateWeatherHeader: View {
 
 struct WeatherPicker: View {
     @Binding var selection: String
+    var fillsAvailableWidth = false
 
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+        if fillsAvailableWidth {
             HStack(spacing: DotNoteTheme.Spacing.xs) {
                 ForEach(DotNoteWeather.presets, id: \.self) { label in
-                    Button {
-                        selection = label
-                    } label: {
-                        Image(systemName: DotNoteWeather.symbolName(for: label))
-                            .font(.system(size: 16, weight: .semibold))
-                            .frame(width: 44, height: 44)
-                            .background(
-                                RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
-                                    .fill(selection == label ? DotNoteTheme.Palette.today : DotNoteTheme.Palette.paper(scheme))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
-                                    .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: selection == label ? 0 : 1)
-                            )
-                            .foregroundStyle(selection == label ? .white : DotNoteTheme.Palette.inkSoft(scheme))
-                    }
-                    .accessibilityLabel(label)
-                    .accessibilityIdentifier("weather-\(label)")
+                    weatherButton(for: label, fillsWidth: true)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        } else {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: DotNoteTheme.Spacing.xs) {
+                    ForEach(DotNoteWeather.presets, id: \.self) { label in
+                        weatherButton(for: label, fillsWidth: false)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    @ViewBuilder
+    private func weatherButton(for label: String, fillsWidth: Bool) -> some View {
+        Button {
+            selection = label
+        } label: {
+            Image(systemName: DotNoteWeather.symbolName(for: label))
+                .font(.system(size: 16, weight: .semibold))
+                .frame(maxWidth: fillsWidth ? .infinity : nil)
+                .frame(width: fillsWidth ? nil : 44, height: 44)
+                .background(
+                    RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                        .fill(selection == label ? DotNoteTheme.Palette.today : DotNoteTheme.Palette.paper(scheme))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: DotNoteTheme.Radius.md, style: .continuous)
+                        .stroke(DotNoteTheme.Palette.hairline(scheme), lineWidth: selection == label ? 0 : 1)
+                )
+                .foregroundStyle(selection == label ? .white : DotNoteTheme.Palette.inkSoft(scheme))
+        }
+        .accessibilityLabel(label)
+        .accessibilityIdentifier("weather-\(label)")
     }
 }
 
@@ -664,26 +680,26 @@ private struct DrawingToolbar: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            HStack(spacing: DotNoteTheme.Spacing.sm) {
+            HStack(spacing: DotNoteTheme.Spacing.xs) {
                 Image(systemName: "line.diagonal")
                     .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
-                    .frame(width: 24)
+                    .frame(width: 18)
 
                 Slider(value: $lineWidth, in: 2...16)
                     .tint(DotNoteEntryKind.drawing.dot)
                     .onChange(of: lineWidth) { _, _ in
                         isEraser = false
                     }
+                    .frame(width: hasPhoto ? 88 : 112)
                     .accessibilityIdentifier("drawing-line-width")
 
                 Text("\(Int(lineWidth))")
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(DotNoteTheme.Palette.inkSoft(scheme))
-                    .frame(width: 24)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(width: 22)
 
-            HStack(spacing: DotNoteTheme.Spacing.xs) {
+                Spacer(minLength: 0)
+
                 PhotosPicker(selection: $photoPickerItem, matching: .images) {
                     Image(systemName: "photo.on.rectangle")
                         .frame(width: 40, height: 40)
