@@ -516,7 +516,7 @@ private struct EditorDateWeatherHeader: View {
                 .accessibilityIdentifier("entry-date-picker")
             }
 
-            WeatherPicker(selection: $draft.weather, fillsAvailableWidth: kind == .drawing)
+            WeatherPicker(selection: $draft.weather, fillsAvailableWidth: true)
         }
         .padding(DotNoteTheme.Spacing.md)
         .frame(maxWidth: .infinity, alignment: .leading)
