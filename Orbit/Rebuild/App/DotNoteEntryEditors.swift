@@ -1019,11 +1019,46 @@ private struct DrawingCanvas: UIViewRepresentable {
     }
 
     private var currentTool: PKTool {
-        isEraser ? PKEraserTool(.vector) : PKInkingTool(.pen, color: inkColor, width: lineWidth)
+        isEraser ? PKEraserTool(.vector) : PKInkingTool(.pen, color: inkColor.normalizedInkColor(), width: lineWidth)
     }
 }
 
 private extension UIColor {
+    func normalizedInkColor() -> UIColor {
+        let resolved = resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        if resolved.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            return UIColor(red: red, green: green, blue: blue, alpha: 1)
+        }
+
+        var white: CGFloat = 0
+        if resolved.getWhite(&white, alpha: &alpha) {
+            return UIColor(red: white, green: white, blue: white, alpha: 1)
+        }
+
+        guard
+            let colorSpace = CGColorSpace(name: CGColorSpace.sRGB),
+            let converted = resolved.cgColor.converted(to: colorSpace, intent: .defaultIntent, options: nil),
+            let components = converted.components
+        else {
+            return resolved.withAlphaComponent(1)
+        }
+
+        if components.count >= 3 {
+            return UIColor(red: components[0], green: components[1], blue: components[2], alpha: 1)
+        }
+
+        if let component = components.first {
+            return UIColor(red: component, green: component, blue: component, alpha: 1)
+        }
+
+        return resolved.withAlphaComponent(1)
+    }
+
     func isSameInk(as other: UIColor) -> Bool {
         var r1: CGFloat = 0
         var g1: CGFloat = 0
