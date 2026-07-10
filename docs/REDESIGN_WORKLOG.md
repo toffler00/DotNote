@@ -1074,5 +1074,32 @@ message for `9c02495`; summary:
 ### Not done in this pass
 
 - The photo-loss observation above needs a real-device check to close out.
-- Real legacy `.realm` migration verification (item 2 in the recommended list)
-  is still blocked on the user supplying an actual legacy backup file.
+- Real legacy `.realm` migration verification was still waiting for a backup at
+  this point, but the later product decision below supersedes that requirement.
+
+---
+
+## Milestone — Drawing toolbar selection polish
+
+User decisions:
+
+- There is no old Realm backup available, so migration validation should now be
+  treated as current-app regression safety rather than a real-data import claim.
+  Keep the synthetic Realm import and SwiftData migration tests passing, and
+  verify the app does not malfunction when no external `.realm` file exists.
+- Keep the current in-canvas photo placement UX. Do not recreate the legacy
+  separate "Move and Scale" crop screen unless the product direction changes.
+- Continue UI work by improving only the drawing color-selection and pen-width
+  selection controls.
+
+Implementation:
+
+- Reworked the drawing toolbar color row from horizontally scrolling mixed
+  controls into a fixed six-swatch row. Existing accessibility identifiers
+  (`drawing-color-*`) are preserved for UI tests.
+- Replaced the narrow pen-width slider/numeric value with five tappable width
+  presets (`2`, `5`, `8`, `11`, `16`) rendered as stroke samples. The
+  `drawing-line-width` identifier remains on the width-control group, with
+  per-width identifiers added for future UI tests.
+- Kept photo import, photo adjustment, eraser, and undo controls in a separate
+  icon row so the color/width selections are easier to hit on a phone screen.

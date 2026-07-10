@@ -173,20 +173,22 @@ Recommended order:
    pattern (possible photo loss) needs a real-device/finger check — see
    `docs/REDESIGN_WORKLOG.md` for the exact repro attempt and why it's not
    confirmed as a real bug yet.
-2. Run real legacy `.realm` migration verification with an actual old app
-   backup — **still blocked**, needs the user to supply a real backup:
-   - set `DOTNOTE_LEGACY_REALM_FILE=/path/to/default.realm` when running the
-     external fixture test, or
-   - place a local ignored fixture at
-     `OrbitTests/Fixtures/LegacyRealm/default.realm`
+2. ~~Real legacy `.realm` migration verification~~ Product decision updated —
+   the user no longer has an old Realm backup. Treat migration readiness as
+   current-app regression safety: synthetic Realm import coverage and the
+   SwiftData import-flow tests should keep passing, and the app should not
+   malfunction when no external legacy file exists.
 3. ~~Run a real light/dark visual pass~~ Done — simulator system-appearance
    toggle + real screenshots of home/diary editor/memo overlay/Settings. Clean,
    no contrast issues, warm dark palette holds up everywhere. See
    `docs/REDESIGN_WORKLOG.md`.
 4. Later feature work:
-   - decide whether the in-canvas drawing photo placement is enough, or whether
-     a separate legacy-style "Move and Scale" crop screen is still desired —
-     still open
+   - ~~decide whether the in-canvas drawing photo placement is enough~~ Decided
+     — keep the current in-canvas drag/scale placement. Do not recreate the
+     legacy-style separate "Move and Scale" crop screen unless the product
+     direction changes later.
+   - Continue the drawing editor UI polish around color selection and pen-width
+     selection while keeping the current drawing/photo architecture intact.
    - ~~decide whether old UIKit screens stay in target or move to
      reference-only storage~~ Decided — moved to `Orbit/Legacy/` now (commit
      `9c02495`), rather than waiting for migration verification. See
